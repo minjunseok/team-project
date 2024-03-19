@@ -86,15 +86,15 @@
 <br>
 <br>
 
- <p align="center"><img src="./스쿨 회원 조회 case 1-2" width="600"><br></p>
+ <p align="center"><img src="./스쿨 회원 조회 case 1-2.png" width="600"><br></p>
  <br>
-  <p align="center"><img src="./스쿨 회원 조회 case 1-3" width="600"><br>스쿨 회원 조회</p>
+  <p align="center"><img src="./스쿨 회원 조회 case 1-3.png" width="600"><br>스쿨 회원 조회</p>
 <br>
 <br>
 
-<p align="center"><img src="./팔로워 스샷" width="600"><br></p>
+<p align="center"><img src="./팔로워 스샷.png" width="600"><br></p>
 <br>
-<p align="center"><img src="./팔로잉 창" width="600"><br>회원 팔로우시스템</p>
+<p align="center"><img src="./팔로잉 창.png" width="600"><br>회원 팔로우시스템</p>
 <br>
 
 
