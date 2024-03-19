@@ -35,6 +35,7 @@
 <br>
 
 ### 사용자
+
 <p align="center"><img src="./비연동 회원가입 창.png" width="600"><br> 회원가입</p>
 
 <br>
@@ -44,7 +45,9 @@
 
  <br>
  <br>
+
 <p align="center"><img src="./image.png" width="600"><br> 공개정보조회 (스쿨,회원,게시글,클래스)</p>
+
 <br>
 <br>
 
@@ -84,6 +87,7 @@
 <br>
 
  <p align="center"><img src="./로그인 페이지.png" width="600"><br> 로그인</p>
+
 <br>
 <br>
 
@@ -95,7 +99,9 @@
 <br>
 
  <p align="center"><img src="./moyera_school_add.png" width="500" />
+
  <br>
+
    <p align="center"><img src="./moyera_school_add2.png" width="600"><br> 스쿨 개설</p>
 
 
@@ -104,25 +110,39 @@
 <br>
 
  <p align="center"><img src="./스쿨 회원 조회 case 1 -2.png" width="600"><br></p>
+
  <br>
+<br>
   <p align="center"><img src="./스쿨 회원 조회 case 1 - 3.png" width="600"><br>스쿨 회원 조회</p>
+
 <br>
 <br>
 
 <p align="center"><img src="./팔로워 스샷.png" width="600"><br></p>
+
 <br>
+ <br>
+
 <p align="center"><img src="./팔로잉 창.png" width="600"><br>회원 팔로우시스템</p>
+
 <br>
 <br>
+
 <p align="center"><img src="./구독(등급)시스템.png" width="600"><br>구독 시스템</p>
+
 <br>
 <br>
+
 <p align="center"><img src="./statistics-user.png" width="600"><br>회원 활동통계</p>
+
 <br>
 <br>
+
 <p align="center"><img src="./스쿨추천시스템.png" width="600"><br>스쿨추천시스템</p>
+
 <br>
 <br>
+
 <p align="center"><img src="./user 1_1 chat.png" width="600"><br>1:1 채팅</p>
 
 <br>
@@ -147,23 +167,27 @@
 
 <p align="center"><img src="./moyora_community_apply.png" width="600"><br>게시글 관리(공개 게시글 조회,개인 게시글 관리)</p>
 
-
+ <br>
 <br>
 
 <p align="center"><img src="./일정 등록 달력.png" width="600"><br>클래스 개설 및 참여 (클래스 캘린더)</p>
 
+ <br>
 <br>
 
 <p align="center"><img src="./사진불러오기 폴더2 2.png" width="600"><br>클래스 개설 및 참여(클래스 등록)</p>
 
 <br>
+<br>
 
 <p align="center"><img src="./날짜별 요약 1.png" width="600"><br>클래스 개설 및 참여(클래스 참여)</p>
 
 <br>
+ <br>
 
 <p align="center"><img src="./school chat.png" width="600"><br>스쿨 채팅</p>
 
+<br>
 <br>
 
 
@@ -173,13 +197,18 @@
 <p align="center"><img src="./관리자 페이지.png" width="600"><br>스쿨 관리 (스쿨 공개 범위 ,가입 조건 등)</p>
 
 <br>
+<br>
+
 <p align="center"><img src="./Frame 1171275194.png" width="600"><br>멤버 관리 (가입 수락,블랙 리스트 ,추방,등)</p>
 
+<br>
 <br>
 
   - `스쿨 전체 게시글 관리` (`작성자` 외 `삭제`,`변경` 가능)
 
 <br>
+
+
 
   - `신고 게시판 조회` (`스쿨` `회원` 신고내역 확인 가능)
 
