@@ -66,6 +66,20 @@
 <br>
 
   - `스쿨가입`
+
+<br> 
+<br>
+
+  - `회원탈퇴`
+
+<br> 
+<br>
+
+  - `활동알림`
+<br>
+<br>
+
+  - `결제내역 조회`
 <br>
 <br>
 
@@ -99,6 +113,110 @@
 <br>
 <p align="center"><img src="./팔로잉 창.png" width="600"><br>회원 팔로우시스템</p>
 <br>
+<br>
+<p align="center"><img src="./구독(등급)시스템.png" width="600"><br>구독 시스템</p>
+<br>
+<br>
+<p align="center"><img src="./statistics-user.png" width="600"><br>회원 활동통계</p>
+<br>
+<br>
+<p align="center"><img src="./스쿨추천시스템.png" width="600"><br>스쿨추천시스템</p>
+<br>
+<br>
+<p align="center"><img src="./user 1_1 chat.png" width="600"><br>1:1 채팅</p>
+
+<br>
+<br>
+
+### 스쿨 회원
+
+<br>
+
+- `공지 게시판` (조회 가능)
+
+<br>
+
+
+  - `회원 신고` (스쿨 내 신고 게시판에 저장)
+
+<br>
+
+  - `스쿨 탈퇴`
+
+<br>
+
+<p align="center"><img src="./moyora_community_apply.png" width="600"><br>게시글 관리(공개 게시글 조회,개인 게시글 관리)</p>
+
+
+<br>
+
+<p align="center"><img src="./일정 등록 달력.png" width="600"><br>클래스 개설 및 참여 (클래스 캘린더)</p>
+
+<br>
+
+<p align="center"><img src="./사진불러오기 폴더2 2.png" width="600"><br>클래스 개설 및 참여(클래스 등록)</p>
+
+<br>
+
+<p align="center"><img src="./날짜별 요약1.png" width="600"><br>클래스 개설 및 참여(클래스 참여)</p>
+
+<br>
+
+<p align="center"><img src="./school chat.png" width="600"><br>스쿨 채팅</p>
+
+<br>
+
+
+### 스쿨 관리자
+
+<br>
+<p align="center"><img src="./관리자 페이지.png" width="600"><br>스쿨 관리 (스쿨 공개 범위 ,가입 조건 등)</p>
+
+<br>
+<p align="center"><img src="./Frame 1171275194.png" width="600"><br>멤버 관리 (가입 수락,블랙 리스트 ,추방,등)</p>
+
+<br>
+
+  - `스쿨 전체 게시글 관리` (`작성자` 외 `삭제`,`변경` 가능)
+
+<br>
+
+  - `신고 게시판 조회` (`스쿨` `회원` 신고내역 확인 가능)
+
+<br>
+
+- `공지 게시판` (`등록`,`삭제`,`변경` 가능)
+
+
+<br>
+
+- `클래스 관리` 
+
+<br>
+
+
+- `저장소 관리` (ex : `구독` 만기후 삭제 대기전 임시 보류중인 `구독` 기능을 통해 `개설`한 `스쿨` 관리) 
+
+<br>
+
+- `스쿨 삭제` 
+
+<br>
+
+
+### 타이머
+
+- `구독 해지` 
+
+<br>
+<br>
+<br>
+  
+
+
+
+
+
 
 
 
