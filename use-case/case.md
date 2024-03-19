@@ -1,0 +1,110 @@
+# 유스케이스
+
+### 고유명사 정의
+<br>
+<br>
+
+- `스쿨` : `모여라` 내 개설된 - `모임`
+- `클래스` : `스쿨` 내 등록된 특정 모임 `일정`
+
+## 액터
+
+<br>
+<br>
+
+- `사용자` : - `로그인-`을 하지않은 `사용자`
+
+<br>
+
+- `회원` : `회원가입`한 `사용자` 
+
+<br>
+
+- `스쿨 관리자` : `스쿨`을 개설한 관리 권한을 지닌 `회원`
+
+<br>
+
+- `스쿨 가입자` : `스쿨`에 가입한 `회원`
+
+<br>
+<br>
+
+## use - case
+
+<br>
+<br>
+
+ - **`사용자`**
+
+<p align="center"><img src="./비연동 회원가입 창.png" width="500" />
+
+<br>
+<br>
+ - `회원가입`
+
+<br>
+<br>
+
+ - `소셜 회원가입`
+
+ <br>
+ <br>
+
+<p align="center"><img src="./image.png" width="500" />
+<br>
+<br>
+
+ - `공개정보조회`(스쿨,회원,게시글,클래스)
+
+ <br>
+ <br>
+
+  - `통계 시스템`
+<br>
+<br>
+
+ - **`회원`**
+
+ <br>
+ <br>
+<p align="center"><img src="./로그인 페이지.png" width="500" />
+<br>
+<br>
+
+ - `로그인`
+
+ <br>
+ <br>
+
+ - `로그아웃`
+ <br>
+ <br>
+ <p align="center"><img src="./마이페이지 수정.png" width="500" />
+ <br>
+ <br>
+
+  - `개인 프로필 설정`
+
+<br>
+<br>
+
+  - `공개정보조회` (스쿨,회원,게시글,클래스)
+
+<br>
+<br>
+
+ <p align="center"><img src="./moyera_school_add.png" width="500" />
+ <br>
+ <p align="center"><img src="./moyera_school_add2.png" width="500" />
+ <br>
+- `스쿨 개설`
+
+
+
+
+
+
+
+
+
+
