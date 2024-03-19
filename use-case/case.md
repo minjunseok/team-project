@@ -158,7 +158,7 @@
 
 <br>
 
-<p align="center"><img src="./날짜별 요약1.png" width="600"><br>클래스 개설 및 참여(클래스 참여)</p>
+<p align="center"><img src="./날짜별 요약 1.png" width="600"><br>클래스 개설 및 참여(클래스 참여)</p>
 
 <br>
 
