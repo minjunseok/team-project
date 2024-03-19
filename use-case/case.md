@@ -53,23 +53,29 @@
 <br>
 
 ### 회원
+<br>
+<br>
 
- <br>
- <br>
+- `로그아웃`
+
+<br>
+
+- `공개정보조회` (스쿨,회원,게시글,클래스)
+
+<br> 
+<br>
+
+  - `스쿨가입`
+<br>
+<br>
+
  <p align="center"><img src="./로그인 페이지.png" width="600"><br> 로그인</p>
 <br>
 <br>
 
- - `로그아웃`
- <br>
- <br>
   <p align="center"><img src="./마이페이지 수정.png" width="600"><br> 개인 프로필 설정</p>
 
 
-<br>
-<br>
-
-  - `공개정보조회` (스쿨,회원,게시글,클래스)
 
 <br>
 <br>
@@ -78,10 +84,7 @@
  <br>
    <p align="center"><img src="./moyera_school_add2.png" width="600"><br> 스쿨 개설</p>
 
-<br> 
-<br>
 
-  - `스쿨가입`
 
 <br>
 <br>
