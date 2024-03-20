@@ -175,12 +175,12 @@
  <br>
 <br>
 
-<p align="center"><img src="./사진불러오기 폴더2 2.png" width="600"><br>클래스 개설 및 참여(클래스 등록)</p>
+<p align="center"><img src="./Frame 1171275270.png" width="600"><br>클래스 개설 및 참여(클래스 등록)</p>
 
 <br>
 <br>
 
-<p align="center"><img src="./날짜별 요약 1.png" width="600"><br>클래스 개설 및 참여(클래스 참여)</p>
+<p align="center"><img src="./Frame 1171275271.png" width="600"><br>클래스 개설 및 참여(클래스 완료 및 인증)</p>
 
 <br>
  <br>
