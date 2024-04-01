@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moyeora.myapp.dao.UserDao">
+
+  <resultMap id="UserMap" type="User">
+    <id column="user_no" property="no"/>
+    <result column="name" property="name"/>
+    <result column="pwd" property="pwd"/>
+    <result column="address" property="address"/>
+    <result column="phone" property="phone"/>
+    <result column="email" property="email"/>
+    <result column="nickname" property="nickname"/>
+    <result column="birth" property="birth"/>
+    <result column="gender" property="gender"/>
+    <result column="grade" property="grade"/>
+    <result column="login_type" property="loginType"/>
+    <result column="created_at" property="createdAt"/>
+    <result column="profile" property="profile"/>
+    <result column="manner_point" property="mannerPoint"/>
+    <result column="photo" property="photo"/>
+    <result column="tag_no" property="no"/>
+  </resultMap>
+
+  <insert id="add" parameterType="User">
+    insert into users(name,pwd,address,phone,email,nickname,birth,gender,profile,photo)
+    values(#{name},sha2(#{password},256),#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{profile},#{photo})
+  </insert>
+
+  <insert id="add2" parameterType="list">
+    insert into member_tags(user_no,tag_no)
+    values(#{no},#{no})
+  </insert>
+
+  <delete id="delete" parameterType="int">
+    delete from users where user_no=#{value}
+  </delete>
+
+  <select id="findAll" resultMap="UserMap">
+    select
+    user_no,
+    nickname,
+    email,
+    created_at
+    from
+    user_no
+  </select>
+
+  <select id="findBy" resultMap="UserMap" parameterType="int">
+    select
+    user_no,
+    email,
+    name,
+    created_at
+    from
+    users
+    where
+    user_no=#{value}
+  </select>
+
+
+  <update id="update" parameterType="User">
+    update users set
+    email=#{email},
+    nickname=#{nickname},
+    phone=#{phone},
+    address=#{address},
+    photo=#{photo}
+    profile=#{profile}
+    <if test="password != ''">
+      , password=sha2(#{password},256)
+    </if>
+    where
+    user_no=#{no}
+  </update>
+
+  <select id="findByEmailAndPassword" resultMap="UserMap">
+    select
+      user_no,
+      email,
+      name,
+      created_at
+    from
+      users
+    where
+      email= #{email}
+      and pwd=sha2(#{password},256)
+  </select>
+
+</mapper>
