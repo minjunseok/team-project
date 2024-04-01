@@ -1,4 +1,4 @@
-package moyeora.myapp.service.impl;
+package moyeora.myapp.service.Impl;
 
 
 import java.text.DateFormat;
@@ -22,6 +22,7 @@ public class DefaultSchoolService implements SchoolService {
   private final SchoolUserDao schoolUserDao;
 
 
+
   public SchoolUser findByUserNo(int no) {
     return schoolUserDao.findByUserNo(no);
 
@@ -29,7 +30,6 @@ public class DefaultSchoolService implements SchoolService {
 
   @Override
   public List<String> findWeek() {
-    System.out.println("과제관리 시스템 서버 1실행!");
     Calendar c = Calendar.getInstance();
     c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
     DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
