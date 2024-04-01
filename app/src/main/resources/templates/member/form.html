@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>모여라 </title>
+</head>
+<body>
+
+<div data-th-replace="header :: header">머리말</div>
+
+<h1>회원 관리 시스템</h1>
+
+<h2>회원 가입</h2>
+
+
+<form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
+  <div>
+    이메일: <input name='email' type='text' size="20" autofocus placeholder="이메일[본인확인용]" required> @
+    <select  name="domain_select" id="domain_select" >
+      <option value="직접입력">직접 입력</option>
+      <option value="naver.com">naver.com</option>
+      <option value="gmail.com">gmail.com</option>
+      <option value="daum.net">daum.net</option>
+      <option value="google.com">google.com</option>
+      <option value="kakao.com">kakao.com</option>
+    </select>
+    <input name="domain" id="domain_input" type="text" style="display:none;">
+  </div>
+  <small> *대소문자 특수기호 가능</small>
+
+  <div>
+    <button>인증 받기</button>
+  </div>
+
+  <div>
+    비밀번호: <input name='pwd' type='password' size="20" placeholder="비밀번호." required>
+  </div>
+  <small> *대소문자 특수기호 가능</small>
+
+  <div>
+    닉네임: <input name='nickname' type='text'  size="20" placeholder="닉네임" required>
+  </div>
+
+  <div>
+    이름: <input name='name' type='text' size="20" placeholder="이름" required>
+  </div>
+
+  <div>
+    생년월일: <input name='birth' type='date' required>
+  </div>
+
+  <div>
+    전화번호: <input name='phone' type='text' placeholder="전화번호" required>
+  </div>
+
+  <div>
+    주소: <input name='address' type='text'>
+  </div>
+  <button>주소 검색</button>
+
+  <div>
+    상세 주소: <input name='address' type='text'>
+  </div>
+
+  <div>
+    사진: <input name='photo' type='file'>
+  </div>
+
+</form>
+<div>
+  <h2>관심사 선택</h2>
+</div>
+<form>
+  <input type="checkbox" name="tag"> 운동
+  <input type="checkbox" name="tag"> 독서
+  <input type="checkbox" name="tag"> 영화
+  <input type="checkbox" name="tag"> 식물
+  <br>
+  <input type="checkbox" name="tag"> 육아
+  <input type="checkbox" name="tag"> 공부
+  <input type="checkbox" name="tag"> 동물
+  <input type="checkbox" name="tag"> 게임
+  <br>
+  <input type="checkbox" name="tag"> 금융
+  <input type="checkbox" name="tag"> 대화
+  <input type="checkbox" name="tag"> 미용
+  <input type="checkbox" name="tag"> 공학
+  <br>
+  <input type="checkbox" name="tag"> 사진
+  <input type="checkbox" name="tag"> 봉사
+  <input type="checkbox" name="tag"> 공예
+  <input type="checkbox" name="tag"> 음악
+  <br>
+  <input type="checkbox" name="tag"> 테크
+  <input type="checkbox" name="tag"> 패션
+  <input type="checkbox" name="tag"> 여행
+  <input type="checkbox" name="tag"> 드라이브
+  <br>
+  <small> *최소 3개 이상 선택</small>
+
+</form>
+
+<div>
+  <input type="submit" value="가입하기">
+  <input type="reset" value="취소하기">
+</div>
+
+<div data-th-replace="footer :: footer">꼬리말</div>
+
+</body>
+</html>
