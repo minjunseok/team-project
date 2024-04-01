@@ -4,6 +4,10 @@
 package moyeora.myapp;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import org.apache.ibatis.javassist.Loader.Simple;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -12,7 +16,16 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("과제관리 시스템 서버 실행!");
+        System.out.println("과제관리 시스템 서버 1실행!");
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK,Calendar.TUESDAY);
+        System.out.println(c);
+        System.out.println(c.getTime());
+        DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+        c.add(Calendar.DAY_OF_YEAR,1);
+        System.out.println(c.getTime());
+        String k = dateformat.format(c.getTime());
+        System.out.println(k);
         SpringApplication.run(App.class, args);
     };
 }
