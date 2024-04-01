@@ -16,16 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("과제관리 시스템 서버 1실행!");
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_WEEK,Calendar.TUESDAY);
-        System.out.println(c);
-        System.out.println(c.getTime());
-        DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-        c.add(Calendar.DAY_OF_YEAR,1);
-        System.out.println(c.getTime());
-        String k = dateformat.format(c.getTime());
-        System.out.println(k);
+
         SpringApplication.run(App.class, args);
     };
 }

@@ -3,7 +3,21 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mypj.repository.ScheduleActorRepository">
+<mapper namespace="moyeora.myapp.dao.SchoolDao">
+<resultMap id="SchoolMap" type="School">
+  <id column="school_no" property="no"/>
+  <result column="name" property="name"/>
+  <result column="content" property="content"/>
+  <result column="limited_man" property="limitedMan"/>
+  <result column="photo" property="photo"/>
+  <result column="open_range" property="openRange"/>
+  <result column="created_at" property="createdAt"/>
+</resultMap>
+
+  <insert id="add" parameterType="School">
+    insert into schools(name,content,limited_man,photo,open_range,created_at)
+    values(#{name},#{content},#{limitedMan},#{photo},#{openRange},#{createdAt})
+  </insert>
 
 
 </mapper>

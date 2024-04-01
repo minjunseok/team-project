@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>비트캠프 데브옵스 5기</title>
+</head>
+<body>
+<div data-th-each="school : ${schools}" data-th-object="${school}">
+  <input type="hidden" data-th-value="*{no}">
+  <div data-th-text="*{name}"></div>
+  <div data-th-text="*{photo}"></div>
+</div>
+
+<div data-th-each="week : ${weeks}" data-th-text="${week}"></div>
+</body>
+</html>
