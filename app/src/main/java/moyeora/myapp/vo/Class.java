@@ -3,7 +3,6 @@ package moyeora.myapp.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Getter
 @Setter
@@ -21,5 +20,6 @@ public class Class {
   private String member;
   private String repeatSet;
   private String photo;
+  private int nowMemberCount;
 
 }

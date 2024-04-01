@@ -12,5 +12,12 @@
 </div>
 
 <div data-th-each="week : ${weeks}" data-th-text="${week}"></div>
+
+<div data-th-each="class : ${classes}" data-th-object="${class}">
+  <div data-th-text="*{name}"></div>
+  <div data-th-text="*{photo}"></div>
+  <div data-th-text="*{nowMemberCount}"></div>
+  <div data-th-text="*{member}"></div>
+</div>
 </body>
 </html>

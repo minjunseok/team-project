@@ -18,26 +18,24 @@
     <result column="member" property="member"/>
     <result column="repeat_set" property="repeatSet"/>
     <result column="photo" property="photo"/>
+    <result column="now_member_count" property="nowMemberCount"/>
   </resultMap>
 
-  <select id="findByDate" resultMap="ClassMap">
+  <select id="findByDate" resultMap="ClassMap" parameterType="String">
     select
-      (select count(*) from class_users; where c.class_no = u.class_no) as count,
-      c.name,
-      c.security,
-      c.content,
-      c.location,
-      c.now_at,
-      c.member,
-      c.photo
+      class_no,
+      (select count(*) from class_users as u where c.class_no = u.class_no) as now_member_count,
+      name,
+      security,
+      content,
+      location,
+      now_at,
+      member,
+      photo
     from
       classes as c
-    inner join
-      class_users as u
-    on
-      c.class_no = u.class_no
     where
-      now_at = ${date}
+      now_at = '${date}'
   </select>
 
 
