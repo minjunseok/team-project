@@ -685,3 +685,4 @@ ALTER TABLE `logs`
 	REFERENCES `users` ( -- users
 	`user_no` -- 회원 번호
 	);
+
