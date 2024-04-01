@@ -7,13 +7,14 @@ public class School implements Serializable {
 
   private static final long  serialVersionUID = 100L;
 
-  private int school_no;
-  private int post_no;
+  private int schoolNo;
+  private  int categoryNo;
+  private  int postNo;
   private String name;
   private String content;
-  private int limited_man;
+  private int limitedMan;
   private String photo;
-  private int open_range;
-  private Date created_at;
+  private int openRange;
+  private Date createdAt;
 
 }

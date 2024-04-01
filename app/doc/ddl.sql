@@ -686,4 +686,3 @@ ALTER TABLE `logs`
 	`user_no` -- 회원 번호
 	);
 
-	--tset
