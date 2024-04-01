@@ -27,5 +27,5 @@ public class App {
         String k = dateformat.format(c.getTime());
         System.out.println(k);
         SpringApplication.run(App.class, args);
-    };
+    }
 }

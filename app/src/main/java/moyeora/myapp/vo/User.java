@@ -20,10 +20,10 @@ public class User implements Serializable {
     private String brith;
     private int gender;
     private int grade;
-    private int login_type;
-    private Date created_at;
+    private int loginType;
+    private Date createdAt;
     private String profile;
-    private int manner_point;
+    private int mannerPoint;
     private String photo;
 
 }
