@@ -1,10 +1,15 @@
 package moyeora.myapp.service;
 
-import java.util.List;
 
 import moyeora.myapp.vo.School;
+import java.util.List;
+import moyeora.myapp.vo.SchoolUser;
 
 public interface SchoolService {
+
+  public SchoolUser findByUserNo(int no);
+
+  public List<String> findWeek();
 
   void add(School school);
 
@@ -17,9 +22,4 @@ public interface SchoolService {
   int delete(int postNo);
 
   int countAll(int categoryNo);
-
-
-
-
-
 }
