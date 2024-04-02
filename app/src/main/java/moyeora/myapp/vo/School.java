@@ -20,5 +20,5 @@ public class School implements Serializable {
   private String photo;
   private int openRange;
   private Date createdAt;
-
+  private int nowMemberCount;
 }
