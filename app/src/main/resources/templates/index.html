@@ -17,10 +17,10 @@
 <a style = "cursor: pointer" data-th-each="week : ${weeks}" data-th-onclick="@{'dataList(\'' + ${week} + '\')'}" data-th-text="${week}  "></a>
 
 <div data-th-each="hotSchool : ${hotSchools}" data-th-object="${hotSchool}">
-  <input type="hidden" data-th-value="{no}">
-  <div data-th-text="{name}"></div>
-  <div data-th-text="{photo}"></div>
-  <div data-th-text="{nowMemberCount}"></div>
+  <input type="hidden" data-th-value="*{no}">
+  <div data-th-text="*{name}"></div>
+  <div data-th-text="*{photo}"></div>
+  <div data-th-text="*{nowMemberCount}"></div>
 </div>
 
 <ol id = "byDate" data-th-each="class : ${classes}" data-th-object="${class}">

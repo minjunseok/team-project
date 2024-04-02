@@ -15,5 +15,5 @@ public class School {
   private String photo;
   private int openRange;
   private Date createdAt;
-
+  private int nowMemberCount;
 }
