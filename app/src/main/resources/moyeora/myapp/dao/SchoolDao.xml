@@ -13,6 +13,7 @@
   <result column="photo" property="photo"/>
   <result column="open_range" property="openRange"/>
   <result column="created_at" property="createdAt"/>
+  <result column="now_member_count" property="nowMemberCount"/>
 </resultMap>
 
 
@@ -36,10 +37,24 @@ private int no;
     values(#{name},#{content},#{limitedMan},#{photo},#{openRange},#{createdAt})
   </insert>
 
+<<<<<<< HEAD
   <delete id="delete" parameterType="int">
     delete from schools
     where post_no=#{value}
   </delete>
+=======
+  <select id="findHotSchool" resultMap="SchoolMap" parameterType="int">
+    select
+    s.school_no,
+    s.name,
+    s.photo,
+    (select count(*) from school_users u where s.school_no = u.school_no) as now_member_count
+    from
+    schools as s
+    order by
+    now_member_count desc
+  </select>
+>>>>>>> ffc3c4928967e10d6d928922b37b3f16470e809c
 
 
 </mapper>
