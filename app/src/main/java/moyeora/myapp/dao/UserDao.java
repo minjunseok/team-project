@@ -14,7 +14,7 @@ public interface UserDao {
 
      public List<User> findAll();
 
-public User findBy(int no);
+     public User findBy(int no);
 
      public int update(User user);
 
