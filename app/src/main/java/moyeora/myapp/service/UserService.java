@@ -1,6 +1,7 @@
 package moyeora.myapp.service;
 
 import moyeora.myapp.vo.User;
+import moyeora.myapp.vo.UserTag;
 
 import java.util.List;
 
@@ -16,4 +17,7 @@ public interface UserService {
 
     int delete(int no);
 
+//   List<UserTag> getUserTag(int userNo);
+//
+//   int deleteUserTag(int userNo);
 }

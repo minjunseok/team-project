@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class User implements Serializable {
@@ -25,5 +26,6 @@ public class User implements Serializable {
     private String profile;
     private int mannerPoint;
     private String photo;
+    private List<UserTag> tag;
 
 }

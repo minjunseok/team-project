@@ -38,17 +38,14 @@ public class UserController implements InitializingBean {
 
 
     @PostMapping("add")
-    public String add(User user, MultipartFile file) throws Exception{
-//        if (file.getSize() > 0) {
-//            String filename = UUID.upload(this.uploadDir, file);
-//            user.setPhoto(filename);
-//        }
+    public String add(User user) throws Exception{
+
         userService.add(user);
         return "redirect:list";
     }
 
     @GetMapping("list")
-    public void list(Model model) throws Exception {
+    public void list(int no,Model model) throws Exception {
         model.addAttribute("list", userService.list());
     }
 

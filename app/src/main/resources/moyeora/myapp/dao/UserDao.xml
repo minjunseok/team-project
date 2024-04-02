@@ -7,7 +7,7 @@
 
   <resultMap id="UserMap" type="User">
     <id column="user_no" property="no"/>
-    <result column="name" property="name"/>
+    <result column="name" property="name" />
     <result column="pwd" property="pwd"/>
     <result column="address" property="address"/>
     <result column="phone" property="phone"/>
@@ -21,20 +21,16 @@
     <result column="profile" property="profile"/>
     <result column="manner_point" property="manner_point"/>
     <result column="photo" property="photo"/>
-    <result column="tag_no" property="no"/>
-
 
   </resultMap>
 
   <insert id="add" parameterType="User">
-    insert into users(name,pwd,address,phone,email,nickname,birth,gender,profile,photo)
-    values(#{name},sha2(#{password},256),#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{profile},#{photo})
+    insert into users(name,pwd,address,phone,email,nickname,birth,gender,grade,login_type,created_at,profile,manner_point,photo)
+    values(#{name},sha2(#{password},256),#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{grade},#{login_type},
+    #{created_at}#{profile},#{manner_point},#{photo})
   </insert>
 
-  <insert id="add2" parameterType="member_tags">
-    insert into member_tags(user_no,tag_no)
-    values(#{no},#{no})
-</insert>
+
 
   <delete id="delete" parameterType="int">
     delete from users where user_no=#{value}
@@ -64,12 +60,14 @@
 
   <update id="update" parameterType="User">
     update users set
-      email=#{email},
-      nickname=#{nickname},
-      phone=#{phone},
-      address=#{address},
-      photo=#{photo}
-      profile=#{profile}
+    name=#{name},
+   address=#{address},
+   phone=#{phone},
+   email=#{email},
+   nickname=#{nickname},
+   birth=#{birth},
+   profile=#{profile},
+   photo=#{photo}
     <if test="password != ''">
       , password=sha2(#{password},256)
     </if>

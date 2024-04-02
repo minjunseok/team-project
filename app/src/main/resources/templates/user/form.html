@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<div data-th-replace="header :: header">머리말</div>
+
 
 <h1>회원 관리 시스템</h1>
 
@@ -72,9 +72,16 @@
   </div>
 
   <div>
-  <input type="checkbox" name="gender"> 남자
-  <input type="checkbox" name="gender"> 여자
+  <input type="checkbox" name="gender" value="0"> 남자
+  <input type="checkbox" name="gender" value="1"> 여자
     </div>
+
+  <div>
+    <input type="submit" value="가입하기">
+    <input type="reset" value="취소하기">
+  </div>
+
+
 </form>
 <div>
   <h2>관심사 선택</h2>
@@ -109,12 +116,9 @@
 
 </form>
 
-<div>
-  <input type="submit" value="가입하기">
-  <input type="reset" value="취소하기">
-</div>
 
-<div data-th-replace="footer :: footer">꼬리말</div>
+
+
 
 </body>
 </html>

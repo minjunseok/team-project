@@ -22,20 +22,51 @@
       <img height='80px' src='/img/default-photo.jpeg'></a><br>
     <input name='file' type='file'>
   </div>
-  <div>
-    번호: <input data-th-value='*{no}' name='no' readonly type='text' value="21">
-  </div>
+
   <div>
     이메일: <input data-th-value='*{email}' name='email' type='text' value="hong@test.com">
   </div>
-  <div>
-    이름: <input data-th-value='*{name}' name='name' type='text' value="홍길동">
-  </div>
+
   <div>
     암호: <input name='password' type='password'>
   </div>
+
   <div>
-    가입일: <input data-th-value="${#dates.format(member.createdDate,'yyyy-MM-dd')}" readonly
+    닉네임: <input data-th-value="*{nickname}" name='nickname' readonly type='text' value="21">
+  </div>
+
+  <div>
+    이름: <input data-th-value="*{name}" name='name' type='text' value="홍길동">
+  </div>
+
+  <div>
+    생년월일: <input data-th-value="*{birth}" name='birth' type='date'>
+  </div>
+
+  <div>
+    전화번호: <input data-th-value="*{phone}" name='phone' type='text' placeholder="전화번호" >
+  </div>
+
+  <div>
+    주소: <input data-th-value="*{name}" name='address' type='text'>
+  </div>
+  <button>주소 검색</button>
+
+  <div>
+    상세 주소: <input data-th-value="*{address}" name='address' type='text'>
+  </div>
+
+  <div>
+    사진: <input data-th-value="*{photo}" name='photo' type='file'>
+  </div>
+
+  <div>
+    자기소개: <textarea data-th-value="*{profile}" name='profile' >
+  </textarea>
+  </div>
+
+  <div>
+    가입일: <input data-th-value="${#dates.format(user.createdDate,'yyyy-MM-dd')}" readonly
                 type='text' value="2024-03-27">
   </div>
   <div>
