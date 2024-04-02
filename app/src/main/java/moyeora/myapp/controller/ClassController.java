@@ -31,7 +31,7 @@ public class ClassController {
       System.out.println("2");
       LocalDateTime currentTime = LocalDateTime.now();
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 날짜 형식 지정
-       date = currentTime.format(formatter);
+      date = currentTime.format(formatter);
       return classService.findByDate(date);
     }
   }

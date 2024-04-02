@@ -44,4 +44,6 @@ public class DefaultSchoolService implements SchoolService {
   public List<School> findHotSchool(int category) {
     return schoolDao.findHotSchool(category);
   }
+
+
 }
