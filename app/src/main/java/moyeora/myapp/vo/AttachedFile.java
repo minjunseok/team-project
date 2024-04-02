@@ -1,12 +1,13 @@
 package moyeora.myapp.vo;
 
 import java.util.Date;
-import lombok.Getter;
-import lombok.Setter;
 
+import lombok.*;
 
-@Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Data
 public class AttachedFile {
   private int no;
   private int postNo;
@@ -15,5 +16,7 @@ public class AttachedFile {
   private String size;
   private Date createdAt;
   private String type;
+  private String filePath;
 
 }
+

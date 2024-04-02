@@ -4,6 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="moyeora.myapp.dao.SchoolDao">
+
 <resultMap id="SchoolMap" type="School">
   <id column="school_no" property="no"/>
   <result column="name" property="name"/>
@@ -14,10 +15,31 @@
   <result column="created_at" property="createdAt"/>
 </resultMap>
 
+
+private int no;
+  private int schoolNo;
+  private  int categoryNo;
+  private  int postNo;
+  private User writer;
+  private String name;
+  private String content;
+  private int limitedMan;
+  private String photo;
+  private int openRange;
+  private Date createdAt;
+
+
+
+
   <insert id="add" parameterType="School">
     insert into schools(name,content,limited_man,photo,open_range,created_at)
     values(#{name},#{content},#{limitedMan},#{photo},#{openRange},#{createdAt})
   </insert>
+
+  <delete id="delete" parameterType="int">
+    delete from schools
+    where post_no=#{value}
+  </delete>
 
 
 </mapper>

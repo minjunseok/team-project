@@ -1,17 +1,17 @@
 package moyeora.myapp.vo;
 
 import java.util.Date;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
 
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class Post {
   private int no;
   private int schoolNo;
-  private int userNo;
-  private int categoryNo;
+  private User userNo;
+  private PostCategory categoryNo;
+  private List<AttachedFile> fileList;
   private String title;
   private String content;
   private Date createdAt;
