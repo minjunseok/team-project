@@ -12,12 +12,25 @@
   <result column="photo" property="photo"/>
   <result column="open_range" property="openRange"/>
   <result column="created_at" property="createdAt"/>
+  <result column="now_member_count" property="nowMemberCount"/>
 </resultMap>
 
   <insert id="add" parameterType="School">
     insert into schools(name,content,limited_man,photo,open_range,created_at)
     values(#{name},#{content},#{limitedMan},#{photo},#{openRange},#{createdAt})
   </insert>
+
+  <select id="findHotSchool" resultMap="SchoolMap" parameterType="int">
+    select
+    s.school_no,
+    s.name,
+    s.photo,
+    (select count(*) from school_users u where s.school_no = u.school_no) as now_member_count
+    from
+    schools as s
+    order by
+    now_member_count desc
+  </select>
 
 
 </mapper>

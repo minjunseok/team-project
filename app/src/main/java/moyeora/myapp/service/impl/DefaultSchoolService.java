@@ -1,4 +1,4 @@
-package moyeora.myapp.service.Impl;
+package moyeora.myapp.service.impl;
 
 
 import java.text.DateFormat;
@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.SchoolDao;
 import moyeora.myapp.dao.SchoolUserDao;
@@ -19,8 +18,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultSchoolService implements SchoolService {
 
+  private final SchoolDao schoolDao;
   private final SchoolUserDao schoolUserDao;
-
 
 
   public SchoolUser findByUserNo(int no) {
@@ -39,5 +38,10 @@ public class DefaultSchoolService implements SchoolService {
       c.add(Calendar.DAY_OF_YEAR,1);
     }
     return list;
+  }
+
+  @Override
+  public List<School> findHotSchool(int category) {
+    return schoolDao.findHotSchool(category);
   }
 }

@@ -13,7 +13,7 @@ public class School {
   private String content;
   private int limitedMan;
   private String photo;
-  private String openRange;
+  private int openRange;
   private Date createdAt;
 
 }
