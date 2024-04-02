@@ -29,13 +29,10 @@ public class MainPageController {
   private final ClassService classService;
   final static Log log = LogFactory.getLog(MainPageController.class);
   @GetMapping("/index")
-  public void index(Model model, String date) {
-    if(date==null) {
+  public void index(Model model ) {
       LocalDateTime currentTime = LocalDateTime.now();
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 날짜 형식 지정
-      date = currentTime.format(formatter);
-    }
-    System.out.println(date);
+      String date = currentTime.format(formatter);
 
     //유저의 밴드 가입 리스트를 가져오기
     model.addAttribute("schools",schoolService.findByUserNo(1).getSchools());
@@ -43,6 +40,8 @@ public class MainPageController {
     model.addAttribute("weeks", schoolService.findWeek());
     //해당 날짜의 약속 정보를 전부 가져오기 , 지역 정보 추가해야함
     model.addAttribute("classes", classService.findByDate(date));
+
+    model.addAttribute("hotSchools", schoolService.findHotSchool(1));
   }
 
 }

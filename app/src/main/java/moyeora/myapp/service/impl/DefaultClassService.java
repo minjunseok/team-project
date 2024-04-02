@@ -1,4 +1,4 @@
-package moyeora.myapp.service.Impl;
+package moyeora.myapp.service.impl;
 
 
 import java.util.List;
@@ -15,7 +15,6 @@ public class DefaultClassService implements ClassService {
   private final ClassDao classDao;
 
   public List<Class> findByDate(String date) {
-    System.out.println("서비스 객체 호출"+date);
     return classDao.findByDate(date);
   }
 }

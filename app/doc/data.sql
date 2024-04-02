@@ -131,6 +131,26 @@ insert into tags
 (name) values ('피크닉');
 insert into tags
 (name) values ('술');
+insert into tags
+(name) values ('스터디');
+insert into tags
+(name) values ('영화');
+insert into tags
+(name) values ('식물');
+insert into tags
+(name) values ('독서');
+insert into tags
+(name) values ('동물');
+insert into tags
+(name) values ('게임');
+insert into tags
+(name) values ('대화');
+insert into tags
+(name) values ('뷰티');
+
+
+
+
 
 insert into school_tags
 (tag_no, school_no) values (1,1);

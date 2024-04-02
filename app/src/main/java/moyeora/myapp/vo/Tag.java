@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class InterestTag {
+public class Tag {
   private int no;
   private String name;
 }

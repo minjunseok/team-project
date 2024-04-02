@@ -1,11 +1,10 @@
 
-package moyeora.myapp.service.Impl;
+package moyeora.myapp.service.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.SchoolDao;
 import moyeora.myapp.dao.SchoolUserDao;
@@ -26,9 +25,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DefaultSchoolService implements SchoolService {
 
+  private final SchoolDao schoolDao;
   private final SchoolUserDao schoolUserDao;
    private final SchoolDao schoolDao;
-
 
   public SchoolUser findByUserNo(int no) {
     return schoolUserDao.findByUserNo(no);
@@ -81,4 +80,11 @@ public class DefaultSchoolService implements SchoolService {
   public int countAll(int categoryNo) {
     return schoolDao.countAll(categoryNo);
   }
+
+  @Override
+  public List<School> findHotSchool(int category) {
+    return schoolDao.findHotSchool(category);
+  }
+
+
 }

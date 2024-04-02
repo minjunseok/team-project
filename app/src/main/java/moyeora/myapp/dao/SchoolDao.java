@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface SchoolDao {
   public SchoolUser findByUserNo(int no);
 
+  public List<School> findHotSchool(int category);
+
   void add(School school);
 
   int delete(int schoolNo);
