@@ -60,7 +60,6 @@
     user_no=#{value}
   </select>
 
-
   <update id="update" parameterType="User">
     update users set
     email=#{email},
@@ -87,6 +86,16 @@
     where
       email= #{email}
       and pwd=sha2(#{password},256)
+  </select>
+
+  <select id="findByNameAndPhone" resultType="string">
+    select
+      email
+    from
+      users
+    where
+      name= #{name}
+      and phone= #{phone}
   </select>
 
 </mapper>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>moyora</title>
+</head>
+<body>
+
+<div data-th-replace="header :: header">머리말</div>
+
+<h1>templates/auth/find-email.html</h1>
+
+<form data-th-action="@{getEmail}" method='post'>
+  <div>
+    <label>
+      이름:
+      <input name="name" type="text">
+    </label>
+  </div>
+  <div>
+    <label>
+      휴대전화('-'생략):
+      <input name="phone" type="text">
+    </label>
+  </div>
+  <button>submit</button>
+</form>
+
+<div data-th-replace="footer :: footer">꼬리말</div>
+
+</body>
+</html>

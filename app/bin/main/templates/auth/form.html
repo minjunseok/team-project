@@ -10,17 +10,26 @@
 
 <h1>templates/auth/form.html</h1>
 
-<form action="login" data-th-action="@{login}" method='post'>
+<form data-th-action="@{login}" method="post">
   <div>
-    이메일: <input data-th-value='${email}' name='email' type='text'
-                value="hong@test.com">
+    <label>
+      이메일: <input data-th-value="${email}" name="email" type="text" value="hong@test.com">
+    </label>
   </div>
   <div>
-    암호: <input name='password' type='password'>
+    <label>
+      암호: <input name="password" type="password">
+    </label>
   </div>
   <button>로그인</button>
-  <input name='saveEmail' type='checkbox'> 이메일 저장
+  <label>
+    <input name="saveEmail" type="checkbox">이메일 저장
+  </label>
 </form>
+
+<a data-th-href="@{findEmail}">이메일 찾기</a>
+<a data-th-href="@{find-pwd}">비밀번호 찾기</a>
+<a data-th-href="@{/user/agreement}">회원가입</a>
 
 <div data-th-replace="footer :: footer">꼬리말</div>
 
