@@ -52,7 +52,6 @@ public class AuthController {
     if (user != null) {
       session.setAttribute("loginUser", user);
     }
-
     return "/templates/auth/login";
   }
 
@@ -60,5 +59,33 @@ public class AuthController {
   public String logout(HttpSession session) throws Exception {
     session.invalidate();
     return "redirect:/index.html";
+  }
+
+  @GetMapping("findEmail")
+  public String findEmail() throws Exception {
+      return "/templates/auth/findEmail";
+  }
+
+  @PostMapping("getEmail")
+  public String findEmail(String name, String phone, HttpSession session) throws Exception {
+    session.setAttribute("email", userService.getEmail(name,phone));
+    if (session.getAttribute("email") != null) {
+      this.send(session);
+    }
+    return "/templates/auth/authentication";
+  }
+
+  @PostMapping("checkAuthenticationNumber")
+  public String authentication(int authenticationNumber, HttpSession session) throws Exception {
+    if (session.getAttribute("authenticationNumber").equals(authenticationNumber)) {
+      session.setAttribute("ok", true);
+    } else {
+      session.setAttribute("no", true);
+    }
+    return "/templates/auth/authentication";
+  }
+
+  private void send(HttpSession session) {
+    session.setAttribute("authenticationNumber", 111111);
   }
 }

@@ -7,17 +7,15 @@ public interface UserService {
 
   void add(User user);
 
-//  List<User> list(int pageNo, int pageSize);
-
   List<User> list();
 
   User get(int no);
 
   User get(String email, String password);
 
-  int update(User user);
+  String getEmail(String name, String phone);
 
-  int delete(int no);
+  void update(User user);
 
-//  int countAll();
+  void delete(int no);
 }

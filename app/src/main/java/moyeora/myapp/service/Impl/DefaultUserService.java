@@ -24,11 +24,6 @@ public class DefaultUserService implements UserService {
     return userDao.findAll();
   }
 
-  //  @Override
-//  public List<User> list(int pageNo, int pageSize) {
-//    return userDao.findAll(pageSize * (pageNo - 1), pageSize);
-//  }
-
   @Override
   public User get(int no) {
     return userDao.findBy(no);
@@ -40,17 +35,18 @@ public class DefaultUserService implements UserService {
   }
 
   @Override
-  public int update(User user) {
-    return userDao.update(user);
+  public String getEmail(String name, String phone) {
+    return userDao.findByNameAndPhone(name,phone);
   }
 
   @Override
-  public int delete(int no) {
-    return userDao.delete(no);
+  public void update(User user) {
+    userDao.update(user);
   }
 
-//  @Override
-//  public int countAll() {
-//    return userDao.countAll();
-//  }
+  @Override
+  public void delete(int no) {
+    userDao.delete(no);
+  }
+
 }

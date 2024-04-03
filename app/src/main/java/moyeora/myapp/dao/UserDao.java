@@ -14,10 +14,6 @@ public interface UserDao {
 
   public List<User> findAll();
 
-//  public List<User> findAll(
-//      @Param("offset") int offset,
-//      @Param("rowCount") int rowCount);
-
   public User findBy(int no);
 
   public int update(User member);
@@ -26,5 +22,7 @@ public interface UserDao {
       @Param("email") String email,
       @Param("password") String password);
 
-//  int countAll();
+  public String findByNameAndPhone(
+      @Param("name")  String name,
+      @Param("phone") String phone);
 }
