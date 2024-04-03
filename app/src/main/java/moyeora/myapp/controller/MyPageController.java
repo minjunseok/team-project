@@ -4,6 +4,7 @@ package moyeora.myapp.controller;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.MyPageService;
+import moyeora.myapp.service.SchoolService;
 import moyeora.myapp.vo.Post;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequiredArgsConstructor
 @RequestMapping("/mypage")
 public class MyPageController {
-
+  private final SchoolService schoolService;
   private static MyPageService myPageService;
   @GetMapping("hotpost")
   @ResponseBody
@@ -35,6 +36,7 @@ public class MyPageController {
 
   @GetMapping("newpost")
   public void newPost() {
+    schoolService.findByUserNo(1).getSchools();
 
 
   }
