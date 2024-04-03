@@ -8,7 +8,7 @@ public class User implements Serializable {
 
   private static final long serialVersionUID = 100L;
 
-  private int userNo;
+  private int no;
   private String name;
   private String pwd;
   private String address;

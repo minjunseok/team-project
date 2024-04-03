@@ -14,21 +14,14 @@
     <result column="like_count" property="likeCount"/>
     <result column="comment_count" property="commentCount"/>
 
-    <association property="Writer" javaType="User">
+    <association property="userNo" javaType="User">
       <id column="user_no" property="no"/>
       <result column="name" property="name"/>
     </association>
 
-    <association property="School" javaType="School">
-      <id column="school_no" property="no"/>
-      <result column="school_name" property="name"/>
-      <result column="school_photo" property="photo"/>
-    </association>
-
-    <collection property="FileList" ofType="AttachedFile">
+    <collection property="fileList" ofType="AttachedFile">
       <id column="file_no" property="no"/>
-      <result column="path" property="path"/>
-      <result column="name" property="name"/>
+      <result column="file_path" property="filePath"/>
       <result column="post_no" property="postNo"/>
     </collection>
   </resultMap>
@@ -39,7 +32,7 @@
   <select id="findByFollow">
 
   </select>
-  <select id="findByUser" resultMap="PostMap" parameterType="int">
+  <select id="findByUser" resultMap="PostMap">
     SELECT
       u.user_no,
       u.name AS user_name,
@@ -50,15 +43,11 @@
       (select count(*) from comments as c where c.post_no=p.post_no) as comment_count,
       s.name AS school_name,
       s.photo AS school_photo,
-      p.content AS post_content,
-      f.path,
-      f.name,
-      f.post_no
+      p.content AS post_content
     FROM
       posts p
     INNER JOIN schools s ON s.school_no = p.school_no
     INNER JOIN users u ON p.user_no = u.user_no
-    LEFT OUTER JOIN files f ON p.post_no = f.post_no
     where p.user_no=#{no}
     order by p.created_at desc;
   </select>

@@ -42,6 +42,7 @@ public class DefaultSchoolService implements SchoolService {
 
   @Override
   public List<School> findHotSchool(int category) {
+
     return schoolDao.findHotSchool(category);
   }
 

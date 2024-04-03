@@ -2,12 +2,12 @@ package moyeora.myapp.vo;
 
 import java.util.Date;
 import java.util.List;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 
-@Getter
-@Setter
+@Data
 public class Post {
   private int no;
   private int schoolNo;
@@ -17,4 +17,9 @@ public class Post {
   private String content;
   private Date createdAt;
   private List<AttachedFile> fileList;
+  private int likeCount;
+  private int commentCount;
+  private User Writer;
+  private List<AttachedFile> FileList;
+  private School School;
 }
