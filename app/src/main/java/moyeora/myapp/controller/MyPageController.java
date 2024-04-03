@@ -31,11 +31,11 @@ public class MyPageController {
   public ResponseEntity<List<Post>> fpost(Model model) {
 
     return null;
-
   }
 
   @GetMapping("newpost")
   public void newPost() {
+
 
   }
 }

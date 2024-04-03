@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="moyeora.myapp.dao.PostDao">
+  <resultMap id="PostMap" type="Post">
+    <id column="post_no" property="no"/>
+    <result column="school_no" property="schoolNo"/>
+    <result column="user_no" property="userNo"/>
+    <result column="category_no" property="categoryNo"/>
+    <result column="title" property="title"/>
+    <result column="content" property="content"/>
+    <result column="created_at" property="createdAt"/>
+
+    <association property="userNo" javaType="User">
+      <id column="user_no" property="no"/>
+      <result column="name" property="name"/>
+    </association>
+
+    <collection property="fileList" ofType="AttachedFile">
+      <id column="file_no" property="no"/>
+      <result column="file_path" property="filePath"/>
+      <result column="post_no" property="postNo"/>
+    </collection>
+  </resultMap>
+
+  <select id="findByLike">
+
+  </select>
+  <select id="findByFollow">
+
+  </select>
+  <select id="findByUser" resultMap="PostMap">
+    select
+
+    from
+
+    where
+      ca
+
+  </select>
+</mapper>
