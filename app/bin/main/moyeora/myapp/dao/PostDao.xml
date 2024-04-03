@@ -32,7 +32,27 @@
     </collection>
   </resultMap>
 
-  <select id="findByLike">
+  <select id="findByLike" resultMap="PostMap" parameterType="int">
+    SELECT
+      u.user_no,
+      u.name AS user_name,
+      p.post_no,
+      s.school_no,
+      p.created_at,
+      (select count(*) from likes as l where l.post_no=p.post_no) as like_count,
+      (select count(*) from comments as c where c.post_no=p.post_no) as comment_count,
+      s.name AS school_name,
+      s.photo AS school_photo,
+      p.content AS post_content,
+      f.path,
+      f.name,
+      f.post_no
+    FROM
+      posts p
+    INNER JOIN schools s ON s.school_no = p.school_no
+    INNER JOIN users u ON p.user_no = u.user_no
+    LEFT OUTER JOIN files f ON p.post_no = f.post_no
+    order by like_count desc;
 
   </select>
   <select id="findByFollow">
