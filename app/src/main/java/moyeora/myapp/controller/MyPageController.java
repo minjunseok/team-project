@@ -4,6 +4,7 @@ package moyeora.myapp.controller;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.MyPageService;
+import moyeora.myapp.service.SchoolService;
 import moyeora.myapp.vo.Post;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MyPageController {
 
   private static MyPageService myPageService;
+  private static SchoolService schoolService;
+
   final static Log log = LogFactory.getLog(MyPageController.class);
   @GetMapping("hotpost")
   @ResponseBody
@@ -34,11 +37,11 @@ public class MyPageController {
   public ResponseEntity<List<Post>> fpost(Model model) {
     model.addAttribute("newPosts",myPageService.findNewPost(1));
     return null;
-
   }
 
   @GetMapping("newpost")
-  public void newPost() {
-
+  public void newPost(Model model) {
+    model.addAttribute("newPosts",myPageService.findNewPost(1));
+    model.addAttribute("schools",schoolService.findByUserNo(1).getSchools());
   }
 }

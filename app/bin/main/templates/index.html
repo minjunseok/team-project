@@ -35,8 +35,8 @@
   const dataList = (week) => {
     axios.get("class/list?date="+week)
     .then(e => {
+       $("#byDate").empty();
       for(let data of e.data) {
-        $("#byDate").empty();
         $("#byDate").append("<li>" + data.name +"</li>")
         $("#byDate").append("<li>" + data.photo +"</li>")
         $("#byDate").append("<li>" + data.nowMemberCount + "/" + data.member + "</li>")

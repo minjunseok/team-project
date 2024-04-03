@@ -14,7 +14,7 @@ public class DefaultMyPageService implements MyPageService {
   private final PostDao postDao;
 
   @Override
-  public List<Post> findNewPost(int category) {
-    return postDao.findNewPost(category);
+  public List<Post> findNewPost(int no) {
+    return postDao.findByUser(no);
   }
 }
