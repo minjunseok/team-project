@@ -10,13 +10,8 @@ public interface UserDao {
 
      public void add(User user);
 
-     public int delete(int no);
 
-     public List<User> findAll();
 
-     public User findBy(int no);
-
-     public int update(User user);
 
 
 }

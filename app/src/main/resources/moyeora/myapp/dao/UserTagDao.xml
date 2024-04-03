@@ -5,8 +5,20 @@
 
   <mapper namespace="moyeora.myapp.dao.UserTagDao">
     <resultMap id="UserTagMap" type="UserTag">
-        <id column="user_no" property="no"/>
+        <id column="user_no" property="userNo"/>
         <result column="tag_no" property="tagNo"/>
 
+<association property="tag" javaType="Tag">
+<id column="no" property="tag"/>
+<result column="name" property="name"/>
+</association>
+
 </resultMap>
+
+<insert id="add">
+    insert into member_tags(user_no,tag_no)
+    values (#{userNo},#{tagNo})
+</insert>
+
+
 </mapper>

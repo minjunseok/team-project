@@ -1,11 +1,12 @@
 package moyeora.myapp.vo;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
-
 @Data
 public class User implements Serializable {
 
@@ -18,7 +19,7 @@ public class User implements Serializable {
     private String phone;
     private String email;
     private String nickname;
-    private String brith;
+    private Date birth;
     private int gender;
     private int grade;
     private int loginType;
@@ -26,6 +27,7 @@ public class User implements Serializable {
     private String profile;
     private int mannerPoint;
     private String photo;
-    private List<UserTag> tag;
+    private List<Integer> tagNums;
+    private List<UserTag> tags;
 
 }

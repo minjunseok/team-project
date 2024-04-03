@@ -2,8 +2,10 @@ package moyeora.myapp.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.UserDao;
+//import moyeora.myapp.dao.UserTagDao;
 import moyeora.myapp.dao.UserTagDao;
 import moyeora.myapp.service.UserService;
+import moyeora.myapp.vo.Tag;
 import moyeora.myapp.vo.User;
 import moyeora.myapp.vo.UserTag;
 import org.apache.commons.logging.Log;
@@ -23,37 +25,12 @@ public class DefaultUserService implements UserService {
     @Override
     public void add(User user) {
         userDao.add(user);
-        userTagDao.addAll(user.getTag());
+
+        if(user.getTagNums() != null && user.getTagNums().size() >=3) {
+            for(int tagNum : user.getTagNums()) {
+                userTagDao.add(tagNum, user.getNo());
+            }
+        }
     }
 
-    @Override
-    public List<User> list() {
-        return userDao.findAll();
-    }
-
-    @Override
-    public User get(int no) {
-        return userDao.findBy(no);
-    }
-
-    @Override
-    public int update(User user) {
-        return userDao.update(user);
-    }
-
-    @Override
-    public int delete(int no) {
-        return userDao.delete(no);
-    }
-
-
-//    @Override
-//    public List<UserTag> getUserTag(int userNo) {
-//        return null;
-//    }
-//
-//    @Override
-//    public int deleteUserTag(int userNo) {
-//        return 0;
-//    }
 }
