@@ -1,9 +1,9 @@
-package moyeora.myapp.service;
+package moyeora.myapp.dao;
 
 import java.util.List;
 import moyeora.myapp.vo.Post;
 
+public interface PostDao {
 
-public interface MyPageService {
   public List<Post> findNewPost(int category);
 }
