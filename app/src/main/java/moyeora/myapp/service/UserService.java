@@ -9,15 +9,5 @@ public interface UserService {
 
     void add(User user);
 
-    List<User> list();
 
-    User get(int no);
-
-    int update(User user);
-
-    int delete(int no);
-
-//   List<UserTag> getUserTag(int userNo);
-//
-//   int deleteUserTag(int userNo);
 }

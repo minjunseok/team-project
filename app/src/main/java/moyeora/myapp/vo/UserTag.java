@@ -10,4 +10,5 @@ public class UserTag {
 
     private int userNo;
     private int tagNo;
+    private Tag tag;
 }
