@@ -8,7 +8,6 @@
     <result column="school_no" property="schoolNo"/>
     <result column="user_no" property="userNo"/>
     <result column="category_no" property="categoryNo"/>
-    <result column="title" property="title"/>
     <result column="content" property="content"/>
     <result column="created_at" property="createdAt"/>
     <result column="like_count" property="likeCount"/>

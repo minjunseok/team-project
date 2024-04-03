@@ -20,13 +20,32 @@
     <div class="col-md-3">
       <button>소모임 개설</button><br>
       <div>내 소모임<a>3</a></div>
-      <div></div>
+      <div data-th-each="school : ${schools}" data-th-object="${school}">
+        <input type="hidden" value="*{no}">
+        <div data-th-text="*{name}">스쿨이름</div>
+        <div data-th-text="*{photo}">스쿨사진</div>
+      </div>
     </div>
     <div class="col-md-6" style="text-align:center;">
-      게시글 공간입니다
+      <div data-th-each="newPost : ${newPosts}" data-th-object="${newPost}">
+        <input type="hidden" data-th-value="*{School.no}">
+        <span data-th-text="*{School.name}"></span>
+        <span data-th-text="*{School.photo}"></span>
+        <span data-th-text="*{content}"></span>
+        <span data-th-text="*{Writer.name}"></span>
+        <span data-th-text="*{likeCount}"></span>
+        <span data-th-text="*{commentCount}"></span>
+        <span data-th-text="${#dates.format(newPost.createdAt, 'yyyy-MM-dd')}"></span>
+        <span data-th-each="file : *{FileList}" data-th-object="${file}">
+          <span data-th-text="*{path}"></span>
+          <span data-th-text="*{name}"></span>
+          <span data-th-text="*{postNo}"></span>
+        </span>
+        <hr>
+      </div>
     </div>
     <div class="col-md-3" style="text-align:center;">
-      친구추천 공간입니다.
+
     </div>
   </div>
 </div>

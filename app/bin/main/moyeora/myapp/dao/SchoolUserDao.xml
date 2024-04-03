@@ -11,6 +11,7 @@
     <result column="created_at" property="createdAt"/>
 
     <collection property="schools" ofType="School">
+      <result column="school_no" property="no"/>
       <result column="name" property="name"/>
       <result column="photo" property="photo"/>
     </collection>
