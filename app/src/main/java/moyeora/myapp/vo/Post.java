@@ -13,10 +13,8 @@ public class Post {
   private int schoolNo;
   private int userNo;
   private int categoryNo;
-  private String title;
   private String content;
   private Date createdAt;
-  private List<AttachedFile> fileList;
   private int likeCount;
   private int commentCount;
   private User Writer;

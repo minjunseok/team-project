@@ -23,6 +23,14 @@ public class MyPageController {
   private final MyPageService myPageService;
 
   final static Log log = LogFactory.getLog(MyPageController.class);
+
+
+  @GetMapping("newpost")
+  @ResponseBody
+  public ResponseEntity<List<Post>> newPost() {
+    return ResponseEntity.status(201).body(myPageService.findNewPost(1));
+  }
+
   @GetMapping("hotpost")
   @ResponseBody
   public ResponseEntity<List<Post>> hotPost() {
@@ -30,17 +38,19 @@ public class MyPageController {
     //태그가 같은 사람들, 팔로워가 많은 사람들 순서대로 출력
     return null;
   }
-
   @GetMapping("fpost")
   @ResponseBody()
-  public ResponseEntity<List<Post>> fpost(Model model) {
+  public ResponseEntity<List<Post>> followingPost(Model model) {
     model.addAttribute("newPosts",myPageService.findNewPost(1));
     return null;
   }
 
-  @GetMapping("newpost")
-  public void newPost(Model model) {
+  @GetMapping("mypost")
+  public void mypost(Model model) {
     model.addAttribute("newPosts",myPageService.findNewPost(1));
     model.addAttribute("schools",schoolService.findByUserNo(1).getSchools());
   }
+
+
+
 }
