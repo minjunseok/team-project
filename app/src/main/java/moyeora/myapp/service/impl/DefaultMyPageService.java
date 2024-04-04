@@ -21,6 +21,11 @@ public class DefaultMyPageService implements MyPageService {
 
   @Override
   public List<Post> findHotPost(int no) {
-    return postDao.findByUser(no);
+    return postDao.findByLike();
+  }
+
+  @Override
+  public List<Post> findFollowPost(int no) {
+    return postDao.findByFollow(no);
   }
 }

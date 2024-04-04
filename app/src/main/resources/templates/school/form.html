@@ -3,11 +3,11 @@
 <head>
   <meta charset='UTF-8'>
   <title>비트캠프 데브옵스 5기</title>
-  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
+
   <form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
     <div>
       스쿨 이름 : <input name='email' type='text'>
@@ -16,11 +16,25 @@
       사진: <input name='file' type='file'>
     </div>
     <div>
-      <input type="checkbox" name="tags" value="${tag.name}">
+
     </div>
-      <ul data-th-each="tag : ${tags}" data-th-object="${tag}">
-        <li data-th-text="*{name}">tag</li>
-      </ul>
+    <div>
+      <h2>관심사 선택</h2>
+    </div>
+
+    <tbody>
+    <tr data-th-each="tag : ${tags}">
+      <td>
+        <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="${tag.no}">
+      </td>
+      <td>
+        <span data-th-text="${tag.name}" >1</span>
+      </td>
+      <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+        <br>
+      </data-th-block>
+    </tr>
+    </tbody>
 
     <div>
       <button>등록</button>

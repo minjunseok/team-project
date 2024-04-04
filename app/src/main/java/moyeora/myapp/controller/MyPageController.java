@@ -23,27 +23,33 @@ public class MyPageController {
   private final MyPageService myPageService;
 
   final static Log log = LogFactory.getLog(MyPageController.class);
+
+
+  @GetMapping("newpost")
+  @ResponseBody
+  public ResponseEntity<List<Post>> newPost() {
+    return ResponseEntity.status(200).body(myPageService.findNewPost(1));
+  }
+
   @GetMapping("hotpost")
   @ResponseBody
   public ResponseEntity<List<Post>> hotPost() {
     return ResponseEntity.ok(myPageService.findHotPost(1));
   }
 
+
   @GetMapping("followingpost")
   @ResponseBody()
   public ResponseEntity<List<Post>> followingPost( ) {
-    return null;
+    return ResponseEntity.ok(myPageService.findFollowPost(1));
   }
-
-  @GetMapping("newpost")
-  @ResponseBody()
-  public ResponseEntity<List<Post>> newPost( ) {
-    return ResponseEntity.ok(myPageService.findNewPost(1));
-}
 
   @GetMapping("mypost")
   public void myPost(Model model) {
     model.addAttribute("newPosts",myPageService.findNewPost(1));
     model.addAttribute("schools",schoolService.findByUserNo(1).getSchools());
   }
+
+
+
 }

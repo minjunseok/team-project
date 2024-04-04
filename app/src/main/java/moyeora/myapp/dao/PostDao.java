@@ -13,6 +13,8 @@ public interface PostDao {
 
   public List<Post> findByUser(int no);
 
+  public List<Post> findByFollow(int no);
+
 
 
 }
