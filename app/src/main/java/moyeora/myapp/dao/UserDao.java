@@ -10,7 +10,7 @@ public interface UserDao {
 
      public void add(User user);
 
-
+     public User findBy(int no);
 
 
 

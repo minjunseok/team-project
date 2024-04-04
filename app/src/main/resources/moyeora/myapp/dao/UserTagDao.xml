@@ -16,7 +16,7 @@
 </resultMap>
 
 <insert id="add">
-    insert into member_tags(user_no,tag_no)
+    insert into user_tags(user_no,tag_no)
     values (#{userNo},#{tagNo})
 </insert>
 

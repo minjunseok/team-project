@@ -29,5 +29,6 @@ public class User implements Serializable {
     private String photo;
     private List<Integer> tagNums;
     private List<UserTag> tags;
+    private String addressDetail;
 
 }

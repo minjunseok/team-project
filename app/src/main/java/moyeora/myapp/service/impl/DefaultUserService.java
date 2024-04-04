@@ -33,4 +33,8 @@ public class DefaultUserService implements UserService {
         }
     }
 
+    @Override
+    public User get(int no) {
+        return userDao.findBy(no);
+    }
 }
