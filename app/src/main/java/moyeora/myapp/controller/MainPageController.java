@@ -13,8 +13,10 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.ClassService;
 import moyeora.myapp.service.SchoolService;
+import moyeora.myapp.vo.Class;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,5 +45,8 @@ public class MainPageController {
 
     model.addAttribute("hotSchools", schoolService.findHotSchool(1));
   }
+
+
+
 
 }
