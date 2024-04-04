@@ -28,25 +28,24 @@ public class MyPageController {
   @GetMapping("newpost")
   @ResponseBody
   public ResponseEntity<List<Post>> newPost() {
-    return ResponseEntity.status(201).body(myPageService.findNewPost(1));
+    return ResponseEntity.status(200).body(myPageService.findNewPost(1));
   }
 
   @GetMapping("hotpost")
   @ResponseBody
   public ResponseEntity<List<Post>> hotPost() {
-    //인기글 목록
-    //태그가 같은 사람들, 팔로워가 많은 사람들 순서대로 출력
-    return null;
+    return ResponseEntity.ok(myPageService.findHotPost(1));
   }
-  @GetMapping("fpost")
+
+
+  @GetMapping("followingpost")
   @ResponseBody()
-  public ResponseEntity<List<Post>> followingPost(Model model) {
-    model.addAttribute("newPosts",myPageService.findNewPost(1));
-    return null;
+  public ResponseEntity<List<Post>> followingPost( ) {
+    return ResponseEntity.ok(myPageService.findFollowPost(1));
   }
 
   @GetMapping("mypost")
-  public void mypost(Model model) {
+  public void myPost(Model model) {
     model.addAttribute("newPosts",myPageService.findNewPost(1));
     model.addAttribute("schools",schoolService.findByUserNo(1).getSchools());
   }

@@ -11,9 +11,9 @@
 </head>
 <body>
 <div>
-  <a href="">새글 피드</a>
-  <a href="">인기 글</a>
-  <a href="">팔로잉 피드</a>
+  <a onclick="newPost()" style="cursor: pointer;">새글 피드</a>
+  <a onclick="hotPost()" style="cursor: pointer;">인기 글</a>
+  <a onclick="followPost()" style="cursor: pointer;">팔로잉 피드</a>
 </div>
 <div class="container">
   <div class="row">
@@ -26,7 +26,7 @@
         <div data-th-text="*{photo}">스쿨사진</div>
       </div>
     </div>
-    <div class="col-md-6" style="text-align:center;">
+    <div class="col-md-6" style="text-align:center;" id="myposts">
       <div data-th-each="newPost : ${newPosts}" data-th-object="${newPost}">
         <input type="hidden" data-th-value="*{School.no}">
         <span data-th-text="*{School.name}"></span>
@@ -50,9 +50,50 @@
   </div>
 </div>
 <div>
-
 </div>
+<script>
+  const hotPost = () => {
+  axios.get("/mypage/hotpost")
+  .then((result)=> {
+    $("#myposts").empty();
+    for(let post of result.data) {
+      $("#myposts").append("<input type='hidden' value="+post.no+">");
+      $("#myposts").append('<div>'+post.school.name+'</div>')
+      $("#myposts").append('<div>'+post.school.photo+'</div>')
+      $("#myposts").append('<div>'+post.createdAt+'</div>')
+      $("#myposts").append('<hr>')
+    }
+  })
+}
 
+  const newPost = () => {
+  axios.get("/mypage/newpost")
+  .then((result)=> {
+    $("#myposts").empty();
+    for(let post of result.data) {
+      $("#myposts").append("<input type='hidden' value="+post.no+">");
+      $("#myposts").append('<div>'+post.school.name+'</div>')
+      $("#myposts").append('<div>'+post.school.photo+'</div>')
+      $("#myposts").append('<div>'+post.createdAt+'</div>')
+      $("#myposts").append('<hr>')
+    }
+  })
+}
 
+  const followPost = () => {
+  axios.get("/mypage/followingpost")
+  .then((result)=> {
+    $("#myposts").empty();
+    for(let post of result.data) {
+      $("#myposts").append("<input type='hidden' value="+post.no+">");
+      $("#myposts").append('<div>'+post.school.name+'</div>')
+      $("#myposts").append('<div>'+post.photo+'</div>')
+      $("#myposts").append('<div>'+post.createdAt+'</div>')
+      $("#myposts").append('<hr>')
+    }
+  })
+  }
+
+</script>
 </body>
 </html>

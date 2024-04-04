@@ -18,4 +18,14 @@ public class DefaultMyPageService implements MyPageService {
     System.out.println("@@@@@@@@@@@@@@@@@@@"+postDao.findByUser(no));
     return postDao.findByUser(no);
   }
+
+  @Override
+  public List<Post> findHotPost(int no) {
+    return postDao.findByLike();
+  }
+
+  @Override
+  public List<Post> findFollowPost(int no) {
+    return postDao.findByFollow(no);
+  }
 }
