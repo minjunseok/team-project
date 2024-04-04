@@ -6,10 +6,10 @@ import moyeora.myapp.service.PostService;
 import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Post;
 
+import java.sql.Date;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.vo.PostCategory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +33,8 @@ public class DefaultPostService implements PostService {
   }
 
   @Override
-  public List<Post> list(PostCategory categoryNo, int pageNo, int pageSize) {
-    return postDao.findAll(categoryNo.getNo(), pageSize * (pageNo - 1), pageSize);
+  public List<Post> findAll(int categoryNo) {
+    return postDao.findAll(categoryNo);
   }
 
   @Override
@@ -78,7 +78,12 @@ public class DefaultPostService implements PostService {
   }
 
   @Override
-  public int countAll(PostCategory categoryNo) {
+  public int countAll(int categoryNo) {
     return postDao.countAll(categoryNo);
+  }
+
+  @Override
+  public String findByPost(String content) {
+    return postDao.findByPost(content);
   }
 }

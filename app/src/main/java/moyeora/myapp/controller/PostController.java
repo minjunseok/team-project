@@ -1,11 +1,10 @@
-package moyeora.myapp.controller.sm;
+package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.PostService;
 import moyeora.myapp.service.StorageService;
 import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Post;
-import moyeora.myapp.vo.PostCategory;
 import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,24 +27,24 @@ import java.util.List;
 @RequestMapping("/post")
 public class PostController {
 
-  private static final Log log = LogFactory.getLog(PostController.class);
+//  private static final Log log = LogFactory.getLog(PostController.class);
   private final PostService postService;
   private final StorageService storageService;
   private String uploadDir = "post/";
 
-  @Value("${ncp.ss.bucketname}")
+  @Value("${ncp.storage.bucket}")
   private String bucketName;
 
 
   @GetMapping("form")
-  public void form(PostCategory categoryNo, Model model) throws Exception {
-    model.addAttribute("categoryNo", categoryNo);
+  public void form(int category, Model model) throws Exception {
+   model.addAttribute("postNo", category == 1 ? "일반" : "공지");
+    model.addAttribute("category", category);
   }
 
   @PostMapping("add")
   public String add(
           Post post,
-          PostCategory category,
           MultipartFile[] attachedFiles,
           HttpSession session) throws Exception {
 
@@ -55,7 +55,7 @@ public class PostController {
     post.setUserNo(loginUser);
 
     ArrayList<AttachedFile> files = new ArrayList<>();
-    if (post.getCategoryNo().getNo() == 1) {
+    if (post.getCategoryNo() == 1) {
       for (MultipartFile file : attachedFiles) {
         if (file.getSize() == 0) {
           continue;
@@ -70,48 +70,23 @@ public class PostController {
 
     postService.add(post);
 
-    return "redirect:list";
+    return "redirect:list?category" + post.getCategoryNo();
   }
 
   @GetMapping("list")
-  public void list(
-          PostCategory categoryNo,
-          @RequestParam(defaultValue = "1") int pageNo,
-          @RequestParam(defaultValue = "3") int pageSize,
+  public String list(
+          @RequestParam(defaultValue = "1") int categoryNo,
           Model model) throws Exception {
-
-    if (pageSize < 3 || pageSize > 20) {
-      pageSize = 3;
-    }
-
-    if (pageNo < 1) {
-      pageNo = 1;
-    }
-
-    int numOfRecord = postService.countAll(categoryNo);
-    int numOfPage = numOfRecord / pageSize + ((numOfRecord % pageSize) > 0 ? 1 : 0);
-
-    if (pageNo > numOfPage) {
-      pageNo = numOfPage;
-    }
-
-    model.addAttribute("categoryNo", categoryNo);
-    model.addAttribute("list", postService.list(categoryNo, pageNo, pageSize));
-    model.addAttribute("pageNo", pageNo);
-    model.addAttribute("pageSize", pageSize);
-    model.addAttribute("numOfPage", numOfPage);
+    model.addAttribute("post", postService.findAll(categoryNo));
+    model.addAttribute("postNo",  categoryNo == 1 ? "일반" : "공지");
+    model.addAttribute("categoryNo",  categoryNo);
+    return "post/view";
   }
 
-  @GetMapping("view")
-  public void view(int categoryNotice,int categoryRegular, int no, Model model) throws Exception {
-    Post post = postService.get(no);
-    if (post == null) {
-      throw new Exception("번호가 유효하지 않습니다.");
-    }
-
-    model.addAttribute("categoryNotice", categoryNotice);
-    model.addAttribute("categoryRegular", categoryRegular);
-    model.addAttribute("post", post);
+  @PostMapping("search")
+  public String findByPost(String content, Model model) {
+    model.addAttribute("search", postService.findByPost(content));
+    return "post/view";
   }
 
   @PostMapping("update")
@@ -134,7 +109,7 @@ public class PostController {
     }
 
     ArrayList<AttachedFile> files = new ArrayList<>();
-    if (post.getCategoryNo().getNo() == 1) {
+    if (post.getCategoryNo() == 1) {
       for (MultipartFile file : attachedFiles) {
         if (file.getSize() == 0) {
           continue;
@@ -149,12 +124,12 @@ public class PostController {
 
     postService.update(post);
 
-    return "redirect:list";
+    return "redirect:list?categoryNo" + post.getCategoryNo();
 
   }
 
   @GetMapping("delete")
-  public String delete(int categoryNotice, int categoryRegular, int no, HttpSession session) throws Exception {
+  public String delete(int category, int no, HttpSession session) throws Exception {
 
     User loginUser = (User) session.getAttribute("loginUser");
     if (loginUser == null) {
@@ -177,11 +152,11 @@ public class PostController {
       storageService.delete(this.bucketName, this.uploadDir, file.getFilePath());
     }
 
-    return "redirect:list";
+    return "redirect:list?category" + category;
   }
 
   @GetMapping("file/delete")
-  public String fileDelete(int categoryNotice, int categoryRegular, int no, HttpSession session) throws Exception {
+  public String fileDelete(int category, int no, HttpSession session) throws Exception {
 
     User loginUser = (User) session.getAttribute("loginUser");
     if (loginUser == null) {
@@ -202,6 +177,6 @@ public class PostController {
 
     storageService.delete(this.bucketName, this.uploadDir, file.getFilePath());
 
-    return "redirect:../view?category=" + categoryNotice + categoryRegular + "&no=" + file.getPostNo();
+    return "redirect:../view?category=" + category + "&no=" + file.getPostNo();
   }
 }

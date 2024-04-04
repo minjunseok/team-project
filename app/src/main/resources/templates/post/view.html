@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>2조 팀플</title>
+</head>
+<body>
+
+<div data-th-replace="header :: header">머리말</div>
+
+<h1>test</h1>
+<table border='1'>
+
+       <thead>
+    <tr>
+        <th>content</th>
+        <th>createAt</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr data-th-each="post : ${post}" data-th-object="${post}">
+        <td data-th-text="*{content}">101</td>
+        <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">2024-03-27</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
