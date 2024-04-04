@@ -1,4 +1,4 @@
-package moyeora.myapp.controller.sm;
+package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.StorageService;
@@ -28,7 +28,7 @@ public class UserController implements InitializingBean {
 
   private  String uploadDir;
 
-  @Value("${ncp.ss.bucketName}")
+  @Value("${ncp.storage.bucket}")
   private String bucketName;
 
   @Override

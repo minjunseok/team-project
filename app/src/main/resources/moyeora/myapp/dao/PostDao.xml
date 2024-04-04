@@ -9,27 +9,26 @@
   <resultMap id="PostMap" type="Post">
   <id column="post_no" property="no"/>
   <result column="school_no" property="schoolNo"/>
-  <result column="user_no" property="userNo"/>
   <result column="category_no" property="categoryNo"/>
   <result column="content" property="content"/>
   <result column="created_at" property="createdAt"/>
 
-  <association property="userNo" javaType="User">
-    <id column="user_no" property="no"/>
-    <result column="name" property="name"/>
-  </association>
+<!--  <association property="userNo" javaType="User">-->
+<!--    <id column="user_no" property="no"/>-->
+<!--    <result column="name" property="name"/>-->
+<!--  </association>-->
 
-  <collection property="fileList" ofType="AttachedFile">
-    <id column="file_no" property="no"/>
-    <result column="file_path" property="filePath"/>
-    <result column="post_no" property="postNo"/>
-  </collection>
+<!--  <collection property="fileList" ofType="AttachedFile">-->
+<!--    <id column="file_no" property="no"/>-->
+<!--    <result column="file_path" property="filePath"/>-->
+<!--    <result column="post_no" property="postNo"/>-->
+<!--  </collection>-->
 </resultMap>
 
   <insert id="add" parameterType="Post"
     useGeneratedKeys="true" keyColumn="no" keyProperty="no">
-    insert into posts(school_no,user_no,category_no,created_at)
-    values(#{schoolNo},#{userNo.no},#{categoryNo},#{createdAt})
+    insert into posts(school_no,user_no,category,created_at)
+    values(#{schoolNo},#{userNo.no},#{category},#{createdAt})
   </insert>
 
   <delete id="delete" parameterType="int">
@@ -37,46 +36,69 @@
     where no=#{value}
   </delete>
 
-  <select id="findAll" resultMap="PostMap">
-    select
-      p.no,
-      p.school_no,
-      p.user_no,
-      p.category_not,
-      p.created_at
-    from
-      posts p left inner join users u on p.user_no = u.user_no
-    where
-      p.categoryNo=#{categoryNo}
-    order by
-      p.no desc
-    limit #{rowCount} offset #{offset}
-  </select>
+<!--  <select id="findAll" resultMap="PostMap">-->
+<!--    select-->
+<!--      p.no,-->
+<!--      p.school_no,-->
+<!--      p.user_no,-->
+<!--      p.created_at,-->
+<!--      u.user_no,-->
+<!--      u.name-->
+<!--    from-->
+<!--      posts p left inner join users u on p.user_no = u.user_no-->
+<!--    where-->
+<!--      p.category=#{category}-->
+<!--    order by-->
+<!--      p.no desc-->
+<!--    limit #{rowCount} offset #{offset}-->
+<!--  </select>-->
 
   <select id="findBy" resultMap="PostMap" parameterType="int">
     select
       p.no,
       p.school_no,
       p.user_no,
-      p.category_notice,
-      p.category_regular,
       p.created_at
+      u.user_no,
+      u.name
     from
-      posts p inner join user u on p.user_no = u.user_no
+      posts p inner join user u on p.no = u.user_no
     where
-      p.no=#{value}
+      p.user_no=#{value}
   </select>
 
   <update id="update" parameterType="Post">
     update posts set
-      school_no=#{schoolNo},
-      user_no=#{userNo.no},
-      category_no=#{categoryNo},
+      content=#{content},
+      category=#{category},
     where
       no=#{no}
   </update>
 
   <select id="countAll" resultType="int" parameterType="int">
-    select count(*) from posts where categoryNo=#{value}
+    select count(*) from posts where category=#{value}
   </select>
+
+  <select id="findAll" resultMap="PostMap">
+    select
+      category_no,
+      post_no,
+      school_no,
+      user_no,
+      content,
+      created_at
+    from
+      posts
+  </select>
+  
+   <select id="findByPost" resultMap="PostMap" parameterType="String">
+    select
+    post_no,
+    name,
+    content
+    from
+    posts
+    where name like '%${name}%'
+  </select>
+
 </mapper>

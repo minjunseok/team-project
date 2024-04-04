@@ -17,19 +17,6 @@
 </resultMap>
 
 
-private int no;
-  private int schoolNo;
-  private  int categoryNo;
-  private  int postNo;
-  private User writer;
-  private String name;
-  private String content;
-  private int limitedMan;
-  private String photo;
-  private int openRange;
-  private Date createdAt;
-
-
 
 
   <insert id="add" parameterType="School">
@@ -37,12 +24,10 @@ private int no;
     values(#{name},#{content},#{limitedMan},#{photo},#{openRange},#{createdAt})
   </insert>
 
-<<<<<<< HEAD
   <delete id="delete" parameterType="int">
     delete from schools
     where post_no=#{value}
   </delete>
-=======
   <select id="findHotSchool" resultMap="SchoolMap" parameterType="int">
     select
     s.school_no,
@@ -54,7 +39,6 @@ private int no;
     order by
     now_member_count desc
   </select>
->>>>>>> ffc3c4928967e10d6d928922b37b3f16470e809c
 
 
 </mapper>

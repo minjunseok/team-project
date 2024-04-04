@@ -331,5 +331,7 @@ insert into dm(dm_no, user_no2, user_no, message, created_at, photo)
 insert into dm(dm_no, user_no2, user_no, message, created_at, photo)
 	values(8, 1 ,2 , '바오가족 귀여워.', '2023-10-01 11:03:20', '/photo/baofamily.jpg');
 
-  --
+
+
+
 
