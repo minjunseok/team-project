@@ -2,35 +2,110 @@
 <html lang='en'>
 <head>
   <meta charset='UTF-8'>
-  <title>비트캠프 데브옵스 5기</title>
+  <title>모여라 </title>
 </head>
 <body>
 
 
 
-<h1>회원</h1>
-<a data-th-href="@{/user/form}" href="form">회원 가입</a>
-<table border='1'>
-  <thead>
-  <tr>
-    <th>번호</th>
-    <th>닉네임</th>
-    <th>이메일</th>
-    <th>가입일</th>
+<h1>회원 관리 시스템</h1>
 
-  </tr>
-  </thead>
+<h2>회원 가입</h2>
+
+
+<form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
+  <div>
+    이메일: <input name='email' type='text' size="20" autofocus placeholder="이메일[본인확인용]" required> @
+    <select  name="domain_select" id="domain_select" >
+      <option value="직접입력">직접 입력</option>
+      <option value="naver.com">naver.com</option>
+      <option value="gmail.com">gmail.com</option>
+      <option value="daum.net">daum.net</option>
+      <option value="google.com">google.com</option>
+      <option value="kakao.com">kakao.com</option>
+    </select>
+    <input name="domain" id="domain_input" type="text" style="display:none;">
+  </div>
+  <small> *대소문자 특수기호 가능</small>
+
+  <div>
+    <button>인증 받기</button>
+  </div>
+
+  <div>
+    비밀번호: <input name='pwd' type='password' size="20" placeholder="비밀번호." required>
+  </div>
+  <small> *대소문자 특수기호 가능</small>
+
+  <div>
+    닉네임: <input name='nickname' type='text'  size="20" placeholder="닉네임" required>
+  </div>
+
+  <div>
+    이름: <input name='name' type='text' size="20" placeholder="이름" required>
+  </div>
+
+  <div>
+    생년월일: <input name='birth' type='date' id="birth">
+  </div>
+
+  <div>
+    전화번호: <input name='phone' type='text' placeholder="전화번호" required>
+  </div>
+
+  <div>
+    주소: <input name='address' type='text'>
+  </div>
+  <button>주소 검색</button>
+
+  <div>
+    상세 주소: <input name='address' type='text'>
+  </div>
+
+  <div>
+    사진: <input name='file' type='file'>
+  </div>
+
+  <div>
+    자기소개: <textarea name='profile' >
+  </textarea>
+  </div>
+
+  <div>
+    <input type="checkbox" name="gender" value="0"> 남자
+    <input type="checkbox" name="gender" value="1"> 여자
+  </div>
+
+
+  <div>
+    <h2>관심사 선택</h2>
+  </div>
+
   <tbody>
-  <tr data-th-each="user : ${list}" data-th-object="${user}">
-    <td data-th-data="*{no}">111</td>
+  <tr data-th-each="tag : ${tags}">
     <td>
-      <a data-th-href="@{view(no=*{no})}" data-th-text="*{nickname}" href="view.html">가가가</a></td>
-    <td data-th-text="*{email}">hong@test.com</td>
-    <td data-th-text="${#dates.format(user.createdDate, 'yyyy-MM-dd')}">2024-03-27</td>
+      <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="${tag.no}">
+    </td>
+    <td>
+      <span data-th-text="${tag.name}" >1</span>
+    </td>
+    <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+      <br>
+    </data-th-block>
   </tr>
   </tbody>
-</table>
 
+  <br>
+  <br>
+
+
+  <div>
+    <input type="submit" value="가입하기">
+    <input type="reset" value="취소하기">
+  </div>
+
+
+</form>
 
 
 

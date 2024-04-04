@@ -9,5 +9,6 @@ public interface UserService {
 
     void add(User user);
 
+    User get(int no);
 
 }
