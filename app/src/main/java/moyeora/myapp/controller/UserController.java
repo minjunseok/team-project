@@ -1,29 +1,25 @@
 package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.service.StorageService;
 import moyeora.myapp.service.TagService;
 import moyeora.myapp.service.UserService;
-import moyeora.myapp.service.UserTagService;
 import moyeora.myapp.util.FileUpload;
-import moyeora.myapp.util.FileUploadHelper;
 import moyeora.myapp.vo.User;
-import moyeora.myapp.vo.UserTag;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/user")
 public class UserController implements InitializingBean {
-
     private static final Log log = LogFactory.getLog(UserController.class);
     private final UserService userService;
     private final TagService tagService;
@@ -68,6 +64,4 @@ public class UserController implements InitializingBean {
         model.addAttribute("user",user);
         model.addAttribute("tags",tagService.findAllTag());
     }
-
-
 }

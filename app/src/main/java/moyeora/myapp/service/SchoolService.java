@@ -14,5 +14,15 @@ public interface SchoolService {
 
   public List<School> findHotSchool(int category);
 
+  void add(School school);
 
+  List<School> list(int categoryNo, int pageNo, int pageSize);
+
+  School get(int schoolNo);
+
+  int update(School school);
+
+  int delete(int postNo);
+
+  int countAll(int categoryNo);
 }

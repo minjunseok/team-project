@@ -1,6 +1,4 @@
 package moyeora.myapp.service.impl;
-
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,5 +44,33 @@ public class DefaultSchoolService implements SchoolService {
     return schoolDao.findHotSchool(category);
   }
 
+  @Override
+  public void add(School school) {
 
+  }
+
+  @Override
+  public List<School> list(int categoryNo, int pageNo, int pageSize) {
+    return null;
+  }
+
+  @Override
+  public School get(int schoolNo) {
+    return null;
+  }
+
+  @Override
+  public int update(School school) {
+    return 0;
+  }
+
+  @Override
+  public int delete(int postNo) {
+    return 0;
+  }
+
+  @Override
+  public int countAll(int categoryNo) {
+    return 0;
+  }
 }
