@@ -103,3 +103,9 @@
     order by p.created_at desc;
   </select>
 </mapper>
+
+<!--  <collection property="fileList" ofType="AttachedFile">-->
+<!--    <id column="file_no" property="no"/>-->
+<!--    <result column="file_path" property="filePath"/>-->
+<!--    <result column="post_no" property="postNo"/>-->
+<!--  </collection>-->

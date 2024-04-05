@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class DefaultUserService implements UserService {
-
     private static final Log log = LogFactory.getLog(DefaultUserService.class);
     private final UserDao userDao;
     private final UserTagDao userTagDao;
@@ -35,6 +34,6 @@ public class DefaultUserService implements UserService {
 
     @Override
     public User get(int no) {
-        return userDao.findBy(no);
+      return userDao.findBy(no);
     }
 }
