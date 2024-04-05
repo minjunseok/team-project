@@ -92,7 +92,7 @@ public class UserController implements InitializingBean {
   @PostMapping("update")
   public String update(User user, MultipartFile file) throws Exception {
 
-    User old = userService.get(user.getUserNo());
+    User old = userService.get(user.getNo());
     if (old == null) {
       throw new Exception("회원 번호가 유효하지 않습니다.");
     }

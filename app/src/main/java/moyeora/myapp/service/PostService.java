@@ -2,6 +2,7 @@ package moyeora.myapp.service;
 
 import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Post;
+import moyeora.myapp.vo.User;
 
 import java.sql.Date;
 import java.util.List;
