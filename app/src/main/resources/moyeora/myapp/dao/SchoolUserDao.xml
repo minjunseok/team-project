@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moyeora.myapp.dao.SchoolUserDao">
+  <resultMap id="SchoolUserMap" type="SchoolUser">
+    <id column="user_no" property="userNo"/>
+    <result column="school_no" property="schoolNo"/>
+    <result column="grade_no" property="gradeNo"/>
+    <result column="created_at" property="createdAt"/>
+
+    <collection property="schools" ofType="School">
+      <result column="school_no" property="no"/>
+      <result column="name" property="name"/>
+      <result column="photo" property="photo"/>
+    </collection>
+
+  </resultMap>
+
+  <select id="findByUserNo" resultMap="SchoolUserMap" parameterType="int">
+    select
+      u.user_no as user_no,
+      u.school_no as school_no,
+      u.grade_no as grade_no,
+      u.created_at as created_at,
+      s.name as name,
+      s.photo as photo
+    from
+      school_users as u
+    inner join schools as s on u.school_no = s.school_no
+    where u.user_no=#{no}
+  </select>
+
+</mapper>
