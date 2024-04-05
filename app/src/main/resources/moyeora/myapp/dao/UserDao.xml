@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moyeora.myapp.dao.UserDao">
+
+  <resultMap id="UserMap" type="User">
+    <id column="user_no" property="no"/>
+    <result column="name" property="name" />
+    <result column="pwd" property="pwd"/>
+    <result column="address" property="address"/>
+    <result column="phone" property="phone"/>
+    <result column="email" property="email"/>
+    <result column="nickname" property="nickname"/>
+    <result column="birth" property="birth"/>
+    <result column="gender" property="gender"/>
+    <result column="grade" property="grade"/>
+    <result column="login_type" property="loginType"/>
+    <result column="created_at" property="createdAt"/>
+    <result column="profile" property="profile"/>
+    <result column="manner_point" property="mannerPoint"/>
+    <result column="photo" property="photo"/>
+    <result column="address_detail" property="addressDetail"/>
+
+
+  </resultMap>
+
+
+
+
+  <insert id="add" parameterType="User"
+   useGeneratedKeys="true" keyColumn="user_no" keyProperty="no">
+    insert into users(name,pwd,address,phone,email,nickname,birth,gender,grade,login_type,created_at,profile,manner_point,photo,address_detail)
+    values(#{name},sha2(#{password},256),#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{grade},#{loginType},
+    current_timestamp,#{profile},#{mannerPoint},#{photo},#{addressDetail})
+  </insert>
+
+<select id="findBy" resultMap="UserMap" parameterType="int">
+    select
+        name,
+        address,
+        phone,
+        email,
+        nickname,
+        birth,
+        gender,
+        grade,
+        created_at,
+        profile,
+        manner_point,
+        photo,
+        address_detail
+    from
+        users
+    where
+        user_no = 38;
+</select>
+
+
+
+</mapper>
