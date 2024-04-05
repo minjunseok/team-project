@@ -38,10 +38,10 @@
       <result column="post_no" property="postNo"/>
     </collection>
 
-    <collection property="comment" javaType="Comment">
-      <id column="comment_no" property="no"/>
-      <result column="name" property="name"/>
-    </collection>
+<!--    <collection property="comment" javaType="Comment">-->
+<!--      <id column="comment_no" property="no"/>-->
+<!--      <result column="name" property="name"/>-->
+<!--    </collection>-->
   </resultMap>
 
 
@@ -134,7 +134,10 @@
 
   <select id="findBySchoolPostList" resultMap="PostMap" parameterType="int">
     SELECT DISTINCT
+<<<<<<< HEAD
 
+=======
+>>>>>>> 41a9bd695b267c843865e75c182329eb34f7ae1a
     u.user_no,
     p.post_no,
     u.name as user_name,
@@ -160,6 +163,27 @@
 
 
   </select>
+<<<<<<< HEAD
+=======
+
+  <select id="findAll" resultMap="PostMap">
+    SELECT distinct
+    u.name,
+    p.post_no,
+    p.school_no,
+    p.user_no,
+    p.content,
+    p.created_at
+    FROM
+    posts AS p
+    JOIN
+    school_users AS su ON p.user_no = su.user_no
+    JOIN
+    users AS u ON su.user_no = u.user_no;
+  </select>
+
+
+>>>>>>> 41a9bd695b267c843865e75c182329eb34f7ae1a
 </mapper>
 
 <!--  <collection property="fileList" ofType="AttachedFile">-->
