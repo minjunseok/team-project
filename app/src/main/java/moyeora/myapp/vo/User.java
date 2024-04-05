@@ -1,5 +1,4 @@
 package moyeora.myapp.vo;
-
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,5 +29,6 @@ public class User implements Serializable {
     private List<Integer> tagNums;
     private List<UserTag> tags;
     private String addressDetail;
+
 
 }
