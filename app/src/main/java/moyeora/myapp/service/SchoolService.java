@@ -5,6 +5,7 @@ import java.util.List;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
 import moyeora.myapp.vo.Tag;
+import org.springframework.ui.Model;
 
 public interface SchoolService {
 
@@ -14,5 +15,5 @@ public interface SchoolService {
 
   public List<School> findHotSchool(int category);
 
-
+  public List<School> findBySchoolName(String name);
 }

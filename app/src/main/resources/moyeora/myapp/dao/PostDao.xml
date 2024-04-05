@@ -3,7 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="moyeora.myapp.dao.PostDao">
+
   <resultMap id="PostMap" type="Post">
+
     <id column="post_no" property="no"/>
     <result column="school_no" property="schoolNo"/>
     <result column="user_no" property="userNo"/>
@@ -13,24 +15,40 @@
     <result column="like_count" property="likeCount"/>
     <result column="comment_count" property="commentCount"/>
 
-    <association property="Writer" javaType="User">
+
+
+
+
+    <association property="writer" javaType="User">
       <id column="user_no" property="no"/>
       <result column="name" property="name"/>
+      <result column="photo" property="photo"/>
     </association>
 
-    <association property="School" javaType="School">
+    <association property="schoolUser" javaType="SchoolUser">
+      <id column="user_no" property="userNo"/>
+    </association>
+
+    <association property="school" javaType="School">
       <id column="school_no" property="no"/>
       <result column="school_name" property="name"/>
       <result column="school_photo" property="photo"/>
     </association>
 
-    <collection property="FileList" ofType="AttachedFile">
+    <collection property="fileList" ofType="AttachedFile">
       <id column="file_no" property="no"/>
       <result column="path" property="path"/>
       <result column="name" property="name"/>
       <result column="post_no" property="postNo"/>
     </collection>
+
+    <collection property="comment" javaType="Comment">
+      <id column="comment_no" property="no"/>
+      <result column="name" property="name"/>
+    </collection>
   </resultMap>
+
+
 
   <select id="findByLike" resultMap="PostMap" parameterType="int">
     SELECT
@@ -81,4 +99,54 @@
     where p.user_no=#{no}
     order by p.created_at desc;
   </select>
+
+  <select id="findBySchoolPost" resultMap="PostMap">
+    select
+
+    post_no,
+    school_no,
+    user_no,
+    category_no,
+    content,
+    created_at
+
+    from
+
+    posts
+  </select>
+
+  <select id="findBySchoolPostList" resultMap="PostMap" parameterType="int">
+
+
+
+    SELECT DISTINCT
+
+
+    u.user_no,
+    p.post_no,
+    u.name as user_name,
+    u.photo,
+    p.content,
+    c.content as content_content,
+    f.name as file_name ,
+    p.created_at
+
+    FROM
+
+    posts p
+
+    INNER JOIN school_users su ON p.school_no = su.school_no
+    INNER JOIN users u ON p.user_no = u.user_no
+    LEFT OUTER JOIN schools s ON p.school_no = s.school_no
+    LEFT OUTER JOIN comments c ON p.post_no = c.post_no
+    LEFT OUTER JOIN files f ON p.post_no = f.post_no
+
+    WHERE p.school_no = 1
+
+    ORDER BY p.created_at DESC;
+
+
+  </select>
+
+
 </mapper>

@@ -1,12 +1,10 @@
-package moyeora.myapp.dao;
+package moyeora.myapp.service;
 
 import java.util.List;
-import lombok.Value;
 import moyeora.myapp.vo.Post;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
-public interface PostDao {
+public interface PostService {
+
   public List<Post> findByLike();
 
   public List<Post> findByFollow();
@@ -16,5 +14,4 @@ public interface PostDao {
   public List<Post> findBySchoolPost();
 
   public List<Post> findBySchoolPostList(int schoolNo);
-
 }

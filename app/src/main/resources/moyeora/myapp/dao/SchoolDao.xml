@@ -32,5 +32,16 @@
     now_member_count desc
   </select>
 
+  <select id="findBySchoolName" resultMap="SchoolMap" parameterType="String">
+    select
+    school_no,
+    name,
+    content
+    from
+    schools
+    where name like '%${name}%'
+  </select>
+
+
 
 </mapper>

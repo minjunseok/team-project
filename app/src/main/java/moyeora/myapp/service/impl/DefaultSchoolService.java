@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.SchoolDao;
 import moyeora.myapp.dao.SchoolUserDao;
@@ -13,6 +14,7 @@ import moyeora.myapp.service.SchoolService;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 @Service
 @RequiredArgsConstructor
@@ -47,4 +49,9 @@ public class DefaultSchoolService implements SchoolService {
   }
 
 
+  @Override
+  public List<School> findBySchoolName(String name) {
+    return schoolDao.findBySchoolName(name);
+  }
 }
+
