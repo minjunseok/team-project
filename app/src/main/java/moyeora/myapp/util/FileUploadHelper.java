@@ -8,21 +8,29 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+
+import java.io.File;
 import java.io.InputStream;
 import java.util.UUID;
+
+import moyeora.myapp.service.StorageService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-public class FileUploadHelper implements InitializingBean {
+@Service
+public class FileUploadHelper implements InitializingBean, FileUpload {
 
   final String endPoint;
   final String regionName;
   final String accessKey;
   final String secretKey;
-  final String bucketName;
 
   final AmazonS3 s3;
 
@@ -32,11 +40,10 @@ public class FileUploadHelper implements InitializingBean {
     @Value("${ncp.storage.endpoint}") String endPoint,
     @Value("${ncp.storage.region}") String regionName,
     @Value("${ncp.storage.bucket}") String bucketName,
-    @Value("${ncp.secretkey}") String accessKey,
-    @Value("${ncp.accesskey}") String secretKey) {
+    @Value("${ncp.accesskey}") String accessKey,
+    @Value("${ncp.secretkey}") String secretKey) {
     this.endPoint = endPoint;
     this.regionName = regionName;
-    this.bucketName = bucketName;
     this.accessKey = accessKey;
     this.secretKey = secretKey;
     this.s3 = AmazonS3ClientBuilder.standard()
@@ -56,7 +63,8 @@ public class FileUploadHelper implements InitializingBean {
 
   }
 
-  public String upload(String path, MultipartFile multipartFile)
+
+  public String upload(String bucketName, String path, MultipartFile multipartFile)
     throws Exception {
     try (InputStream fileIn = multipartFile.getInputStream()) {
 
@@ -77,13 +85,11 @@ public class FileUploadHelper implements InitializingBean {
       //서버에 업로드 실행
       s3.putObject(putObjectRequest);
       log.debug(String.format("Object %s has been created.\n", objectName));
+      System.out.println("헬퍼실행@@@@@@@@@@@");
       return filename;
     }
   }
 
-  public void delete(String path, String objectName) throws Exception {
-    s3.deleteObject(bucketName, path + objectName);
-    log.debug(String.format("Object %s has been deleted.\n", objectName));
-  }
+
 
 }

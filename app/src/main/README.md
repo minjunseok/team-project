@@ -1,1 +1,1 @@
-# team-project
+# src/main/resources
