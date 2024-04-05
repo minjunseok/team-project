@@ -81,10 +81,10 @@
 
   <div>
     <label>
-      <input type="checkbox" th:checked="*{gender == 0}" value="0" disabled> 남자
+      <input type="radio" data-th-checked="*{gender == 0}" value="0" disabled> 남자
     </label>
     <label>
-      <input type="checkbox" th:checked="*{gender == 1}" value="1" disabled> 여자
+      <input type="radio" data-th-checked="*{gender == 1}" value="1" disabled> 여자
     </label>
   </div>
 
@@ -93,10 +93,11 @@
     <h2>관심사</h2>
   </div>
 
+
   <tbody>
   <tr data-th-each="tag : ${tags}">
     <td>
-      <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="${tag.no}">
+      <input type="checkbox" data-th-checkbox="true" data-th-checked="${userTagMap[tag.no] != null}" name="tagNums" data-th-value="${tag.no}">
     </td>
     <td>
       <span data-th-text="${tag.name}" >1</span>
@@ -106,6 +107,25 @@
     </data-th-block>
   </tr>
   </tbody>
+
+
+
+<!--  <tbody>-->
+<!--  <tr data-th-each="tagNames : ${user.tagNames}" data-th-object="${tagNames}">-->
+<!--    <td>-->
+<!--      <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="*{name}"-->
+<!--   th:chekced="${user.tagNames == user}">-->
+<!--    </td>-->
+<!--    <td>-->
+<!--      <input type="hidden" data-th-value="*{no}">-->
+<!--      <span data-th-text="*{name}" >1</span>-->
+<!--    </td>-->
+<!--    <td data-th-if="*{no == 0 or no % 4 ==0}">-->
+<!--      <br>-->
+<!--    </td>-->
+<!--  </tr>-->
+<!--  </tbody>-->
+
 
 
 
