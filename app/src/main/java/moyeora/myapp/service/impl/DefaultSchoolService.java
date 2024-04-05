@@ -30,7 +30,7 @@ public class DefaultSchoolService implements SchoolService {
   @Override
   public List<String> findWeek() {
     Calendar c = Calendar.getInstance();
-    c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+    //c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
     DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
     List<String> list = new ArrayList<>();
     for(int i = 0; i<7; i++) {
@@ -42,6 +42,7 @@ public class DefaultSchoolService implements SchoolService {
 
   @Override
   public List<School> findHotSchool(int category) {
+
     return schoolDao.findHotSchool(category);
   }
 

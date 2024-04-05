@@ -13,8 +13,13 @@ import org.springframework.stereotype.Service;
 public class DefaultClassService implements ClassService {
 
   private final ClassDao classDao;
-
+  @Override
   public List<Class> findByDate(String date) {
     return classDao.findByDate(date);
+  }
+
+  @Override
+  public List<Class> findByUserAddress(String address) {
+    return classDao.findByUserAddress(address);
   }
 }
