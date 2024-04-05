@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
+<html lang="en" xmlns:th="//www.thymeleaf.org">
+
 <head>
   <meta charset='UTF-8'>
   <title>비트캠프 데브옵스 5기</title>
@@ -8,11 +10,28 @@
   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
+
+
 <div data-th-each="school : ${schools}" data-th-object="${school}">
   <input type="hidden" data-th-value="*{no}">
   <div data-th-text="*{name}"></div>
   <div data-th-text="*{photo}"></div>
 </div>
+
+
+<form th:action="@{/school/search}" method="get">
+  <input type="text" name="name">
+  <button type="submit">검색</button>
+</form>
+
+
+
+<!--  <th:block th:each="page:${#numbers.sequence(startPage,endPage)}">-->
+<!--    <a th:if="${page != nowPage}" th:href="@{/board/list(page=${page-1}, searchKeyword=${param.searchKeyword})}" th:text ="${page}"></a>-->
+<!--    <strong th:if="${page==nowPage}" th:text ="${page}" style="color:red"></strong>-->
+
+<!--  </th:block>-->
+
 
 <a style = "cursor: pointer" data-th-each="week : ${weeks}" data-th-onclick="@{'dataList(\'' + ${week} + '\')'}" data-th-text="${week}  "></a>
 <ol id = "byDate" data-th-each="class : ${classes}" data-th-object="${class}">
