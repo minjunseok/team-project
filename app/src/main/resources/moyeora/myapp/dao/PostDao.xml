@@ -13,10 +13,10 @@
   <result column="content" property="content"/>
   <result column="created_at" property="createdAt"/>
 
-<!--  <association property="userNo" javaType="User">-->
-<!--    <id column="user_no" property="no"/>-->
-<!--    <result column="name" property="name"/>-->
-<!--  </association>-->
+  <association property="User" javaType="User">
+    <id column="user_no" property="no"/>
+    <result column="name" property="name"/>
+  </association>
 
 <!--  <collection property="fileList" ofType="AttachedFile">-->
 <!--    <id column="file_no" property="no"/>-->
@@ -26,10 +26,17 @@
 </resultMap>
 
   <insert id="add" parameterType="Post"
-    useGeneratedKeys="true" keyColumn="no" keyProperty="no">
-    insert into posts(school_no,user_no,category,created_at)
-    values(#{schoolNo},#{userNo.no},#{category},#{createdAt})
+    useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
+    insert into posts(content)
+    values(#{schoolNo})
   </insert>
+
+<!--카테고리 사용할 때 주석 풀 것-->
+<!--    <insert id="add" parameterType="Post"-->
+<!--    useGeneratedKeys="true" keyColumn="no" keyProperty="no">-->
+<!--    insert into posts(school_no,user_no,category,created_at)-->
+<!--    values(#{schoolNo},#{userNo.no},#{category},#{createdAt})-->
+<!--  </insert>-->
 
   <delete id="delete" parameterType="int">
     delete from posts
@@ -55,14 +62,14 @@
 
   <select id="findBy" resultMap="PostMap" parameterType="int">
     select
-      p.no,
+      p.post_no,
       p.school_no,
       p.user_no,
       p.created_at
       u.user_no,
       u.name
     from
-      posts p inner join user u on p.no = u.user_no
+      posts p inner join user u on p.user_no = u.user_no
     where
       p.user_no=#{value}
   </select>
@@ -80,15 +87,19 @@
   </select>
 
   <select id="findAll" resultMap="PostMap">
-    select
-      category_no,
-      post_no,
-      school_no,
-      user_no,
-      content,
-      created_at
-    from
-      posts
+    SELECT distinct
+    u.name,
+    p.post_no,
+    p.school_no,
+    p.user_no,
+    p.content,
+    p.created_at
+FROM
+    posts AS p
+JOIN
+    school_users AS su ON p.user_no = su.user_no
+JOIN
+    users AS u ON su.user_no = u.user_no;
   </select>
   
    <select id="findByPost" resultMap="PostMap" parameterType="String">

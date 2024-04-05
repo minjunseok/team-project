@@ -24,12 +24,12 @@ public class DefaultPostService implements PostService {
   @Override
   public void add(Post post) {
     postDao.add(post);
-    if (post.getFileList() != null && post.getFileList().size() > 0) {
-      for (AttachedFile attachedFile : post.getFileList()) {
-        attachedFile.setPostNo(post.getNo());
-      }
-      attachedFileDao.addAll(post.getFileList());
-    }
+//    if (post.getFileList() != null && post.getFileList().size() > 0) {
+//      for (AttachedFile attachedFile : post.getFileList()) {
+//        attachedFile.setPostNo(post.getNo());
+//      }
+//      attachedFileDao.addAll(post.getFileList());
+//    }
   }
 
   @Override

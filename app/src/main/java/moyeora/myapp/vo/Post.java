@@ -10,6 +10,7 @@ public class Post {
   private int no;
   private int schoolNo;
   private User userNo;
+  private User User;
   private int categoryNo;
   private List<AttachedFile> fileList;
   private String content;

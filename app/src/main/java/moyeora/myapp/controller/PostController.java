@@ -11,10 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -48,29 +45,30 @@ public class PostController {
           MultipartFile[] attachedFiles,
           HttpSession session) throws Exception {
 
-    User loginUser = (User) session.getAttribute("loginUser");
-    if (loginUser == null) {
-      throw new Exception("로그인하시기 바랍니다!");
-    }
-    post.setUserNo(loginUser);
+//    User loginUser = (User) session.getAttribute("loginUser");
+//    if (loginUser == null) {
+//      throw new Exception("로그인하시기 바랍니다!");
+//    }
+//    post.setUserNo(loginUser);
 
-    ArrayList<AttachedFile> files = new ArrayList<>();
-    if (post.getCategoryNo() == 1) {
-      for (MultipartFile file : attachedFiles) {
-        if (file.getSize() == 0) {
-          continue;
-        }
-        String filename = storageService.upload(this.bucketName, this.uploadDir, file);
-        files.add(AttachedFile.builder().filePath(filename).build());
-      }
-    }
-    if (files.size() > 0) {
-      post.setFileList(files);
-    }
+//    ArrayList<AttachedFile> files = new ArrayList<>();
+//    if (post.getCategoryNo() == 1) {
+//      for (MultipartFile file : attachedFiles) {
+//        if (file.getSize() == 0) {
+//          continue;
+//        }
+//        String filename = storageService.upload(this.bucketName, this.uploadDir, file);
+//        files.add(AttachedFile.builder().filePath(filename).build());
+//      }
+//    }
+//    if (files.size() > 0) {
+//      post.setFileList(files);
+//    }
 
     postService.add(post);
 
-    return "redirect:list?category" + post.getCategoryNo();
+//    return "redirect:list?category" + post.getCategoryNo();
+    return "redirect:view";
   }
 
   @GetMapping("list")
@@ -82,6 +80,18 @@ public class PostController {
     model.addAttribute("categoryNo",  categoryNo);
     return "post/view";
   }
+
+
+//  카테고리 사용할 때 주석 풀어서 사용할 것
+//   @GetMapping("list")
+//  public String list(
+//          @RequestParam(defaultValue = "1") int categoryNo,
+//          Model model) throws Exception {
+//    model.addAttribute("post", postService.findAll(categoryNo));
+//    model.addAttribute("postNo",  categoryNo == 1 ? "일반" : "공지");
+//    model.addAttribute("categoryNo",  categoryNo);
+//    return "post/view";
+//  }
 
   @PostMapping("search")
   public String findByPost(String content, Model model) {
@@ -104,7 +114,7 @@ public class PostController {
     if (old == null) {
       throw new Exception("번호가 유효하지 않습니다.");
 
-    } else if (old.getNo() != loginUser.getUserNo()) {
+    } else if (old.getNo() != loginUser.getNo()) {
       throw new Exception("권한이 없습니다.");
     }
 
@@ -140,7 +150,7 @@ public class PostController {
     if (post == null) {
       throw new Exception("번호가 유효하지 않습니다.");
 
-    } else if (post.getNo() != loginUser.getUserNo()) {
+    } else if (post.getNo() != loginUser.getNo()) {
       throw new Exception("권한이 없습니다.");
     }
 
@@ -169,7 +179,7 @@ public class PostController {
     }
 
     User writer = postService.get(file.getPostNo()).getUserNo();
-    if (writer.getUserNo() != loginUser.getUserNo()) {
+    if (writer.getNo() != loginUser.getNo()) {
       throw new Exception("권한이 없습니다.");
     }
 
@@ -178,5 +188,10 @@ public class PostController {
     storageService.delete(this.bucketName, this.uploadDir, file.getFilePath());
 
     return "redirect:../view?category=" + category + "&no=" + file.getPostNo();
+  }
+
+  @GetMapping("writerPost")
+  public String writerPost() {
+    return "post/writerPost";
   }
 }
