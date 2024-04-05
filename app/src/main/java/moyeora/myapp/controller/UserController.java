@@ -7,6 +7,7 @@ import moyeora.myapp.service.UserService;
 import moyeora.myapp.service.UserTagService;
 import moyeora.myapp.util.FileUpload;
 import moyeora.myapp.util.FileUploadHelper;
+import moyeora.myapp.vo.Tag;
 import moyeora.myapp.vo.User;
 import moyeora.myapp.vo.UserTag;
 import org.apache.commons.logging.Log;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -49,7 +53,6 @@ public class UserController implements InitializingBean {
     @PostMapping("add")
     public String add(User user, MultipartFile file) throws Exception{
 
-
         if(file.getSize() > 0){
             System.out.println("add 2 실행@@@@@@@@@@@@@@@");
             String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
@@ -63,10 +66,23 @@ public class UserController implements InitializingBean {
 
     @GetMapping("view")
     public void view(Model model) throws Exception{
-        User user = userService.get(38);
+        User user = userService.get(39);
+        List<UserTag> userTags = user.getTags();
+        System.out.println("@@@@@@@@@@@@@@@@@@@@배열의수@@@@@@@@@@@@@@@@@@@@@@@@@"+userTags.size());
+        HashMap<Integer,UserTag> userTagMap = new HashMap<>();
+        for (UserTag userTag : userTags) {
+            userTagMap.put(userTag.getTagNo(), userTag);
+        }
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+userTagMap);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+userTags);
 
+        System.out.println(user);
         model.addAttribute("user",user);
+        model.addAttribute("userTagMap",userTagMap);
         model.addAttribute("tags",tagService.findAllTag());
+        for(UserTag tag : user.getTags()) {
+            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@"+tag.getTagNo());
+        }
     }
 
 
