@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 public class Post {
   private int no;
+  private String name;
+  private String photo;
   private int schoolNo;
   private int userNo;
   private int categoryNo;
@@ -18,7 +20,9 @@ public class Post {
   private Date createdAt;
   private int likeCount;
   private int commentCount;
-  private User Writer;
-  private List<AttachedFile> FileList;
-  private School School;
+  private User writer;
+  private List<AttachedFile> fileList;
+  private School school;
+  private SchoolUser schoolUser;
+  private List<Comment> comment;
 }
