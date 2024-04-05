@@ -21,16 +21,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/index")
 public class MainPageController {
 
   private final SchoolService schoolService;
   private final ClassService classService;
   final static Log log = LogFactory.getLog(MainPageController.class);
-  @GetMapping("/index")
+  @GetMapping("")
   public void index(Model model ) {
       LocalDateTime currentTime = LocalDateTime.now();
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 날짜 형식 지정
@@ -45,8 +47,4 @@ public class MainPageController {
 
     model.addAttribute("hotSchools", schoolService.findHotSchool(1));
   }
-
-
-
-
 }
