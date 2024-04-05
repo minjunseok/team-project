@@ -42,7 +42,7 @@
 <!--           src="/img/default-photo.jpeg">-->
 <!--      <img data-th-unless="*{file_no}" height='20px' src='/img/default-photo.jpeg'>-->
 <!--      <a data-th-href="@{view(no=*{no})}" data-th-text="*{name}" href="view.html">홍길동</a></td>-->
-        <td data-th-text="*{User.name}">2</td>
+        <td data-th-text="*{writer.name}">2</td>
         <td data-th-text="*{content}">101</td>
         <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">2024-03-27</td>
 
