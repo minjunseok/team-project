@@ -1,11 +1,13 @@
 package moyeora.myapp.controller;
 
 
+import com.amazonaws.Response;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.MyPageService;
 import moyeora.myapp.service.SchoolService;
 import moyeora.myapp.vo.Post;
+import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +30,7 @@ public class MyPageController {
   @GetMapping("newpost")
   @ResponseBody
   public ResponseEntity<List<Post>> newPost() {
-    return ResponseEntity.status(200).body(myPageService.findNewPost(1));
+    return ResponseEntity.ok(myPageService.findNewPost(1));
   }
 
   @GetMapping("hotpost")
@@ -42,6 +44,12 @@ public class MyPageController {
   @ResponseBody()
   public ResponseEntity<List<Post>> followingPost( ) {
     return ResponseEntity.ok(myPageService.findFollowPost(1));
+  }
+
+  @GetMapping("recommenduser")
+  @ResponseBody
+  public ResponseEntity<List<User>> recommendUser() {
+    return ResponseEntity.ok(null);
   }
 
   @GetMapping("mypost")
