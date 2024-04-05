@@ -29,4 +29,6 @@ public interface PostDao {
   public List<Post> findByFollow(int no);
 
   String findByPost(String content);
+  public List<Post> findBySchoolPost();
+  public List<Post> findBySchoolPostList(int schoolNo);
 }

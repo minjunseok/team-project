@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface SchoolDao {
-  public SchoolUser findByUserNo(int no);
 
   public List<School> findHotSchool(int category);
 
@@ -27,5 +26,6 @@ public interface SchoolDao {
   int update(School school);
 
   int countAll(int categoryNo);
+  public List<School> findBySchoolName(@Param("name") String name);
 
 }
