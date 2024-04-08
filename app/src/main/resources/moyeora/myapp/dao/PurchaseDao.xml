@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moyeora.myapp.dao.PurchaseDao">
+  <resultMap id="PurchaseMap" type="Purchase">
+    <id column="purchase_no" property="no"/>
+    <result column="user_no" property="userNo"/>
+    <result column="price" property="price"/>
+    <result column="purchase_at" property="purchaseAt"/>
+    <result column="content" property="content"/>
+    <result column="expiration_date" property="expirationDate"/>
+    <result column="receipt_no" property="receiptNo"/>
+  </resultMap>
+  <insert id="add">
+    insert into
+      purchases(
+        user_no,
+        price,
+        purchase_at,
+        content,
+        expiration_date,
+        receipt_no
+      )
+      values(
+        #{userNo},
+        #{price},
+        now(),
+        #{content},
+        #{nextBillingDate},
+        #{receiptNo}
+      )
+  </insert>
+
+</mapper>
