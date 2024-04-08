@@ -42,7 +42,7 @@
     from
       billing_keys
     where
-      DATE_FORMAT(next_billing_date, '%Y-%m-%d') = #{nowAt}
+      DATE_FORMAT(next_billing_date, '%Y-%m-%d') => #{nowAt}
   </select>
 
   <update id="updateNextBillingDate">
@@ -50,6 +50,13 @@
       set next_billing_date = DATE_ADD(#{nextBillingDate}, INTERVAL 1 MONTH)
     where
       DATE_FORMAT(next_billing_date, '%Y-%m-%d') = #{nextBillingDate}
+  </update>
+
+  <update id="errorCountAdd">
+    update billing_keys
+      set billing_error_count = billing_error_count + 1;
+    where
+      user_no=#{no}
   </update>
 
 </mapper>

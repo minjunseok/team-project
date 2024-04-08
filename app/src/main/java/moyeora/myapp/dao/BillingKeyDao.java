@@ -15,5 +15,6 @@ public interface BillingKeyDao {
   List<BillingKey> findByDate(Date nowAt);
 
   void updateNextBillingDate(Date nextBillingDate);
+  void errorCountAdd(int no);
 
 }
