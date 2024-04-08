@@ -44,7 +44,7 @@ public class DefaultUserService implements UserService {
 
     @Override
     public int update(User user) {
-        
+
             userTagDao.deleteAllUserTagNo(user.getNo());
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+user.getNo());
 

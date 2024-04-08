@@ -64,7 +64,7 @@ public class UserController implements InitializingBean {
 
     @GetMapping("view")
     public void view(Model model) throws Exception{
-        User user = userService.get(41);
+        User user = userService.get(42);
         List<UserTag> userTags = user.getTags();
         HashMap<Integer,UserTag> userTagMap = new HashMap<>();
         for (UserTag userTag : userTags) {
@@ -83,7 +83,7 @@ public class UserController implements InitializingBean {
     @PostMapping("update")
 public String update(User user, MultipartFile file) throws Exception {
 
-    User old = userService.get(41);
+    User old = userService.get(42);
     if (old == null) {
         throw new Exception("회원 번호가 유효하지 않습니다.");
     }
