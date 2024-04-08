@@ -13,9 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -42,5 +40,25 @@ public class DefaultUserService implements UserService {
         User user = userDao.findBy(no);
         System.out.println("user count :::::" + user.getTags().size());
         return user;
+    }
+
+    @Override
+    public int update(User user) {
+        
+            userTagDao.deleteAllUserTagNo(user.getNo());
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+user.getNo());
+
+
+
+        if(user.getTagNums() != null && user.getTagNums().size() >=3) {
+            for(int tagNum : user.getTagNums()) {
+                userTagDao.add(tagNum, user.getNo());
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+tagNum);
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+user.getNo());
+
+            }
+        }
+
+        return userDao.update(user);
     }
 }

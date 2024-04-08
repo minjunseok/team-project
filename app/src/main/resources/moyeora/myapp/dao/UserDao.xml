@@ -61,6 +61,17 @@
         u.user_no =#{no};
 </select>
 
-
+<update id="update" parameterType="User">
+update users set
+    address=#{address},
+    phone=#{phone},
+    nickname=#{nickname},
+    birth=#{birth},
+    photo=#{photo},
+    profile=#{profile},
+    address_detail=#{addressDetail}
+where
+    user_no=#{no};
+   </update>
 
 </mapper>

@@ -54,27 +54,22 @@ public class UserController implements InitializingBean {
     public String add(User user, MultipartFile file) throws Exception{
 
         if(file.getSize() > 0){
-            System.out.println("add 2 실행@@@@@@@@@@@@@@@");
             String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
-            System.out.println("add 3 실행@@@@@@@@@@@@@@@" + user);
             user.setPhoto(filename);
         }
         userService.add(user);
 
-        return "redirect:add";
+        return "redirect:index";
     }
 
     @GetMapping("view")
     public void view(Model model) throws Exception{
-        User user = userService.get(39);
+        User user = userService.get(41);
         List<UserTag> userTags = user.getTags();
-        System.out.println("@@@@@@@@@@@@@@@@@@@@배열의수@@@@@@@@@@@@@@@@@@@@@@@@@"+userTags.size());
         HashMap<Integer,UserTag> userTagMap = new HashMap<>();
         for (UserTag userTag : userTags) {
             userTagMap.put(userTag.getTagNo(), userTag);
         }
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+userTagMap);
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+userTags);
 
         System.out.println(user);
         model.addAttribute("user",user);
@@ -85,5 +80,29 @@ public class UserController implements InitializingBean {
         }
     }
 
+    @PostMapping("update")
+public String update(User user, MultipartFile file) throws Exception {
+
+    User old = userService.get(41);
+    if (old == null) {
+        throw new Exception("회원 번호가 유효하지 않습니다.");
+    }
+    user.setNo(old.getNo());
+    user.setCreatedAt(old.getCreatedAt());
+
+
+    if(file.getSize() > 0){
+        String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
+        user.setPhoto(filename);
+        fileUpload.delete(this.bucket, this.uploadDir, old.getPhoto());
+    } else {
+        user.setPhoto(old.getPhoto());
+    }
+
+    userService.update(user);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ user);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ userService);
+    return "redirect:index";
+    }
 
 }
