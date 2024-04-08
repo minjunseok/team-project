@@ -43,18 +43,17 @@ public class UserController implements InitializingBean {
   }
 
   @PostMapping("add")
-  public String add(User user, MultipartFile file) throws Exception {
-    if (file.getSize() > 0) {
-      String filename = storageService.upload(this.bucketName, this.uploadDir, file);
-      user.setPhoto(filename);
-    }
+  public void add(User user, MultipartFile file) throws Exception {
+//    if (file.getSize() > 0) {
+//      String filename = storageService.upload(this.bucketName, this.uploadDir, file);
+//      user.setPhoto(filename);
+//    }
     userService.add(user);
-    return "redirect:list";
+//    return "redirect:list";
   }
 
   @GetMapping("list")
   public void list(Model model) throws Exception {
-
     model.addAttribute("list", userService.list());
   }
 
@@ -102,5 +101,10 @@ public class UserController implements InitializingBean {
       storageService.delete(this.bucketName, this.uploadDir, user.getPhoto());
     }
     return "redirect:list";
+  }
+
+  @GetMapping("test")
+  public String test() throws Exception {
+    return "/main/form";
   }
 }

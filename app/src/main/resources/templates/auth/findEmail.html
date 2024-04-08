@@ -1,32 +1,57 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-  <meta charset='UTF-8'>
-  <title>moyora</title>
+  <meta charset="UTF-8">
+  <title>moyeora</title>
 </head>
 <body>
 
 <div data-th-replace="header :: header">머리말</div>
 
-<h1>templates/auth/find-email.html</h1>
+<h1>templates/auth/findEmail.html</h1>
 
-<form data-th-action="@{getEmail}" method='post'>
+<form data-th-if="${email == null}" data-th-action="@{getEmail}" method="post">
   <div>
     <label>
       이름:
-      <input name="name" type="text">
+      <input id="name" name="name" type="text">
     </label>
   </div>
   <div>
     <label>
       휴대전화('-'생략):
-      <input name="phone" type="text">
+      <input id="phone" name="phone" type="text">
     </label>
   </div>
-  <button>submit</button>
+  <button type="submit" onclick="return checkForm()">submit</button>
 </form>
 
+<div data-th-if="${email != null && email != 'none'}">
+  <p>가입한 이메일 : [[${email}]]</p>
+  <a data-th-href="@{form}">로그인</a>
+  <a data-th-href="@{findPassword}">비밀번호 찾기</a>
+</div>
+<div data-th-if="${email == 'none'}">
+  <span>가입정보가 없습니다.</span>
+  <a data-th-href="@{signIn}">회원가입</a>
+</div>
+
 <div data-th-replace="footer :: footer">꼬리말</div>
+
+<script>
+  function checkForm() {
+    var name = document.getElementById("name").value;
+    if ( name == null || name == "" || name.length < 1 ) {
+      alert("이름을 입력하세요.");
+      return false;
+    }
+    var phone = document.getElementById("phone").value;
+      if ( phone == null || phone == "" || phone.length < 1 ) {
+      alert("번호를 입력하세요.");
+      return false;
+    }
+  }
+</script>
 
 </body>
 </html>

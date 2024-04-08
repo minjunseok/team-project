@@ -8,7 +8,7 @@
   <resultMap id="UserMap" type="User">
     <id column="user_no" property="no"/>
     <result column="name" property="name"/>
-    <result column="pwd" property="pwd"/>
+    <result column="pwd" property="password"/>
     <result column="address" property="address"/>
     <result column="phone" property="phone"/>
     <result column="email" property="email"/>
@@ -24,9 +24,15 @@
     <result column="tag_no" property="no"/>
   </resultMap>
 
+  <resultMap id="AuthUserMap" type="AuthUser">
+    <result column="email" property="email"/>
+    <result column="pwd" property="password"/>
+    <result column="name" property="name"/>
+  </resultMap>
+
   <insert id="add" parameterType="User">
     insert into users(name,pwd,address,phone,email,nickname,birth,gender,profile,photo)
-    values(#{name},sha2(#{password},256),#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{profile},#{photo})
+    values(#{name},#{password},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{profile},#{photo})
   </insert>
 
   <insert id="add2" parameterType="list">
@@ -40,53 +46,52 @@
 
   <select id="findAll" resultMap="UserMap">
     select
-    user_no,
-    nickname,
-    email,
-    created_at
+      user_no,
+      nickname,
+      email,
+      created_at
     from
-    user_no
+      user_no
   </select>
 
-  <select id="findBy" resultMap="UserMap" parameterType="int">
-    select
-    user_no,
-    email,
-    name,
-    created_at
-    from
-    users
-    where
-    user_no=#{value}
-  </select>
-
-  <update id="update" parameterType="User">
-    update users set
-    email=#{email},
-    nickname=#{nickname},
-    phone=#{phone},
-    address=#{address},
-    photo=#{photo}
-    profile=#{profile}
-    <if test="password != ''">
-      , password=sha2(#{password},256)
-    </if>
-    where
-    user_no=#{no}
-  </update>
-
-  <select id="findByEmailAndPassword" resultMap="UserMap">
+  <select id="findByNo" resultMap="UserMap" parameterType="int">
     select
       user_no,
       email,
       name,
-      created_at
+    created_at
     from
       users
     where
-      email= #{email}
-      and pwd=sha2(#{password},256)
+      user_no=#{value}
   </select>
+
+  <select id="findByEmail" resultMap="UserMap" parameterType="string">
+    select
+        user_no,
+        email,
+        pwd,
+        name
+    from
+        users
+    where
+        email=#{email}
+  </select>
+
+  <update id="update" parameterType="User">
+    update users set
+      email=#{email},
+      nickname=#{nickname},
+      phone=#{phone},
+      address=#{address},
+      photo=#{photo}
+      profile=#{profile}
+    <if test="password != ''">
+      , pwd=#{password}
+    </if>
+    where
+      user_no=#{no}
+  </update>
 
   <select id="findByNameAndPhone" resultType="string">
     select
@@ -94,8 +99,19 @@
     from
       users
     where
-      name= #{name}
-      and phone= #{phone}
+      name=#{name}
+      and phone=#{phone}
+  </select>
+
+  <select id="getUserDetails" resultMap="AuthUserMap" parameterType="string">
+    select
+      email,
+      pwd,
+      name
+    from
+      users
+    where
+      email=#{email}
   </select>
 
 </mapper>

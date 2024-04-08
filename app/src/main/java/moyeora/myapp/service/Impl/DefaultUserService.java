@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.vo.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 public class DefaultUserService implements UserService {
 
   private final UserDao userDao;
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   public void add(User user) {
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
     userDao.add(user);
   }
 
@@ -26,13 +29,18 @@ public class DefaultUserService implements UserService {
 
   @Override
   public User get(int no) {
-    return userDao.findBy(no);
+    return userDao.findByNo(no);
   }
 
   @Override
-  public User get(String email, String password) {
-    return userDao.findByEmailAndPassword(email, password);
+  public User get(String email) {
+    return userDao.findByEmail(email);
   }
+
+//  @Override
+//  public User get(String email, String password) {
+//    return userDao.findByEmailAndPassword(email, password);
+//  }
 
   @Override
   public String getEmail(String name, String phone) {
@@ -41,6 +49,7 @@ public class DefaultUserService implements UserService {
 
   @Override
   public void update(User user) {
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
     userDao.update(user);
   }
 
