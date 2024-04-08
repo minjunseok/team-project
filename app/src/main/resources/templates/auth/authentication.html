@@ -10,10 +10,10 @@
 
 <h1>templates/auth/authentication.html</h1>
 
-<form data-th-if="${session.ok != true}" data-th-action="@{checkAuthenticationNumber}" method="post">
+<form data-th-if="${session.ok != true}" data-th-action="@{checkAuthenticationCode}" method="post">
   <label>
     인증번호:
-    <input name="authenticationNumber" type="text" oninput="checkInput(this)">
+    <input name="authenticationCode" type="text" oninput="checkInput(this)">
   </label>
   <span data-th-if="${session.no}"> 인증번호가 일치하지 않습니다.</span>
   <div id="DIV_MSG"></div>

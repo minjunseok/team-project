@@ -4,6 +4,4 @@
 # Ignore Gradle build output directory
 build
 
-.properties
-
-.gitignore
+application.properties

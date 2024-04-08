@@ -4,6 +4,7 @@ import java.util.List;
 import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Mapper
 public interface UserDao {
@@ -14,15 +15,15 @@ public interface UserDao {
 
   public List<User> findAll();
 
-  public User findBy(int no);
+  public User findByNo(int no);
 
   public int update(User member);
 
-  public User findByEmailAndPassword(
-      @Param("email") String email,
-      @Param("password") String password);
+  public User findByEmail(@Param("email") String email);
 
   public String findByNameAndPhone(
       @Param("name")  String name,
       @Param("phone") String phone);
+
+  public UserDetails getUserDetails(String username);
 }

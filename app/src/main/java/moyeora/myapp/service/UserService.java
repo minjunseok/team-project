@@ -11,7 +11,7 @@ public interface UserService {
 
   User get(int no);
 
-  User get(String email, String password);
+  User get(String email);
 
   String getEmail(String name, String phone);
 

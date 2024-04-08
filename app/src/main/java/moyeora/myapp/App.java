@@ -19,6 +19,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 @SpringBootApplication
 @EnableTransactionManagement
 @PropertySource({
+    "classpath:config/email.properties",
     "classpath:config/ncp.properties",
     "classpath:config/ncp-secret.properties"
 })

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset='UTF-8'>
+  <title>moyeora</title>
+</head>
+<body>
+
+<header data-th-fragment="header">
+  <img src='https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'>
+  <a data-th-href="@{/assignment/list}">과제</a>
+  <a data-th-href="@{/board/list(category=1)}">게시글</a>
+  <a data-th-href="@{/member/list}">회원</a>
+  <a data-th-href="@{/board/list(category=2)}">가입인사</a>
+  <a sec:authorize="isAuthenticated()" data-th-href="@{/auth/logout}">로그아웃</a>
+  <a sec:authorize="isAnonymous()" data-th-href="@{/auth/form}">로그인</a>
+  <a data-th-href="@{/about}">소개</a>
+</header>
+
+</body>
+</html>
