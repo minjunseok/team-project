@@ -13,7 +13,7 @@
 <h2>회원 정보 수정</h2>
 
 
-<form  data-th-object="${user}"
+<form action="update" data-th-action="@{update}" data-th-object="${user}"
       enctype='multipart/form-data'
       method='post'>
   <div>
@@ -27,6 +27,9 @@
     <input name='file' type='file'>
   </div>
 
+  <div>
+    매너온도: <input data-th-value='*{mannerPoint}' name='mannerPoint' type='text' value="50" disabled>
+  </div>
 
 
   <div>
@@ -108,26 +111,9 @@
   </tr>
   </tbody>
 
-
-
-<!--  <tbody>-->
-<!--  <tr data-th-each="tagNames : ${user.tagNames}" data-th-object="${tagNames}">-->
-<!--    <td>-->
-<!--      <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="*{name}"-->
-<!--   th:chekced="${user.tagNames == user}">-->
-<!--    </td>-->
-<!--    <td>-->
-<!--      <input type="hidden" data-th-value="*{no}">-->
-<!--      <span data-th-text="*{name}" >1</span>-->
-<!--    </td>-->
-<!--    <td data-th-if="*{no == 0 or no % 4 ==0}">-->
-<!--      <br>-->
-<!--    </td>-->
-<!--  </tr>-->
-<!--  </tbody>-->
-
-
-
+  <div>
+    <button>변경</button>
+  </div>
 
 </form>
 

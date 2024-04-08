@@ -12,6 +12,7 @@ public interface UserDao {
 
      public User findBy(int no);
 
+     public int update(User user);
 
 
 }
