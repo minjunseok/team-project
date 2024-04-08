@@ -48,6 +48,7 @@ public class DefaultSchoolService implements SchoolService {
 
   @Override
   public void add(School school) {
+    schoolDao.add(school);
   }
 
   @Override
