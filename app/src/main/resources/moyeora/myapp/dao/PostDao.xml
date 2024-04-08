@@ -134,10 +134,7 @@
 
   <select id="findBySchoolPostList" resultMap="PostMap" parameterType="int">
     SELECT DISTINCT
-<<<<<<< HEAD
 
-=======
->>>>>>> 41a9bd695b267c843865e75c182329eb34f7ae1a
     u.user_no,
     p.post_no,
     u.name as user_name,
@@ -160,11 +157,7 @@
     WHERE p.school_no = 1
 
     ORDER BY p.created_at DESC;
-
-
   </select>
-<<<<<<< HEAD
-=======
 
   <select id="findAll" resultMap="PostMap">
     SELECT distinct
@@ -181,9 +174,6 @@
     JOIN
     users AS u ON su.user_no = u.user_no;
   </select>
-
-
->>>>>>> 41a9bd695b267c843865e75c182329eb34f7ae1a
 </mapper>
 
 <!--  <collection property="fileList" ofType="AttachedFile">-->
