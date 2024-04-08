@@ -11,4 +11,6 @@ public interface UserDao {
 
      public User findBy(int no);
 
+     public void updateGrade(int no, int grade);
+
 }

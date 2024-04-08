@@ -57,6 +57,11 @@
         user_no = 38;
 </select>
 
+<update id="updateGrade">
+  update users
+    set grade=#{grade}
+  where user_no = #{no}
+</update>
 
 
 </mapper>

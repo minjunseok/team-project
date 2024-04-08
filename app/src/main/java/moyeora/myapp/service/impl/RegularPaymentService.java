@@ -10,6 +10,7 @@ import kr.co.bootpay.Bootpay;
 import kr.co.bootpay.model.request.SubscribePayload;
 import moyeora.myapp.dao.BillingKeyDao;
 import moyeora.myapp.dao.PurchaseDao;
+import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.dto.payment.RegularPaymentRequestDTO;
 import moyeora.myapp.service.PaymentService;
 import moyeora.myapp.vo.BillingKey;
@@ -17,10 +18,13 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 public class RegularPaymentService implements PaymentService {
 
   private final PurchaseDao purchaseDao;
+  private final UserDao userDao;
   private final BillingKeyDao billingKeyDao;
   final String restapi_key;
   final String private_key;
@@ -29,23 +33,27 @@ public class RegularPaymentService implements PaymentService {
     @Value("${bootpay.restapi.key}") String restapi_key,
     @Value("${bootpay.private.key}") String private_key,
     PurchaseDao purchaseDao,
+    UserDao userDao,
     BillingKeyDao billingKeyDao) {
     this.restapi_key = restapi_key;
     this.private_key = private_key;
     this.purchaseDao = purchaseDao;
+    this.userDao = userDao;
     this.billingKeyDao = billingKeyDao;
   }
 
 
+  @Transactional
   public void purchase(RegularPaymentRequestDTO regularPaymentRequestDTO) throws Exception {
     Bootpay bootpay = new Bootpay(restapi_key, private_key);
     bootpay.getAccessToken();
     SubscribePayload payload = new SubscribePayload();
     if (regularPaymentRequestDTO.getContent().equals("vip")) {
       payload.price = 5000;
-    }
-    if (regularPaymentRequestDTO.getContent().equals("vvip")) {
+    } else if (regularPaymentRequestDTO.getContent().equals("vvip")) {
       payload.price = 10000;
+    } else {
+      throw new Exception();
     }
     Calendar c = Calendar.getInstance();
     c.add(Calendar.MONTH, 1);
@@ -68,6 +76,11 @@ public class RegularPaymentService implements PaymentService {
         regularPaymentRequestDTO.setReceiptNo(jsonObject.getString("receipt_id"));
         regularPaymentRequestDTO.setPrice(jsonObject.getInt("price"));
         purchaseDao.add(regularPaymentRequestDTO);
+        userDao.updateGrade(
+          regularPaymentRequestDTO.getUserNo(),
+          regularPaymentRequestDTO.getContent().equals("vip") ? 1 : 2);
+      } else {
+        billingKeyDao.errorCountAdd(regularPaymentRequestDTO.getUserNo());
       }
     } catch (Exception e) {
       e.printStackTrace();
