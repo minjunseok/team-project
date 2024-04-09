@@ -27,3 +27,4 @@ public class MailController {
     return "auth/findPassword";
   }
 }
+    
