@@ -14,7 +14,7 @@ public class Class {
   private String security;
   private String content;
   private String location;
-  private String nowAt;
+  private String startAt;
   private String createdAt;
   private String endedAt;
   private String member;

@@ -78,5 +78,17 @@ public class DefaultSchoolService implements SchoolService {
   public List<School> findBySchoolName(String name) {
     return schoolDao.findBySchoolName(name);
   }
+
+  public List<List<Integer>> findSchoolNoByUserNo(List<Integer> userList) {
+    List<List<Integer>> arr = new ArrayList<>();
+    for(int user : userList) {
+      arr.add(schoolUserDao.findSchoolNoByUserNo(user));
+    }
+    return arr;
+  }
+
+  public void stopSchool(int schoolNo) {
+    schoolDao.stopSchool(schoolNo);
+  }
 }
 

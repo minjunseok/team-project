@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RegularPaymentScheduler {
   private final PaymentService paymentService;
-  @Scheduled(cron = ("0 3 18 * * *"))
+  @Scheduled(cron = ("0 48 15 * * *"))
   public void regularPaymentCron() throws Exception {
     //해당 날짜의 빌링키를 가져오고
     Calendar c = Calendar.getInstance();
@@ -29,7 +29,6 @@ public class RegularPaymentScheduler {
     //DTO에 저장 후
     List<BillingKey> arr = paymentService.billingKeyFindByDate(date);
     //구매한다
-    System.out.println(arr);
     for(BillingKey bi : arr) {
       RegularPaymentRequestDTO requestDTO = RegularPaymentRequestDTO.builder()
         .price(bi.getPrice())

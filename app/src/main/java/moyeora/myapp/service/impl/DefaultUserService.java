@@ -36,4 +36,13 @@ public class DefaultUserService implements UserService {
     public User get(int no) {
       return userDao.findBy(no);
     }
+
+    @Override
+    public List<String> findEmailByUserList(List<Integer> userList) {
+        return userDao.findEmailByUserList(userList);
+    }
+
+    public void downGrade(List<Integer> userList) {
+        userDao.downGrade(userList);
+    }
 }
