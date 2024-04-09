@@ -27,4 +27,7 @@ public interface SchoolService {
 
   int countAll(int categoryNo);
   public List<School> findBySchoolName(String name);
+  public void stopSchool(int no);
+  public List<List<Integer>> findSchoolNoByUserNo(List<Integer> userList);
+
 }

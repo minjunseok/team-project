@@ -13,4 +13,8 @@ public interface UserDao {
 
      public void updateGrade(int no, int grade);
 
+     List<String> findEmailByUserList(List<Integer> userList);
+
+     public void downGrade(List<Integer> userList);
+
 }

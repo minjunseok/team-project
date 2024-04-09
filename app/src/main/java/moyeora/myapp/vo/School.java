@@ -21,4 +21,5 @@ public class School implements Serializable {
   private int openRange;
   private Date createdAt;
   private int nowMemberCount;
+  private int stop;
 }

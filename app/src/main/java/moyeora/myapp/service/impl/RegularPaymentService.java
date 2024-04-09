@@ -98,5 +98,19 @@ public class RegularPaymentService implements PaymentService {
   public void billingKeyUpdateDate(Date date) {
     billingKeyDao.updateNextBillingDate(date);
   }
+
+  @Override
+  public List<BillingKey> findErrorCount() {
+    return billingKeyDao.findErrorCount();
+  }
+
+  public void stopSubscribe(int userNo) {
+    billingKeyDao.delete(userNo);
+  }
+
+  public void deleteByError() {
+    billingKeyDao.deleteByError();
+  }
+
 }
 

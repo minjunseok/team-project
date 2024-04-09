@@ -16,5 +16,10 @@ public interface BillingKeyDao {
 
   void updateNextBillingDate(Date nextBillingDate);
   void errorCountAdd(int no);
+  List<BillingKey> findErrorCount();
+
+  void delete(int no);
+
+  void deleteByError();
 
 }

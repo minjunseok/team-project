@@ -28,4 +28,8 @@ public interface SchoolDao {
   int countAll(int categoryNo);
   public List<School> findBySchoolName(@Param("name") String name);
 
+  public School findByNo(int no);
+
+  public void stopSchool(int no);
+
 }

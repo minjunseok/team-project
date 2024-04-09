@@ -47,7 +47,8 @@
 
   <update id="updateNextBillingDate">
     update billing_keys
-      set next_billing_date = DATE_ADD(#{nextBillingDate}, INTERVAL 1 MONTH)
+      set next_billing_date = DATE_ADD(#{nextBillingDate}, INTERVAL 1 MONTH),
+      billing_error_count=0
     where
       DATE_FORMAT(next_billing_date, '%Y-%m-%d') = #{nextBillingDate}
   </update>
@@ -59,4 +60,29 @@
       user_no=#{no}
   </update>
 
+  <select id="findErrorCount" resultMap="BillingKeyMap">
+    select
+      user_no,
+      billing_error_count
+    from
+      billing_keys
+    where
+      billing_error_count >= 1
+  </select>
+
+  <delete id="delete">
+    delete
+    from
+      billing_keys
+    where
+      user_no = #{no}
+  </delete>
+
+  <delete id="deleteByError">
+    delete
+    from
+      billing_keys
+    where
+      billing_error_count >=7
+  </delete>
 </mapper>

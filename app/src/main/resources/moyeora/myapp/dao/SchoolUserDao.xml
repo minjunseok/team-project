@@ -32,4 +32,15 @@
     where u.user_no=#{no}
   </select>
 
+  <select id="findSchoolNoByUserNo" parameterType="java.util.List">
+    select
+      school_no
+    from
+      school_users
+    where
+      user_no = #{user}
+    and grade_no=4
+    order by created_at asc;
+  </select>
+
 </mapper>

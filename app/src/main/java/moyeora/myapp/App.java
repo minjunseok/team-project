@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @EnableTransactionManagement
 @EnableScheduling
 @Controller
-@PropertySource({"classpath:ncp-storage.properties","classpath:ncp-secret.properties", "classpath:bootpay.properties"})
+@PropertySource({"classpath:ncp-storage.properties","classpath:ncp-secret.properties", "classpath:bootpay.properties", "classpath:config/email.properties"})
 public class App {
 
   public static void main(String[] args) throws Exception {

@@ -50,6 +50,23 @@
     where name like '%${name}%'
   </select>
 
+  <select id="findByNo" resultMap="SchoolMap">
+    select
+      school_no,
+      name,
+      stop
+    from
+      schools
+    where
+      school_no=#{no}
+  </select>
+
+  <update id="stopSchool">
+    update schools
+      set stop=1
+    where
+      school_no = #{no}
+  </update>
 
 
 </mapper>

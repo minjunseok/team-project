@@ -11,4 +11,9 @@ public interface PaymentService {
   void billingKeySave(RegularPaymentRequestDTO regularPaymentRequestDTO);
   public List<BillingKey> billingKeyFindByDate(Date date);
   public void billingKeyUpdateDate(Date date);
+
+  List<BillingKey> findErrorCount();
+  public void stopSubscribe(int userNo);
+
+  public void deleteByError();
 }
