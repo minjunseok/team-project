@@ -2,7 +2,6 @@ package moyeora.myapp.controller;
 
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.config.MailController;
 import moyeora.myapp.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

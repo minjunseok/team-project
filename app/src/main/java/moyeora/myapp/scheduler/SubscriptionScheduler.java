@@ -30,9 +30,11 @@ public class SubscriptionScheduler {
     for(BillingKey bi :paymentService.findErrorCount()) {
       memberLists.add(bi.getUserNo());
       if(bi.getBillingErrorCount()==1) {
+
         stopMemberList.add(bi.getUserNo());
       }
     }
+    userService.downGrade(stopMemberList);
     userService.findEmailByUserList(stopMemberList);
     this.stopSchool(schoolService.findSchoolNoByUserNo(stopMemberList));
     this.mailForStopUser(userService.findEmailByUserList(memberLists));

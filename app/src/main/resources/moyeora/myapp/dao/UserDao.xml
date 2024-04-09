@@ -80,12 +80,10 @@
   set
     grade = 0
   where
-    user_no =
-    <foreach collection="userList" item="user">
-      #{user}
-    </foreach>
-
+    user_no in
+  <foreach collection="userList" item="user" open="(" separator="," close=")">
+    #{user}
+  </foreach>
 </update>
-
 
 </mapper>

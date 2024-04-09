@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/user")
 public class UserController implements InitializingBean {
-    private static final Log log = LogFactory.getLog(UserController.class);
-    private final UserService userService;
-    private final TagService tagService;
-    private final FileUpload fileUpload;
-    private final String uploadDir =  "user/";;
-    @Value("${ncp.storage.bucket}") private String bucket;
+  private static final Log log = LogFactory.getLog(UserController.class);
+  private final UserService userService;
+  private final TagService tagService;
+  private final FileUpload fileUpload;
+  private final String uploadDir =  "user/";;
+  @Value("${ncp.storage.bucket}") private String bucket;
 
 
 
@@ -33,7 +33,6 @@ public class UserController implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
 
         log.debug(String.format("uploadDir: %s", this.uploadDir));
-        log.debug(String.format("bucket: %s", this.bucket));
     }
 
     @GetMapping("form")

@@ -1,4 +1,4 @@
-package moyeora.myapp.service.impl;
+package moyeora.myapp.service.Impl;
 
 
 import java.util.List;
@@ -56,16 +56,6 @@ public class DefaultUserService implements UserService {
   @Override
   public void delete(int no) {
     userDao.delete(no);
-  }
-
-  @Override
-  public List<String> findEmailByUserList(List<Integer> userList) {
-    return userDao.findEmailByUserList(userList);
-  }
-
-  @Override
-  public void downGrade(List<Integer> userList) {
-    userDao.downGrade(userList);
   }
 
 }
