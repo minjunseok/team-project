@@ -95,8 +95,8 @@ public class RegularPaymentService implements PaymentService {
     return billingKeyDao.findByDate(date);
   }
 
-  public void billingKeyUpdateDate(Date date) {
-    billingKeyDao.updateNextBillingDate(date);
+  public void billingKeyUpdateDate(Date date, int userNo) {
+    billingKeyDao.updateNextBillingDate(date, userNo);
   }
 
   @Override
@@ -105,11 +105,19 @@ public class RegularPaymentService implements PaymentService {
   }
 
   public void stopSubscribe(int userNo) {
-    billingKeyDao.delete(userNo);
+    billingKeyDao.deleteKey(userNo);
   }
 
   public void deleteByError() {
     billingKeyDao.deleteByError();
+  }
+
+  public void deleteBillingKeyByUserNo(int userNo) {
+    billingKeyDao.deleteByUserNo(userNo);
+  }
+
+  public int findBillingKeyByUserNo(int userNo) {
+    return billingKeyDao.findByUserNo(userNo);
   }
 
 }

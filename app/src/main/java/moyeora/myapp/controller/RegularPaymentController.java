@@ -30,6 +30,11 @@ public class RegularPaymentController {
   public ResponseEntity<RegularPaymentResponseDTO> purchase (
     @RequestBody RegularPaymentRequestDTO regularPaymentRequestDTO) throws Exception {
     regularPaymentRequestDTO.setUserNo(1);
+
+    if(paymentService.findBillingKeyByUserNo(3) > 0) {
+      return ResponseEntity.status(400).build();
+    }
+
     paymentService.purchase(regularPaymentRequestDTO);
     RegularPaymentResponseDTO regularPaymentResponseDTO = new RegularPaymentResponseDTO();
     try {

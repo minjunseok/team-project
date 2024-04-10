@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RegularPaymentScheduler {
   private final PaymentService paymentService;
-  @Scheduled(cron = ("0 48 15 * * *"))
+  @Scheduled(cron = ("0 31 14 * * *"))
   public void regularPaymentCron() throws Exception {
     //해당 날짜의 빌링키를 가져오고
     Calendar c = Calendar.getInstance();
@@ -30,6 +30,9 @@ public class RegularPaymentScheduler {
     List<BillingKey> arr = paymentService.billingKeyFindByDate(date);
     //구매한다
     for(BillingKey bi : arr) {
+      if(bi.getBillingKey()==null || bi.getBillingKey().isEmpty()) {
+          paymentService.deleteBillingKeyByUserNo(bi.getUserNo());
+      }
       RegularPaymentRequestDTO requestDTO = RegularPaymentRequestDTO.builder()
         .price(bi.getPrice())
         .billingKey(bi.getBillingKey())
@@ -39,7 +42,7 @@ public class RegularPaymentScheduler {
         .build();
       try {
         paymentService.purchase(requestDTO);
-        paymentService.billingKeyUpdateDate(date);
+        paymentService.billingKeyUpdateDate(date, bi.getUserNo());
       } catch (Exception e) {
         //환불해야함
       }
