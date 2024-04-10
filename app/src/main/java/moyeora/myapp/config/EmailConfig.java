@@ -30,14 +30,14 @@ public class EmailConfig {
   @Value("${spring.mail.properties.mail.smtp.starttls.required}")
   private boolean starttlsRequired;
 
-  @Value("${spring.mail.properties.mail.smtp.connectiontimeout}")
-  private int connectionTimeout;
-
-  @Value("${spring.mail.properties.mail.smtp.timeout}")
-  private int timeout;
-
-  @Value("${spring.mail.properties.mail.smtp.writetimeout}")
-  private int writeTimeout;
+//  @Value("${spring.mail.properties.mail.smtp.connectiontimeout}")
+//  private int connectionTimeout;
+//
+//  @Value("${spring.mail.properties.mail.smtp.timeout}")
+//  private int timeout;
+//
+//  @Value("${spring.mail.properties.mail.smtp.writetimeout}")
+//  private int writeTimeout;
 
   @Bean
   public JavaMailSender mailSender() {
@@ -57,7 +57,7 @@ public class EmailConfig {
     properties.put("mail.smtp.auth", "true");
     properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
     properties.put("mail.smtp.starttls.enable", "true");
-    properties.put("mail.debug", "true"); // 디버깅 정보 출력
+    properties.put("mail.debug", "true");
     properties.put("mail.smtp.ssl.trust", "smtp.naver.com");
     properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
     return properties;
