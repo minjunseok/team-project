@@ -54,4 +54,5 @@ public class AuthController {
 
   @PostMapping("getPassword")
   public void getPassword() {}
+
 }

@@ -14,12 +14,16 @@ public interface BillingKeyDao {
 
   List<BillingKey> findByDate(Date nowAt);
 
-  void updateNextBillingDate(Date nextBillingDate);
+  void updateNextBillingDate(Date nextBillingDate, int no);
   void errorCountAdd(int no);
   List<BillingKey> findErrorCount();
 
-  void delete(int no);
+  void deleteKey(int no);
 
   void deleteByError();
+
+  void deleteByUserNo(int no);
+
+  int findByUserNo(int no);
 
 }
