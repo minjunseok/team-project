@@ -1,8 +1,15 @@
 package moyeora.myapp.controller;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Random;
+import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.service.Impl.DefaultMailService;
 import moyeora.myapp.service.UserService;
+import moyeora.myapp.service.util.RedisUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -16,10 +23,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
+  private static final String AUTH_CODE_PREFIX = "AuthCode ";
 
   private static final Log log = LogFactory.getLog(AuthController.class);
   private final UserService userService;
-  private final MailController mailController;
+  private final DefaultMailService mailService;
+  private final RedisUtil redisUtil;
+
+  private String createCode() {
+    int leftLimit = 48;
+    int rightLimit = 122;
+    int targetStringLength = 12;
+    Random random = new Random();
+
+    return random.ints(leftLimit, rightLimit + 1)
+        .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+        .limit(targetStringLength)
+        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+        .toString();
+  }
 
   @GetMapping("form")
   public void getLoginForm(@CookieValue(required = false) String email, Model model) {
@@ -27,31 +49,57 @@ public class AuthController {
   }
 
   @GetMapping("findEmail")
-  public void getFindEmailForm() throws Exception {
+  public void getFindEmailForm() {
   }
 
   @PostMapping("getEmail")
-  public String getEmail(String name, String phone, Model model) throws Exception {
+  public String getEmailByNameAndPhone(String name, String phone, Model model) {
     String email = userService.getEmail(name,phone);
     model.addAttribute("email", Objects.requireNonNullElse(email, "none"));
     return "auth/findEmail";
   }
 
   @GetMapping("findPassword")
-  public void getFindPasswordForm(Model model) throws Exception {
+  public void getFindPasswordForm(Model model) {
     model.addAttribute("status","request");
   }
 
-  @PostMapping("checkCode")
-  public String checkCode(String code, String authCode, Model model) throws Exception {
-    if (code.equals(authCode)) {
-      model.addAttribute("status", "success");
+  @PostMapping ("/sendEmail")
+  public String sendEmail(String email, Model model) throws Exception {
+    if(userService.get(email) == null) { // 다른 기능이랑 공유하려면 이부분 수정해야함
+      model.addAttribute("status","email not found");
     } else {
-      model.addAttribute("status", "fail");
+      String authId = createAuthId(email);
+      String code = createCode();
+      mailService.sendEmail(email, code, authId);
+      model.addAttribute("status","sent");
+      model.addAttribute("authId", authId);
+      redisUtil.setDataExpire(authId, code,60 * 5L);
     }
-    return "auth/findPassword";
+    return "/auth/findPassword";
   }
 
-  @PostMapping("getPassword")
-  public void getPassword() {}
+  @PostMapping("verifyCode")
+  public String verifyCode(String email, String code, String authId, Model model) throws NoSuchAlgorithmException {
+    String savedCode = redisUtil.getData(authId);
+    if (savedCode == null) {
+      model.addAttribute("status","savedCode == null");
+    } else if (!savedCode.equals(code)) {
+      model.addAttribute("status","savedCode != code");
+    } else {
+      model.addAttribute("status","success");
+    }
+    return "/auth/findPassword";
+  }
+
+  private String createAuthId(String email) throws NoSuchAlgorithmException { // 이메일로 항상 유지되는 키값으로 사용할것.
+    MessageDigest md = MessageDigest.getInstance("SHA-256");
+    md.update(email.getBytes());
+    md.update(LocalDateTime.now().toString().getBytes()); // 여기 확인후 수정 필요해보임
+    StringBuilder builder = new StringBuilder();
+    for (byte b: md.digest()) {
+      builder.append(String.format("%02x", b));
+    }
+    return builder.toString();
+  }
 }
