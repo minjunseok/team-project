@@ -26,9 +26,9 @@ public class DefaultUserService implements UserService {
 
     @Override
     public void add(User user) {
-        userDao.add(user);
 
         if(user.getTagNums() != null && user.getTagNums().size() >=3) {
+            userDao.add(user);
             for(int tagNum : user.getTagNums()) {
                 userTagDao.add(tagNum, user.getNo());
             }

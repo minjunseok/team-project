@@ -1,6 +1,9 @@
 package moyeora.myapp.service.impl;
 
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.ClassDao;
@@ -22,4 +25,12 @@ public class DefaultClassService implements ClassService {
   public List<Class> findByUserAddress(String address) {
     return classDao.findByUserAddress(address);
   }
+
+  @Override
+  public void add(Class clazz) {
+
+    classDao.add(clazz);
+  }
+
+
 }

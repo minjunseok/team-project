@@ -1,12 +1,14 @@
 package moyeora.myapp.vo;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import java.io.Serializable;
+import java.util.Date;
+@Data
+public class Class implements Serializable {
 
-@Getter
-@Setter
-public class Class {
+  private static final long serialVersionUID = 100L;
+
   private int no;
   private int schoolNo;
   private int userNo;
@@ -14,12 +16,14 @@ public class Class {
   private String security;
   private String content;
   private String location;
-  private String nowAt;
-  private String createdAt;
-  private String endedAt;
+  private Date startAt;
+  private Date createdAt;
+  private Date endedAt;
   private String member;
   private String repeatSet;
   private String photo;
   private int nowMemberCount;
+  private String locationDetail;
+
 
 }
