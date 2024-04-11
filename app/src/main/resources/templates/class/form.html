@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>비트캠프 데브옵스 5기</title>
+
+
+
+</head>
+<body>
+
+
+
+<h1>일정 등록</h1>
+
+<form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
+    <input type="hidden" name="schoolNo" value="1">
+
+    <div>
+        제목: <input name='name' type='text'>
+    </div>
+
+    <div>
+        설명: <input name='content' type='text'>
+
+            사진: <input name='file' type='file'>
+    </div>
+
+
+    <div>
+        모임일 <br>
+      날짜 시간 설정:  <input  name="startAt2" type="datetime-local">
+    </div>
+
+    <div>
+       종료 시간 <br>
+     날짜 시간 설정:   <input  name="endedAt2" type="datetime-local">
+
+    </div>
+
+<!--    <div>-->
+<!--        모임일 <br>-->
+<!--        날짜설정: <input id="startAtDate" type="date">-->
+<!--        시간설정: <input id="startAtTime" type="time">-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--        종료 시간 <br>-->
+<!--        날짜설정: <input id="endedAtDate" type="date">-->
+<!--        시간설정: <input id="endedAtTime" type="time">-->
+<!--    </div>-->
+
+
+    <div>
+        위치: <input name='location' type='text'>
+     상세주소:   <input type="text" id="locationDetail" name="locationDetail" placeholder="상세주소">
+    </div>
+
+    <div>
+        공개대상: <input type="radio" name="security" value="0"> 공개
+                  <input type="radio" name="security" value="1"> 스쿨만
+        인원: <input name='member' type='text'>
+    </div>
+
+    <div>
+        초대하기: <input name='title' type='text'>
+        정기여부:<input type="radio" name="repeatSet" value="0"> 정기
+                 <input type="radio" name="repeatSet" value="1"> 번개
+
+    </div>
+    <br>
+    <button>등록</button>
+
+
+
+</form>
+
+
+
+
+</body>
+</html>

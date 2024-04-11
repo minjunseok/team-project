@@ -2,6 +2,7 @@ package moyeora.myapp.dao;
 
 
 import java.util.List;
+
 import moyeora.myapp.vo.Class;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -10,5 +11,11 @@ import org.apache.ibatis.annotations.Param;
 public interface ClassDao {
   public List<Class> findByDate(@Param("date") String date);
 
-  public List<Class>  findByUserAddress(String address);
+  public List<Class> findByUserAddress(String address);
+
+  public void add(Class clazz);
+
+
+
+
 }

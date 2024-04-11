@@ -12,13 +12,14 @@
     <result column="security" property="security"/>
     <result column="content" property="content"/>
     <result column="location" property="location"/>
-    <result column="now_at" property="nowAt"/>
+    <result column="start_at" property="startAt"/>
     <result column="created_at" property="createdAt"/>
     <result column="ended_at" property="endedAt"/>
     <result column="member" property="member"/>
     <result column="repeat_set" property="repeatSet"/>
     <result column="photo" property="photo"/>
     <result column="now_member_count" property="nowMemberCount"/>
+    <result column="location_detail" property="locationDetail"/>
   </resultMap>
 
   <select id="findByDate" resultMap="ClassMap" parameterType="String">
@@ -29,7 +30,7 @@
       security,
       content,
       location,
-      now_at,
+      start_at,
       member,
       photo
     from
@@ -40,7 +41,14 @@
 
   <select id="findByUserAddress" resultMap="ClassMap" parameterType="String">
 
-
   </select>
+
+<insert id="add" parameterType="Class">
+    insert into classes(school_no,user_no,name,security,content,location,start_at,created_at,ended_at,member,repeat_set,photo,location_detail)
+    values(#{schoolNo},#{userNo},#{name},#{security},#{content},#{location},#{startAt},current_timestamp,#{endedAt},#{member},#{repeatSet},
+    #{photo},#{locationDetail})
+</insert>
+
+
 
 </mapper>
