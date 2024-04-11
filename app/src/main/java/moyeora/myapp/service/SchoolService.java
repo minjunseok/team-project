@@ -5,6 +5,7 @@ import java.util.List;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
 import moyeora.myapp.vo.Tag;
+import org.springframework.ui.Model;
 
 public interface SchoolService {
 
@@ -25,4 +26,5 @@ public interface SchoolService {
   int delete(int postNo);
 
   int countAll(int categoryNo);
+  public List<School> findBySchoolName(String name);
 }

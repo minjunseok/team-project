@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset='UTF-8'>
+  <title>모여라 </title>
+</head>
+<body>
+
+
+
+<h1>회원 관리 시스템</h1>
+
+<h2>회원 정보 수정</h2>
+
+
+<form  data-th-object="${user}"
+      enctype='multipart/form-data'
+      method='post'>
+  <div>
+    사진:
+    <a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + *{photo}}"
+       data-th-if="*{photo}">
+      <img
+              data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/' + *{photo}(type=f,w=80,h=80)}"></a><br>
+    <a data-th-unless="*{photo}" href='/img/default-photo.jpeg'>
+      <img height='80px' src='/img/default-photo.jpeg'></a><br>
+    <input name='file' type='file'>
+  </div>
+
+
+
+  <div>
+    이메일: <input data-th-value='*{email}' name='email' type='text' value="hong@test.com" disabled>
+  </div>
+
+  <div>
+    비밀번호: <input name='pwd' type='password' size="20" placeholder="비밀번호" disabled >
+    <button>변경</button>
+  </div>
+
+  <div>
+    닉네임: <input data-th-value="*{nickname}" name='nickname'  type='text' value="21" >
+  </div>
+
+  <div>
+    이름: <input data-th-value="*{name}" name='name' type='text' value="홍길동" disabled>
+  </div>
+
+  <div>
+    생년월일: <input data-th-value="*{birth}" name='birth' type='date' readonly>
+  </div>
+
+  <div>
+    전화번호: <input data-th-value="*{phone}" name='phone' type='text' placeholder="전화번호" >
+  </div>
+
+  <div>
+    주소: <input data-th-value="*{address}" name='address' type='text'>
+  </div>
+  <button>주소 검색</button>
+
+  <div>
+    상세 주소: <input data-th-value="*{addressDetail}" name='addressDetail' type='text'>
+  </div>
+
+  <div>
+
+      자기소개:
+    <div>
+      <label for="profile">프로필:</label>
+      <textarea id="profile" name="profile">[[*{profile}]]</textarea>
+    </div>
+  </div>
+
+  <div>
+    가입일: <input data-th-value="${#dates.format(user.createdAt,'yyyy-MM-dd')}" disabled
+                type='text' value="2024-03-27" >
+  </div>
+
+
+
+  <div>
+    <label>
+      <input type="checkbox" th:checked="*{gender == 0}" value="0" disabled> 남자
+    </label>
+    <label>
+      <input type="checkbox" th:checked="*{gender == 1}" value="1" disabled> 여자
+    </label>
+  </div>
+
+
+  <div>
+    <h2>관심사</h2>
+  </div>
+
+  <tbody>
+  <tr data-th-each="tag : ${tags}">
+    <td>
+      <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="${tag.no}">
+    </td>
+    <td>
+      <span data-th-text="${tag.name}" >1</span>
+    </td>
+    <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+      <br>
+    </data-th-block>
+  </tr>
+  </tbody>
+
+
+
+</form>
+
+</body>
+</html>

@@ -28,4 +28,14 @@ public interface PostService {
   int countAll(int categoryNo);
 
   String findByPost(String content);
+
+  public List<Post> findByLike();
+
+  public List<Post> findByFollow();
+
+  public List<Post> findByUser(int no);
+
+  public List<Post> findBySchoolPost();
+
+  public List<Post> findBySchoolPostList(int schoolNo);
 }

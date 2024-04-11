@@ -1,8 +1,7 @@
 package moyeora.myapp.dao;
 
-import moyeora.myapp.vo.Post;
 import java.util.List;
-
+import moyeora.myapp.vo.Post;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,5 +20,15 @@ public interface PostDao {
 
   int countAll(int categoryNo);
 
+  public List<Post> findByLike();
+
+  public List<Post> findByFollow();
+
+  public List<Post> findByUser(int no);
+
+  public List<Post> findByFollow(int no);
+
   String findByPost(String content);
+  public List<Post> findBySchoolPost();
+  public List<Post> findBySchoolPostList(int schoolNo);
 }

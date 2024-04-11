@@ -1,89 +1,167 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="moyeora.myapp.dao.PostDao">
 
-
   <resultMap id="PostMap" type="Post">
-  <id column="post_no" property="no"/>
-  <result column="school_no" property="schoolNo"/>
-  <result column="category_no" property="categoryNo"/>
-  <result column="content" property="content"/>
-  <result column="created_at" property="createdAt"/>
 
-  <association property="User" javaType="User">
-    <id column="user_no" property="no"/>
-    <result column="name" property="name"/>
-  </association>
+    <id column="post_no" property="no"/>
+    <result column="school_no" property="schoolNo"/>
+    <result column="user_no" property="userNo"/>
+    <result column="category_no" property="categoryNo"/>
+    <result column="content" property="content"/>
+    <result column="created_at" property="createdAt"/>
+    <result column="like_count" property="likeCount"/>
+    <result column="comment_count" property="commentCount"/>
 
-<!--  <collection property="fileList" ofType="AttachedFile">-->
-<!--    <id column="file_no" property="no"/>-->
-<!--    <result column="file_path" property="filePath"/>-->
-<!--    <result column="post_no" property="postNo"/>-->
-<!--  </collection>-->
-</resultMap>
 
-  <insert id="add" parameterType="Post"
-    useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
-    insert into posts(content)
-    values(#{schoolNo})
-  </insert>
 
-<!--카테고리 사용할 때 주석 풀 것-->
-<!--    <insert id="add" parameterType="Post"-->
-<!--    useGeneratedKeys="true" keyColumn="no" keyProperty="no">-->
-<!--    insert into posts(school_no,user_no,category,created_at)-->
-<!--    values(#{schoolNo},#{userNo.no},#{category},#{createdAt})-->
-<!--  </insert>-->
 
-  <delete id="delete" parameterType="int">
-    delete from posts
-    where no=#{value}
-  </delete>
 
-<!--  <select id="findAll" resultMap="PostMap">-->
-<!--    select-->
-<!--      p.no,-->
-<!--      p.school_no,-->
-<!--      p.user_no,-->
-<!--      p.created_at,-->
-<!--      u.user_no,-->
-<!--      u.name-->
-<!--    from-->
-<!--      posts p left inner join users u on p.user_no = u.user_no-->
-<!--    where-->
-<!--      p.category=#{category}-->
-<!--    order by-->
-<!--      p.no desc-->
-<!--    limit #{rowCount} offset #{offset}-->
-<!--  </select>-->
+    <association property="writer" javaType="User">
+      <id column="user_no" property="no"/>
+      <result column="name" property="name"/>
+      <result column="photo" property="photo"/>
+    </association>
 
-  <select id="findBy" resultMap="PostMap" parameterType="int">
-    select
-      p.post_no,
-      p.school_no,
-      p.user_no,
-      p.created_at
+    <association property="schoolUser" javaType="SchoolUser">
+      <id column="user_no" property="userNo"/>
+    </association>
+
+    <association property="school" javaType="School">
+      <id column="school_no" property="no"/>
+      <result column="school_name" property="name"/>
+      <result column="school_photo" property="photo"/>
+    </association>
+
+    <collection property="fileList" ofType="AttachedFile">
+      <id column="file_no" property="no"/>
+      <result column="path" property="path"/>
+      <result column="name" property="name"/>
+      <result column="post_no" property="postNo"/>
+    </collection>
+
+<!--    <collection property="comment" javaType="Comment">-->
+<!--      <id column="comment_no" property="no"/>-->
+<!--      <result column="name" property="name"/>-->
+<!--    </collection>-->
+  </resultMap>
+
+
+
+  <select id="findByLike" resultMap="PostMap" parameterType="int">
+    SELECT
       u.user_no,
-      u.name
-    from
-      posts p inner join user u on p.user_no = u.user_no
-    where
-      p.user_no=#{value}
+      u.name AS user_name,
+      p.post_no,
+      s.school_no,
+      p.created_at,
+      (select count(*) from likes as l where l.post_no=p.post_no) as like_count,
+      (select count(*) from comments as c where c.post_no=p.post_no) as comment_count,
+      s.name AS school_name,
+      s.photo AS school_photo,
+      p.content AS post_content,
+      f.path,
+      f.name,
+      f.post_no
+    FROM
+      posts p
+    INNER JOIN schools s ON s.school_no = p.school_no
+    INNER JOIN users u ON p.user_no = u.user_no
+    LEFT OUTER JOIN files f ON p.post_no = f.post_no
+    order by like_count desc;
+
+  </select>
+  <select id="findByFollow" resultMap="PostMap" parameterType="int">
+    SELECT
+      u.user_no,
+      u.name AS user_name,
+      p.post_no,
+      s.school_no,
+      p.created_at,
+      (select count(*) from likes as l where l.post_no=p.post_no) as like_count,
+      (select count(*) from comments as c where c.post_no=p.post_no) as comment_count,
+      s.name AS school_name,
+      s.photo AS school_photo,
+      p.content AS post_content,
+      f.path,
+      f.name,
+      f.post_no
+    FROM
+      posts p
+      INNER JOIN schools s ON s.school_no = p.school_no
+      INNER JOIN users u ON p.user_no = u.user_no
+      INNER JOIN follows fo ON fo.follower_user_no = u.user_no
+      LEFT OUTER JOIN files f ON p.post_no = f.post_no
+    where fo.following_user_no=#{no};
+
+  </select>
+  <select id="findByUser" resultMap="PostMap" parameterType="int">
+    SELECT
+      u.user_no,
+      u.name AS user_name,
+      p.post_no,
+      s.school_no,
+      p.created_at,
+      (select count(*) from likes as l where l.post_no=p.post_no) as like_count,
+      (select count(*) from comments as c where c.post_no=p.post_no) as comment_count,
+      s.name AS school_name,
+      s.photo AS school_photo,
+      p.content AS post_content,
+      f.path,
+      f.name,
+      f.post_no
+    FROM
+      posts p
+    INNER JOIN schools s ON s.school_no = p.school_no
+    INNER JOIN users u ON p.user_no = u.user_no
+    LEFT OUTER JOIN files f ON p.post_no = f.post_no
+    where p.user_no=#{no}
+    order by p.created_at desc;
   </select>
 
-  <update id="update" parameterType="Post">
-    update posts set
-      content=#{content},
-      category=#{category},
-    where
-      no=#{no}
-  </update>
+  <select id="findBySchoolPost" resultMap="PostMap">
+    select
 
-  <select id="countAll" resultType="int" parameterType="int">
-    select count(*) from posts where category=#{value}
+    post_no,
+    school_no,
+    user_no,
+    category_no,
+    content,
+    created_at
+
+    from
+
+    posts
+  </select>
+
+  <select id="findBySchoolPostList" resultMap="PostMap" parameterType="int">
+    SELECT DISTINCT
+    u.user_no,
+    p.post_no,
+    u.name as user_name,
+    u.photo,
+    p.content,
+    c.content as content_content,
+    f.name as file_name ,
+    p.created_at
+
+    FROM
+
+    posts p
+
+    INNER JOIN school_users su ON p.school_no = su.school_no
+    INNER JOIN users u ON p.user_no = u.user_no
+    LEFT OUTER JOIN schools s ON p.school_no = s.school_no
+    LEFT OUTER JOIN comments c ON p.post_no = c.post_no
+    LEFT OUTER JOIN files f ON p.post_no = f.post_no
+
+    WHERE p.school_no = 1
+
+    ORDER BY p.created_at DESC;
+
+
   </select>
 
   <select id="findAll" resultMap="PostMap">
@@ -94,22 +172,19 @@
     p.user_no,
     p.content,
     p.created_at
-FROM
+    FROM
     posts AS p
-JOIN
+    JOIN
     school_users AS su ON p.user_no = su.user_no
-JOIN
+    JOIN
     users AS u ON su.user_no = u.user_no;
   </select>
-  
-   <select id="findByPost" resultMap="PostMap" parameterType="String">
-    select
-    post_no,
-    name,
-    content
-    from
-    posts
-    where name like '%${name}%'
-  </select>
+
 
 </mapper>
+
+<!--  <collection property="fileList" ofType="AttachedFile">-->
+<!--    <id column="file_no" property="no"/>-->
+<!--    <result column="file_path" property="filePath"/>-->
+<!--    <result column="post_no" property="postNo"/>-->
+<!--  </collection>-->
