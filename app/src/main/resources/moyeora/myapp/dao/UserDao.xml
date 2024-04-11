@@ -22,10 +22,13 @@
     <result column="manner_point" property="mannerPoint"/>
     <result column="photo" property="photo"/>
     <result column="address_detail" property="addressDetail"/>
-
-
   </resultMap>
 
+  <resultMap id="AuthUserMap" type="AuthUser">
+    <result column="email" property="email"/>
+    <result column="pwd" property="password"/>
+    <result column="name" property="name"/>
+  </resultMap>
 
 
 
@@ -56,6 +59,75 @@
     where
         user_no = 38;
 </select>
+
+  <insert id="add2" parameterType="list">
+    insert into member_tags(user_no,tag_no)
+    values(#{no},#{no})
+  </insert>
+
+  <delete id="delete" parameterType="int">
+    delete from users where user_no=#{value}
+  </delete>
+
+  <select id="findAll" resultMap="UserMap">
+    select
+    user_no,
+    nickname,
+    email,
+    created_at
+    from
+    user_no
+  </select>
+
+  <select id="findByNo" resultMap="UserMap" parameterType="int">
+    select
+    user_no,
+    email,
+    name,
+    created_at
+    from
+    users
+    where
+    user_no=#{value}
+  </select>
+
+  <select id="findByEmail" resultMap="UserMap" parameterType="string">
+    select
+    user_no,
+    email,
+    pwd,
+    name
+    from
+    users
+    where
+    email=#{email}
+  </select>
+
+  <update id="update" parameterType="User">
+  update users set
+  email=#{email},
+  nickname=#{nickname},
+  phone=#{phone},
+  address=#{address},
+  photo=#{photo}
+  profile=#{profile}
+  <if test="password != ''">
+    , pwd=#{password}
+  </if>
+  where
+  user_no=#{no}
+  </update>
+
+  <select id="getUserDetails" resultMap="AuthUserMap" parameterType="string">
+    select
+    email,
+    pwd,
+    name
+    from
+    users
+    where
+    email=#{email}
+  </select>
 
 <update id="updateGrade">
   update users
