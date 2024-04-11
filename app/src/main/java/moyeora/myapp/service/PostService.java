@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface PostService {
 
+//  void add(Post post);
   void add(Post post);
 
   List<Post> findAll(int categoryNo);
