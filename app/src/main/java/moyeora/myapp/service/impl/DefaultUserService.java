@@ -2,8 +2,14 @@ package moyeora.myapp.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.UserDao;
+//import moyeora.myapp.dao.UserTagDao;
+import moyeora.myapp.dao.UserTagDao;
 import moyeora.myapp.service.UserService;
+import moyeora.myapp.vo.Tag;
 import moyeora.myapp.vo.User;
+import moyeora.myapp.vo.UserTag;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,41 +17,23 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class DefaultUserService implements UserService {
+    private static final Log log = LogFactory.getLog(DefaultUserService.class);
+    private final UserDao userDao;
+    private final UserTagDao userTagDao;
 
-  private final UserDao userDao;
+    @Override
+    public void add(User user) {
+        userDao.add(user);
 
-  @Override
-  public void add(User user) {
-    userDao.add(user);
-  }
+        if(user.getTagNums() != null && user.getTagNums().size() >=3) {
+            for(int tagNum : user.getTagNums()) {
+                userTagDao.add(tagNum, user.getNo());
+            }
+        }
+    }
 
-  @Override
-  public List<User> list(int pageNo, int pageSize) {
-    return userDao.findAll(pageSize * (pageNo - 1), pageSize);
-  }
-
-  @Override
-  public User get(int userNo) {
-    return userDao.findBy(userNo);
-  }
-
-  @Override
-  public User get(String email, String pwd) {
-    return userDao.findByEmailAndPwd(email, pwd);
-  }
-
-  @Override
-  public int update(User user) {
-    return userDao.update(user);
-  }
-
-  @Override
-  public int delete(int userNo) {
-    return userDao.delete(userNo);
-  }
-
-  @Override
-  public int countAll() {
-    return userDao.countAll();
-  }
+    @Override
+    public User get(int no) {
+      return userDao.findBy(no);
+    }
 }

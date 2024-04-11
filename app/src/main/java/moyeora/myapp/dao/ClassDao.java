@@ -9,4 +9,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface ClassDao {
   public List<Class> findByDate(@Param("date") String date);
+
+  public List<Class>  findByUserAddress(String address);
 }

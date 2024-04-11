@@ -38,5 +38,9 @@
       now_at = '${date}'
   </select>
 
+  <select id="findByUserAddress" resultMap="ClassMap" parameterType="String">
+
+
+  </select>
 
 </mapper>

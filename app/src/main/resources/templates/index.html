@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
+<html lang="en" xmlns:th="//www.thymeleaf.org">
+
 <head>
   <meta charset='UTF-8'>
   <title>비트캠프 데브옵스 5기</title>
@@ -8,11 +10,28 @@
   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
+
+
 <div data-th-each="school : ${schools}" data-th-object="${school}">
   <input type="hidden" data-th-value="*{no}">
   <div data-th-text="*{name}"></div>
   <div data-th-text="*{photo}"></div>
 </div>
+
+
+<form th:action="@{/school/search}" method="get">
+  <input type="text" name="name">
+  <button type="submit">검색</button>
+</form>
+
+
+
+<!--  <th:block th:each="page:${#numbers.sequence(startPage,endPage)}">-->
+<!--    <a th:if="${page != nowPage}" th:href="@{/board/list(page=${page-1}, searchKeyword=${param.searchKeyword})}" th:text ="${page}"></a>-->
+<!--    <strong th:if="${page==nowPage}" th:text ="${page}" style="color:red"></strong>-->
+
+<!--  </th:block>-->
+
 
 <a style = "cursor: pointer" data-th-each="week : ${weeks}" data-th-onclick="@{'dataList(\'' + ${week} + '\')'}" data-th-text="${week}  "></a>
 <ol id = "byDate" data-th-each="class : ${classes}" data-th-object="${class}">
@@ -32,54 +51,58 @@
 </div>
 
 <script>
+let map;
+let mapOption;
+let mapContainer;
   const dataList = (week) => {
+    map = new kakao.maps.Map(mapContainer, mapOption);
     axios.get("class/list?date="+week)
     .then(e => {
+       $("#byDate").empty();
+      var geocoder = new kakao.maps.services.Geocoder();  
       for(let data of e.data) {
-        $("#byDate").empty();
         $("#byDate").append("<li>" + data.name +"</li>")
         $("#byDate").append("<li>" + data.photo +"</li>")
         $("#byDate").append("<li>" + data.nowMemberCount + "/" + data.member + "</li>")
+        geocoder.addressSearch(""+data.location+"", function(result,status) {
+          console.log("adsasddasasdasd")
+          if(status ==kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+                    });
+                    infowindow.open(map, marker);
+                    map.setCenter(coords);
+                      }
+                    })
+
       }
     })
   }
 
-  var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-    mapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 5 // 지도의 확대 레벨
-    };
+var geocoder = new kakao.maps.services.Geocoder();  
 
-// 지도를 생성합니다
-var map = new kakao.maps.Map(mapContainer, mapOption);
 
-// 주소-좌표 변환 객체를 생성합니다
-var geocoder = new kakao.maps.services.Geocoder();
-
-// 주소로 좌표를 검색합니다
-geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', function(result, status) {
+mapContainer = document.getElementById('map') 
+geocoder.addressSearch('서울특별시 서초구 방배로 93', function(result, status) {
     console.log("테스트");
-    // 정상적으로 검색이 완료됐으면
      if (status === kakao.maps.services.Status.OK) {
+        mapOption = {
+        center: new kakao.maps.LatLng(result[0].y, result[0].x),
+        level: 6
+    };
+    map = new kakao.maps.Map(mapContainer, mapOption);
 
-        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-        // 결과값으로 받은 위치를 마커로 표시합니다
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: coords
-        });
-
-        // 인포윈도우로 장소에 대한 설명을 표시합니다
-        var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
-        });
-        infowindow.open(map, marker);
-
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        map.setCenter(coords);
     }
 });
+
+
+
+
 </script>
 </body>
 </html>

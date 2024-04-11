@@ -6,6 +6,7 @@
   <resultMap id="TagMap" type="Tag">
     <id column="tag_no" property="no"/>
     <result column="name" property="name"/>
+
   </resultMap>
   <select id="findAll" resultMap="TagMap">
     select * from tags

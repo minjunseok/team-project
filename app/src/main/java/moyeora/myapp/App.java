@@ -2,6 +2,7 @@ package moyeora.myapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -9,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @SpringBootApplication
 @EnableTransactionManagement
+@Controller
 @PropertySource({"classpath:ncp-storage.properties","classpath:ncp-secret.properties"})
-
 public class App {
 
   public static void main(String[] args) throws Exception {

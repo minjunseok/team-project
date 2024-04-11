@@ -86,4 +86,29 @@ public class DefaultPostService implements PostService {
   public String findByPost(String content) {
     return postDao.findByPost(content);
   }
+  @Override
+  public List<Post> findByLike() {
+    return null;
+  }
+
+  @Override
+  public List<Post> findByFollow() {
+    return null;
+  }
+
+  @Override
+  public List<Post> findByUser(int no) {
+    return null;
+  }
+
+  @Override
+  public List<Post> findBySchoolPostList(int schoolNo) {
+   return postDao.findBySchoolPostList(schoolNo);
+  }
+
+  @Override
+  public List<Post> findBySchoolPost() {
+    return postDao.findBySchoolPost();
+
+  }
 }
