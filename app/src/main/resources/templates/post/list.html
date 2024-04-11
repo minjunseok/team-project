@@ -1,57 +1,60 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='ko'>
 <head>
-  <meta charset='UTF-8'>
-  <title>비트캠프 데브옵스 5기</title>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <meta charset='UTF-8'>
+    <title>2조 팀플</title>
 </head>
-
 <body>
-  <form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
-    <div>
-      스쿨 이름 : <input name='email' type='text'>
-    </div>
-    <div>
-      사진: <input name='file' type='file'>
-    </div>
-    <div>
+
+<!--뷰를 리스트로 바꿀 것임-->
+<div data-th-replace="header :: header">2조 팀플</div>
+
+<h1>피드</h1>
+<a data-th-href="@{form}" href="form.html">새 글</a>
+<table border='1'>
+
+    <form id="post">
+       <input type="text" name="content">
+       <button type="submit">검색</button>
+    </form>
+
+    <div id="searchPost">
 
     </div>
-    <div>
-      <h2>관심사 선택</h2>
-    </div>
+
+    <tr data-th-each="post : ${content}" data-th-object="${post}">
+    </tr>
+
+       <thead>
+
+    <tr>
+        <th>name</th>
+        <th>content</th>
+        <th>createAt</th>
+        <th>...(설정)</th>
+    </tr>
+    </thead>
 
     <tbody>
-    <tr data-th-each="tag : ${tags}">
-      <td>
-        <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="${tag.no}">
-      </td>
-      <td>
-        <span data-th-text="${tag.name}" >1</span>
-      </td>
-      <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
-        <br>
-      </data-th-block>
+
+    <!-- 스쿨 메인의 피드글 공지글 출력-->
+    <tr data-th-each="post : ${post}" data-th-object="${post}">
+<!--        <td>-->
+<!--      <img data-th-if="*{fileList}"-->
+<!--           data-th-src="@{'https://rljiyddk2675.edge.naverncp.com/68i0l8DhXa/member/' + *{photo}(type=f,w=20,h=20,ttype=jpg)}"-->
+<!--           src="/img/default-photo.jpeg">-->
+<!--      <img data-th-unless="*{file_no}" height='20px' src='/img/default-photo.jpeg'>-->
+      <td><a data-th-href="@{list(no=*{no})}" data-th-text="*{writer.name}" href="list.html">홍길동</a></td>
+        <td data-th-text="*{content}">101</td>
+        <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">2024-03-27</td>
+        <td>
+            <a data-th-href="@{md(no=*{no})}" href="md.html?no=*{no}">설정</a>
+        </td>
+
+
     </tr>
     </tbody>
-<button>스쿨 설정</button><br>
-<div>
-  <a href="">게시글</a>
-  <a href="">회원 조회</a>
-  <a href="">일정 등록</a>
-</div>
+</table>
 
-
-
-<div data-th-each="post : ${postlists}" data-th-object="${post}">
-  <input type="hidden" value="*{schoolNo}">
-  <td data-th-text="*{no}">번호</td>
-<!--  <a data-th-text="*{name}">이름</a>-->
-  <a data-th-text="*{content}">내용</a>
-<!--  <a data-th-text="*{photo}">사진<</a>-->
-  <a data-th-text="*{createdAt}">작성일</a>
-</div>
-  </form>
 </body>
 </html>

@@ -58,7 +58,7 @@ public class DefaultPostService implements PostService {
   @Transactional
   @Override
   public int delete(int no) {
-    attachedFileDao.deleteAll(no);
+//    attachedFileDao.deleteAll(no);
     return postDao.delete(no);
   }
 

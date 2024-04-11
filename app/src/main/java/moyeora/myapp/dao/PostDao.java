@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface PostDao {
 
+//  void add(Post post);
   void add(Post post);
 
   List<Post> findAll(@Param("categoryNo") int categoryNo);

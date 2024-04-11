@@ -5,18 +5,14 @@
 <mapper namespace="moyeora.myapp.dao.PostDao">
 
   <resultMap id="PostMap" type="Post">
-
     <id column="post_no" property="no"/>
     <result column="school_no" property="schoolNo"/>
     <result column="user_no" property="userNo"/>
     <result column="category_no" property="categoryNo"/>
     <result column="content" property="content"/>
     <result column="created_at" property="createdAt"/>
-    <result column="like_count" property="likeCount"/>
+    <result column="like_count" property="likeCont"/>
     <result column="comment_count" property="commentCount"/>
-
-
-
 
 
     <association property="writer" javaType="User">
@@ -29,11 +25,11 @@
       <id column="user_no" property="userNo"/>
     </association>
 
-    <association property="school" javaType="School">
-      <id column="school_no" property="no"/>
-      <result column="school_name" property="name"/>
-      <result column="school_photo" property="photo"/>
-    </association>
+<!--    <association property="school" javaType="School">-->
+<!--      <id column="school_no" property="no"/>-->
+<!--      <result column="school_name" property="name"/>-->
+<!--      <result column="school_photo" property="photo"/>-->
+<!--    </association>-->
 
     <collection property="fileList" ofType="AttachedFile">
       <id column="file_no" property="no"/>
@@ -48,6 +44,42 @@
 <!--    </collection>-->
   </resultMap>
 
+<!--  <insert id="add" parameterType="Post"-->
+<!--    useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">-->
+<!--    insert into posts(category_no, content, school_no, user_no, title)-->
+<!--    values(#{categoryNo}, #{content}, #{schoolNo}, #{userNo}, #{title})-->
+<!--</insert>-->
+
+<insert id="add" parameterType="Post"
+useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
+    insert into posts(content, school_no, user_no, created_at)
+    values(#{content}, 1, 1, NOW())
+</insert>
+
+  <delete id="delete" parameterType="int">
+    delete from posts
+    where post_no=#{value}
+  </delete>
+
+    <update id="update" parameterType="Post">
+    update posts set
+      content=#{content}
+    where
+      post_no=#{no}
+  </update>
+
+
+  <select id="findBy" resultMap="PostMap" parameterType="int">
+  select
+      p.post_no,
+      p.content,
+      p.created_at,
+      u.name
+  from
+      posts p inner join users u on p.user_no=u.user_no
+  where
+      post_no=#{value}
+  </select>
 
 
   <select id="findByLike" resultMap="PostMap" parameterType="int">
