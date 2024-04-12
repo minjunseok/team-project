@@ -18,7 +18,9 @@ public class DefaultUserService implements UserService {
 
   @Override
   public void add(User user) {
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    if (user.getPassword() != null) {
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
+    }
     userDao.add(user);
   }
 
@@ -37,11 +39,6 @@ public class DefaultUserService implements UserService {
     return userDao.findByEmail(email);
   }
 
-//  @Override
-//  public User get(String email, String password) {
-//    return userDao.findByEmailAndPassword(email, password);
-//  }
-
   @Override
   public String getEmail(String name, String phone) {
     return userDao.findByNameAndPhone(name,phone);
@@ -56,6 +53,16 @@ public class DefaultUserService implements UserService {
   @Override
   public void delete(int no) {
     userDao.delete(no);
+  }
+
+  @Override
+  public User findByUsername(String username) {
+    return null;
+  }
+
+  @Override
+  public User findByEmail(String email) {
+    return userDao.findByEmail(email);
   }
 
 }

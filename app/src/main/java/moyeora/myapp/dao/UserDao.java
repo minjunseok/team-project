@@ -17,13 +17,13 @@ public interface UserDao {
 
   public User findByNo(int no);
 
-  public int update(User member);
+  public int update(User user);
+
+  public int updatePassword(String password);
 
   public User findByEmail(@Param("email") String email);
 
   public String findByNameAndPhone(
       @Param("name")  String name,
       @Param("phone") String phone);
-
-  public UserDetails getUserDetails(String username);
 }

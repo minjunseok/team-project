@@ -18,4 +18,8 @@ public interface UserService {
   void update(User user);
 
   void delete(int no);
+
+  User findByUsername(String username);
+
+  User findByEmail(String email);
 }

@@ -2,11 +2,12 @@ package moyeora.myapp.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.PrintWriter;
+import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
+import moyeora.myapp.security.OAuth.PrincipalOauth2UserService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,29 +21,29 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+@Log4j2
 @Configuration
 @EnableWebSecurity
-@Log4j2
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
-  @Autowired
-  private AuthenticationSuccessHandler authenticationSuccessHandler;
-  @Autowired
-  private AuthenticationFailureHandler authenticationFailureHandler;
-  @Autowired
-  private AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
+  private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
-  // Web Ignore
+  private final AuthenticationFailureHandler authenticationFailureHandler;
+
+  private final AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
+
+  private final PrincipalOauth2UserService principalOauth2UserService;
+
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return (web) -> web.ignoring()
@@ -55,12 +56,11 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests((authorize) -> authorize
                 .anyRequest().permitAll()
-//            .antMatchers("/","/index","/home","/auth/**").permitAll()
-//            .anyRequest().authenticated()
         )
-        .exceptionHandling((exceptionConfig) ->
-            exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint).accessDeniedHandler(accessDeniedHandler)
-        )
+        .logout((logout) -> logout
+            .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
+            .logoutSuccessUrl("/")
+            .invalidateHttpSession(true))
         .formLogin(form -> form
             .loginPage("/auth/form")
             .usernameParameter("email")
@@ -71,17 +71,18 @@ public class SecurityConfig {
             .failureHandler(authenticationFailureHandler)
             .permitAll()
         )
-        .logout((logout) -> logout
-            .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
-            .logoutSuccessUrl("/")
-            .invalidateHttpSession(true)
-        );
-    return httpSecurity.build();
-  }
+        .oauth2Login((oauth2) -> oauth2
+//            .authorizationEndpoint(endpoint -> endpoint.baseUri("/auth/oauth2"))
+            .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth/callback/*"))
+            .userInfoEndpoint(endpoint -> endpoint.userService(principalOauth2UserService))
+        )
+        .exceptionHandling((exceptionConfig) ->
+            exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint).accessDeniedHandler(accessDeniedHandler)
+        )
+//        .addFilterBefore((Filter) jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+    ;
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    return httpSecurity.build();
   }
 
   @Bean
@@ -118,5 +119,6 @@ public class SecurityConfig {
     private final HttpStatus status;
     private final String message;
   }
-
 }
+
+
