@@ -53,7 +53,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
           .createdAt(Timestamp.valueOf(LocalDateTime.now()))
           .build();
       System.out.println(user.toString());
-      throw new OAuth2AuthenticationException("회원 정보 없음");
+      userService.add(user);
     }
     return new PrincipalDetails(user,oAuth2User.getAttributes());
   }
