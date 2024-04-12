@@ -7,6 +7,7 @@ import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Post;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -20,10 +21,16 @@ public class DefaultPostService implements PostService {
   private final PostDao postDao;
   private final AttachedFileDao attachedFileDao;
 
+     // 공지글과 일반글을 구분하기 위한 리스트
+    private List<Post> noticePosts = new ArrayList<>();
+    private List<Post> normalPosts = new ArrayList<>();
+
+
   @Transactional
   @Override
   public void add(Post post) {
     postDao.add(post);
+
 //    if (post.getFileList() != null && post.getFileList().size() > 0) {
 //      for (AttachedFile attachedFile : post.getFileList()) {
 //        attachedFile.setPostNo(post.getNo());
@@ -34,6 +41,7 @@ public class DefaultPostService implements PostService {
 
   @Override
   public List<Post> findAll(int categoryNo) {
+
     return postDao.findAll(categoryNo);
   }
 
