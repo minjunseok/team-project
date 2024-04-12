@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import moyeora.myapp.security.CustomAuthenticationFailureHandler;
+import moyeora.myapp.security.CustomAuthenticationSuccessHandler;
 import moyeora.myapp.security.OAuth.PrincipalOauth2UserService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -34,9 +36,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
-  private final AuthenticationSuccessHandler authenticationSuccessHandler;
+  private final CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 
-  private final AuthenticationFailureHandler authenticationFailureHandler;
+  private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 
   private final AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
 
