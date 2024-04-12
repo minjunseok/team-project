@@ -75,8 +75,6 @@ public class SecurityConfig {
 //            .authorizationEndpoint(endpoint -> endpoint.baseUri("/auth/oauth2"))
             .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth/callback/*"))
             .userInfoEndpoint(endpoint -> endpoint.userService(principalOauth2UserService))
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler)
         )
         .exceptionHandling((exceptionConfig) ->
             exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint).accessDeniedHandler(accessDeniedHandler)
