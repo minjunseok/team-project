@@ -14,7 +14,7 @@ public interface ClassDao {
   public List<Class> findByUserAddress(String address);
 
   public void add(Class clazz);
-
+  public List<Class> findBySchoolUser(int schoolNo);
 
 
 

@@ -2,9 +2,50 @@
 <html lang='en'>
 <head>
     <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>비트캠프 데브옵스 5기</title>
 
+    <style>
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
 
+        .modal_body {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal_close_btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 
 </head>
 <body>
@@ -38,19 +79,6 @@
 
     </div>
 
-<!--    <div>-->
-<!--        모임일 <br>-->
-<!--        날짜설정: <input id="startAtDate" type="date">-->
-<!--        시간설정: <input id="startAtTime" type="time">-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--        종료 시간 <br>-->
-<!--        날짜설정: <input id="endedAtDate" type="date">-->
-<!--        시간설정: <input id="endedAtTime" type="time">-->
-<!--    </div>-->
-
-
     <div>
         위치: <input name='location' type='text'>
      상세주소:   <input type="text" id="locationDetail" name="locationDetail" placeholder="상세주소">
@@ -62,8 +90,46 @@
         인원: <input name='member' type='text'>
     </div>
 
-    <div>
-        초대하기: <input name='title' type='text'>
+
+    <button class="btn-open-modal" type="button">초대하기</button>
+        <div class="modal">
+            <div class="modal_body">
+                <span class="modal_close_btn">X</span>
+                <h2>멤버 목록</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>사진</th>
+                        <th>닉네임</th>
+                        <th>등급</th>
+                        <th>초대하기</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr data-th-each="schoolMember : ${schoolMembers}" data-th-object="${schoolMember}">
+                        <td data-th-text="*{photo}">사진</td>
+                        <td data-th-text="*{nickname}">가나다</td>
+                        <td data-th-text="*{level.name}">블랙</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+        <script>
+            const modal = document.querySelector('.modal');
+            const btnOpenModal=document.querySelector('.btn-open-modal');
+            const btnCloseModal = document.querySelector('.modal_close_btn');
+            btnOpenModal.addEventListener("click", ()=>{
+                modal.style.display="flex";
+              });
+                btnCloseModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            });
+
+        </script>
+
+<div>
         정기여부:<input type="radio" name="repeatSet" value="0"> 정기
                  <input type="radio" name="repeatSet" value="1"> 번개
 
