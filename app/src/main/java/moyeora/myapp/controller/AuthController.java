@@ -12,12 +12,14 @@ import moyeora.myapp.service.UserService;
 import moyeora.myapp.service.util.RedisUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 @RequiredArgsConstructor
 @Controller
@@ -64,7 +66,7 @@ public class AuthController {
     model.addAttribute("status","request");
   }
 
-  @PostMapping ("/sendEmail")
+  @PostMapping ("sendEmail")
   public String sendEmail(String email, Model model) throws Exception {
     if(userService.get(email) == null) { // 다른 기능이랑 공유하려면 이부분 수정해야함
       model.addAttribute("status","email not found");

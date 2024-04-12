@@ -19,6 +19,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 @SpringBootApplication
 @EnableTransactionManagement
 @PropertySource({
+    "classpath:config/oauth.properties",
     "classpath:config/email.properties",
     "classpath:config/ncp.properties",
     "classpath:config/ncp-secret.properties"
@@ -27,15 +28,6 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 public class App {
     public static void main(String[] args) throws Exception {
         System.out.println("##moyora test main() exec##");
-//        Calendar c = Calendar.getInstance();
-//        c.set(Calendar.DAY_OF_WEEK,Calendar.TUESDAY);
-//        System.out.println(c);
-//        System.out.println(c.getTime());
-//        DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-//        c.add(Calendar.DAY_OF_YEAR,1);
-//        System.out.println(c.getTime());
-//        String k = dateformat.format(c.getTime());
-//        System.out.println(k);
         SpringApplication.run(App.class, args);
     }
     @GetMapping("/home")
