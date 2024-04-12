@@ -32,6 +32,11 @@
     <div>
         <textarea id="summernote" name='content'></textarea>
     </div>
+
+<!--    <div>-->
+<!--        <input type="checkbox" name="category" value="공지글"> 공지글로 설정-->
+<!--    </div>-->
+
 <!--    <div data-th-if="${category == 1}">-->
 <!--        첨부파일: <input multiple name='attachedFiles' type='file'>-->
 <!--    </div>-->
@@ -43,6 +48,7 @@
 </form>
 
 <script>
+
     $(document).ready(function() {
 
       $('#summernote').summernote({
@@ -56,3 +62,28 @@
 
 </body>
 </html>
+
+
+<!--     $(document).ready(function() {-->
+<!--        // Summernote 초기화-->
+<!--        $('#summernote').summernote({-->
+<!--            height: 300,-->
+<!--            width: 500-->
+<!--        });-->
+
+<!--        // 폼 제출 시-->
+<!--        $('#post').submit(function() {-->
+<!--            // 공지글로 설정된 경우-->
+<!--            if ($('#isNotice').is(':checked')) {-->
+<!--                // category 값을 1로 설정-->
+<!--                $('input[name="category"]').val(1);-->
+<!--            } else {-->
+<!--                // 공지글이 아닌 경우-->
+<!--                // category 값을 0으로 설정 (선택하지 않은 경우도 여기 포함)-->
+<!--                $('input[name="category"]').val(0);-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+
+
+
