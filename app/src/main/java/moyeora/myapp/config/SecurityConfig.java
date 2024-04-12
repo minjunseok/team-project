@@ -2,7 +2,6 @@ package moyeora.myapp.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.PrintWriter;
-import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -75,6 +73,8 @@ public class SecurityConfig {
 //            .authorizationEndpoint(endpoint -> endpoint.baseUri("/auth/oauth2"))
             .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth/callback/*"))
             .userInfoEndpoint(endpoint -> endpoint.userService(principalOauth2UserService))
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
         )
         .exceptionHandling((exceptionConfig) ->
             exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint).accessDeniedHandler(accessDeniedHandler)

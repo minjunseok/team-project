@@ -42,23 +42,23 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
   }
 
   @Override
-  public boolean isAccountNonExpired() { // 만료되었는지 확인하는 로직
+  public boolean isAccountNonExpired() { // 만료확인
     return false;
   }
 
   @Override
-  public boolean isAccountNonLocked() { // 계정 잠금되었는지 확인하는 로직
+  public boolean isAccountNonLocked() { // 계정 잠금 확인
     return false;
   }
 
   @Override
-  public boolean isCredentialsNonExpired() { // 패스워드의 만료 여부 반환
+  public boolean isCredentialsNonExpired() { // 패스워드 만료여부 반환
 
     return false;
   }
 
   @Override
-  public boolean isEnabled() { // 계정이 사용 가능한지 확인하는 로직
+  public boolean isEnabled() { // 계정 사용가능여부 확인
     return false;
   }
 

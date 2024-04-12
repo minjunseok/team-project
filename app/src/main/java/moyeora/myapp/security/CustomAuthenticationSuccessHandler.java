@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-  private final Log log = LogFactory.getLog(CustomAuthenticationFailureHandler.class);
+  private final Log log = LogFactory.getLog(CustomAuthenticationSuccessHandler.class);
 
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
