@@ -1,5 +1,6 @@
 package moyeora.myapp.security.OAuth;
 
+import java.net.http.HttpResponse;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -52,7 +53,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
           .createdAt(Timestamp.valueOf(LocalDateTime.now()))
           .build();
       System.out.println(user.toString());
-      userService.add(user);
+      throw new OAuth2AuthenticationException("회원 정보 없음");
     }
     return new PrincipalDetails(user,oAuth2User.getAttributes());
   }

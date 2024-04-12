@@ -20,9 +20,6 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class OAuth2Controller {
 
-//  @Value("${spring.security.oauth2.client.provider.naver.token-uri}")
-//  private final String tokenUri;
-
   @GetMapping("callback/naver")
   @ResponseBody
   public String callback(@RequestParam String code, @RequestParam String state) {
