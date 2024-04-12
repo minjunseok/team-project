@@ -32,5 +32,8 @@ public class DefaultClassService implements ClassService {
     classDao.add(clazz);
   }
 
-
+  @Override
+  public List<Class> findBySchoolUser(int schoolNo) {
+    return classDao.findBySchoolUser(schoolNo);
+  }
 }

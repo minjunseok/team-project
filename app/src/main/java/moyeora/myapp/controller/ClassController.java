@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.ClassService;
+import moyeora.myapp.service.SchoolMemberService;
 import moyeora.myapp.util.FileUpload;
 import moyeora.myapp.vo.Class;
 import org.apache.commons.logging.Log;
@@ -19,6 +20,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,14 +32,14 @@ public class ClassController {
   private static final Log log = LogFactory.getLog(ClassController.class);
   private final ClassService classService;
   private final FileUpload fileUpload;
+  private final SchoolMemberService schoolMemberService;
   private final String uploadDir =  "class/";
   @Value("${ncp.storage.bucket}") private String bucket;
-
 
   @GetMapping("/list")
   @ResponseBody
   public List<Class> viewOfDate(String date) {
-    if(date.matches("\\d{4}-\\d{2}-\\d{2}")) {
+    if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
       System.out.println("1");
       return classService.findByDate(date);
     } else {
@@ -50,8 +52,9 @@ public class ClassController {
   }
 
   @GetMapping("form")
-  public void form() throws Exception{
-
+  public void form(Model model,int schoolNo) throws Exception{
+    model.addAttribute("schoolMembers",schoolMemberService.list(schoolNo));
+    System.out.println("=====classcontorller.schoolMember==============>    " + schoolMemberService);
   }
 
   @PostMapping("add")
@@ -82,6 +85,7 @@ public class ClassController {
     classService.add(clazz);
     System.out.println("=======classcontroller============>    " + clazz);
   }
+
 
 
 
