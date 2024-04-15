@@ -5,3 +5,7 @@
 build
 
 application.properties
+
+ncp-secret.properties
+
+ncp.properties
