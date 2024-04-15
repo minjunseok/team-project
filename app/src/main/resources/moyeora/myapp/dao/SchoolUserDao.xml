@@ -7,17 +7,11 @@
   <resultMap id="SchoolUserMap" type="SchoolUser">
     <id column="user_no" property="userNo"/>
     <result column="school_no" property="schoolNo"/>
-    <result column="grade_no" property="gradeNo"/>
+    <result column="level_no" property="levelNo"/>
     <result column="created_at" property="createdAt"/>
 
-    <association property="schools" javaType="School">
-      <result column="school_no" property="no"/>
-      <result column="name" property="name"/>
-      <result column="photo" property="photo"/>
-    </association>
-
-    <association property="grades" javaType="Grades">
-      <result column="name" property="name"/>
+    <association property="level" javaType="Level">
+      <result column="level_name" property="levelName"/>
     </association>
 
       <association property="writer" javaType="User">
@@ -25,7 +19,19 @@
         <result column="photo" property="photo"/>
         <result column="nickname" property="nickname"/>
       </association>
+
+    <collection property="schools" ofType="School">
+      <result column="school_no" property="no"/>
+      <result column="school_name" property="name"/>
+      <result column="photo" property="photo"/>
+    </collection>
+
   </resultMap>
+
+
+
+
+
 
   <select id="findByUserNo" resultMap="SchoolUserMap" parameterType="int">
     select
@@ -42,13 +48,14 @@
   </select>
 
   <select id="findBySchoolUserList" resultMap="SchoolUserMap">
+
     select
 
 
-    s.school_no school_no,
+    su.school_no school_no,
     u.nickname,
     u.photo,
-    g.name,
+    l.name levelName
     su.created_at
 
 
@@ -58,9 +65,9 @@
 
     inner join  schools as s on s.school_no = su.school_no
     inner join  users as u on u.user_no = su.user_no
-    inner join  grades as g g.grade_no = su.grade_no
+    inner join  levels as l on l.level_no = su.level_no
 
-    where s.school_no =#{no}
+    where su.school_no=#{schoolNo}
 
     order by su.created_at;
 

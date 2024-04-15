@@ -44,12 +44,12 @@ public class SchoolUserController {
 //    model.addAttribute("category", category);
 //  }
 
-  @GetMapping("list")
-  public void list(Model model, int no) {
-    System
-        .out.println(schoolUserService.findBySchoolUserList(no));
-    log.debug(schoolUserService.findBySchoolUserList(no));
-
-    model.addAttribute("schoolusers", schoolUserService.findBySchoolUserList(no));
-  }
+//  @GetMapping("list")
+//  public void list(Model model, int schoolNo) {
+//    System
+//        .out.println(schoolUserService.findBySchoolUserList(schoolNo));
+//    log.debug(schoolUserService.findBySchoolUserList(schoolNo));
+//
+//    model.addAttribute("schoolusers", schoolUserService.findBySchoolUserList(schoolNo));
+//  }
 }
