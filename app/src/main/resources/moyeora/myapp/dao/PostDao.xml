@@ -3,9 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="moyeora.myapp.dao.PostDao">
-
   <resultMap id="PostMap" type="Post">
-
     <id column="post_no" property="no"/>
     <result column="school_no" property="schoolNo"/>
     <result column="user_no" property="userNo"/>
@@ -23,6 +21,7 @@
       <id column="user_no" property="no"/>
       <result column="name" property="name"/>
       <result column="photo" property="photo"/>
+      <result column="nickname" property="nickname"/>
     </association>
 
     <association property="schoolUser" javaType="SchoolUser">
@@ -35,17 +34,20 @@
       <result column="school_photo" property="photo"/>
     </association>
 
-    <collection property="fileList" ofType="AttachedFile">
+    <collection property="files" ofType="AttachedFile">
       <id column="file_no" property="no"/>
       <result column="path" property="path"/>
-      <result column="name" property="name"/>
+      <result column="name" property="fileName"/>
       <result column="post_no" property="postNo"/>
     </collection>
 
-<!--    <collection property="comment" javaType="Comment">-->
-<!--      <id column="comment_no" property="no"/>-->
-<!--      <result column="name" property="name"/>-->
-<!--    </collection>-->
+    <collection property="comments" ofType="Comment">
+    <id column="comment_no" property="no"/>
+    <result column="content" property="content"/>
+    <result column="created_at" property="createdAt"/>
+    <result column="user_no" property="userNo"/>
+    <result column="post_no" property="postNo"/>
+    </collection>
   </resultMap>
 
 
@@ -121,35 +123,23 @@
     order by p.created_at desc;
   </select>
 
-  <select id="findBySchoolPost" resultMap="PostMap">
-    select
-
-    post_no,
-    school_no,
-    user_no,
-    category_no,
-    content,
-    created_at
-
-    from
-
-    posts
-  </select>
 
   <select id="findBySchoolPostList" resultMap="PostMap" parameterType="int">
+
+
     SELECT DISTINCT
-    u.user_no,
+
+    p.school_no school_no,
+    u.nickname,
     p.post_no,
-    u.name as user_name,
     u.photo,
     p.content,
-    c.content as content_content,
-    f.name as file_name ,
+    f.name as file_name,
     p.created_at
 
     FROM
 
-    posts p
+    posts as p
 
     INNER JOIN school_users su ON p.school_no = su.school_no
     INNER JOIN users u ON p.user_no = u.user_no
@@ -157,7 +147,7 @@
     LEFT OUTER JOIN comments c ON p.post_no = c.post_no
     LEFT OUTER JOIN files f ON p.post_no = f.post_no
 
-    WHERE p.school_no = 1
+    WHERE p.school_no=#{no}
 
     ORDER BY p.created_at DESC;
 
@@ -180,11 +170,33 @@
     users AS u ON su.user_no = u.user_no;
   </select>
 
+  <select id="findByPost" resultMap="PostMap" parameterType="int">
+
+    select distinct
+
+    p.school_no,
+    u.nickname,
+    p.post_no,
+    u.photo,
+    p.content,
+    p.created_at
+
+    FROM
+
+    posts p
+
+
+    inner join school_users  su on  p.user_no = su.user_no
+    inner join users u on u.user_no = su.user_no
+
+
+    where
+
+    p.post_no=#{no}
+
+    and p.school_no=#{schoolNo}
+
+  </select>
 
 </mapper>
 
-<!--  <collection property="fileList" ofType="AttachedFile">-->
-<!--    <id column="file_no" property="no"/>-->
-<!--    <result column="file_path" property="filePath"/>-->
-<!--    <result column="post_no" property="postNo"/>-->
-<!--  </collection>-->

@@ -1,6 +1,7 @@
 package moyeora.myapp.service;
 
 import moyeora.myapp.vo.AttachedFile;
+import moyeora.myapp.vo.Comment;
 import moyeora.myapp.vo.Post;
 import moyeora.myapp.vo.User;
 
@@ -13,9 +14,9 @@ public interface PostService {
 
   List<Post> findAll(int categoryNo);
 
-  Post get(int no);
+//  Post get(int no);
 
-  int update(Post post);
+  List<Comment> getComments(int no);
 
   int delete(int no);
 
@@ -25,17 +26,7 @@ public interface PostService {
 
   int deleteAttachedFile(int fileNo);
 
-  int countAll(int categoryNo);
+ List<Post> findBySchoolPostList(int schoolNo);
 
-  String findByPost(String content);
-
-  public List<Post> findByLike();
-
-  public List<Post> findByFollow();
-
-  public List<Post> findByUser(int no);
-
-  public List<Post> findBySchoolPost();
-
-  public List<Post> findBySchoolPostList(int schoolNo);
+ Post get(int no, int schoolNo);
 }

@@ -14,7 +14,6 @@ public interface PostDao {
 
   int delete(int no);
 
-  Post findBy(int no);
 
   int update(Post post);
 
@@ -28,7 +27,10 @@ public interface PostDao {
 
   public List<Post> findByFollow(int no);
 
-  String findByPost(String content);
-  public List<Post> findBySchoolPost();
-  public List<Post> findBySchoolPostList(int schoolNo);
+//  Post findBy(int no);
+
+  Post findByPost(int no , int schoolNo);
+
+
+  List<Post> findBySchoolPostList(int schoolNo);
 }

@@ -10,12 +10,21 @@
     <result column="grade_no" property="gradeNo"/>
     <result column="created_at" property="createdAt"/>
 
-    <collection property="schools" ofType="School">
+    <association property="schools" javaType="School">
       <result column="school_no" property="no"/>
       <result column="name" property="name"/>
       <result column="photo" property="photo"/>
-    </collection>
+    </association>
 
+    <association property="grades" javaType="Grades">
+      <result column="name" property="name"/>
+    </association>
+
+      <association property="writer" javaType="User">
+        <result column="name" property="name"/>
+        <result column="photo" property="photo"/>
+        <result column="nickname" property="nickname"/>
+      </association>
   </resultMap>
 
   <select id="findByUserNo" resultMap="SchoolUserMap" parameterType="int">
@@ -30,6 +39,31 @@
       school_users as u
     inner join schools as s on u.school_no = s.school_no
     where u.user_no=#{no}
+  </select>
+
+  <select id="findBySchoolUserList" resultMap="SchoolUserMap">
+    select
+
+
+    s.school_no school_no,
+    u.nickname,
+    u.photo,
+    g.name,
+    su.created_at
+
+
+    from
+
+    school_users as su
+
+    inner join  schools as s on s.school_no = su.school_no
+    inner join  users as u on u.user_no = su.user_no
+    inner join  grades as g g.grade_no = su.grade_no
+
+    where s.school_no =#{no}
+
+    order by su.created_at;
+
   </select>
 
 </mapper>
