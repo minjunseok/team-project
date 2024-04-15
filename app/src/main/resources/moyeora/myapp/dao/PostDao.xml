@@ -11,7 +11,7 @@
     <result column="category_no" property="categoryNo"/>
     <result column="content" property="content"/>
     <result column="created_at" property="createdAt"/>
-    <result column="like_count" property="likeCont"/>
+    <result column="like_count" property="likeCount"/>
     <result column="comment_count" property="commentCount"/>
 
 
@@ -212,11 +212,68 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
     users AS u ON su.user_no = u.user_no;
   </select>
 
+<!-- 검색 내용이 포함된 게시글 찾기 -->
+<select id="findBySchoolContent" resultMap="PostMap">
+    SELECT
+        u.user_no,
+        u.name,
+        p.post_no,
+        s.school_no,
+        p.created_at,
+        (SELECT COUNT(*) FROM likes AS l WHERE l.post_no = p.post_no) AS like_count,
+        (SELECT COUNT(*) FROM comments AS c WHERE c.post_no = p.post_no) AS comment_count,
+        s.name AS school_name,
+        s.photo AS school_photo,
+        p.content,
+        f.path,
+        f.name,
+        f.post_no
+    FROM
+        posts p
+    INNER JOIN
+        schools s ON s.school_no = p.school_no
+    INNER JOIN
+        users u ON p.user_no = u.user_no
+    LEFT OUTER JOIN
+        files f ON p.post_no = f.post_no
+    WHERE
+        p.content LIKE '%${keyword}%'
+    ORDER BY
+        like_count DESC;
+</select>
+
+
+<!-- 작성자 이름으로 게시글 검색 -->
+<select id="findBySchoolUserName" resultMap="PostMap">
+    SELECT
+        u.user_no,
+        u.name,
+        p.post_no,
+        s.school_no,
+        p.created_at,
+        (SELECT COUNT(*) FROM likes AS l WHERE l.post_no = p.post_no) AS like_count,
+        (SELECT COUNT(*) FROM comments AS c WHERE c.post_no = p.post_no) AS comment_count,
+        s.name AS school_name,
+        s.photo AS school_photo,
+        p.content,
+        f.path,
+        f.name,
+        f.post_no
+    FROM
+        posts p
+    INNER JOIN
+        schools s ON s.school_no = p.school_no
+    INNER JOIN
+        users u ON p.user_no = u.user_no
+    LEFT OUTER JOIN
+        files f ON p.post_no = f.post_no
+    WHERE
+        u.name LIKE '%${keyword}%'
+    ORDER BY
+        like_count DESC;
+</select>
+
 
 </mapper>
 
-<!--  <collection property="fileList" ofType="AttachedFile">-->
-<!--    <id column="file_no" property="no"/>-->
-<!--    <result column="file_path" property="filePath"/>-->
-<!--    <result column="post_no" property="postNo"/>-->
-<!--  </collection>-->
+

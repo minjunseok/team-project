@@ -85,19 +85,27 @@ public class PostController {
 public String list(
         @RequestParam(defaultValue = "1") int categoryNo,
         Model model) throws Exception {
-  model.addAttribute("post", postService.findAll(categoryNo));
+  model.addAttribute("postList", postService.findAll(categoryNo));
   model.addAttribute("postNo",  categoryNo == 0 ? "일반" : "공지");
   model.addAttribute("categoryNo",  categoryNo);
   return "post/list";
 }
 
-
-
-  @PostMapping("search")
-  public String findByPost(String content, Model model) {
-    model.addAttribute("search", postService.findByPost(content));
-    return "post/list";
-  }
+// 검색창에 필터로 검색했을 때
+ @PostMapping("search")
+    public String searchPostsByContent(
+            @RequestParam("keyword") String keyword,
+            @RequestParam("filter") String filter,
+            Model model) {
+        if (filter.equals("0")) { // 내용으로 검색
+          List<Post> postList = postService.findBySchoolContent(keyword);
+          model.addAttribute("postList", postList);
+        } else {                  // 작성자로 검색
+          List<Post> postList = postService.findBySchoolUserName(keyword);
+          model.addAttribute("postList", postList);
+        }
+        return "post/list";
+    }
 
   @PostMapping("update")
   public String update(

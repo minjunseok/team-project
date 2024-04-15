@@ -17,7 +17,7 @@
 
     <style>
         body {
-          padding-left: 10px;
+            padding-left: 10px;
         }
     </style>
 </head>
@@ -32,35 +32,28 @@
       enctype='multipart/form-data'
       method='post'>
     <input type="hidden" data-th-value="*{no}" name="no">
+    <textarea data-th-text="${content}" id="summernoteContent" name="content" style="display: none;"></textarea>
     <div>
-    내용: <textarea data-th-text="${content}" id="summernote" name='content' style="display: none;">내용입니다.</textarea>
-  </div>
+        <button>변경</button>
+        <a data-th-href="@{delete(post_no=${post.no})}" href="#">[삭제]</a>
+    </div>
 
-  <div>
-    <button>변경</button>
-
-<!--    <a data-th-href="@{'delete/' + post.no}">[삭제]</a>-->
-
-      <a data-th-href="@{delete(post_no=${post.no})}" href="#">[삭제]</a>
-
-
-
-<!--       <a data-th-href="list" href="list.html">[삭제]</a>-->
-
-
-  </div>
 </form>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
-      $('#summernote').summernote({
+    // Summernote를 초기화하고 내용을 보여줍니다.
+    $('#summernoteContent').summernote({
         height: 300,
-        width: 500
-      });
+        width: 500,
+        callbacks: {
+        }
     });
+});
 
 </script>
+
 
 
 </body>
