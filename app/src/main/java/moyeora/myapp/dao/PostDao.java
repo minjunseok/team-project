@@ -32,4 +32,9 @@ public interface PostDao {
   String findByPost(String content);
   public List<Post> findBySchoolPost();
   public List<Post> findBySchoolPostList(int schoolNo);
+
+  // 필터 내용으로 검색했을 때
+  List<Post> findBySchoolContent(@Param("keyword") String keyword);
+  // 필터 작성자로 검색했을 때
+  List<Post> findBySchoolUserName(@Param("keyword") String keyword);
 }

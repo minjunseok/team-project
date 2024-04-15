@@ -40,10 +40,11 @@ public class DefaultPostService implements PostService {
   }
 
   @Override
-  public List<Post> findAll(int categoryNo) {
+  public List<Post> findAll(int schoolNo) {
 
-    return postDao.findAll(categoryNo);
+    return postDao.findAll(schoolNo);
   }
+
 
   @Override
   public Post get(int no) {
@@ -86,8 +87,8 @@ public class DefaultPostService implements PostService {
   }
 
   @Override
-  public int countAll(int categoryNo) {
-    return postDao.countAll(categoryNo);
+  public int countAll(int schoolNo) {
+    return postDao.countAll(schoolNo);
   }
 
   @Override
@@ -117,6 +118,16 @@ public class DefaultPostService implements PostService {
   @Override
   public List<Post> findBySchoolPost() {
     return postDao.findBySchoolPost();
-
   }
+
+   // 필터를  내용으로 검색했을 때
+    @Override
+    public List<Post> findBySchoolContent(String keyword) {
+        return postDao.findBySchoolContent(keyword);
+    }
+
+    // 필터를 작성자로 검색했을 때
+    public List<Post> findBySchoolUserName(String keyword) {
+        return postDao.findBySchoolUserName(keyword);
+    }
 }

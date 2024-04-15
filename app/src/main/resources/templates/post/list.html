@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='ko'>
+<html lang='ko' xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset='UTF-8'>
     <title>2조 팀플</title>
@@ -13,59 +13,51 @@
 <a data-th-href="@{form}" href="form.html">새 글</a>
 <table border='1'>
 
-<!--    <form id="post">-->
-<!--       <input type="text" name="content">-->
-<!--       <button type="submit">검색</button>-->
-<!--    </form>-->
-
-<!--    <div id="searchPost">-->
-
-<!--    </div>-->
-
-<!--    <tr data-th-each="post : ${content}" data-th-object="${post}">-->
-<!--    </tr>-->
-
-    <form id="postSearchForm">
-    <input type="text" id="searchContent" name="content" placeholder="검색어 입력">
-    <button type="submit">검색</button>
+<form action='/post/search' method="post">
+    <div>
+        <select name="filter">
+            <option value="0">내용</option>
+            <option value="1">작성자</option>
+        </select>
+        <input name='keyword' type='text' placeholder='검색어 입력'>
+        <button>검색</button>
+    </div>
 </form>
 
-<div id="searchResult">
-    <!-- 검색 결과가 여기에 표시될 것입니다 -->
-</div>
 
-<script>
-    $(document).ready(function() {
-        // 폼이 제출되었을 때의 동작 설정
-        $("#postSearchForm").submit(function(event) {
-            // 폼의 기본 동작인 페이지 리로드를 막습니다.
-            event.preventDefault();
+    <div id="searchResult">
+        <!-- 검색 결과가 여기에 표시될 것입니다 -->
+    </div>
 
-            // 입력된 content를 가져옵니다.
-            var content = $("#searchContent").val();
+    <script>
+        $(document).ready(function() {
+            // 폼이 제출되었을 때의 동작 설정
+            $("#postSearchForm").submit(function(event) {
+                // 폼의 기본 동작인 페이지 리로드를 막습니다.
+                event.preventDefault();
 
-            // 서버에 검색 요청을 보냅니다.
-            $.ajax({
-                type: "GET",
-                url: "/search", // 검색을 처리할 서버의 엔드포인트
-                data: { content: content }, // 검색어를 전달합니다.
-                success: function(response) {
-                    // 검색 결과를 받아와서 HTML로 표시합니다.
-                    $("#searchResult").html(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error("검색 요청 실패:", error);
-                }
+                // 입력된 content를 가져옵니다.
+                var content = $("#searchContent").val();
+
+                // 서버에 검색 요청을 보냅니다.
+                $.ajax({
+                    type: "GET",
+                    url: "/post/search", // 검색을 처리할 서버의 엔드포인트
+                    data: { content: content }, // 검색어를 전달합니다.
+                    success: function(response) {
+                        // 검색 결과를 받아와서 HTML로 표시합니다.
+                        $("#searchResult").html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("검색 요청 실패:", error);
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 
 
-
-
-
-       <thead>
+    <thead>
 
     <tr>
         <th>name</th>
@@ -77,13 +69,9 @@
 
     <tbody>
 
-    <tr data-th-each="post : ${post}" data-th-object="${post}">
-<!--      <img data-th-if="*{fileList}"-->
-<!--           data-th-src="@{'https://rljiyddk2675.edge.naverncp.com/68i0l8DhXa/member/' + *{photo}(type=f,w=20,h=20,ttype=jpg)}"-->
-<!--           src="/img/default-photo.jpeg">-->
-<!--      <img data-th-unless="*{file_no}" height='20px' src='/img/default-photo.jpeg'>-->
-      <td><a data-th-href="@{list(no=*{no})}" data-th-text="*{writer.name}" href="list.html">홍길동</a></td>
-        <td data-th-text="*{content}">101</td>
+    <tr data-th-each="post : ${postList}" data-th-object="${post}">
+        <td><a data-th-href="@{list(no=*{no})}" data-th-text="*{writer.name}" href="list.html">홍길동</a></td>
+        <td><span th:utext="*{content}"></span></td>
         <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">2024-03-27</td>
         <td>
             <a data-th-href="@{md(no=*{no})}" href="md.html?no=*{no}">설정</a>
@@ -91,34 +79,10 @@
     </tr>
 
 
+
     </tbody>
 </table>
 
 </body>
 </html>
-
-
-<!--    &lt;!&ndash; 스쿨 메인의 피드글 공지글 출력&ndash;&gt;-->
-
-
-<!--    &lt;!&ndash; 공지글 &ndash;&gt;-->
-<!--    <td>-->
-<!--    <tr data-th-if="${categoryNo != 0}" data-th-each="post : ${post}" data-th-object="${post}">-->
-<!--        <td><a data-th-href="@{list(no=*{no})}" data-th-text="*{writer.name}" href="list.html">홍길동</a></td>-->
-<!--        <td data-th-text="*{content}">101</td>-->
-<!--        <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">2024-03-27</td>-->
-<!--        <td>-->
-<!--            <a data-th-href="@{md(no=*{no})}" href="md.html?no=*{no}">설정</a>-->
-<!--        </td>-->
-<!--    </tr>-->
-
-<!--    &lt;!&ndash; 일반 글 &ndash;&gt;-->
-<!--    <tr data-th-if="${categoryNo == 0}" data-th-each="post : ${post}" data-th-object="${post}">-->
-<!--        <td><a data-th-href="@{list(no=*{no})}" data-th-text="*{writer.name}" href="list.html">홍길동</a></td>-->
-<!--        <td data-th-text="*{content}">101</td>-->
-<!--        <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">2024-03-27</td>-->
-<!--        <td>-->
-<!--            <a data-th-href="@{md(no=*{no})}" href="md.html?no=*{no}">설정</a>-->
-<!--        </td>-->
-<!--    </tr>-->
 

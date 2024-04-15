@@ -14,6 +14,7 @@ public interface PostService {
 
   List<Post> findAll(int categoryNo);
 
+
   Post get(int no);
 
   int update(Post post);
@@ -39,4 +40,9 @@ public interface PostService {
   public List<Post> findBySchoolPost();
 
   public List<Post> findBySchoolPostList(int schoolNo);
+
+// 필터 내용으로 검색했을 때
+ public List<Post> findBySchoolContent(String keyword);
+ // 필터 작성자로 검색했을 때
+ public List<Post> findBySchoolUserName(String keyword);
 }
