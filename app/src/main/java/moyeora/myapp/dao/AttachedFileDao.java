@@ -16,7 +16,7 @@ public interface AttachedFileDao {
 
   int deleteAll(int postNo);
 
-  List<AttachedFile> findAllByPostNo(int postNo);
+  List<AttachedFile> findByPostFiles(int no);
 
   AttachedFile findByNo(int no);
 }

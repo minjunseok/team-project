@@ -10,11 +10,15 @@ import lombok.Setter;
 @Setter
 public class SchoolUser {
 
+  private List<SchoolUser> schoolUserList;
   private int userNo;
   private int schoolNo;
   private int gradeNo;
   private Date createdAt;
   private List<School> schools;
+  private String photo;
+  private String gradeName;
+  private String nickname;
 
 
 }

@@ -22,36 +22,36 @@
     </style>
 </head>
 <body>
+테스트
+<!--<div data-th-replace="header :: header">2조 팀플(피드인지 일정인지)</div>-->
 
-<div data-th-replace="header :: header">2조 팀플(피드인지 일정인지)</div>
+<!--<h1 data-th-text="${postNo}">피드</h1>-->
 
-<h1 data-th-text="${postNo}">피드</h1>
+<!--<form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>-->
+<!--    <input data-th-value="${category}" name='category' type='hidden'>-->
+<!--    <div>-->
+<!--        내용: <textarea id="summernote" name='content'></textarea>-->
+<!--    </div>-->
+<!--    <div data-th-if="${category == 0}">-->
+<!--        첨부파일: <input multiple name='attachedFiles' type='file'>-->
+<!--    </div>-->
 
-<form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
-    <input data-th-value="${category}" name='category' type='hidden'>
-    <div>
-        내용: <textarea id="summernote" name='content'></textarea>
-    </div>
-    <div data-th-if="${category == 0}">
-        첨부파일: <input multiple name='attachedFiles' type='file'>
-    </div>
+<!--    <div>-->
+<!--        <button>등록</button>-->
+<!--    </div>-->
+<!--</form>-->
 
-    <div>
-        <button>등록</button>
-    </div>
-</form>
+<!--<script>-->
+<!--    $(document).ready(function() {-->
 
-<script>
-    $(document).ready(function() {
+<!--      $('#summernote').summernote({-->
+<!--        height: 300,-->
+<!--        width: 500-->
+<!--      });-->
 
-      $('#summernote').summernote({
-        height: 300,
-        width: 500
-      });
+<!--    });-->
 
-    });
-
-</script>
-
+<!--</script>-->
+....
 </body>
 </html>
