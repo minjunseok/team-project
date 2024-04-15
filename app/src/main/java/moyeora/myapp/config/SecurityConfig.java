@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import moyeora.myapp.security.CustomAuthenticationFailureHandler;
 import moyeora.myapp.security.CustomAuthenticationSuccessHandler;
+import moyeora.myapp.security.OAuth.PrincipalDetailService;
 import moyeora.myapp.security.OAuth.PrincipalOauth2UserService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +26,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -41,6 +40,8 @@ public class SecurityConfig {
   private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 
   private final AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
+
+  private final PrincipalDetailService principalDetailService;
 
   private final PrincipalOauth2UserService principalOauth2UserService;
 
@@ -72,7 +73,6 @@ public class SecurityConfig {
             .permitAll()
         )
         .oauth2Login((oauth2) -> oauth2
-//            .authorizationEndpoint(endpoint -> endpoint.baseUri("/auth/oauth2"))
             .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth/callback/*"))
             .userInfoEndpoint(endpoint -> endpoint.userService(principalOauth2UserService))
         )

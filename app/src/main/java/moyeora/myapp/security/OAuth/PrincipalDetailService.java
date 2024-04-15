@@ -1,7 +1,6 @@
 package moyeora.myapp.security.OAuth;
 
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.vo.User;
 import org.springframework.security.core.userdetails.UserDetails;

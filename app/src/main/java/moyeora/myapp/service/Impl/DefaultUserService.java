@@ -57,7 +57,7 @@ public class DefaultUserService implements UserService {
 
   @Override
   public User findByUsername(String username) {
-    return null;
+    return userDao.findByUsername(username);
   }
 
   @Override

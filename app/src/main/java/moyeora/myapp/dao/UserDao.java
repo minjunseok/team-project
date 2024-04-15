@@ -21,7 +21,9 @@ public interface UserDao {
 
   public int updatePassword(String password);
 
-  public User findByEmail(@Param("email") String email);
+  public User findByEmail(String email);
+
+  public User findByUsername(String username);
 
   public String findByNameAndPhone(
       @Param("name")  String name,
