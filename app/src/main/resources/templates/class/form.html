@@ -51,7 +51,6 @@
 <body>
 
 
-
 <h1>일정 등록</h1>
 
 <form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
@@ -64,84 +63,81 @@
     <div>
         설명: <input name='content' type='text'>
 
-            사진: <input name='file' type='file'>
+        사진: <input name='file' type='file'>
     </div>
 
 
     <div>
         모임일 <br>
-      날짜 시간 설정:  <input  name="startAt2" type="datetime-local">
+        날짜 시간 설정: <input name="startAt2" type="datetime-local">
     </div>
 
     <div>
-       종료 시간 <br>
-     날짜 시간 설정:   <input  name="endedAt2" type="datetime-local">
+        종료 시간 <br>
+        날짜 시간 설정: <input name="endedAt2" type="datetime-local">
 
     </div>
 
     <div>
         위치: <input name='location' type='text'>
-     상세주소:   <input type="text" id="locationDetail" name="locationDetail" placeholder="상세주소">
+        상세주소: <input type="text" id="locationDetail" name="locationDetail" placeholder="상세주소">
     </div>
 
     <div>
         공개대상: <input type="radio" name="security" value="0"> 공개
-                  <input type="radio" name="security" value="1"> 스쿨만
+        <input type="radio" name="security" value="1"> 스쿨만
         인원: <input name='member' type='text'>
     </div>
 
 
     <button class="btn-open-modal" type="button">초대하기</button>
-        <div class="modal">
-            <div class="modal_body">
-                <span class="modal_close_btn">X</span>
-                <h2>멤버 목록</h2>
-                <table>
-                    <thead>
-                    <tr>
-                        <th>사진</th>
-                        <th>닉네임</th>
-                        <th>등급</th>
-                        <th>초대하기</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+    <div class="modal">
+        <div class="modal_body">
+            <span class="modal_close_btn">X</span>
+            <h2>멤버 목록</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>사진</th>
+                    <th>닉네임</th>
+                    <th>등급</th>
+                    <th>초대하기</th>
+                </tr>
+                </thead>
+                <tbody>
 
-                    <tr data-th-each="schoolMember : ${schoolMembers}" data-th-object="${schoolMember}">
-                        <td data-th-text="*{photo}">사진</td>
-                        <td data-th-text="*{nickname}">가나다</td>
-                        <td data-th-text="*{level.name}">블랙</td>
-                    </tr>
+                <tr data-th-each="schoolMember : ${schoolMembers}" data-th-object="${schoolMember}">
+                    <td data-th-text="*{photo}">사진</td>
+                    <td data-th-text="*{nickname}">가나다</td>
+                    <td data-th-text="*{level.name}">블랙</td>
+                </tr>
 
-                </table>
-            </div>
+            </table>
         </div>
-        <script>
-            const modal = document.querySelector('.modal');
-            const btnOpenModal=document.querySelector('.btn-open-modal');
-            const btnCloseModal = document.querySelector('.modal_close_btn');
-            btnOpenModal.addEventListener("click", ()=>{
-                modal.style.display="flex";
-              });
-                btnCloseModal.addEventListener('click', () => {
-            modal.style.display = 'none';
-            });
+    </div>
+    <script>
+        const modal = document.querySelector('.modal');
+        const btnOpenModal=document.querySelector('.btn-open-modal');
+        const btnCloseModal = document.querySelector('.modal_close_btn');
+        btnOpenModal.addEventListener("click", ()=>{
+            modal.style.display="flex";
+          });
+            btnCloseModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+        });
 
-        </script>
+    </script>
 
-<div>
+    <div>
         정기여부:<input type="radio" name="repeatSet" value="0"> 정기
-                 <input type="radio" name="repeatSet" value="1"> 번개
+        <input type="radio" name="repeatSet" value="1"> 번개
 
     </div>
     <br>
     <button>등록</button>
 
 
-
 </form>
-
-
 
 
 </body>

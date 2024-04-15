@@ -51,7 +51,7 @@ public class ClassController {
     }
   }
 
-  @GetMapping("form")
+  @GetMapping("testCalendar")
   public void form(Model model,int schoolNo) throws Exception{
     model.addAttribute("schoolMembers",schoolMemberService.list(schoolNo));
     System.out.println("=====classcontorller.schoolMember==============>    " + schoolMemberService);
