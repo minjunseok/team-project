@@ -20,9 +20,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
       AuthenticationException exception) throws IOException, ServletException {
     log.debug("login Failed" );
     response.sendRedirect("/");
-
   }
-
 }
 
 
