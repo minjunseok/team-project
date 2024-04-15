@@ -7,18 +7,41 @@
 <body>
 
 
-<h1>스쿨 게시글 리스트</h1></a>
+
 
 <button>스쿨 설정</button><br>
 <div>
   <a href="">게시글</a>
-  <a href="@{schooluser.list}">회원 조회</a>
+<!--  <a data-th-href="@{/schooluser/list(schoolNo=*{schoolNo})}" href="../../schooluser/list.html"> 회원 조회</a>-->
   <a href="">일정 등록</a>
 </div>
 
 
+<h1>스쿨 회원 리스트</h1>
 
+<table border='1'>
+  <thread>
+    <tr>
+      <th>회원명</th>
+      <th>프로필 사진</th>
+      <th>회원 등급</th>
+    </tr>
+  </thread>
+  <tbody>
 
+  <tr data-th-each="schoolUser : ${schoolUsers}" data-th-object="${schoolUser}">
+
+    <td data-th-text="*{writer.nickname}">작성자</td>
+    <td data-th-text="*{writer.photo}">사진</td>
+    <td data-th-text="*{level.levelName}">회원 등급</td>
+  </tr>
+  </tbody>
+</table>
+
+<br>
+<br>
+
+<h1>스쿨 게시글 리스트</h1>
 
 <table border='1'>
 <thread>

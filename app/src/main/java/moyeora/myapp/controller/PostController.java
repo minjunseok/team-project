@@ -3,10 +3,12 @@ package moyeora.myapp.controller;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.CommentService;
 import moyeora.myapp.service.PostService;
+import moyeora.myapp.service.SchoolUserService;
 import moyeora.myapp.util.FileUploadHelper;
 import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Comment;
 import moyeora.myapp.vo.Post;
+import moyeora.myapp.vo.SchoolUser;
 import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,6 +32,7 @@ public class PostController {
   private final PostService postService;
   private final FileUploadHelper fileUploadHelper;
   private final CommentService commentService;
+  private final SchoolUserService schoolUserService;
   private String uploadDir = "post/";
   private static final Log log = LogFactory.getLog(PostController.class);
 
@@ -49,7 +52,10 @@ public class PostController {
         .out.println(postService.findBySchoolPostList(schoolNo));
     log.debug(postService.findBySchoolPostList(schoolNo));
 
+    log.debug(schoolUserService.findBySchoolUserList(schoolNo));
+    System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
     model.addAttribute("postlists",postService.findBySchoolPostList(schoolNo));
+    model.addAttribute("schoolUsers",schoolUserService.findBySchoolUserList(schoolNo));
   }
 
   @GetMapping("view/{lNo}")

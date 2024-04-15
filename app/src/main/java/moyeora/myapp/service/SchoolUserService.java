@@ -6,7 +6,7 @@ import moyeora.myapp.vo.SchoolUser;
 public interface SchoolUserService {
 
 
-  List<SchoolUser> findBySchoolUserList(int no);
+  List<SchoolUser> findBySchoolUserList(int schoolNo);
 
   }
 

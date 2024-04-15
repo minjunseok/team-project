@@ -18,9 +18,9 @@ public class DefaultSchoolUserService implements SchoolUserService {
   private final SchoolUserDao schoolUserDao;
 
 
-  @Transactional
+
   @Override
-  public List<SchoolUser> findBySchoolUserList(int no) {
-    return schoolUserDao.findBySchoolUserList(no);
+  public List<SchoolUser> findBySchoolUserList(int schoolNo) {
+    return schoolUserDao.findBySchoolUserList(schoolNo);
   }
 }

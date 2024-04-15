@@ -25,6 +25,7 @@ public class Post {
   private User writer;
   private List<AttachedFile> files;
   private List<Comment> comments;
+  private List<SchoolUser> schoolUsers;
   private School school;
   private SchoolUser schoolUser;
 }
