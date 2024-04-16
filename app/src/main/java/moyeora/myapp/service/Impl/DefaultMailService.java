@@ -1,7 +1,7 @@
 package moyeora.myapp.service.Impl;
 
 import java.nio.charset.StandardCharsets;
-import moyeora.myapp.service.util.RedisUtil;
+import moyeora.myapp.security.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;

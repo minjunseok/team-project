@@ -1,4 +1,4 @@
-package moyeora.myapp.security.OAuth.userInfo;
+package moyeora.myapp.security.oauth.userInfo;
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class NaverOAuth2UserInfo implements OAuth2UserInfo{
 
   @Override
   public String getEmail() {
-    return (String) attributes.get("email");
+    return (String) attributes.get("email").toString();
   }
 
   @Override

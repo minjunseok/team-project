@@ -25,6 +25,12 @@ public class DefaultUserService implements UserService {
   }
 
   @Override
+  public Object save(User user) {
+    userDao.save(user);
+    return null;
+  }
+
+  @Override
   public List<User> list() {
     return userDao.findAll();
   }
@@ -56,13 +62,12 @@ public class DefaultUserService implements UserService {
   }
 
   @Override
-  public User findByUsername(String username) {
-    return userDao.findByUsername(username);
-  }
-
-  @Override
   public User findByEmail(String email) {
     return userDao.findByEmail(email);
   }
 
+  @Override
+  public User findOAuth2User(String email, String provider) {
+    return userDao.findOAuth2User(email, provider);
+  }
 }

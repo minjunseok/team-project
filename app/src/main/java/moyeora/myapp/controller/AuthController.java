@@ -1,18 +1,17 @@
 package moyeora.myapp.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Random;
-import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.Impl.DefaultMailService;
 import moyeora.myapp.service.UserService;
-import moyeora.myapp.service.util.RedisUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import moyeora.myapp.security.util.RedisUtil;
+import moyeora.myapp.vo.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -25,9 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
-  private static final String AUTH_CODE_PREFIX = "AuthCode ";
 
-  private static final Log log = LogFactory.getLog(AuthController.class);
   private final UserService userService;
   private final DefaultMailService mailService;
   private final RedisUtil redisUtil;
@@ -43,6 +40,18 @@ public class AuthController {
         .limit(targetStringLength)
         .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
         .toString();
+  }
+
+  @GetMapping("test")
+  public void getTestForm(String key, Model model) throws JsonProcessingException {
+    User user = redisUtil.getData(key, User.class);
+    model.addAttribute("user", user);
+  }
+
+  @PostMapping("join")
+  public String joinTest(User user, Model model) {
+    model.addAttribute("result", userService.save(user));
+    return "/auth/test";
   }
 
   @GetMapping("form")
@@ -83,7 +92,7 @@ public class AuthController {
 
   @PostMapping("verifyCode")
   public String verifyCode(String email, String code, String authId, Model model) throws NoSuchAlgorithmException {
-    String savedCode = redisUtil.getData(authId);
+    String savedCode = (String) redisUtil.getData(authId);
     if (savedCode == null) {
       model.addAttribute("status","savedCode == null");
     } else if (!savedCode.equals(code)) {

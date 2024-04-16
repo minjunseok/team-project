@@ -7,6 +7,8 @@ public interface UserService {
 
   void add(User user);
 
+  Object save(User user);
+
   List<User> list();
 
   User get(int no);
@@ -19,7 +21,7 @@ public interface UserService {
 
   void delete(int no);
 
-  User findByUsername(String username);
+  User findOAuth2User(String email, String provider);
 
   User findByEmail(String email);
 }
