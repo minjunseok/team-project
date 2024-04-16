@@ -36,6 +36,11 @@
     values(#{no},#{no})
   </insert>
 
+  <insert id="save" parameterType="User">
+    insert into users(name,email,provider,provider_id,created_at)
+    values(#{name},#{email},#{provider},#{providerId},NOW())
+  </insert>
+
   <delete id="delete" parameterType="int">
     delete from users where user_no=#{value}
   </delete>
@@ -55,7 +60,7 @@
       user_no,
       email,
       name,
-    created_at
+      created_at
     from
       users
     where
@@ -106,6 +111,17 @@
     where
       name=#{name}
       and phone=#{phone}
+  </select>
+
+  <select id="findOAuth2User" resultMap="UserMap">
+    select
+      email,
+      name
+    from
+      users
+    where
+      email=#{email}
+      and provider=#{provider}
   </select>
 
 </mapper>

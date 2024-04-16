@@ -1,4 +1,4 @@
-package moyeora.myapp.security.OAuth;
+package moyeora.myapp.security;
 
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.UserService;

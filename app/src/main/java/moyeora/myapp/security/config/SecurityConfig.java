@@ -1,4 +1,4 @@
-package moyeora.myapp.config;
+package moyeora.myapp.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.PrintWriter;
@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import moyeora.myapp.security.CustomAuthenticationFailureHandler;
 import moyeora.myapp.security.CustomAuthenticationSuccessHandler;
-import moyeora.myapp.security.OAuth.PrincipalDetailService;
-import moyeora.myapp.security.OAuth.PrincipalOauth2UserService;
+import moyeora.myapp.security.oauth.PrincipalOauth2UserService;
+import moyeora.myapp.security.oauth.OAuth2AuthenticationFailureHandler;
+import moyeora.myapp.security.oauth.OAuth2AuthenticationSuccessHandler;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,9 +40,11 @@ public class SecurityConfig {
 
   private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 
-  private final AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
+  private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
-  private final PrincipalDetailService principalDetailService;
+  private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
+  private final AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
 
   private final PrincipalOauth2UserService principalOauth2UserService;
 
@@ -75,11 +78,12 @@ public class SecurityConfig {
         .oauth2Login((oauth2) -> oauth2
             .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth/callback/*"))
             .userInfoEndpoint(endpoint -> endpoint.userService(principalOauth2UserService))
+            .successHandler(oAuth2AuthenticationSuccessHandler)
+            .failureHandler(oAuth2AuthenticationFailureHandler)
         )
         .exceptionHandling((exceptionConfig) ->
             exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint).accessDeniedHandler(accessDeniedHandler)
         )
-//        .addFilterBefore((Filter) jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
     ;
 
     return httpSecurity.build();

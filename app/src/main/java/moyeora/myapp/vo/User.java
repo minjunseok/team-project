@@ -5,8 +5,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import lombok.NoArgsConstructor;
+import moyeora.myapp.vo.role.Role;
 
 @Data
+@NoArgsConstructor
 public class User implements Serializable {
 
   private static final long serialVersionUID = 100L;
@@ -29,15 +32,13 @@ public class User implements Serializable {
   private String photo;
   private String provider;
   private String providerId;
+//  private Role role;
 
   @Builder
-  public User(String name, String phone, String email, String provider, String providerId,
-      Date createdAt) {
-    this.name = name;
-    this.phone = phone;
+  public User(String email, String name, String provider, String providerId) {
     this.email = email;
+    this.name = name;
     this.provider = provider;
     this.providerId = providerId;
-    this.createdAt = createdAt;
   }
 }

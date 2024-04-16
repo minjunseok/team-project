@@ -12,9 +12,9 @@
   <a data-th-href="@{/board/list(category=1)}">게시글</a>
   <a data-th-href="@{/member/list}">회원</a>
   <a data-th-href="@{/board/list(category=2)}">가입인사</a>
-  <a sec:authorize="isAuthenticated()" data-th-href="@{/auth/logout}"><span sec:authentication="name"></span>로그아웃</a>
-  <a sec:authorize="isAnonymous()" data-th-href="@{/auth/form}">로그인</a>
   <a data-th-href="@{/about}">소개</a>
+  <a sec:authorize="isAuthenticated()" data-th-href="@{/auth/logout}"><span sec:authentication="name"></span> 로그아웃</a>
+  <a sec:authorize="isAnonymous()" data-th-href="@{/auth/form}">로그인</a>
 </header>
 
 </body>

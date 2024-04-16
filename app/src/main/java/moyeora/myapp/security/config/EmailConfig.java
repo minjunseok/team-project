@@ -1,4 +1,4 @@
-package moyeora.myapp.config;
+package moyeora.myapp.security.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

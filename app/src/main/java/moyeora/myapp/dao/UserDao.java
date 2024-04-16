@@ -11,6 +11,8 @@ public interface UserDao {
 
   public void add(User user);
 
+  public void save(User user);
+
   public int delete(int no);
 
   public List<User> findAll();
@@ -23,7 +25,7 @@ public interface UserDao {
 
   public User findByEmail(String email);
 
-  public User findByUsername(String username);
+  public User findOAuth2User(String email, String provider);
 
   public String findByNameAndPhone(
       @Param("name")  String name,

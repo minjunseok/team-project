@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>moyeora</title>
+</head>
+<body>
+
+<div data-th-replace="header :: header">머리말</div>
+
+<h1>templates/auth/test.html</h1>
+<p style="color:gray;">소셜 회원가입 후 추가 데이터 받는 화면</p>
+
+<form id="joinForm" data-th-action="@{join}" method="post" data-th-if="${status == null}">
+  <div>
+    <label>
+      이메일: [[${user.email}]]<input id="email" data-th-value="${user.email}" name="email" type="text">
+    </label>
+  </div>
+  <div>
+    <label>
+      이름: <input id="name" data-th-value="${user.name}" name="name" type="text">
+    </label>
+  </div>
+  <div>
+    <label>
+      휴대전화: <input id="phone" data-th-value="${user.phone}" name="phone" type="text">
+    </label>
+  </div>
+
+  <button type="submit" onclick="return checkForm()">로그인</button>
+
+  <div data-th-if="${status != null}" data-th-text="${status}"></div>
+</form>
+
+<div data-th-replace="footer :: footer">꼬리말</div>
+
+<script>
+function checkForm() {
+  var email = document.getElementById("email").value;
+  if ( email == null || email == "" || email.length < 1 ) {
+    alert("이메일을 입력하세요.");
+    return false;
+  }
+}
+</script>
+
+</body>
+</html>
