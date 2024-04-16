@@ -10,17 +10,20 @@ import java.util.List;
 
 public interface PostService {
 
+
+//  int update(Post post);
+
   void add(Post post);
 
   List<Post> findAll(int categoryNo);
 
   Post get(int no);
 
+  List<AttachedFile> getAttachedFiles(int no);
+
   List<Comment> getComments(int no);
 
   int delete(int no);
-
-  List<AttachedFile> getAttachedFiles(int no);
 
   AttachedFile getAttachedFile(int fileNo);
 
