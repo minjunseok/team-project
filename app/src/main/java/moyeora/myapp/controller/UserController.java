@@ -59,9 +59,11 @@ public class UserController implements InitializingBean {
 
     @GetMapping("view")
     public void view(Model model) throws Exception{
-        User user = userService.get(38);
+        User user = userService.get(39);
 
         model.addAttribute("user",user);
         model.addAttribute("tags",tagService.findAllTag());
     }
+
+
 }

@@ -12,7 +12,7 @@ public class SchoolUser {
 
   private int userNo;
   private int schoolNo;
-  private int gradeNo;
+  private int levelNo;
   private Date createdAt;
   private List<School> schools;
 

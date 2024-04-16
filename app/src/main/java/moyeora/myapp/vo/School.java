@@ -1,6 +1,7 @@
 package moyeora.myapp.vo;
 
 import java.sql.Date;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 public class School implements Serializable {
   private static final long  serialVersionUID = 100L;
   private int no;
-  private int schoolNo;
   private  int categoryNo;
   private  int postNo;
   private String name;
@@ -21,4 +21,6 @@ public class School implements Serializable {
   private int openRange;
   private Date createdAt;
   private int nowMemberCount;
+  private List<Integer> tagNums;
+  private List<SchoolTag> tags;
 }
