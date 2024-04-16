@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/class")
 @RequiredArgsConstructor
-public class ClassController {
+public class  ClassController {
 
   private final ClassService classService;
 
