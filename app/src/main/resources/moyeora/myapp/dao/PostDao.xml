@@ -56,7 +56,7 @@
 <insert id="add" parameterType="Post"
 useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
     insert into posts(content, school_no, user_no, created_at)
-    values(#{content}, #{schoolNo}, #{userNo}, NOW())
+    values(#{content}, 1, #{userNo}, NOW())
 </insert>
 
   <delete id="delete" parameterType="int">
