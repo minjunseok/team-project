@@ -29,7 +29,7 @@ public interface PostService {
 
   int countAll(int categoryNo);
 
-  String findByPost(String content);
+  public String findByPost(int schoolNo, String content);
 
   public List<Post> findByLike();
 
@@ -42,9 +42,9 @@ public interface PostService {
   public List<Post> findBySchoolPostList(int schoolNo);
 
 // 필터 내용으로 검색했을 때
- public List<Post> findBySchoolContent(String keyword);
+ public List<Post> findBySchoolContent(int schoolNo, String keyword);
  // 필터 작성자로 검색했을 때
- public List<Post> findBySchoolUserName(String keyword);
+ public List<Post> findBySchoolUserName(int schoolNo, String keyword);
 
  public List<Post> findBySchool(int schoolNo);
 }

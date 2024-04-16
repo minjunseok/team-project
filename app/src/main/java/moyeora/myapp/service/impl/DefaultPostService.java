@@ -92,8 +92,8 @@ public class DefaultPostService implements PostService {
   }
 
   @Override
-  public String findByPost(String content) {
-    return postDao.findByPost(content);
+  public String findByPost(int schoolNo, String content) {
+    return postDao.findByPost(schoolNo, content);
   }
   @Override
   public List<Post> findByLike() {
@@ -122,13 +122,13 @@ public class DefaultPostService implements PostService {
 
    // 필터를  내용으로 검색했을 때
     @Override
-    public List<Post> findBySchoolContent(String keyword) {
-        return postDao.findBySchoolContent(keyword);
+    public List<Post> findBySchoolContent(int schoolNo, String keyword) {
+        return postDao.findBySchoolContent(schoolNo, keyword);
     }
 
     // 필터를 작성자로 검색했을 때
-    public List<Post> findBySchoolUserName(String keyword) {
-        return postDao.findBySchoolUserName(keyword);
+    public List<Post> findBySchoolUserName(int schoolNo, String keyword) {
+        return postDao.findBySchoolUserName(schoolNo, keyword);
     }
 
       @Override
