@@ -1,6 +1,7 @@
 package moyeora.myapp.service;
 
 import moyeora.myapp.vo.AttachedFile;
+import moyeora.myapp.vo.Comment;
 import moyeora.myapp.vo.Post;
 import moyeora.myapp.vo.User;
 
@@ -9,19 +10,20 @@ import java.util.List;
 
 public interface PostService {
 
-//  void add(Post post);
+
+  int update(Post post);
+
   void add(Post post);
 
   List<Post> findAll(int categoryNo);
 
-
   Post get(int no);
 
-  int update(Post post);
+  List<AttachedFile> getAttachedFiles(int no);
+
+  List<Comment> getComments(int no);
 
   int delete(int no);
-
-  List<AttachedFile> getAttachedFiles(int no);
 
   AttachedFile getAttachedFile(int fileNo);
 
@@ -30,7 +32,9 @@ public interface PostService {
   int countAll(int categoryNo);
 
   public String findByPost(int schoolNo, String content);
+ List<Post> findBySchoolPostList(int schoolNo);
 
+ Post get(int no, int schoolNo);
   public List<Post> findByLike();
 
   public List<Post> findByFollow();
@@ -39,7 +43,7 @@ public interface PostService {
 
   public List<Post> findBySchoolPost();
 
-  public List<Post> findBySchoolPostList(int schoolNo);
+
 
 // 필터 내용으로 검색했을 때
  public List<Post> findBySchoolContent(int schoolNo, String keyword);

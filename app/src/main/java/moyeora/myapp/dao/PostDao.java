@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface PostDao {
 
-//  void add(Post post);
   void add(Post post);
 
   List<Post> findAll(@Param("categoryNo") int categoryNo);
@@ -31,7 +30,6 @@ public interface PostDao {
 
   String findByPost(int schoolNo, String content);
   public List<Post> findBySchoolPost();
-  public List<Post> findBySchoolPostList(int schoolNo);
 
   // 필터 내용으로 검색했을 때
   List<Post> findBySchoolContent(int schoolNo, @Param("keyword") String keyword);
@@ -39,4 +37,11 @@ public interface PostDao {
   List<Post> findBySchoolUserName(int schoolNo, @Param("keyword") String keyword);
 
   List<Post> findBySchool(int schoolNo);
+  List<Post> findBySchoolUserName(@Param("keyword") String keyword);
+//  Post findBy(int no);
+
+  Post findByPost(int no , int schoolNo);
+
+
+  List<Post> findBySchoolPostList(int schoolNo);
 }

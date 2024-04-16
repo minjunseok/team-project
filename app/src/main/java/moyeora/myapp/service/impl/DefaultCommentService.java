@@ -1,0 +1,24 @@
+package moyeora.myapp.service.impl;
+
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import moyeora.myapp.dao.CommentDao;
+import moyeora.myapp.dao.PostDao;
+import moyeora.myapp.service.CommentService;
+import moyeora.myapp.vo.Comment;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+
+@RequiredArgsConstructor
+@Service
+public class DefaultCommentService implements CommentService {
+
+  private final CommentDao commentDao;
+
+
+  @Override
+  public List<Comment> get(int no) {
+    return commentDao.findByComment(no);
+  }
+}
