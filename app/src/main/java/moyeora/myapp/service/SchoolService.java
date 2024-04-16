@@ -4,8 +4,7 @@ package moyeora.myapp.service;
 import java.util.List;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
-import moyeora.myapp.vo.Tag;
-import org.springframework.ui.Model;
+import moyeora.myapp.vo.User;
 
 public interface SchoolService {
 
@@ -15,7 +14,7 @@ public interface SchoolService {
 
   public List<School> findHotSchool(int category);
 
-  void add(School school);
+  void add(School school,int userNo,int schoolUserNo);
 
   List<School> list(int categoryNo, int pageNo, int pageSize);
 
@@ -27,4 +26,10 @@ public interface SchoolService {
 
   int countAll(int categoryNo);
   public List<School> findBySchoolName(String name);
+
+  //public List<Tag>
+
+  void insert(SchoolUser schoolUser);
+
+  int schoolUserLevelCount(int count);
 }

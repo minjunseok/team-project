@@ -18,7 +18,8 @@
 <div class="container">
   <div class="row">
     <div class="col-md-3">
-      <button>소모임 개설</button><br>
+      <button type="button" onclick="location.href='/school/form'">소모임 개설</button><br>
+      <!-- <button data-th-href="@{/school/form}" href="school/form">소모임 개설</button><br>-->
       <div>내 소모임<a>3</a></div>
       <div data-th-each="school : ${schools}" data-th-object="${school}">
         <input type="hidden" value="*{no}">

@@ -11,8 +11,6 @@ import java.beans.PropertyEditorSupport;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Date;
-
-
 @ControllerAdvice
 public class GlobalControllerAdvice {
 

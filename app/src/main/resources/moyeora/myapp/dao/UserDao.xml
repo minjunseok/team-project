@@ -54,9 +54,17 @@
     from
         users
     where
-        user_no = 38;
+        user_no = 39
 </select>
 
+  <select id="findUserGrade" resultType="int" parameterType="int">
+    SELECT
+      u.grade
+    FROM
+      users u
+    WHERE
+      u.user_no = #{no}
+  </select>
 
 
 </mapper>
