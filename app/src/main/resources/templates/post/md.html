@@ -17,7 +17,7 @@
 
     <style>
         body {
-          padding-left: 10px;
+            padding-left: 10px;
         }
     </style>
 </head>
@@ -27,36 +27,35 @@
 
 <h1 data-th-text="${postNo}">피드</h1>
 
-<form action="add" data-th-action="@{add}"  method='post'>
+
+<form action="update" data-th-action="@{update}" data-th-object="${post}"
+      enctype='multipart/form-data'
+      method='post'>
+    <input type="hidden" data-th-value="*{no}" name="no">
+    <textarea data-th-text="${content}" id="summernoteContent" name="content" style="display: none;"></textarea>
     <div>
-        <textarea id="summernote" name='content'></textarea>
+        <button>변경</button>
+        <a data-th-href="@{delete(post_no=${post.no})}" href="#">[삭제]</a>
     </div>
 
-
-    <div>
-        <button id="btn_submit">등록</button>
-    </div>
 </form>
 
 <script>
-    const btn_submit = document.querySelector('#btn_submit')
-  btn_submit.addEventListener("click", () => {
-    var markupStr = $('#summernote').summernote('code');
-    console.log(markupStr);
-  })
-$(document).ready(function() {
+    $(document).ready(function () {
 
-$('#summernote').summernote({
-   height: 300,
-   width: 500,
-
-callbacks: {
-}
-})})
-
+    // Summernote를 초기화하고 내용을 보여줍니다.
+    $('#summernoteContent').summernote({
+        height: 300,
+        width: 500,
+        callbacks: {
+        }
+    });
+});
 
 </script>
 
 
+
 </body>
 </html>
+
