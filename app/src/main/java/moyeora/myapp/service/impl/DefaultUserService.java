@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 public class DefaultUserService implements UserService {
 
   private final UserDao userDao;
-//  private final PasswordEncoder passwordEncoder;
 
   @Override
   public void add(User user) {

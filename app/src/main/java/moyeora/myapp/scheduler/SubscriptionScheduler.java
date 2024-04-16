@@ -52,7 +52,6 @@ public class SubscriptionScheduler {
     for(String email : emails) {
       mailService.sandEmail(email,subject,content);
     }
-
   }
 
   public void stopSchool(List<List<Integer>> schools) {

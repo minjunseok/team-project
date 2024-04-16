@@ -1,8 +1,7 @@
 package moyeora.myapp.dao;
 
 import java.util.List;
-import moyeora.myapp.dto.school.admin.MemberUpdateRequestDTO;
-import moyeora.myapp.vo.School;
+import moyeora.myapp.dto.school.admin.SchoolMemberUpdateRequestDTO;
 import moyeora.myapp.vo.SchoolUser;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,9 +17,9 @@ public interface SchoolUserDao {
 
   List<SchoolUser> findBlackUserBySchoolNo(int no);
 
-  int findLevel(MemberUpdateRequestDTO memberUpdateRequestDTO);
+  int findLevel(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
 
-  void updateLevel(MemberUpdateRequestDTO memberUpdateRequestDTO);
+  void updateLevel(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
 
-  void deleteMember(MemberUpdateRequestDTO memberUpdateRequestDTO);
+  void deleteMember(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
 }
