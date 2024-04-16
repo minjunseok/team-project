@@ -7,4 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SchoolUserDao {
   public SchoolUser findByUserNo(int no);
+
+  List<SchoolUser> findBySchoolUserList(int schoolNo);
+
 }
