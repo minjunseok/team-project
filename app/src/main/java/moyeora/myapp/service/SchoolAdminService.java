@@ -20,4 +20,7 @@ public interface SchoolAdminService {
   School findBySchoolNo(int schoolNo);
 
   void updateSchoolOpenRange(SchoolOpenRangeUpdateRequestDTO schoolOpenRangeUpdateRequestDTO);
+  int authAdmin(int userNo, int schoolNo);
+
+  int authSubAdmin(int userNo, int schoolNo);
 }

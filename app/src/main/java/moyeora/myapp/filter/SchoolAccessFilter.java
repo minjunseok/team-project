@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
-@WebFilter("/*")
 @RequiredArgsConstructor
 public class SchoolAccessFilter implements Filter {
   private final SchoolDao schoolDao;
