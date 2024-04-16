@@ -19,10 +19,10 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 @SpringBootApplication
 @EnableTransactionManagement
 @PropertySource({
-    "classpath:config/oauth.properties",
-    "classpath:config/email.properties",
-    "classpath:config/ncp.properties",
-    "classpath:config/ncp-secret.properties"
+    "file:${user.home}/config/oauth.properties",
+    "file:${user.home}/config/email.properties",
+    "file:${user.home}/config/ncp.properties",
+    "file:${user.home}/config/ncp-secret.properties"
 })
 @Controller
 public class App {
