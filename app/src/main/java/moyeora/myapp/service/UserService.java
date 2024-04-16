@@ -1,6 +1,7 @@
 package moyeora.myapp.service;
 
 import java.util.List;
+import moyeora.myapp.dto.school.admin.MemberUpdateRequestDTO;
 import moyeora.myapp.vo.User;
 public interface UserService {
 
@@ -21,4 +22,5 @@ public interface UserService {
     List<String> findEmailByUserList(List<Integer> userList);
 
     void downGrade(List<Integer> userList);
+
 }

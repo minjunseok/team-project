@@ -7,12 +7,20 @@
   <resultMap id="SchoolUserMap" type="SchoolUser">
     <id column="user_no" property="userNo"/>
     <result column="school_no" property="schoolNo"/>
-    <result column="grade_no" property="gradeNo"/>
+    <result column="level_no" property="levelNo"/>
     <result column="created_at" property="createdAt"/>
+    
+    <association property="member" javaType="User">
+      <result column="nickname" property="nickname"/>
+      <result column="photo" property="photo"/>
+    </association>
+
+    <association property="level" javaType="Level">
+      <result column="level_name" property="name"/>
+    </association>
 
     <collection property="schools" ofType="School">
-      <result column="school_no" property="no"/>
-      <result column="name" property="name"/>
+      <result column="school_name" property="name"/>
       <result column="photo" property="photo"/>
     </collection>
 
@@ -22,7 +30,7 @@
     select
       u.user_no as user_no,
       u.school_no as school_no,
-      u.grade_no as grade_no,
+      u.level_no as level_no,
       u.created_at as created_at,
       s.name as name,
       s.photo as photo
@@ -42,5 +50,71 @@
     and grade_no=4
     order by created_at asc;
   </select>
+  
+  <select id="findUserBySchoolNo" resultMap="SchoolUserMap">
+    select
+      s.school_no school_no,
+      s.user_no user_no,
+      s.level_no level_no,
+      nickname,
+      photo,
+      l.name level_name,
+      s.created_at as created_at
+    from
+      school_users s
+    inner join
+      users u
+    on s.user_no = u.user_no
+    inner join
+      levels l
+    on s.level_no = l.level_no
+    where
+      school_no=#{schoolNo}
+    <if test="levelNo==1">
+      and
+      s.level_no = 1
+    </if>
+    <if test="levelNo==2">
+      and
+      s.level_no &gt;= 2
+      and
+      s.level_no &lt;= 3
+    </if>
+    <if test="levelNo==5">
+      and
+      s.level_no = 5
+    </if>
+  </select>
 
+  <select id="findLevel" resultType="int">
+    select
+      level_no
+    from
+      school_users
+    where
+      user_no = #{userNo}
+    and
+      school_no = #{schoolNo}
+  </select>
+
+  <update id="updateLevel">
+    update
+      school_users
+    set
+      level_no = #{levelNo}
+    where
+      user_no = #{userNo}
+    and
+      school_no = #{schoolNo}
+  </update>
+
+  <delete id="deleteMember">
+    delete
+    from
+      school_users
+    where
+      user_no = #{userNo}
+    and
+      school_no = #{schoolNo}
+  </delete>
 </mapper>

@@ -1,4 +1,4 @@
-package moyeora.myapp.service.Impl;
+package moyeora.myapp.service.impl;
 
 import java.nio.charset.StandardCharsets;
 import moyeora.myapp.service.MailService;

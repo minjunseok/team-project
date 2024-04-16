@@ -1,7 +1,5 @@
 package moyeora.myapp.vo;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -13,7 +11,7 @@ public class User implements Serializable {
 
     private int no;
     private String name;
-    private String password;
+    private String pwd;
     private String address;
     private String phone;
     private String email;

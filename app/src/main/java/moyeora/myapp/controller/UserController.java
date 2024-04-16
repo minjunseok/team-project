@@ -43,12 +43,8 @@ public class UserController implements InitializingBean {
 
     @PostMapping("add")
     public String add(User user, MultipartFile file) throws Exception{
-
-
         if(file.getSize() > 0){
-            System.out.println("add 2 실행@@@@@@@@@@@@@@@");
             String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
-            System.out.println("add 3 실행@@@@@@@@@@@@@@@" + user);
             user.setPhoto(filename);
         }
         userService.add(user);
