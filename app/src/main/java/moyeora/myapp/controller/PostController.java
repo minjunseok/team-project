@@ -210,4 +210,12 @@ public String list(
 //    return "redirect:../view?category=" + category + "&no=" + file.getPostNo();
 //  }
 
+
+  @GetMapping("/school/{schoolNo}")
+public String getPostsBySchool(@PathVariable int schoolNo, Model model) {
+    List<Post> posts = postService.findBySchool(schoolNo);
+    model.addAttribute("posts", posts);
+    return "post/list"; 
+}
+
 }

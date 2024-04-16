@@ -273,6 +273,38 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
         like_count DESC;
 </select>
 
+<!-- 게시판 스쿨번호에 맞게 출력 -->
+
+<select id="findBySchool" resultMap="PostMap" parameterType="int">
+    SELECT
+        u.user_no,
+        u.name,
+        p.post_no,
+        p.school_no,
+        p.created_at,
+        (SELECT COUNT(*) FROM likes AS l WHERE l.post_no = p.post_no) AS like_count,
+        (SELECT COUNT(*) FROM comments AS c WHERE c.post_no = p.post_no) AS comment_count,
+        s.name AS school_name,
+        s.photo AS school_photo,
+        p.content,
+        f.path,
+        f.name,
+        f.post_no
+    FROM
+        posts p
+    INNER JOIN
+        schools s ON s.school_no = p.school_no
+    INNER JOIN
+        users u ON p.user_no = u.user_no
+    LEFT OUTER JOIN
+        files f ON p.post_no = f.post_no
+    WHERE
+        p.school_no = #{schoolNo}
+    ORDER BY
+        like_count DESC;
+</select>
+
+
 
 </mapper>
 
