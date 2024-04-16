@@ -16,18 +16,14 @@
     <result column="birth" property="birth"/>
     <result column="gender" property="gender"/>
     <result column="grade" property="grade"/>
-    <result column="login_type" property="loginType"/>
     <result column="created_at" property="createdAt"/>
     <result column="profile" property="profile"/>
     <result column="manner_point" property="mannerPoint"/>
     <result column="photo" property="photo"/>
-    <result column="tag_no" property="no"/>
-  </resultMap>
-
-  <resultMap id="AuthUserMap" type="AuthUser">
-    <result column="email" property="email"/>
-    <result column="pwd" property="password"/>
-    <result column="name" property="name"/>
+    <result column="tag_no" property="tagNo"/>
+    <result column="login_type" property="loginType"/>
+    <result column="provider" property="provider"/>
+    <result column="provider_id" property="providerId"/>
   </resultMap>
 
   <insert id="add" parameterType="User">
@@ -38,6 +34,11 @@
   <insert id="add2" parameterType="list">
     insert into member_tags(user_no,tag_no)
     values(#{no},#{no})
+  </insert>
+
+  <insert id="save" parameterType="User">
+    insert into users(name,email,provider,provider_id,created_at)
+    values(#{name},#{email},#{provider},#{providerId},NOW())
   </insert>
 
   <delete id="delete" parameterType="int">
@@ -59,7 +60,7 @@
       user_no,
       email,
       name,
-    created_at
+      created_at
     from
       users
     where
@@ -71,7 +72,9 @@
         user_no,
         email,
         pwd,
-        name
+        name,
+        provider,
+        provider_id
     from
         users
     where
@@ -93,6 +96,13 @@
       user_no=#{no}
   </update>
 
+  <update id="updatePassword" parameterType="User">
+    update users set
+      pwd=#{password}
+    where
+      user_no=#{no}
+  </update>
+
   <select id="findByNameAndPhone" resultType="string">
     select
       email
@@ -103,15 +113,15 @@
       and phone=#{phone}
   </select>
 
-  <select id="getUserDetails" resultMap="AuthUserMap" parameterType="string">
+  <select id="findOAuth2User" resultMap="UserMap">
     select
       email,
-      pwd,
       name
     from
       users
     where
       email=#{email}
+      and provider=#{provider}
   </select>
 
 </mapper>
