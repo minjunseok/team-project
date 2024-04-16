@@ -17,41 +17,45 @@
 
     <style>
         body {
-          padding-left: 10px;
+            padding-left: 10px;
         }
     </style>
 </head>
 <body>
 
-<div data-th-replace="header :: header">2조 팀플(피드인지 일정인지)</div>
+<div data-th-replace="header :: header">(새 글 or 글 수정)</div>
 
 <h1 data-th-text="${postNo}">피드</h1>
 
-<form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
-    <input data-th-value="${category}" name='category' type='hidden'>
+
+<form action="update" data-th-action="@{update}" data-th-object="${post}"
+      enctype='multipart/form-data'
+      method='post'>
+    <input type="hidden" data-th-value="*{no}" name="no">
+    <textarea data-th-text="${content}" id="summernoteContent" name="content" style="display: none;"></textarea>
     <div>
-        내용: <textarea id="summernote" name='content'></textarea>
-    </div>
-    <div data-th-if="${category == 0}">
-        첨부파일: <input multiple name='attachedFiles' type='file'>
+        <button>변경</button>
+        <a data-th-href="@{delete(post_no=${post.no})}" href="#">[삭제]</a>
     </div>
 
-    <div>
-        <button>등록</button>
-    </div>
 </form>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
-      $('#summernote').summernote({
+    // Summernote를 초기화하고 내용을 보여줍니다.
+    $('#summernoteContent').summernote({
         height: 300,
-        width: 500
-      });
-
+        width: 500,
+        callbacks: {
+        }
     });
+});
 
 </script>
 
+
+
 </body>
 </html>
+

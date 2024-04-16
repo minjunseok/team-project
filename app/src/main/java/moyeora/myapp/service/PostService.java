@@ -14,7 +14,7 @@ public interface PostService {
 
   List<Post> findAll(int categoryNo);
 
-//  Post get(int no);
+  Post get(int no);
 
   List<Comment> getComments(int no);
 
@@ -29,4 +29,18 @@ public interface PostService {
  List<Post> findBySchoolPostList(int schoolNo);
 
  Post get(int no, int schoolNo);
+  public List<Post> findByLike();
+
+  public List<Post> findByFollow();
+
+  public List<Post> findByUser(int no);
+
+  public List<Post> findBySchoolPost();
+
+
+
+// 필터 내용으로 검색했을 때
+ public List<Post> findBySchoolContent(String keyword);
+ // 필터 작성자로 검색했을 때
+ public List<Post> findBySchoolUserName(String keyword);
 }

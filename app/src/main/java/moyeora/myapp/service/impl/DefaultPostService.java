@@ -9,6 +9,7 @@ import moyeora.myapp.vo.Comment;
 import moyeora.myapp.vo.Post;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,11 @@ public class DefaultPostService implements PostService {
   private final AttachedFileDao attachedFileDao;
   private final CommentDao commentDao;
 
+     // 공지글과 일반글을 구분하기 위한 리스트
+    private List<Post> noticePosts = new ArrayList<>();
+    private List<Post> normalPosts = new ArrayList<>();
+
+
   @Transactional
   @Override
   public void add(Post post) {
@@ -34,20 +40,29 @@ public class DefaultPostService implements PostService {
 //      attachedFileDao.addAll(post.getFileList());
 //    }
   }
-//
-//  @Override
-//  public Post get(int no) {
-//    return postDao.find(no);
-//  }
 
   @Override
   public List<Post> findAll(int categoryNo) {
     return postDao.findAll(categoryNo);
   }
 
+  @Override
+  public Post get(int no) {
+    return postDao.findBy(no);
+  }
 
-
-
+  @Transactional
+  @Override
+  public int update(Post post) {
+    int count = postDao.update(post);
+    if (post.getFileList() != null && post.getFileList().size() > 0) {
+      for (AttachedFile attachedFile : post.getFileList()) {
+        attachedFile.setPostNo(post.getNo());
+      }
+      attachedFileDao.addAll(post.getFileList());
+    }
+    return count;
+  }
 
   @Transactional
   @Override
@@ -63,7 +78,7 @@ public class DefaultPostService implements PostService {
 
   @Override
   public List<AttachedFile> getAttachedFiles(int no) {
-    return attachedFileDao.findByPostFiles(no);
+    return attachedFileDao.findAllByPostNo(no);
   }
 
   @Override
@@ -76,6 +91,29 @@ public class DefaultPostService implements PostService {
     return attachedFileDao.delete(fileNo);
   }
 
+  @Override
+  public int countAll(int categoryNo) {
+    return postDao.countAll(categoryNo);
+  }
+
+  @Override
+  public String findByPost(String content) {
+    return postDao.findByPost(content);
+  }
+  @Override
+  public List<Post> findByLike() {
+    return null;
+  }
+
+  @Override
+  public List<Post> findByFollow() {
+    return null;
+  }
+
+  @Override
+  public List<Post> findByUser(int no) {
+    return null;
+  }
 
   @Override
   public List<Post> findBySchoolPostList(int schoolNo) {
