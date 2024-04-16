@@ -37,4 +37,6 @@ public interface PostDao {
   List<Post> findBySchoolContent(@Param("keyword") String keyword);
   // 필터 작성자로 검색했을 때
   List<Post> findBySchoolUserName(@Param("keyword") String keyword);
+
+  List<Post> findBySchool(int schoolNo);
 }

@@ -130,4 +130,9 @@ public class DefaultPostService implements PostService {
     public List<Post> findBySchoolUserName(String keyword) {
         return postDao.findBySchoolUserName(keyword);
     }
+
+      @Override
+    public List<Post> findBySchool(int schoolNo) {
+        return postDao.findBySchool(schoolNo);
+    }
 }

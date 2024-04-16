@@ -45,4 +45,6 @@ public interface PostService {
  public List<Post> findBySchoolContent(String keyword);
  // 필터 작성자로 검색했을 때
  public List<Post> findBySchoolUserName(String keyword);
+
+ public List<Post> findBySchool(int schoolNo);
 }
