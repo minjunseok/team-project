@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>moyeora</title>
+</head>
+<body>
+
+<div data-th-replace="header :: header">머리말</div>
+
+<h1>templates/chat/gm.html</h1>
+
+<form data-th-action="@{add}" method='post'>
+  <div>
+    이메일: <input name='email' type='text'>
+  </div>
+  <div>
+    비밀번호: <input name='password' type='password'>
+  </div>
+  <div>
+    <input type="submit" value="가입하기">
+  </div>
+</form>
+
+<div data-th-replace="footer :: footer">꼬리말</div>
+
+</body>
+</html>

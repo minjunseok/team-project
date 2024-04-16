@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moyeora.myapp.dao.ChatDao">
+
+  <insert id="addChatMessage" parameterType="ChatMessage">
+    insert into users(school_no,user_no,message,created_at,photo)
+    values( #{schoolNo} ,#{sender} ,#{message} ,'' ,'')
+  </insert>
+
+  <select id="findChatMessageByChatRoomNo" parameterType="int" resultType="ChatMessage">
+    select
+      gm_no
+      school_no,
+      user_no,
+      message,
+      created_at,
+      photo
+    from
+      gm
+    where
+      school_no=#{school_no}
+  </select>
+
+
+
+
+</mapper>
