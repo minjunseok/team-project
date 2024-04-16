@@ -29,6 +29,22 @@ public class DefaultPostService implements PostService {
     private List<Post> normalPosts = new ArrayList<>();
 
 
+
+  @Override
+  public List<Post> findBySchoolPost() {
+    return null;
+  }
+
+  @Override
+  public List<Post> findBySchoolContent(String keyword) {
+    return null;
+  }
+
+  @Override
+  public List<Post> findBySchoolUserName(String keyword) {
+    return null;
+  }
+
   @Transactional
   @Override
   public void add(Post post) {
@@ -52,18 +68,18 @@ public class DefaultPostService implements PostService {
     return postDao.findBy(no);
   }
 
-  @Transactional
-  @Override
-  public int update(Post post) {
-    int count = postDao.update(post);
-    if (post.getFileList() != null && post.getFileList().size() > 0) {
-      for (AttachedFile attachedFile : post.getFileList()) {
-        attachedFile.setPostNo(post.getNo());
-      }
-      attachedFileDao.addAll(post.getFileList());
-    }
-    return count;
-  }
+//  @Transactional
+//  @Override
+//  public int update(Post post) {
+//    int count = postDao.update(post);
+//    if (post.getFileList() != null && post.getFileList().size() > 0) {
+//      for (AttachedFile attachedFile : post.getFileList()) {
+//        attachedFile.setPostNo(post.getNo());
+//      }
+//      attachedFileDao.addAll(post.getFileList());
+//    }
+//    return count;
+//  }
 
   @Transactional
   @Override
@@ -92,15 +108,15 @@ public class DefaultPostService implements PostService {
     return attachedFileDao.delete(fileNo);
   }
 
-  @Override
-  public int countAll(int categoryNo) {
-    return postDao.countAll(categoryNo);
-  }
-
-  @Override
-  public String findByPost(String content) {
-    return postDao.findByPost(content);
-  }
+//  @Override
+//  public int countAll(int categoryNo) {
+//    return postDao.countAll(categoryNo);
+//  }
+//
+//  @Override
+//  public String findByPost(String content) {
+//    return postDao.findByPost(content);
+//  }
   @Override
   public List<Post> findByLike() {
     return null;
