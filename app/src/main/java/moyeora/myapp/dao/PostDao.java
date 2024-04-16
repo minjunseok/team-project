@@ -29,14 +29,14 @@ public interface PostDao {
 
   public List<Post> findByFollow(int no);
 
-  String findByPost(String content);
+  String findByPost(int schoolNo, String content);
   public List<Post> findBySchoolPost();
   public List<Post> findBySchoolPostList(int schoolNo);
 
   // 필터 내용으로 검색했을 때
-  List<Post> findBySchoolContent(@Param("keyword") String keyword);
+  List<Post> findBySchoolContent(int schoolNo, @Param("keyword") String keyword);
   // 필터 작성자로 검색했을 때
-  List<Post> findBySchoolUserName(@Param("keyword") String keyword);
+  List<Post> findBySchoolUserName(int schoolNo, @Param("keyword") String keyword);
 
   List<Post> findBySchool(int schoolNo);
 }

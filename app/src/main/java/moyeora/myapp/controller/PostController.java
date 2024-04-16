@@ -80,28 +80,33 @@ public class PostController {
 
 
 
-//@GetMapping("list")
 @RequestMapping("list")
 public String list(
         @RequestParam(defaultValue = "1") int categoryNo,
-        Model model) throws Exception {
+        Model model,
+        Integer schoolNo) throws Exception {
   model.addAttribute("postList", postService.findAll(categoryNo));
   model.addAttribute("postNo",  categoryNo == 0 ? "일반" : "공지");
   model.addAttribute("categoryNo",  categoryNo);
+
+        // 학교 번호를 모델에 추가
+        model.addAttribute("schoolNo", schoolNo); // 학교 번호를 가져온다.
+
   return "post/list";
 }
 
 // 검색창에 필터로 검색했을 때
  @PostMapping("search")
     public String searchPostsByContent(
+            int schoolNo,
             @RequestParam("keyword") String keyword,
             @RequestParam("filter") String filter,
             Model model) {
         if (filter.equals("0")) { // 내용으로 검색
-          List<Post> postList = postService.findBySchoolContent(keyword);
+          List<Post> postList = postService.findBySchoolContent(schoolNo, keyword);
           model.addAttribute("postList", postList);
         } else {                  // 작성자로 검색
-          List<Post> postList = postService.findBySchoolUserName(keyword);
+          List<Post> postList = postService.findBySchoolUserName(schoolNo, keyword);
           model.addAttribute("postList", postList);
         }
         return "post/list";
@@ -211,7 +216,7 @@ public String list(
 //  }
 
 
-  @GetMapping("/school/{schoolNo}")
+  @GetMapping("/post/{schoolNo}")
 public String getPostsBySchool(@PathVariable int schoolNo, Model model) {
     List<Post> posts = postService.findBySchool(schoolNo);
     model.addAttribute("posts", posts);
