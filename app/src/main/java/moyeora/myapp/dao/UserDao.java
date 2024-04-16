@@ -4,7 +4,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Mapper
 public interface UserDao {
@@ -31,6 +30,4 @@ public interface UserDao {
   public String findByNameAndPhone(
       @Param("name")  String name,
       @Param("phone") String phone);
-
-  public UserDetails getUserDetails(String username);
 }

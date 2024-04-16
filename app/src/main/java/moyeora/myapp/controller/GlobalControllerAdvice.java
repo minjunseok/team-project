@@ -2,7 +2,6 @@ package moyeora.myapp.controller;
 
 
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,7 +10,7 @@ import java.beans.PropertyEditorSupport;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Date;
-@ControllerAdvice
+//@ControllerAdvice
 public class GlobalControllerAdvice {
 
     @InitBinder
@@ -34,7 +33,7 @@ public class GlobalControllerAdvice {
 
         mv.addObject("detail", stringWriter.toString());
 
-        mv.setViewName("/error.html");
+        //mv.setViewName("/error.html");
         return mv;
     }
 }

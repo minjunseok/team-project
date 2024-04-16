@@ -24,19 +24,11 @@
     <result column="address_detail" property="addressDetail"/>
   </resultMap>
 
-  <resultMap id="AuthUserMap" type="AuthUser">
-    <result column="email" property="email"/>
-    <result column="pwd" property="password"/>
-    <result column="name" property="name"/>
-  </resultMap>
 
 
-
-  <insert id="add" parameterType="User"
-   useGeneratedKeys="true" keyColumn="user_no" keyProperty="no">
-    insert into users(name,pwd,address,phone,email,nickname,birth,gender,grade,login_type,created_at,profile,manner_point,photo,address_detail)
-    values(#{name},sha2(#{password},256),#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{grade},#{loginType},
-    current_timestamp,#{profile},#{mannerPoint},#{photo},#{addressDetail})
+  <insert id="add" parameterType="User">
+    insert into users(name,pwd,address,phone,email,nickname,birth,gender,profile,photo,manner_point)
+    values(#{name},#{pwd},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{profile},#{photo},36)
   </insert>
 
 <select id="findBy" resultMap="UserMap" parameterType="int">
@@ -117,17 +109,6 @@
   where
   user_no=#{no}
   </update>
-
-  <select id="getUserDetails" resultMap="AuthUserMap" parameterType="string">
-    select
-    email,
-    pwd,
-    name
-    from
-    users
-    where
-    email=#{email}
-  </select>
 
 <update id="updateGrade">
   update users

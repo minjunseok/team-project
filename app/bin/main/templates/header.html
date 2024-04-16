@@ -1,20 +1,34 @@
 <!DOCTYPE html>
-<html lang='en' xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang='en'>
 <head>
   <meta charset='UTF-8'>
-  <title>moyeora</title>
+  <title>2조 팀플</title>
+
+  <style>
+        img {
+            width: 80px;
+            height: 80px;
+        }
+   </style>
+
 </head>
 <body>
 
 <header data-th-fragment="header">
-  <img src='https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'>
-  <a data-th-href="@{/assignment/list}">과제</a>
-  <a data-th-href="@{/board/list(category=1)}">게시글</a>
-  <a data-th-href="@{/member/list}">회원</a>
-  <a data-th-href="@{/board/list(category=2)}">가입인사</a>
-  <a sec:authorize="isAuthenticated()" data-th-href="@{/auth/logout}">로그아웃</a>
-  <a sec:authorize="isAnonymous()" data-th-href="@{/auth/form}">로그인</a>
-  <a data-th-href="@{/about}">소개</a>
+   <img src='https://cdn.pixabay.com/photo/2018/05/08/04/44/person-3382248_1280.jpg'
+   width="60"
+   height="60">
+  <a data-th-href="@{/post/list}" href="post/list">게시글</a>
+  <a data-th-href="@{/classes/list}" href="classes/list">일정</a>
+  <a data-th-href="@{/user/list}" href="user/list">회원</a>
+
+  <span data-th-if="${session.loginUser != null}"
+        data-th-text="${session.loginUser.name}">2조</span>
+  <a data-th-href="@{/auth/logout}" data-th-if="${session.loginUser != null}" href="auth/logout">로그아웃</a>
+
+  <a data-th-href="@{/auth/form}" data-th-if="${session.loginUser == null}" href="auth/form">로그인</a>
+
+  <a data-th-href="@{/about}" href="about">2조안내</a>
 </header>
 
 </body>

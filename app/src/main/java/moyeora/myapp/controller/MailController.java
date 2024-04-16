@@ -1,7 +1,7 @@
 package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.service.Impl.DefaultMailService;
+import moyeora.myapp.service.impl.DefaultMailService;
 import moyeora.myapp.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

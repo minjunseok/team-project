@@ -6,8 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.ClassService;
-import moyeora.myapp.service.SchoolService;
-import moyeora.myapp.vo.Class;
+import moyeora.myapp.vo.SchoolClass;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,7 @@ public class ClassController {
 
   @GetMapping("/list")
   @ResponseBody
-  public List<Class> viewOfDate(String date) {
+  public List<SchoolClass> viewOfDate(String date) {
     if(date.matches("\\d{4}-\\d{2}-\\d{2}")) {
       System.out.println("1");
       return classService.findByDate(date);

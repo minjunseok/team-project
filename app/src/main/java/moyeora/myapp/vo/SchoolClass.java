@@ -6,12 +6,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Class {
+public class SchoolClass {
   private int no;
   private int schoolNo;
   private int userNo;
   private String name;
-  private String security;
   private String content;
   private String location;
   private String startAt;
