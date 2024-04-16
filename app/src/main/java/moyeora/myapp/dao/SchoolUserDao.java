@@ -22,4 +22,7 @@ public interface SchoolUserDao {
   void updateLevel(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
 
   void deleteMember(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
+
+  int findAdmin(int userNo, int schoolNo);
+  int findSubAdmin(int userNo, int schoolNo);
 }

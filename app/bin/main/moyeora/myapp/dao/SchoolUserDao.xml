@@ -123,4 +123,31 @@
       SET FOREIGN_KEY_CHECKS=1;
     ]]>
   </delete>
+
+  <select id="findAdmin" resultType="int">
+    select
+      count(*)
+    from
+      school_users
+    where
+      user_no = #{userNo}
+    and
+      school_no = #{schoolNo}
+    and
+      level_no = 4
+  </select>
+  <select id="findSubAdmin" resultType="int">
+    select
+      count(*)
+    from
+      school_users
+    where
+      user_no = #{userNo}
+    and
+      school_no = #{schoolNo}
+    and
+      level_no &gt;=3
+    and
+      level_no &lt;=4
+  </select>
 </mapper>

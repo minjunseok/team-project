@@ -129,32 +129,31 @@
     userList();
     const myModal = new bootstrap.Modal(document.getElementById('member'), {})
     myModal.show();
-    }
+  }
   const modal2 = () => {
     blackList();
       const myModal = new bootstrap.Modal(document.getElementById('black'), {})
       myModal.show();
-    }
+  }
   const modal3 = () => {
     submitList();
       const myModal = new bootstrap.Modal(document.getElementById('submit'), {})
       myModal.show();
-    }
+  }
    const modal4 = () => {
       const myModal = new bootstrap.Modal(document.getElementById('openClosed'), {})
       myModal.show();
-   }
+  }
   $(document).on('click', '.auth', function() {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
     const schoolNo = params.get('schoolNo');
     const userNo = $(this).parent().parent().find(".userNo").val()
-    console.log(schoolNo+userNo);
     const button = this;
     $(".auth").prop('disabled', true)
     axios.post("admin/levelUpdate", {
-      userNo: userNo,
-      schoolNo: schoolNo
+      userNo,
+      schoolNo
     })
     .then((e) => {
       if(e.status===200) {
@@ -175,7 +174,7 @@
     const params = new URLSearchParams(queryString);
     const schoolNo = params.get('schoolNo');
     const userNo = $(this).parent().parent().find(".userNo").val()
-    axios.post("admin/blackAdd", {
+    axios.post("admin/sub/blackAdd", {
       userNo,
       schoolNo
     })
@@ -191,7 +190,7 @@
     const params = new URLSearchParams(queryString);
     const schoolNo = params.get('schoolNo');
     const userNo = $(this).parent().parent().find(".userNo").val()
-    axios.post("admin/blackDelete", {
+    axios.post("admin/sub/blackDelete", {
       userNo,
       schoolNo
     })
@@ -207,7 +206,7 @@
     const params = new URLSearchParams(queryString);
     const schoolNo = params.get('schoolNo');
     const userNo = $(this).parent().parent().find(".userNo").val()
-    axios.post("admin/approve", {
+    axios.post("admin/sub/approve", {
       userNo,
       schoolNo
     })
@@ -223,7 +222,7 @@
     const params = new URLSearchParams(queryString);
     const schoolNo = params.get('schoolNo');
     const userNo = $(this).parent().parent().find(".userNo").val()
-    axios.post("admin/reject", {
+    axios.post("admin/sub/reject", {
       userNo,
       schoolNo
     })
@@ -274,7 +273,7 @@ function blackList() {
   const queryString = window.location.search;
   const params = new URLSearchParams(queryString);
   const schoolNo = params.get('schoolNo');
-  axios.get("admin/blackList?schoolNo="+schoolNo)
+  axios.get("admin/sub/blackList?schoolNo="+schoolNo)
     .then((e) => {
       $("#black-list").empty()
       for(let d of e.data) {
@@ -293,7 +292,7 @@ function submitList() {
   const queryString = window.location.search;
   const params = new URLSearchParams(queryString);
   const schoolNo = params.get('schoolNo');
-  axios.get("admin/submitList?schoolNo="+schoolNo)
+  axios.get("admin/sub/submitList?schoolNo="+schoolNo)
     .then((e) => {
       $("#submit-list").empty()
       for(let d of e.data) {

@@ -31,7 +31,6 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
   }
 
   public void blackUpdate(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
-    memberUpdateRequestDTO.setLevelNo(1);
     schoolUserDao.updateLevel(memberUpdateRequestDTO);
   }
 
@@ -50,5 +49,13 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
 
   public void updateSchoolOpenRange(SchoolOpenRangeUpdateRequestDTO schoolOpenRangeUpdateRequestDTO) {
     schoolDao.updateSchoolOpenRange(schoolOpenRangeUpdateRequestDTO);
+  }
+
+  public int authAdmin(int userNo, int schoolNo) {
+    return schoolUserDao.findAdmin(userNo, schoolNo);
+  }
+
+  public int authSubAdmin(int userNo, int schoolNo) {
+    return schoolUserDao.findSubAdmin(userNo, schoolNo);
   }
 }
