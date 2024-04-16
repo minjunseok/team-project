@@ -41,6 +41,7 @@ public class DefaultPostService implements PostService {
 //    }
   }
 
+
   @Override
   public List<Post> findAll(int categoryNo) {
     return postDao.findAll(categoryNo);
