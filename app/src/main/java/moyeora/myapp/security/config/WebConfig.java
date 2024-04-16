@@ -1,4 +1,4 @@
-package moyeora.myapp.config;
+package moyeora.myapp.security.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
