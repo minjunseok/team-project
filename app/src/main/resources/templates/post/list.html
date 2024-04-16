@@ -23,7 +23,7 @@
 
         <td data-th-text="*{writer.nickname}">작성자</td>
         <td data-th-text="*{writer.photo}">사진</td>
-        <td data-th-text="*{levelName}">회원 등급</td>
+        <td data-th-text="*{level.levelName}">회원 등급</td>
     </tr>
     </tbody>
 </table>
@@ -74,7 +74,7 @@
         });
     });
 </script>
-
+<a data-th-href="@{form}" href="form.html">새 글</a>
 <table border='1'>
     <thread>
         <tr>
