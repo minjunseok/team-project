@@ -55,7 +55,7 @@
     su.school_no school_no,
     u.nickname,
     u.photo,
-    l.name leve_lName,
+    l.name level_Name,
     su.created_at
 
 
