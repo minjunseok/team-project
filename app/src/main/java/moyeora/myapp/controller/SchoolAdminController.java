@@ -3,12 +3,13 @@ package moyeora.myapp.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.dto.school.admin.MemberUpdateRequestDTO;
+import moyeora.myapp.dto.school.admin.SchoolMemberUpdateRequestDTO;
+import moyeora.myapp.dto.school.admin.SchoolOpenRangeUpdateRequestDTO;
 import moyeora.myapp.service.SchoolAdminService;
+import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,33 +43,46 @@ public class SchoolAdminController {
     return ResponseEntity.status(200).body(schoolAdminService.findUserBySchoolNo(schoolNo, 5));
   }
 
-
   @PostMapping("approve")
-  public ResponseEntity<?> memberApprove(@RequestBody int userNo, @RequestBody int schoolNo) {
+  public ResponseEntity<?> memberApprove(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
+    schoolAdminService.approveUpdate(memberUpdateRequestDTO);
+    return ResponseEntity.status(200).build();
+  }
+
+  @PostMapping("reject")
+  public ResponseEntity<?> memberReject(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
+    schoolAdminService.deleteMember(memberUpdateRequestDTO);
     return ResponseEntity.status(200).build();
   }
 
   @PostMapping("blackAdd")
-  public ResponseEntity<?> blackAdd(@RequestBody MemberUpdateRequestDTO memberUpdateRequestDTO) {
+  public ResponseEntity<?> blackAdd(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
     schoolAdminService.blackUpdate(memberUpdateRequestDTO);
     return ResponseEntity.status(200).build();
   }
 
   @PostMapping("blackDelete")
-  public ResponseEntity<?> blackDelete(@RequestBody MemberUpdateRequestDTO memberUpdateRequestDTO) {
-    schoolAdminService.blackDelete(memberUpdateRequestDTO);
+  public ResponseEntity<?> blackDelete(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
+    memberUpdateRequestDTO.setLevelNo(2);
+    schoolAdminService.blackUpdate(memberUpdateRequestDTO);
     return ResponseEntity.status(200).build();
   }
 
   @PostMapping("levelUpdate")
-  public ResponseEntity<Integer> memberLevelUpdate(@RequestBody MemberUpdateRequestDTO memberUpdateRequestDTO) {
+  public ResponseEntity<Integer> memberLevelUpdate(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
     return ResponseEntity.status(200).body(schoolAdminService.levelUpdate(memberUpdateRequestDTO));
   }
 
-//  @GetMapping("member")
-//  @ResponseBody
-//  public ResponseEntity<List<SchoolUser>> memberList(int schoolNo, int levelNo) {
-//    return ResponseEntity.status(200).body(schoolAdminService.findUserBySchoolNo(schoolNo, levelNo));
-//  }
+  @PostMapping("openClosed")
+  public ResponseEntity<?> openClosed(@RequestBody SchoolOpenRangeUpdateRequestDTO schoolOpenRangeUpdateRequestDTO) {
+    schoolAdminService.updateSchoolOpenRange(schoolOpenRangeUpdateRequestDTO);
+    return ResponseEntity.status(200).build();
+  }
+
+  @GetMapping("openClosedCheck")
+  @ResponseBody
+  public ResponseEntity<School> openClosedCheck(int schoolNo) {
+    return ResponseEntity.status(200).body(schoolAdminService.findBySchoolNo(schoolNo));
+  }
 
 }

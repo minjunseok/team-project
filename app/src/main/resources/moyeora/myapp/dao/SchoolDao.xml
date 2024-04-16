@@ -54,7 +54,8 @@
     select
       school_no,
       name,
-      stop
+      stop,
+      open_range
     from
       schools
     where
@@ -66,6 +67,16 @@
       set stop=1
     where
       school_no = #{no}
+  </update>
+
+  <update id="updateSchoolOpenRange">
+    update
+      schools
+    set
+      open_range=#{openRange}
+    where
+      school_no=#{schoolNo}
+
   </update>
 
 

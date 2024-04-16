@@ -109,12 +109,18 @@
   </update>
 
   <delete id="deleteMember">
-    delete
-    from
-      school_users
-    where
-      user_no = #{userNo}
-    and
-      school_no = #{schoolNo}
+    <![CDATA[
+      SET FOREIGN_KEY_CHECKS=0;
+    ]]>
+      delete
+      from
+        school_users
+      where
+        user_no = #{userNo}
+      and
+        school_no = #{schoolNo}
+    <![CDATA[
+      SET FOREIGN_KEY_CHECKS=1;
+    ]]>
   </delete>
 </mapper>

@@ -15,6 +15,7 @@
     <div class="col-md-2">
     </div>
     <div class="col-md-8" style="text-align:center;" id="">
+      <div>스쿨 정보 수정</div>
       <div id="user_setting" onclick="modal1()">회원 관리</div>
       <div id="submit_setting" onclick="modal2()">블랙리스트 관리</div>
       <div id="black_setting" onclick="modal3()">가입 승인 관리</div>
@@ -96,6 +97,25 @@
         </div>
       </div>
 
+      <div class="modal" id="openClosed">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">회원 관리</h5>
+              <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+              <table >
+                <tbody id="openClosed-check">
+                  <input class="openClosed" name="openClosed" id = "open" type="radio" value=1>공개
+                  <input class="openClosed" name="openClosed" id = "closed" type="radio" value=0>비공개
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="col-md-2" style="text-align:center;">
     </div>
@@ -120,29 +140,33 @@
       const myModal = new bootstrap.Modal(document.getElementById('submit'), {})
       myModal.show();
     }
+   const modal4 = () => {
+      const myModal = new bootstrap.Modal(document.getElementById('openClosed'), {})
+      myModal.show();
+   }
   $(document).on('click', '.auth', function() {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
     const schoolNo = params.get('schoolNo');
     const userNo = $(this).parent().parent().find(".userNo").val()
     console.log(schoolNo+userNo);
+    const button = this;
+    $(".auth").prop('disabled', true)
     axios.post("admin/levelUpdate", {
       userNo: userNo,
       schoolNo: schoolNo
     })
     .then((e) => {
       if(e.status===200) {
+        console.log(userNo)
         if(e.data===2) {
-
-          $(this).text("부 매니저 임명")
-
+           $(button).text("부 매니저 임명")
+        } else if(e.data===3) {
+           $(button).text("권한 해지")
         }
-
-        if(e.data===3) {
-
-          $(this).text("권한 해지")
-        }
-
+        setTimeout(() => {
+          $(".auth").prop('disabled', false)
+      }, 2000); 
       }
     })
   })
@@ -152,12 +176,12 @@
     const schoolNo = params.get('schoolNo');
     const userNo = $(this).parent().parent().find(".userNo").val()
     axios.post("admin/blackAdd", {
-      userNo: userNo,
-      schoolNo: schoolNo
+      userNo,
+      schoolNo
     })
     .then((e)=> {
       if(e.status===200) {
-        $(this).parent().parent().parent().empty();
+        $(this).parent().parent().empty();
       }
     })
   })
@@ -168,15 +192,58 @@
     const schoolNo = params.get('schoolNo');
     const userNo = $(this).parent().parent().find(".userNo").val()
     axios.post("admin/blackDelete", {
-      userNo: userNo,
-      schoolNo: schoolNo
+      userNo,
+      schoolNo
     })
     .then((e)=> {
       if(e.status===200) {
-        $(this).parent().parent().parent().empty();
+        $(this).parent().parent().empty();
       }
     })
   })
+
+  $(document).on('click', '.approve', function() {
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const schoolNo = params.get('schoolNo');
+    const userNo = $(this).parent().parent().find(".userNo").val()
+    axios.post("admin/approve", {
+      userNo,
+      schoolNo
+    })
+    .then((e)=> {
+      if(e.status===200) {
+        $(this).parent().parent().empty();
+      }
+    })
+  })
+
+  $(document).on('click', '.reject', function() {
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const schoolNo = params.get('schoolNo');
+    const userNo = $(this).parent().parent().find(".userNo").val()
+    axios.post("admin/reject", {
+      userNo,
+      schoolNo
+    })
+    .then((e)=> {
+      if(e.status===200) {
+        $(this).parent().parent().empty();
+      }
+    })
+  })
+
+$(document).on('change', '.openClosed', function() {
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const schoolNo = params.get('schoolNo');
+    const openRange = $(this).val()
+    axios.post("admin/openClosed", {
+      schoolNo,
+      openRange
+    })
+})
 
 function userList() {
   const queryString = window.location.search;
@@ -186,18 +253,18 @@ function userList() {
     .then((e) => {
       $("#member-list").empty()
       for(let d of e.data) {
-        $("#member-list").append("<tr>")
-        $("#member-list").append("<input type=hidden class='userNo' value="+d.userNo+">")
-        $("#member-list").append("<th>"+d.member.photo+"</th>")
-        $("#member-list").append("<th>"+d.member.nickname+"</th>")
-        $("#member-list").append("<th>"+d.level.name+"</th>")
+        let text = ""
+        text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
+        text += "<th>"+d.member.photo+"</th>"
+        text += "<th>"+d.member.nickname+"</th>"
+        text += "<th>"+d.level.name+"</th>"
         if(d.levelNo===3) {
-          $("#member-list").append("<th><button class='btn btn-outline-danger btn-sm auth'>권한 해지</button></th>")
+          text += "<th><button class='btn btn-outline-danger btn-sm auth'>권한 해지</button></th>"
         } else if(d.levelNo===2) {
-           $("#member-list").append("<th><button class='btn btn-outline-success btn-sm auth'>부 매니저 임명</button></th>")
+          text += "<th><button class='btn btn-outline-success btn-sm auth'>부 매니저 임명</button></th>"
        }
-       $("#member-list").append("<th><button class='btn btn-outline-secondary btn-sm black'>블랙리스트 추가</th>")
-       $("#member-list").append("</tr>")
+       text += "<th><button class='btn btn-outline-secondary btn-sm black'>블랙리스트 추가</th></tr>"
+       $("#member-list").append(text)
       }
     })
 
@@ -211,13 +278,12 @@ function blackList() {
     .then((e) => {
       $("#black-list").empty()
       for(let d of e.data) {
-        console.log(d)
-        $("#black-list").append("<tr>")
-        $("#black-list").append("<input type=hidden class='userNo' value="+d.userNo+">")
-        $("#black-list").append("<th>"+d.member.photo+"</th>")
-        $("#black-list").append("<th>"+d.member.nickname+"</th>")
-        $("#black-list").append("<th><button class='btn btn-outline-success btn-sm unlock'>블랙리스트 해지</button></th>")
-       $("#black-list").append("</tr>")
+        let text = ""
+        text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
+        text += "<th>"+d.member.photo+"</th>"
+        text += "<th>"+d.member.nickname+"</th>"
+        text += "<th><button class='btn btn-outline-success btn-sm unlock'>블랙리스트 해지</button></th></tr>"
+       $("#black-list").append(text)
       }
     })
 
@@ -231,21 +297,38 @@ function submitList() {
     .then((e) => {
       $("#submit-list").empty()
       for(let d of e.data) {
-        $("#submit-list").append("<tr>")
-        $("#submit-list").append("<input type=hidden class='userNo' value="+d.userNo+">")
-        $("#submit-list").append("<th>"+d.member.photo+"</th>")
-        $("#submit-list").append("<th>"+d.member.nickname+"</th>")
-        $("#submit-list").append("<th><button class='btn btn-outline-success btn-sm auth'>승인</button></th>")
-        $("#submit-list").append("<th><button class='btn btn-outline-danger btn-sm auth'>거절</button></th>")
-       $("#submit-list").append("</tr>")
+        let text = ""
+        text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
+        text += "<th>"+d.member.photo+"</th>"
+        text += "<th>"+d.member.nickname+"</th>"
+        text += "<th><button class='btn btn-outline-success btn-sm approve'>승인</button></th>"
+        text += "<th><button class='btn btn-outline-danger btn-sm reject'>거절</button></th></tr>"
+       $("#submit-list").append(text)
       }
     })
 
 }
+
+function openClosedCheck() {
+  const queryString = window.location.search;
+  const params = new URLSearchParams(queryString);
+  const schoolNo = params.get('schoolNo');
+  axios.get("admin/openClosedCheck?schoolNo="+schoolNo)
+  .then((e) => {
+    const openRange = e.data.openRange
+    if(openRange===1) {
+      $("#open").prop("checked", true)
+    } else if(openRange===0) {
+      $("#closed").prop("checked", true)
+    }
+  })
+}
+
 $(document).ready(() => {
     userList();
     blackList();
     submitList();
+    openClosedCheck();
     })
 </script>
 </body>

@@ -2,6 +2,7 @@ package moyeora.myapp.dao;
 
 
 import java.util.List;
+import moyeora.myapp.dto.school.admin.SchoolOpenRangeUpdateRequestDTO;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,5 +32,7 @@ public interface SchoolDao {
   public School findByNo(int no);
 
   public void stopSchool(int no);
+
+  public void updateSchoolOpenRange(SchoolOpenRangeUpdateRequestDTO schoolOpenRangeUpdateRequestDTO);
 
 }
