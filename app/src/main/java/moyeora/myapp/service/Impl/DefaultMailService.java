@@ -25,13 +25,11 @@ public class DefaultMailService {
   @Autowired
   private RedisUtil redisUtil;
 
-  private String subject = "[moyeora] authentication code";
-
-  private String setContext(String authCode) {
+  private String setContext(String code) {
     Context context = new Context();
     TemplateEngine templateEngine = new SpringTemplateEngine();
     ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-    context.setVariable("code", authCode);
+    context.setVariable("code", code);
 
     templateResolver.setPrefix("templates/mail/");
     templateResolver.setSuffix(".html");
@@ -40,10 +38,10 @@ public class DefaultMailService {
 
     templateEngine.setTemplateResolver(templateResolver);
 
-    return templateEngine.process("mail", context);
+    return templateEngine.process("form", context);
   }
 
-  private MimeMessage createEmailForm(String to, String code) throws MessagingException {
+  private MimeMessage createEmailForm(String to, String subject, String code) throws MessagingException {
 
     MimeMessage message = mailSender.createMimeMessage();
     message.addRecipients(MimeMessage.RecipientType.TO, to);
@@ -55,11 +53,11 @@ public class DefaultMailService {
   }
 
   @Transactional
-  public void sendEmail(String to, String code, String authId) throws MessagingException {
-    if (redisUtil.existData(to)) {
-      redisUtil.deleteData(to);
+  public void sendEmail(String to, String subject, String code, String authId) throws MessagingException {
+    if (redisUtil.existData(authId)) {
+      redisUtil.deleteData(authId);
     }
-    MimeMessage emailForm = createEmailForm(to, code);
+    MimeMessage emailForm = createEmailForm(to, subject, code);
     mailSender.send(emailForm);
   }
 }

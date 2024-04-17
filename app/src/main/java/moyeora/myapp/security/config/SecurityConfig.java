@@ -59,7 +59,7 @@ public class SecurityConfig {
     httpSecurity
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests((authorize) -> authorize
-            .antMatchers("/role").hasRole("USER")
+            .antMatchers("/role/*").hasRole("USER") // 접근제어 테스트 설정
                 .anyRequest().permitAll()
         )
         .logout((logout) -> logout
@@ -108,7 +108,7 @@ public class SecurityConfig {
         writer.flush();
       };
 
-  public  final AccessDeniedHandler accessDeniedHandler =
+  public final AccessDeniedHandler accessDeniedHandler =
       (request, response, accessDeniedException) -> {
         ErrorResponse fail = new ErrorResponse(HttpStatus.FORBIDDEN, "Spring security forbidden...");
         response.setStatus(HttpStatus.FORBIDDEN.value());
