@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 @Data
-public class Class implements Serializable {
+public class SchoolClass implements Serializable {
 
   private static final long serialVersionUID = 100L;
 

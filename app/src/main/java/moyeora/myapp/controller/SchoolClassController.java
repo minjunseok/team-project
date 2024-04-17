@@ -1,69 +1,77 @@
 package moyeora.myapp.controller;
 
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.service.ClassService;
+import moyeora.myapp.service.SchoolClassService;
 import moyeora.myapp.service.SchoolMemberService;
 import moyeora.myapp.util.FileUpload;
-import moyeora.myapp.vo.Class;
+import moyeora.myapp.vo.JsonResult;
+import moyeora.myapp.vo.SchoolClass;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@RequestMapping("/class")
+@RequestMapping("/schoolclass")
 @RequiredArgsConstructor
-public class ClassController {
+public class SchoolClassController {
 
-  private static final Log log = LogFactory.getLog(ClassController.class);
-  private final ClassService classService;
+  private static final Log log = LogFactory.getLog(SchoolClassController.class);
+  private final SchoolClassService schoolClassService;
   private final FileUpload fileUpload;
   private final SchoolMemberService schoolMemberService;
-  private final String uploadDir =  "class/";
+  private final String uploadDir =  "schoolclass/";
   @Value("${ncp.storage.bucket}") private String bucket;
 
   @GetMapping("/list")
   @ResponseBody
-  public List<Class> viewOfDate(String date) {
+  public List<SchoolClass> viewOfDate(String date) {
     if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
       System.out.println("1");
-      return classService.findByDate(date);
+      return schoolClassService.findByDate(date);
     } else {
       System.out.println("2");
       LocalDateTime currentTime = LocalDateTime.now();
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 날짜 형식 지정
       date = currentTime.format(formatter);
-      return classService.findByDate(date);
+      return schoolClassService.findByDate(date);
     }
   }
 
-  @GetMapping("testCalendar")
-  public void form(Model model,int schoolNo) throws Exception{
+  @GetMapping("realCalendar")
+  public void form(Model model, int schoolNo) throws Exception{
     model.addAttribute("schoolMembers",schoolMemberService.list(schoolNo));
     System.out.println("=====classcontorller.schoolMember==============>    " + schoolMemberService);
+
   }
 
+  @GetMapping("calendar")
+  @ResponseBody
+  public List<SchoolClass> Calendar(int schoolNo) throws Exception {
+    System.out.println("=====classcontorller.schoolClass==============>    " + schoolClassService);
+    return schoolClassService.schoolCalendarList(schoolNo);
+  }
+
+
+
+
   @PostMapping("add")
-  public void add(Class clazz, MultipartFile file,
-                    LocalDateTime startAt2,
-                    LocalDateTime endedAt2,
-                    ZoneId zoneId
+  @ResponseBody
+  public Object add(SchoolClass clazz, MultipartFile file,
+                  LocalDateTime startAt2,
+                  LocalDateTime endedAt2,
+                  ZoneId zoneId
   ) throws Exception{
-    clazz.setUserNo(1);
+    clazz.setUserNo(2);
     if(file.getSize() > 0){
       String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
       clazz.setPhoto(filename);
@@ -82,8 +90,14 @@ public class ClassController {
     clazz.setStartAt(startAtDate);
     clazz.setEndedAt(endedAtDate);
 
-    classService.add(clazz);
+    schoolClassService.add(clazz);
     System.out.println("=======classcontroller============>    " + clazz);
+
+    JsonResult jsonResult = new JsonResult();
+    jsonResult.setStatus("success");
+
+    return jsonResult;
+
   }
 
 
