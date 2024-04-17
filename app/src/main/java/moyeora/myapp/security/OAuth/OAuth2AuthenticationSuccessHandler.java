@@ -23,15 +23,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
   private final Log log = LogFactory.getLog(OAuth2AuthenticationSuccessHandler.class);
+  private final RedisUtil redisUtil;
 
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
     log.debug("OAuth2 login Success");
     User user = ((PrincipalDetails) authentication.getPrincipal()).getUser();
     String key = user.getEmail() + "_" + user.getProvider() + "_" + user.getProviderId();
-    if(true) {
+    if(redisUtil.existData(key)) {
       String redirectUrl = UriComponentsBuilder
-          .fromUriString("http://localhost:8080/auth/test")
+          .fromUriString("http://localhost:8080/auth/signUp")
           .queryParam("key",key)
           .build()
           .encode(StandardCharsets.UTF_8)

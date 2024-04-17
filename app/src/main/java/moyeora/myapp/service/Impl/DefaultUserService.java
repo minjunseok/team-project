@@ -25,9 +25,8 @@ public class DefaultUserService implements UserService {
   }
 
   @Override
-  public Object save(User user) {
+  public void save(User user) {
     userDao.save(user);
-    return null;
   }
 
   @Override

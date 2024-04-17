@@ -36,9 +36,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
-  private final CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+  private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
-  private final CustomAuthenticationFailureHandler authenticationFailureHandler;
+  private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
   private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
@@ -59,6 +59,7 @@ public class SecurityConfig {
     httpSecurity
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests((authorize) -> authorize
+            .antMatchers("/role").hasRole("USER")
                 .anyRequest().permitAll()
         )
         .logout((logout) -> logout
@@ -71,8 +72,9 @@ public class SecurityConfig {
             .passwordParameter("password")
             .authenticationDetailsSource(authenticationDetailsSource)
             .loginProcessingUrl("/auth/login")
-            .successHandler(authenticationSuccessHandler)
-            .failureHandler(authenticationFailureHandler)
+            .successHandler(customAuthenticationSuccessHandler)
+            .failureHandler(customAuthenticationFailureHandler)
+            .defaultSuccessUrl("/")
             .permitAll()
         )
         .oauth2Login((oauth2) -> oauth2

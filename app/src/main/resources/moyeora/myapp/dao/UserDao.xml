@@ -24,6 +24,7 @@
     <result column="login_type" property="loginType"/>
     <result column="provider" property="provider"/>
     <result column="provider_id" property="providerId"/>
+    <result column="role" property="role"/>
   </resultMap>
 
   <insert id="add" parameterType="User">
@@ -36,9 +37,9 @@
     values(#{no},#{no})
   </insert>
 
-  <insert id="save" parameterType="User">
-    insert into users(name,email,provider,provider_id,created_at)
-    values(#{name},#{email},#{provider},#{providerId},NOW())
+  <insert id="save" parameterType="User" useGeneratedKeys="true" keyColumn="user_no" keyProperty="no">
+    insert into users(name,email,phone,provider,provider_id,role,created_at)
+    values(#{name},#{email},#{phone},#{provider},#{providerId},#{role},NOW())
   </insert>
 
   <delete id="delete" parameterType="int">
@@ -115,8 +116,10 @@
 
   <select id="findOAuth2User" resultMap="UserMap">
     select
+      user_no,
       email,
-      name
+      name,
+      role
     from
       users
     where

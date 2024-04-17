@@ -32,13 +32,14 @@ public class User implements Serializable {
   private String photo;
   private String provider;
   private String providerId;
-//  private Role role;
+  private String role;
 
   @Builder
-  public User(String email, String name, String provider, String providerId) {
+  public User(String email, String name, String provider, String providerId, String role) {
     this.email = email;
     this.name = name;
     this.provider = provider;
     this.providerId = providerId;
+    this.role = role;
   }
 }

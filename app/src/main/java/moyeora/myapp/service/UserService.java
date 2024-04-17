@@ -7,7 +7,7 @@ public interface UserService {
 
   void add(User user);
 
-  Object save(User user);
+  void save(User user);
 
   List<User> list();
 

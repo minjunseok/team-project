@@ -1,9 +1,5 @@
 <!DOCTYPE html>
 <html lang='en'>
-<head>
-  <meta charset='UTF-8'>
-  <title>moyeora</title>
-</head>
 <body>
 
 <div data-th-replace="header :: header">머리말</div>
@@ -26,6 +22,7 @@
     <input name="saveEmail" type="checkbox">이메일 저장
   </label>
 </form>
+<div style="color:red;" data-th-if="${error}" data-th-text="${exception}"></div>
 
 
 <a data-th-href="@{findEmail}">이메일 찾기</a>
@@ -41,19 +38,23 @@
 <div data-th-replace="footer :: footer">꼬리말</div>
 
 <script>
-function checkForm() {
-  var email = document.getElementById("email").value;
-  if ( email == null || email == "" || email.length < 1 ) {
-    alert("이메일을 입력하세요.");
-    return false;
+  function checkForm() {
+    var email = document.getElementById("email").value;
+    if ( email == null || email == "" || email.length < 1 ) {
+      alert("이메일을 입력하세요.");
+      return false;
+    }
+    var password = document.getElementById("password").value;
+      if ( password == null || password == "" || password.length < 1 ) {
+      alert("비밀번호를 입력하세요.");
+      return false;
+    }
   }
-  var password = document.getElementById("password").value;
-    if ( password == null || password == "" || password.length < 1 ) {
-    alert("비밀번호를 입력하세요.");
-    return false;
-  }
-}
 </script>
 
 </body>
+<head>
+  <meta charset='UTF-8'>
+  <title>moyeora</title>
+</head>
 </html>
