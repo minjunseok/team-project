@@ -8,25 +8,25 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UserDao {
 
-  public void add(User user);
+  void add(User user);
 
-  public void save(User user);
+  void save(User user);
 
-  public int delete(int no);
+  int delete(int no);
 
-  public List<User> findAll();
+  List<User> findAll();
 
-  public User findByNo(int no);
+  User findByNo(int no);
 
-  public int update(User user);
+  int update(User user);
 
-  public int updatePassword(String password);
+  int updatePassword(User user);
 
-  public User findByEmail(String email);
+  User findByEmail(String email);
 
-  public User findOAuth2User(String email, String provider);
+  User findOAuth2User(String email, String provider);
 
-  public String findByNameAndPhone(
-      @Param("name")  String name,
+  String findByNameAndPhone(
+      @Param("name") String name,
       @Param("phone") String phone);
 }

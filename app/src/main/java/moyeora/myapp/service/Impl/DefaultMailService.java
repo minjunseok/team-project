@@ -25,7 +25,7 @@ public class DefaultMailService {
   @Autowired
   private RedisUtil redisUtil;
 
-  private String setContext(String code) {
+  private String setContext(String code, String template) {
     Context context = new Context();
     TemplateEngine templateEngine = new SpringTemplateEngine();
     ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
@@ -38,26 +38,26 @@ public class DefaultMailService {
 
     templateEngine.setTemplateResolver(templateResolver);
 
-    return templateEngine.process("form", context);
+    return templateEngine.process(template, context);
   }
 
-  private MimeMessage createEmailForm(String to, String subject, String code) throws MessagingException {
+  private MimeMessage createEmailForm(String to, String subject, String code, String template) throws MessagingException {
 
     MimeMessage message = mailSender.createMimeMessage();
     message.addRecipients(MimeMessage.RecipientType.TO, to);
     message.setSubject(subject);
     message.setFrom(configEmail);
-    message.setText(setContext(code), StandardCharsets.UTF_8.name(), "html");
+    message.setText(setContext(code, template), StandardCharsets.UTF_8.name(), "html");
 
     return message;
   }
 
   @Transactional
-  public void sendEmail(String to, String subject, String code, String authId) throws MessagingException {
+  public void sendEmail(String to, String subject, String code, String authId, String template) throws MessagingException {
     if (redisUtil.existData(authId)) {
       redisUtil.deleteData(authId);
     }
-    MimeMessage emailForm = createEmailForm(to, subject, code);
+    MimeMessage emailForm = createEmailForm(to, subject, code, template);
     mailSender.send(emailForm);
   }
 }

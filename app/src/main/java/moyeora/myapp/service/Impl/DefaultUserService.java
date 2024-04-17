@@ -51,8 +51,12 @@ public class DefaultUserService implements UserService {
 
   @Override
   public void update(User user) {
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
     userDao.update(user);
+  }
+
+  @Override
+  public int updatePassword(User user) {
+    return userDao.updatePassword(user);
   }
 
   @Override
