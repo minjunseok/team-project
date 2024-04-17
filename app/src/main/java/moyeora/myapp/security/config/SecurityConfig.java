@@ -59,7 +59,7 @@ public class SecurityConfig {
     httpSecurity
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests((authorize) -> authorize
-            .antMatchers("/role/*").hasRole("USER") // 접근제어 테스트 설정
+            .antMatchers("/role/**").hasRole("USER") // 접근제어 테스트 설정
                 .anyRequest().permitAll()
         )
         .logout((logout) -> logout
