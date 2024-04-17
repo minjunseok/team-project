@@ -19,6 +19,8 @@ public interface UserService {
 
   void update(User user);
 
+  int updatePassword(User user);
+
   void delete(int no);
 
   User findOAuth2User(String email, String provider);
