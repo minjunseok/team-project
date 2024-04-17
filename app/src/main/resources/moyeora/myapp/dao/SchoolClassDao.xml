@@ -3,13 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="moyeora.myapp.dao.ClassDao">
-  <resultMap id="ClassMap" type="Class">
+<mapper namespace="moyeora.myapp.dao.SchoolClassDao">
+  <resultMap id="ClassMap" type="SchoolClass">
     <id column="class_no" property="no"/>
     <result column="user_no" property="userNo"/>
     <result column="school_no" property="schoolNo"/>
     <result column="name" property="name"/>
-    <result column="security" property="security"/>
     <result column="content" property="content"/>
     <result column="location" property="location"/>
     <result column="start_at" property="startAt"/>
@@ -25,16 +24,15 @@
   <select id="findByDate" resultMap="ClassMap" parameterType="String">
     select
       class_no,
-      (select count(*) from class_users as u where c.class_no = u.class_no) as now_member_count,
+      (select count(*) from school_users as su where sc.class_no = su.class_no) as now_member_count,
       name,
-      security,
       content,
       location,
       start_at,
       member,
       photo
     from
-      classes as c
+      school_classes as sc
     where
       now_at = '${date}'
   </select>
@@ -43,12 +41,29 @@
 
   </select>
 
-<insert id="add" parameterType="Class">
-    insert into classes(school_no,user_no,name,security,content,location,start_at,created_at,ended_at,member,repeat_set,photo,location_detail)
-    values(#{schoolNo},#{userNo},#{name},#{security},#{content},#{location},#{startAt},current_timestamp,#{endedAt},#{member},#{repeatSet},
+<insert id="add" parameterType="SchoolClass">
+    insert into school_classes(school_no,user_no,name,content,location,start_at,created_at,ended_at,member,repeat_set,photo,location_detail)
+    values(#{schoolNo},#{userNo},#{name},#{content},#{location},#{startAt},current_timestamp,#{endedAt},#{member},#{repeatSet},
     #{photo},#{locationDetail})
 </insert>
 
+<select id="calendarList" resultMap="ClassMap" parameterType="int">
+    select
+         class_no,
+         school_no,
+         name,
+         start_at,
+         ended_at,
+         member,
+         repeat_set
+    from school_classes where school_no =#{schoolNo};
+</select>
+
+
+
+<select id="schoolCalendarList" resultMap="ClassMap" parameterType="int">
+    select * from school_classes where school_no =#{schoolNo};
+</select>
 
 
 </mapper>

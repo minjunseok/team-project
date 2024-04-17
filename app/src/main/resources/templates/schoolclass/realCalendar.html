@@ -17,6 +17,7 @@
     <script crossorigin="anonymous"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -81,25 +82,53 @@
 
 <script>
 
+    let calendar;
+    
+    window.onload = function() {
+        // 페이지가 완전히 출력된 후 수행할 작업을 둔다.
+        // 서버에서 일정 정보를 가져오는 작업
+        
+        // 1. AJAX로 서버에서 해당 월의 일정 정보를 가져온다.
+        // 2. 서버에서 받은 JSON 데이터를 자바 객체로 바꾼 후
+        //    그 일정을 캘린더에 등록한다.
+        console.log("test....ok!");
+        
+        $.ajax({
+            url: 'calendar?schoolNo=1',
+            type: 'GET',
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            
+        }).done(function(result) {
+            for (let classEvent of result) {
+                calendar.addEvent({
+                title: classEvent.name,
+                start: classEvent.startAt,
+                end : classEvent.endedAt,
+                allDay: true
+             });
+            }
+        });
+    };
+    
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
+        calendar = new FullCalendar.Calendar(calendarEl, {
             initialView : 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
             headerToolbar : { // 헤더에 표시할 툴 바
                 start : 'prev next today add',
-                center : '스쿨이름',
-                end : 'title'
-<!--                'dayGridMonth,dayGridWeek,dayGridDay'-->
+                center : 'title',
+                end : 'dayGridMonth,dayGridWeek,dayGridDay'
             },
             customButtons: {
-                  add: {
+                add: {
                     text: '일정등록',
                     click: function() {
                         myModal1();
-
                     }
-                  }
-                },
+                }
+            },
 
             titleFormat : function(date) {
                 return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
@@ -109,7 +138,18 @@
             droppable : true,
             editable : true,
             nowIndicator: true, // 현재 시간 마크
-            locale: 'ko' // 한국어 설정
+            locale: 'ko' , // 한국어 설정
+            dateClick: function(info) {
+<!--            var startAt = info.dateStr; // 클릭한 날짜 정보-->
+<!--            document.getElementById('startAt2').value = startAt;-->
+                myModal1();
+              
+            },
+<!--    select: function(info) {-->
+<!--      alert('selected ' + info.startStr + ' to ' + info.endStr);-->
+<!--    }-->
+<!--        일정 상세보기 할때 사용-->
+        
         });
         calendar.render();
     });
@@ -126,18 +166,18 @@
       <div class="modal-body">
       
       
-<form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
+<form  id="classInfo">
     <input name="schoolNo" type="hidden" value="1">
 
     <div>
         제목: <input name='name' type='text'>
     </div>
 
-    <div>
-        설명: <input name='content' type='text'>
+      <div>
+        설명: <label><textarea name='content'></textarea></label>
 
-        사진: <input name='file' type='file'>
     </div>
+        사진: <input name='file' type='file'>
     
     <div>
         모임일 <br>
@@ -151,13 +191,11 @@
     </div>
 
     <div>
-        위치: <input name='location' type='text'>
+        위치: <input name='location' type='text'><br>
         상세주소: <input id="locationDetail" name="locationDetail" placeholder="상세주소" type="text">
     </div>
 
     <div>
-        공개대상: <input name="security" type="radio" value="0"> 공개
-                  <input name="security" type="radio" value="1"> 스쿨만
         인원: <input name='member' type='text'>
     </div>
 
@@ -201,8 +239,8 @@
     <br>
     
 <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
-        <button class="btn btn-primary" type="submit">등록</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">닫기</button>
+        <button class="btn btn-primary" type="button" onclick="addEvent(); closeModal();">등록</button>
       </div>
     
 </form>
@@ -215,10 +253,59 @@
 
 
 <script>
-    function myModal1() {
-        const myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
-         myModal.show();
-    };
+<!--    function myModal1() {-->
+<!--        const myModalEl = document.getElementById('myModal')-->
+<!--        myModalEl.addEventListener('hidden.bs.modal', function(event){-->
+<!--            // 모달 창을 닫을 때 수행할 작업을 여기에 둔다.-->
+<!--            console.log('모달 닫기');-->
+<!--        });-->
+<!--   참고용    -->
+
+let myModal;
+        function myModal1() {
+             myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
+            console.log('모달을 표시합니다.');
+            myModal.show();
+        };
+        
+         function closeModal() {
+            myModal.hide();
+        };
+    
+    function addEvent() {
+    
+        var name = new String (document.querySelector("input[name='name']").value);
+        var startDate = new Date(document.querySelector("input[name='startAt2']").value);
+        var endDate = new Date(document.querySelector("input[name='endedAt2']").value);
+        
+        if (isNaN(endDate.valueOf())) {
+            return;
+        }
+        
+        var form = $('#classInfo')[0];
+        var formData = new FormData(form);
+    
+        $.ajax({
+            type : "POST",
+            url : 'add',
+            data : formData,
+            dataType: 'json',
+            processData:false,
+            contentType:false
+        }).done(function(result) {
+            if (result.status != "success") {
+                alert("서버에 이벤트를 등록할 수 없습니다.!");
+                return;
+            }
+            calendar.addEvent({
+                title: name,
+                start: startDate,
+                end : endDate,
+                allDay: true
+            });
+            console.log("서버에 이벤트를 성공적으로 추가했습니다.");
+        });
+    }
     
 </script>
 <script>

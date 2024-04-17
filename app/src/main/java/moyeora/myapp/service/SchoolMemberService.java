@@ -1,6 +1,5 @@
 package moyeora.myapp.service;
 
-import moyeora.myapp.vo.Class;
 import moyeora.myapp.vo.SchoolMember;
 
 import java.util.List;

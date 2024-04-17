@@ -3,16 +3,7 @@
 <head>
     <meta charset='utf-8'/>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-    <script>
-
-        document.addEventListener('DOMContentLoaded', function() {
-          var calendarEl = document.getElementById('calendar');
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth'
-          });
-          calendar.render();
-        });
-    </script>
+ 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
@@ -53,12 +44,38 @@
             droppable : true,
             editable : true,
             nowIndicator: true, // 현재 시간 마크
-            locale: 'ko' // 한국어 설정
+            locale: 'ko' ,// 한국어 설정
+                dateClick: function(info) {
+                    alert('clicked ' + info.dateStr);
+            },
+
+   
+    select: function(info) {
+      alert('selected ' + info.startStr + ' to ' + info.endStr);
+    }
+        
+        
         });
         calendar.render();
     });
 
 </script>
+<!--<script>-->
+<!--document.addEventListener('DOMContentLoaded', function() {-->
+<!--  var calendarEl = document.getElementById('calendar');-->
+
+<!--  var calendar = new FullCalendar.Calendar(calendarEl, {-->
+<!--   -->
+<!--    headerToolbar: {-->
+<!--      left: 'prev,next today',-->
+<!--      center: 'title',-->
+<!--      right: 'dayGridMonth,timeGridWeek,timeGridDay'-->
+<!--    -->
+<!--  });-->
+
+<!--  calendar.render();-->
+<!--});-->
+<!--</script>-->
 
 </body>
 </html>
