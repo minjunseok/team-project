@@ -75,7 +75,7 @@ public class AuthController {
   }
 
   @PostMapping("getEmail")
-  public String getEmailByNameAndPhone(String name, String phone, Model model) {
+  public String getEmail(String name, String phone, Model model) {
     String email = userService.getEmail(name,phone);
     model.addAttribute("email", Objects.requireNonNullElse(email, "none"));
     return "auth/findEmail";
@@ -91,9 +91,10 @@ public class AuthController {
     if(userService.get(email) == null) { // 다른 기능이랑 공유하려면 이부분 수정해야함
       model.addAttribute("status","email not found");
     } else {
-      String authId = createAuthId(email);
+      String subject = "[moyeora] authentication code";
       String code = createCode();
-      mailService.sendEmail(email, code, authId);
+      String authId = createAuthId(email);
+      mailService.sendEmail(email, subject, code, authId);
       model.addAttribute("status","sent");
       model.addAttribute("authId", authId);
       redisUtil.setDataExpire(authId, code,60 * 5L);

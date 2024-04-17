@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/role")
 public class AccessController {
 
-  @GetMapping("/")
+  @GetMapping("")
   public String test() {
     return "/auth/accessDenied";
   }
