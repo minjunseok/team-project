@@ -12,6 +12,7 @@ import moyeora.myapp.security.oauth.userInfo.OAuth2UserInfo;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.security.util.RedisUtil;
 import moyeora.myapp.vo.User;
+import moyeora.myapp.vo.role.Role;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -47,6 +48,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     String name = oAuth2UserInfo.getUsername();
     String providerId = oAuth2UserInfo.getProviderId();
     String provider = oAuth2UserInfo.getProvider();
+    String role = Role.USER.getKey();
     User user = userService.findOAuth2User(email, provider);
 
     if (user == null) {
@@ -55,11 +57,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
           .name(name)
           .providerId(providerId)
           .provider(provider)
+          .role(role)
           .build();
       try {
         String key = user.getEmail() + "_" + provider + "_" + providerId;
         redisUtil.setDataExpire(key,user);
-        log.info("getData : {}", redisUtil.getData(user.getEmail(),User.class));
       } catch (JsonProcessingException e) {
         throw new RuntimeException(e);
       }

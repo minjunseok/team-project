@@ -11,13 +11,13 @@ import moyeora.myapp.service.Impl.DefaultMailService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.security.util.RedisUtil;
 import moyeora.myapp.vo.User;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RequiredArgsConstructor
@@ -42,21 +42,32 @@ public class AuthController {
         .toString();
   }
 
-  @GetMapping("test")
-  public void getTestForm(String key, Model model) throws JsonProcessingException {
+  @GetMapping("signUp")
+  public String getSignUpForm(String key, Model model) throws JsonProcessingException {
     User user = redisUtil.getData(key, User.class);
     model.addAttribute("user", user);
+    return "/auth/test";
   }
 
   @PostMapping("join")
   public String joinTest(User user, Model model) {
-    model.addAttribute("result", userService.save(user));
-    return "/auth/test";
+    System.out.println(user.toString());
+    userService.save(user);
+    String key = user.getEmail() + "_" + user.getProvider() + "_" + user.getProviderId();
+    if(redisUtil.existData(key)) {
+      redisUtil.deleteData(key);
+    }
+    return "redirect:/";
   }
 
   @GetMapping("form")
-  public void getLoginForm(@CookieValue(required = false) String email, Model model) {
+  public void getLoginForm(@CookieValue(required = false) String email,
+      @RequestParam(value = "error", required = false) String error,
+      @RequestParam(value = "exception", required = false) String exception,
+      Model model) {
     model.addAttribute("email", email);
+    model.addAttribute("error", error);
+    model.addAttribute("exception", exception);
   }
 
   @GetMapping("findEmail")
