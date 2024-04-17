@@ -35,7 +35,7 @@
     <textarea data-th-text="${content}" id="summernoteContent" name="content" style="display: none;"></textarea>
     <div>
         <button>변경</button>
-         <a data-th-href="@{delete(post_no=${post.no}, schoolNo=${schoolNo})}" href="#">[삭제]</a>
+         <a data-th-href="@{delete(schoolNo=*{schoolNo}, post_no=${post.no})}">[삭제]</a>
     </div>
 
 </form>

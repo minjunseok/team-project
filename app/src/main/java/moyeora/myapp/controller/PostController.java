@@ -193,9 +193,10 @@ public class PostController {
 
   @GetMapping("delete")
   public String delete(
-          @RequestParam("no") int no,
-          @RequestParam("schoolNo") int schoolNo) throws Exception {
-// int category,  HttpSession session 파라미터
+          Post post,
+          @RequestParam("post_no") int no,
+          @RequestParam("schoolNo") int schoolNo,
+          HttpSession session) throws Exception {
 
 
 //    User loginUser = (User) session.getAttribute("loginUser");
@@ -219,7 +220,7 @@ public class PostController {
     //fileUploadHelper.delete(this.bucketName, this.uploadDir, file.getFilePath());
 //    }
 
-    return "redirect:list";
+    return "redirect:list?schoolNo=" + post.getSchoolNo();
   }
 
 
