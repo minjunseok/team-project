@@ -41,7 +41,7 @@ public class PostController {
   @Value("${ncp.storage.bucket}")
   private String bucketName;
 
-    @GetMapping("form")
+  @GetMapping("form")
   public void form() throws Exception {
 
   }
@@ -56,39 +56,43 @@ public class PostController {
 //    if (loginUser == null) {
 //      throw new Exception("로그인하시기 바랍니다!");
 //    }
-//    post.setUserNo(loginUser);
+//
+//    Post old = postService.get(post.getNo());
+//    if (old == null) {
+//      throw new Exception("번호가 유효하지 않습니다.");
+//
+//    } else if (old.getNo() != loginUser.getNo()) {
+//      throw new Exception("권한이 없습니다.");
+//    }
 
-//    ArrayList<AttachedFile> files = new ArrayList<>();
-//    if (post.getCategoryNo() == 1) {
-//      for (MultipartFile file : attachedFiles) {
+    // 파일 업로드 및 AttachedFile 생성
+//    List<AttachedFile> files = new ArrayList<>();
+//    for (MultipartFile file : attachedFiles) {
 //        if (file.getSize() == 0) {
-//          continue;
+//            continue;
 //        }
-//        String filename = storageService.upload(this.bucketName, this.uploadDir, file);
-//        files.add(AttachedFile.builder().filePath(filename).build());
-//      }
-//    }
-//    if (files.size() > 0) {
-//      post.setFileList(files);
+//        String filename = fileUploadHelper.upload(this.bucketName, this.uploadDir, file);
+    // AttachedFile 객체 생성 후 파일 이름 설정
+//        AttachedFile attachedFile = new AttachedFile();
+//        attachedFile.setFileName(filename);
+//        files.add(attachedFile);
 //    }
 
-     // 'created_at' 필드에 현재 시간 설정
-    post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
 
+    // Post 객체에 AttachedFile 추가
+//    post.setFiles(files);
+
+    // 나머지 처리 코드
+    post.setCreatedAt(new Date());
     postService.add(post);
 
-    return "redirect:list";
+    return "redirect:list?schoolNo=" + post.getSchoolNo();
   }
 
-  @GetMapping("list")
-  public void list(Model model, int schoolNo) {
-    System
-            .out.println(postService.findBySchoolPostList(schoolNo));
-    log.debug(postService.findBySchoolPostList(schoolNo));
 
-    log.debug(schoolUserService.findBySchoolUserList(schoolNo));
-    System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
-    model.addAttribute("postlists", postService.findBySchoolPostList(schoolNo));
+  @GetMapping("list")
+  public void list(Model model, @RequestParam("schoolNo") int schoolNo) {
+    model.addAttribute("postlist", postService.findBySchoolPostList(schoolNo));
     model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
   }
 
@@ -182,14 +186,15 @@ public class PostController {
 
     postService.update(post);
 
-    return "redirect:list?categoryNo" + post.getCategoryNo();
+    return "redirect:list?schoolNo=" + post.getSchoolNo();
 
   }
 
 
   @GetMapping("delete")
   public String delete(
-          @RequestParam("post_no") int no) throws Exception {
+          @RequestParam("no") int no,
+          @RequestParam("schoolNo") int schoolNo) throws Exception {
 // int category,  HttpSession session 파라미터
 
 
@@ -208,7 +213,7 @@ public class PostController {
 
 //    List<AttachedFile> files = postService.getAttachedFiles(no);
 
-    postService.delete(no);
+    postService.delete(no, schoolNo);
 
 //    for (AttachedFile file : files) {
     //fileUploadHelper.delete(this.bucketName, this.uploadDir, file.getFilePath());
@@ -219,8 +224,12 @@ public class PostController {
 
 
   @GetMapping("md")
-  public String md(int no, Model model) throws Exception {
-    Post post = postService.get(no);
+  public String md(
+          int no,
+          @RequestParam("schoolNo") int schoolNo,
+//          @RequestParam(required = false) Integer schoolNo, // Integer로 변경하여 널 허용 (로그인 구현되면 필요 없음)
+          Model model) throws Exception {
+    Post post = postService.get(no, schoolNo);
     model.addAttribute("post", post);
     model.addAttribute("content", post.getContent()); // "content" 데이터 추가
     return "post/md";
@@ -253,11 +262,11 @@ public class PostController {
 //  }
 
 
-  @GetMapping("/post/{schoolNo}")
-  public String getPostsBySchool(@PathVariable int schoolNo, Model model) {
-    List<Post> posts = postService.findBySchool(schoolNo);
-    model.addAttribute("posts", posts);
-    return "post/list";
-  }
+//  @GetMapping("/post/{schoolNo}")
+//  public String getPostsBySchool(@PathVariable int schoolNo, Model model) {
+//    List<Post> posts = postService.findBySchool(schoolNo);
+//    model.addAttribute("posts", posts);
+//    return "post/list";
+//  }
 
 }

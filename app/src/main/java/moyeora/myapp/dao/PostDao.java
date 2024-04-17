@@ -12,7 +12,7 @@ public interface PostDao {
 
   List<Post> findAll(@Param("categoryNo") int categoryNo);
 
-  int delete(int no);
+  int delete(int no, int schoolNo);
 
   Post findBy(int no);
 

@@ -28,15 +28,16 @@
 <h1 data-th-text="${postNo}">피드</h1>
 
 <form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
-    <input data-th-value="${category}" name='category' type='hidden'>
+    <input type="file" name="attachedFile" accept="image/*" multiple>
     <div>
         내용: <textarea id="summernote" name='content'></textarea>
     </div>
-    <div data-th-if="${category == 0}">
-        첨부파일: <input multiple name='attachedFiles' type='file'>
-    </div>
 
     <div>
+        <input type="checkbox" id="notice" name="post" value="1">공지로 등록
+            <script>
+
+            </script>
         <button>등록</button>
     </div>
 </form>
