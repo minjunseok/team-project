@@ -27,5 +27,5 @@ public class User implements Serializable {
     private List<Integer> tagNums;
     private List<UserTag> tags;
     private String addressDetail;
-
+    private Date stopDate;
 }

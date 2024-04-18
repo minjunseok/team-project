@@ -30,4 +30,6 @@ public interface UserDao {
   public String findByNameAndPhone(
       @Param("name")  String name,
       @Param("phone") String phone);
+
+  public List<User> findAllNoMaster(int limit);
 }
