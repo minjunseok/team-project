@@ -1,6 +1,8 @@
-package moyeora.myapp.service.Impl;
+package moyeora.myapp.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moyeora.myapp.dao.ChatDao;
@@ -11,19 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
-import java.util.List;
-
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class DefaultChatService implements ChatService {
 
+    private final ObjectMapper objectMapper;
     @Autowired
     private ChatDao dao;
-
-    private final ObjectMapper objectMapper;
-
 
     @Override
     public List<ChatMessage> findChatMessageBySchoolNo(int schoolNo) {
