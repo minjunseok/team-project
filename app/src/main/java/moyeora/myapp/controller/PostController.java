@@ -30,10 +30,16 @@ public class PostController {
   private String bucketName;
 
 
-  @GetMapping("form")
-  public void form(int category, Model model) throws Exception {
-   model.addAttribute("postNo", category == 1 ? "일반" : "공지");
-    model.addAttribute("category", category);
+//  @GetMapping("form")
+//  public void form(int category, Model model) throws Exception {
+//   model.addAttribute("postNo", category == 1 ? "일반" : "공지");
+//    model.addAttribute("category", category);
+//  }
+
+  @GetMapping("list")
+  public void list(Model model, int schoolNo) {
+    model.addAttribute("postlists",postService.findBySchoolPostList(schoolNo));
+
   }
 
   @PostMapping("add")
@@ -68,15 +74,6 @@ public class PostController {
     return "redirect:view";
   }
 
-  @GetMapping("list")
-  public String list(
-          @RequestParam(defaultValue = "1") int categoryNo,
-          Model model) throws Exception {
-    model.addAttribute("post", postService.findAll(categoryNo));
-    model.addAttribute("postNo",  categoryNo == 1 ? "일반" : "공지");
-    model.addAttribute("categoryNo",  categoryNo);
-    return "post/view";
-  }
 
 
 //  카테고리 사용할 때 주석 풀어서 사용할 것
