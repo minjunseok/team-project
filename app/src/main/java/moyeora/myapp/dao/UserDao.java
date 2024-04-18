@@ -14,5 +14,5 @@ public interface UserDao {
 
      public int update(User user);
 
-
+     public int pwdUpdate(User user);
 }

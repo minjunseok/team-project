@@ -74,4 +74,12 @@ where
     user_no=#{no};
    </update>
 
+<update id="pwdUpdate" parameterType="User">
+update users set
+    pwd = #{pwd}
+where
+    user_no=#{no}
+</update>
+
+
 </mapper>

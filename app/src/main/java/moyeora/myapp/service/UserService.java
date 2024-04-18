@@ -12,4 +12,6 @@ public interface UserService {
     User get(int no);
 
     int update(User user);
+
+    int pwdUpdate(User user);
 }

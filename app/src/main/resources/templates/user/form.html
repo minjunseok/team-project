@@ -43,11 +43,11 @@
 </script>
 
 
-
-
 <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
 <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
-  <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
+  <img alt="닫기 버튼" id="btnCloseLayer"
+       onclick="closeDaumPostcode()" src="//t1.daumcdn.net/postcode/resource/images/close.png"
+       style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1">
 </div>
 
 
@@ -150,16 +150,7 @@
 
 <form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
   <div>
-    이메일: <input name='email' type='text' size="20" autofocus placeholder="이메일[본인확인용]" required> @
-    <select  name="domain_select" id="domain_select" >
-      <option value="직접입력">직접 입력</option>
-      <option value="naver.com">naver.com</option>
-      <option value="gmail.com">gmail.com</option>
-      <option value="daum.net">daum.net</option>
-      <option value="google.com">google.com</option>
-      <option value="kakao.com">kakao.com</option>
-    </select>
-    <input name="domain" id="domain_input" type="text" style="display:none;">
+    이메일: <input autofocus name='email' placeholder="이메일[본인확인용]" required size="20" type='text'>
   </div>
   <small> *대소문자 특수기호 가능</small>
 
@@ -168,36 +159,36 @@
   </div>
 
   <div>
-    비밀번호: <input name='pwd' id="pwd" type='password' size="20" placeholder="비밀번호." onchange="check_pwd()" required>
+    비밀번호: <input id="pwd" name='pwd' onchange="check_pwd()" placeholder="비밀번호." required size="20" type='password'>
   </div>
   <small> *대소문자 특수기호 가능</small>
 <div>
- 비밀번호 확인: <input type="password" name="pwd2" id="pwd2" onchange="check_pwd()">&nbsp;<span id="check"></span>
+ 비밀번호 확인: <input id="pwd2" name="pwd2" onchange="check_pwd()" type="password">&nbsp;<span id="check"></span>
 </div>
 
 
   <div>
-    닉네임: <input name='nickname' type='text'  size="20" placeholder="닉네임" required>
+    닉네임: <input name='nickname' placeholder="닉네임" required size="20" type='text'>
   </div>
 
   <div>
-    이름: <input name='name' type='text' size="20" placeholder="이름" required>
+    이름: <input name='name' placeholder="이름" required size="20" type='text'>
   </div>
 
   <div>
-    생년월일: <input name='birth' type='date' id="birth">
+    생년월일: <input id="birth" name='birth' type='date'>
   </div>
 
   <div>
-    전화번호: <input name='phone' type='text' placeholder="전화번호" required>
+    전화번호: <input name='phone' placeholder="전화번호" required type='text'>
   </div>
 
 
   <div>
     주소지:
-  <input type="button" onclick="sample2_execDaumPostcode()" value="우편번호 찾기"><br>
-  <input type="text" id="address" name="address" placeholder="주소"><br>
-  <input type="text" id="addressDetail" name="addressDetail" placeholder="상세주소">
+  <input onclick="sample2_execDaumPostcode()" type="button" value="우편번호 찾기"><br>
+  <input id="address" name="address" placeholder="주소" type="text"><br>
+  <input id="addressDetail" name="addressDetail" placeholder="상세주소" type="text">
 
   </div>
 
@@ -206,12 +197,12 @@
   </div>
 
   <div>
-    자기소개: <textarea name='profile' ></textarea>
+    자기소개: <textarea name='profile'></textarea>
   </div>
 
   <div>
-  <input type="radio" name="gender" value="0"> 남자
-  <input type="radio" name="gender" value="1"> 여자
+  <input name="gender" type="radio" value="0"> 남자
+  <input name="gender" type="radio" value="1"> 여자
     </div>
 
 
@@ -222,10 +213,10 @@
 <tbody>
 <tr data-th-each="tag : ${tags}">
   <td>
-    <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="${tag.no}">
+    <input data-th-checkbox="true" data-th-value="${tag.no}" name="tagNums" type="checkbox">
   </td>
   <td>
-    <span data-th-text="${tag.name}" >1</span>
+    <span data-th-text="${tag.name}">1</span>
   </td>
   <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
 <br>
