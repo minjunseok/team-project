@@ -73,9 +73,9 @@ public class DefaultPostService implements PostService {
 
   @Transactional
   @Override
-  public int delete(int no) {
-    attachedFileDao.deleteAll(no);
-    return postDao.delete(no);
+  public int delete(int no, int schoolNo) {
+//    attachedFileDao.deleteAll(no);
+    return postDao.delete(no, schoolNo);
   }
 
 
@@ -114,6 +114,11 @@ public class DefaultPostService implements PostService {
 //  @Override
   public String findByPost(int schoolNo, String content) {
     return postDao.findByPost(schoolNo, content);
+  }
+
+  @Override
+  public Post findByPost(int no, int schoolNo) {
+    return postDao.findByPost(no, schoolNo);
   }
 
   @Override
