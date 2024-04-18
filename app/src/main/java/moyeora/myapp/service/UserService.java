@@ -14,12 +14,13 @@ public interface UserService {
 
     String getEmail(String name, String phone);
 
-    void update(User user);
-
     void delete(int no);
 
     List<String> findEmailByUserList(List<Integer> userList);
 
     void downGrade(List<Integer> userList);
 
+    int update(User user);
+
+    int pwdUpdate(User user);
 }
