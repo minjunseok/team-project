@@ -40,6 +40,7 @@ public class RegularPaymentController {
     try {
       paymentService.billingKeySave(regularPaymentRequestDTO);
     } catch (Exception e) {
+      //환불 적용
       regularPaymentResponseDTO.setMessage("결제에 실패하셨습니다");
       return ResponseEntity.status(400).body(regularPaymentResponseDTO);
     }

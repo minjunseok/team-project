@@ -22,6 +22,7 @@
     <result column="manner_point" property="mannerPoint"/>
     <result column="photo" property="photo"/>
     <result column="address_detail" property="addressDetail"/>
+    <result column="stop_date" property="stopDate"/>
   </resultMap>
 
 
@@ -138,5 +139,24 @@
     #{user}
   </foreach>
 </update>
+
+
+<select id="findAllNoMaster">
+  select
+    user_no,
+    name,
+    grade,
+    nickname,
+    email,
+    created_at,
+    stop_date
+  from
+    users
+  where
+    grade &lt;= 3
+  order by
+    grade desc, created_at desc
+  limit #{limit}
+</select>
 
 </mapper>
