@@ -1,15 +1,19 @@
 package moyeora.myapp.vo;
+
+
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 @Data
+@NoArgsConstructor
 public class User implements Serializable {
 
     private static final long serialVersionUID = 100L;
+
 
     private int no;
     private String name;
@@ -29,5 +33,20 @@ public class User implements Serializable {
     private List<Integer> tagNums;
     private List<UserTag> tags;
     private String addressDetail;
+    private Date stopDate;
+    private String provider;
+    private String providerId;
+    private String role;
 
+
+
+  @Builder
+  public User(String email, String name, String provider, String providerId, String role) {
+    this.email = email;
+    this.name = name;
+    this.provider = provider;
+    this.providerId = providerId;
+    this.role = role;
+  }
 }
+

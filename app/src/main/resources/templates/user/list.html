@@ -15,8 +15,8 @@
 
 <form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
   <div>
-    이메일: <input name='email' type='text' size="20" autofocus placeholder="이메일[본인확인용]" required> @
-    <select  name="domain_select" id="domain_select" >
+    이메일: <input autofocus name='email' placeholder="이메일[본인확인용]" required size="20" type='text'> @
+    <select id="domain_select" name="domain_select">
       <option value="직접입력">직접 입력</option>
       <option value="naver.com">naver.com</option>
       <option value="gmail.com">gmail.com</option>
@@ -24,7 +24,7 @@
       <option value="google.com">google.com</option>
       <option value="kakao.com">kakao.com</option>
     </select>
-    <input name="domain" id="domain_input" type="text" style="display:none;">
+    <input id="domain_input" name="domain" style="display:none;" type="text">
   </div>
   <small> *대소문자 특수기호 가능</small>
 
@@ -33,24 +33,28 @@
   </div>
 
   <div>
-    비밀번호: <input name='pwd' type='password' size="20" placeholder="비밀번호." required>
+    비밀번호: <input name='pwd' placeholder="비밀번호." required size="20" type='password'>
   </div>
   <small> *대소문자 특수기호 가능</small>
 
+  
+  
+  
+  
   <div>
-    닉네임: <input name='nickname' type='text'  size="20" placeholder="닉네임" required>
+    닉네임: <input name='nickname' placeholder="닉네임" required size="20" type='text'>
   </div>
 
   <div>
-    이름: <input name='name' type='text' size="20" placeholder="이름" required>
+    이름: <input name='name' placeholder="이름" required size="20" type='text'>
   </div>
 
   <div>
-    생년월일: <input name='birth' type='date' id="birth">
+    생년월일: <input id="birth" name='birth' type='date'>
   </div>
 
   <div>
-    전화번호: <input name='phone' type='text' placeholder="전화번호" required>
+    전화번호: <input name='phone' placeholder="전화번호" required type='text'>
   </div>
 
   <div>
@@ -67,13 +71,13 @@
   </div>
 
   <div>
-    자기소개: <textarea name='profile' >
+    자기소개: <textarea name='profile'>
   </textarea>
   </div>
 
   <div>
-    <input type="checkbox" name="gender" value="0"> 남자
-    <input type="checkbox" name="gender" value="1"> 여자
+    <input name="gender" type="checkbox" value="0"> 남자
+    <input name="gender" type="checkbox" value="1"> 여자
   </div>
 
 
@@ -84,10 +88,10 @@
   <tbody>
   <tr data-th-each="tag : ${tags}">
     <td>
-      <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="${tag.no}">
+      <input data-th-checkbox="true" data-th-value="${tag.no}" name="tagNums" type="checkbox">
     </td>
     <td>
-      <span data-th-text="${tag.name}" >1</span>
+      <span data-th-text="${tag.name}">1</span>
     </td>
     <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
       <br>
@@ -103,12 +107,8 @@
     <input type="submit" value="가입하기">
     <input type="reset" value="취소하기">
   </div>
-
-
+  
 </form>
-
-
-
 
 </body>
 </html>

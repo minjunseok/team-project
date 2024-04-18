@@ -1,13 +1,18 @@
 package moyeora.myapp.service;
 
 import moyeora.myapp.vo.AttachedFile;
+import moyeora.myapp.vo.Comment;
 import moyeora.myapp.vo.Post;
 import moyeora.myapp.vo.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.sql.Date;
 import java.util.List;
 
 public interface PostService {
+
+
+  int update(Post post);
 
   void add(Post post);
 
@@ -15,11 +20,11 @@ public interface PostService {
 
   Post get(int no);
 
-  int update(Post post);
-
-  int delete(int no);
-
   List<AttachedFile> getAttachedFiles(int no);
+
+  List<Comment> getComments(int no);
+
+  int delete(int no, int schoolNo);
 
   AttachedFile getAttachedFile(int fileNo);
 
@@ -27,8 +32,14 @@ public interface PostService {
 
   int countAll(int categoryNo);
 
-  String findByPost(String content);
+  public String findByPost(int schoolNo, String content);
+  public Post findByPost(@Param("no") int no, @Param("schoolNo") int schoolNo);
 
+
+
+ List<Post> findBySchoolPostList(int schoolNo);
+
+ Post get(int no, int schoolNo);
   public List<Post> findByLike();
 
   public List<Post> findByFollow();
@@ -37,5 +48,12 @@ public interface PostService {
 
   public List<Post> findBySchoolPost();
 
-  public List<Post> findBySchoolPostList(int schoolNo);
+
+
+// 필터 내용으로 검색했을 때
+ public List<Post> findBySchoolContent(int schoolNo, String keyword);
+ // 필터 작성자로 검색했을 때
+ public List<Post> findBySchoolUserName(int schoolNo, String keyword);
+
+ public List<Post> findBySchool(int schoolNo);
 }

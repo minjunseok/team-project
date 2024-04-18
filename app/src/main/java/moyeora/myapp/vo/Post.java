@@ -8,10 +8,13 @@ import lombok.Setter;
 
 import lombok.Data;
 
+
 @Data
 public class Post {
   private int no;
-  private String name;
+  private String type;
+  private String fileName;
+  private String nickname;
   private String photo;
   private int schoolNo;
   private int userNo;
@@ -21,8 +24,11 @@ public class Post {
   private int likeCount;
   private int commentCount;
   private User writer;
-  private List<AttachedFile> fileList;
+  private List<AttachedFile> files;
+  private List<Comment> comments;
+  private List<SchoolUser> schoolUsers;
+  private List<Post> posts;
   private School school;
   private SchoolUser schoolUser;
-  private List<Comment> comment;
+  private String lNo;
 }

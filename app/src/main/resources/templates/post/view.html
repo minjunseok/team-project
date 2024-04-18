@@ -1,54 +1,82 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='en' xmlns="" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset='UTF-8'>
-    <title>2조 팀플</title>
+  <meta charset='UTF-8'>
+  <title>비트캠프 데브옵스 5기</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
 
-<div data-th-replace="header :: header">머리말</div>
 
-<h1>test</h1>
-<a data-th-href="@{/post/writerPost}">새 글쓰기</a>
-<table border='1'>
+<h1>스쿨 게시글 상세 조회</h1>
 
-    <form id="post">
-       <input type="text" name="content">
-       <button type="submit">검색</button>
-    </form>
 
-    <div id="searchPost">
+<input type="hidden" data-th-value="*{no}" name='no'>
+<input type="hidden" data-th-value="*{schoolNo}" name='schoolNo'>
 
-    </div>
 
-    <tr data-th-each="post : ${content}" data-th-object="${post}">
-    </tr>
+<a data-th-text="*{content}">내용</a>
 
-       <thead>
-    <tr>
-        <th>name</th>
-        <th>content</th>
-        <th>createAt</th>
-    </tr>
-    </thead>
+<form action="view.html" data-th-object="${post}" enctype='multipart/form-data' method='get'>
 
-    <tbody>
 
-    <!-- 스쿨 메인의 피드글 공지글 출력-->
-    <tr data-th-each="post : ${post}" data-th-object="${post}">
-<!--        <td>-->
-<!--      <img data-th-if="*{fileList}"-->
-<!--           data-th-src="@{'https://rljiyddk2675.edge.naverncp.com/68i0l8DhXa/member/' + *{photo}(type=f,w=20,h=20,ttype=jpg)}"-->
-<!--           src="/img/default-photo.jpeg">-->
-<!--      <img data-th-unless="*{file_no}" height='20px' src='/img/default-photo.jpeg'>-->
-<!--      <a data-th-href="@{view(no=*{no})}" data-th-text="*{name}" href="view.html">홍길동</a></td>-->
-        <td data-th-text="*{writer.name}">2</td>
-        <td data-th-text="*{content}">101</td>
-        <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">2024-03-27</td>
 
-    </tr>
-    </tbody>
+<div>
+   이름 : <input data-th-value="*{writer.nickname}" name='writer.nickname' readonly type='text' value="100">
+</div>
+<div>
+  번호 : <input data-th-value="*{no}" name='no' readonly type='text' value="100">
+</div>
+<div>
+  사진 : <input data-th-value="*{writer.photo}" name='writer.photo' readonly type='text' value="사진입니다">
+</div>
+<div>
+  내용 : <input data-th-value="*{content}" name='content' readonly type='text' value="내용입니다">
+</div>
+<div>
+  작성일 <input data-th-value="${#dates.format(post.createdAt,'yyyy-MM-dd')}" name='createdAt' readonly type='text' value="날짜">
+</div>
+</form>
+
+<h3>댓글 목록</h3>
+
+<table>
+  <tbody>
+<tr th:each="comment : ${comments}" th:object="${comment}">
+  <td><span th:text="*{writer.photo}"></span></td>
+  <td><span th:text="*{writer.nickname}"></span></td>
+  <td><span th:text="*{content}"></span></td>
+  <td><span th:text="${#dates.format(comment.createdAt,'yyyy-MM-dd')}"></span></td>
+
+
+</tr>
+</tbody>
 </table>
+<br>
+
+<input multiple name='comment' type='text'>
+
+<br>
+<button>댓글 등록</button>
+<br>
+
+<h3>파일 첨부 목록</h3>
+
+<table>
+  <tbody>
+
+  <tr th:each="file : ${files}" th:object="${file}">
+    <td><span th:text="*{fileName}"></span></td>
+    <td><span th:text="*{type}"></span></td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<input multiple name='attachedFiles' type='file'>
+<br>
+<br>
+
 
 </body>
 </html>

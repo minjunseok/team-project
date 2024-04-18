@@ -12,7 +12,7 @@ public interface PostDao {
 
   List<Post> findAll(@Param("categoryNo") int categoryNo);
 
-  int delete(int no);
+  int delete(@Param("no") int no, @Param("schoolNo") int schoolNo);
 
   Post findBy(int no);
 
@@ -28,7 +28,23 @@ public interface PostDao {
 
   public List<Post> findByFollow(int no);
 
-  String findByPost(String content);
+  String findByPost(int schoolNo, String content);
+
+
   public List<Post> findBySchoolPost();
-  public List<Post> findBySchoolPostList(int schoolNo);
+
+  // 필터 내용으로 검색했을 때
+  List<Post> findBySchoolContent(int schoolNo, @Param("keyword") String keyword);
+  // 필터 작성자로 검색했을 때
+  List<Post> findBySchoolUserName(int schoolNo, @Param("keyword") String keyword);
+
+  List<Post> findBySchool(int schoolNo);
+
+  List<Post> findBySchoolUserName(@Param("keyword") String keyword);
+//  Post findBy(int no);
+
+  Post findByPost(int no , int schoolNo);
+
+
+  List<Post> findBySchoolPostList(int schoolNo);
 }

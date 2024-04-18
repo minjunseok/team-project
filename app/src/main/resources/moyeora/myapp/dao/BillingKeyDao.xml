@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moyeora.myapp.dao.BillingKeyDao">
+  <resultMap id="BillingKeyMap" type="BillingKey">
+    <id column="billing_key_no" property="no"/>
+    <result column="user_no" property="userNo"/>
+    <result column="billing_key" property="billingKey"/>
+    <result column="next_billing_date" property="nextBillingDate"/>
+    <result column="billing_error_count" property="billingErrorCount"/>
+    <result column="price" property="price"/>
+    <result column="content" property="content"/>
+  </resultMap>
+
+  <insert id="add">
+    insert into
+      billing_keys(
+        user_no,
+        billing_key,
+        next_billing_date,
+        price,
+        content
+      )
+      values(
+        #{userNo},
+        #{billingKey},
+        #{nextBillingDate},
+        #{price},
+        #{content}
+      )
+  </insert>
+
+  <select id="findByDate" resultMap="BillingKeyMap">
+    select
+      user_no,
+      billing_key,
+      next_billing_date,
+      price,
+      content
+    from
+      billing_keys
+    where
+      #{nowAt} >= next_billing_date
+  </select>
+
+  <update id="updateNextBillingDate">
+    update billing_keys
+      set next_billing_date = DATE_ADD(#{nextBillingDate}, INTERVAL 1 MONTH),
+      billing_error_count=0
+    where
+      user_no=#{no}
+  </update>
+
+  <update id="errorCountAdd">
+    update billing_keys
+      set billing_error_count = billing_error_count + 1;
+    where
+      user_no=#{no}
+  </update>
+
+  <select id="findErrorCount" resultMap="BillingKeyMap">
+    select
+      user_no,
+      billing_error_count
+    from
+      billing_keys
+    where
+      billing_error_count >= 1
+  </select>
+
+  <delete id="deleteKey">
+    update billing_keys
+    set
+      billing_keys = NULL
+    where
+      user_no = #{no}
+  </delete>
+
+  <delete id="deleteByError">
+    delete
+    from
+      billing_keys
+    where
+      billing_error_count >=7
+  </delete>
+
+  <delete id="deleteByUserNo">
+    delete
+    from
+      billing_keys
+    where
+      user_no = #{no}
+  </delete>
+
+  <select id="findByUserNo">
+    select
+      count(*)
+    from
+      billing_keys
+    where
+      user_no = #{no}
+  </select>
+</mapper>
