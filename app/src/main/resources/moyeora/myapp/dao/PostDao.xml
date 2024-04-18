@@ -32,7 +32,7 @@
       <result column="school_photo" property="photo"/>
     </association>
 
-    <collection property="files" ofType="AttachedFile">
+    <collection property="fileList" ofType="AttachedFile">
       <id column="file_no" property="no"/>
       <result column="path" property="path"/>
       <result column="name" property="fileName"/>
@@ -52,7 +52,7 @@
 <insert id="add" parameterType="Post"
 useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
     insert into posts(content, school_no, user_no, created_at)
-    values(#{content}, 1, #{userNo}, NOW())
+    values(#{content}, 1, 1, NOW())
 </insert>
 
 <delete id="delete" parameterType="int">
