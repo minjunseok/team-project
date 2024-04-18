@@ -32,9 +32,13 @@ public interface PostService {
   int countAll(int categoryNo);
 
   public String findByPost(int schoolNo, String content);
+
+
  List<Post> findBySchoolPostList(int schoolNo);
 
  Post get(int no, int schoolNo);
+
+
   public List<Post> findByLike();
 
   public List<Post> findByFollow();

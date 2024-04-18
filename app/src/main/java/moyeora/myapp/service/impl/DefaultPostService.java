@@ -78,15 +78,23 @@ public class DefaultPostService implements PostService {
     return postDao.delete(no);
   }
 
+
+
+  //스쿨 게시글 상세조회 댓글 관련
   @Override
   public List<Comment> getComments(int no) {
     return commentDao.findByComment(no);
   }
 
+
+  //스쿨 게시글 상세조회 파일목록 관련
   @Override
   public List<AttachedFile> getAttachedFiles(int no) {
-    return attachedFileDao.findAllByPostNo(no);
+    return attachedFileDao.findByPostFiles(no);
   }
+
+
+
 
   @Override
   public AttachedFile getAttachedFile(int fileNo) {
@@ -103,7 +111,7 @@ public class DefaultPostService implements PostService {
     return postDao.countAll(schoolNo);
   }
 
-  @Override
+//  @Override
   public String findByPost(int schoolNo, String content) {
     return postDao.findByPost(schoolNo, content);
   }
