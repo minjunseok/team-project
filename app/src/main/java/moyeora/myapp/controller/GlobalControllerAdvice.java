@@ -10,7 +10,11 @@ import java.beans.PropertyEditorSupport;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Date;
-//@ControllerAdvice
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
+
+@ControllerAdvice
 public class GlobalControllerAdvice {
 
     @InitBinder
@@ -18,6 +22,11 @@ public class GlobalControllerAdvice {
         webDataBinder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
             public void setAsText(String text) throws IllegalArgumentException {
                 this.setValue(Date.valueOf(text));
+            }
+        });
+        webDataBinder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
+            public void setAsText(String text) throws IllegalArgumentException {
+                this.setValue(LocalDateTime.parse(text));
             }
         });
     }

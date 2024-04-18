@@ -3,8 +3,9 @@ package moyeora.myapp.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.service.ClassService;
+import moyeora.myapp.service.SchoolClassService;
 import moyeora.myapp.service.SchoolService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,8 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MainPageController {
 
   private final SchoolService schoolService;
-  private final ClassService classService;
-
+  private final SchoolClassService schoolClassService;
   final static Log log = LogFactory.getLog(MainPageController.class);
   @GetMapping("")
   public void index(Model model) {
@@ -32,7 +32,7 @@ public class MainPageController {
     //해당 날짜주의 월화수목금토일 정보 가져오기
     model.addAttribute("weeks", schoolService.findWeek());
     //해당 날짜의 약속 정보를 전부 가져오기 , 지역 정보 추가해야함
-    model.addAttribute("classes", classService.findByDate(date));
+    model.addAttribute("classes", schoolClassService.findByDate(date));
 
     model.addAttribute("hotSchools", schoolService.findHotSchool(1));
   }

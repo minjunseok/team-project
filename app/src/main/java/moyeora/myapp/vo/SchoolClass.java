@@ -13,12 +13,14 @@ public class SchoolClass {
   private String name;
   private String content;
   private String location;
-  private String startAt;
-  private String createdAt;
-  private String endedAt;
+  private Date startAt;
+  private Date createdAt;
+  private Date endedAt;
   private String member;
   private String repeatSet;
   private String photo;
   private int nowMemberCount;
+  private String locationDetail;
+
 
 }

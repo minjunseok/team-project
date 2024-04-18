@@ -1,6 +1,8 @@
 package moyeora.myapp.dao;
 
 import java.util.List;
+
+import moyeora.myapp.vo.School;
 import moyeora.myapp.dto.school.admin.SchoolMemberUpdateRequestDTO;
 import moyeora.myapp.vo.SchoolUser;
 import org.apache.ibatis.annotations.Mapper;

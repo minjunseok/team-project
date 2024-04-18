@@ -3,8 +3,13 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<<<<<<< HEAD
 <mapper namespace="moyeora.myapp.dao.ClassDao">
   <resultMap id="SchoolClassMap" type="SchoolClass">
+=======
+<mapper namespace="moyeora.myapp.dao.SchoolClassDao">
+  <resultMap id="ClassMap" type="Class">
+>>>>>>> 786bd5db3b02da08c657433286bd6f8990a4b531
     <id column="class_no" property="no"/>
     <result column="user_no" property="userNo"/>
     <result column="school_no" property="schoolNo"/>

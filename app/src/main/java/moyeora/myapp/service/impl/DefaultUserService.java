@@ -3,16 +3,22 @@ package moyeora.myapp.service.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.dao.TagDao;
 import moyeora.myapp.dao.UserDao;
+import moyeora.myapp.dao.UserTagDao;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.vo.User;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
 public class DefaultUserService implements UserService {
 
-  private final UserDao userDao;
+    private final UserDao userDao;
+    private final UserTagDao userTagDao;
+    private final TagDao tagDao;
 
   @Override
   public void add(User user) {
