@@ -19,12 +19,31 @@
       <result column="level_name" property="name"/>
     </association>
 
+    <association property="level" javaType="Level">
+      <result column="level_name" property="levelName"/>
+    </association>
+
+      <association property="writer" javaType="User">
+        <result column="name" property="name"/>
+        <result column="photo" property="photo"/>
+        <result column="nickname" property="nickname"/>
+      </association>
+
     <collection property="schools" ofType="School">
+<<<<<<< HEAD
+=======
+      <result column="school_no" property="no"/>
+>>>>>>> 0878dd73705bf6680a0ac6d43a1e2698838943da
       <result column="school_name" property="name"/>
       <result column="photo" property="photo"/>
     </collection>
 
   </resultMap>
+
+
+
+
+
 
   <select id="findByUserNo" resultMap="SchoolUserMap" parameterType="int">
     select
@@ -40,6 +59,7 @@
     where u.user_no=#{no}
   </select>
 
+<<<<<<< HEAD
   <select id="findSchoolNoByUserNo" parameterType="java.util.List">
     select
       school_no
@@ -150,4 +170,32 @@
     and
       level_no &lt;=4
   </select>
+=======
+  <select id="findBySchoolUserList" resultMap="SchoolUserMap">
+
+    select
+
+
+    su.school_no school_no,
+    u.nickname,
+    u.photo,
+    l.name level_Name,
+    su.created_at
+
+
+    from
+
+    school_users as su
+
+    inner join  schools as s on s.school_no = su.school_no
+    inner join  users as u on u.user_no = su.user_no
+    inner join  levels as l on l.level_no = su.level_no
+
+    where su.school_no=#{schoolNo}
+
+    order by su.created_at;
+
+  </select>
+
+>>>>>>> 0878dd73705bf6680a0ac6d43a1e2698838943da
 </mapper>

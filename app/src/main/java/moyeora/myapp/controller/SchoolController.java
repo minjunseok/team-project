@@ -29,8 +29,9 @@ public class SchoolController {
 
 
   @GetMapping("form")
-  public void form(Model model, int schoolNo) {
-    model.addAttribute("postlists",postService.findBySchoolPostList(schoolNo));
+  public void form() {
+
+
   }
 
   @PostMapping("add")

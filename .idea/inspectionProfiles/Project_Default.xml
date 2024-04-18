@@ -4,9 +4,14 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
+<<<<<<< HEAD
           <list size="2">
             <item index="0" class="java.lang.String" itemvalue="sec:authorize" />
             <item index="1" class="java.lang.String" itemvalue="sec:authentication" />
+=======
+          <list size="1">
+            <item index="0" class="java.lang.String" itemvalue="th:object" />
+>>>>>>> 0878dd73705bf6680a0ac6d43a1e2698838943da
           </list>
         </value>
       </option>
