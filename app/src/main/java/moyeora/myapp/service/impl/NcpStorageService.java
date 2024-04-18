@@ -1,4 +1,4 @@
-package moyeora.myapp.service.Impl;
+package moyeora.myapp.service.impl;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
