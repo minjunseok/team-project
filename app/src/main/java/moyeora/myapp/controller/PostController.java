@@ -66,27 +66,26 @@ public class PostController {
 //    }
 
     // 파일 업로드 및 AttachedFile 생성
-//    List<AttachedFile> files = new ArrayList<>();
-//    for (MultipartFile file : attachedFiles) {
-//        if (file.getSize() == 0) {
-//            continue;
-//        }
-//        String filename = fileUploadHelper.upload(this.bucketName, this.uploadDir, file);
+    List<AttachedFile> files = new ArrayList<>();
+    for (MultipartFile file : attachedFiles) {
+        if (file.getSize() == 0) {
+            continue;
+        }
+        String filename = fileUploadHelper.upload(this.bucketName, this.uploadDir, file);
     // AttachedFile 객체 생성 후 파일 이름 설정
-//        AttachedFile attachedFile = new AttachedFile();
-//        attachedFile.setFileName(filename);
-//        files.add(attachedFile);
-//    }
+        AttachedFile attachedFile = new AttachedFile();
+        attachedFile.setFileName(filename);
+        files.add(attachedFile);
+    }
 
 
     // Post 객체에 AttachedFile 추가
-//    post.setFiles(files);
+    post.setFiles(files);
 
     // 나머지 처리 코드
     post.setCreatedAt(new Date());
     postService.add(post);
 
-//    return "redirect:list?schoolNo=" + post.getSchoolNo();
     return "redirect:list?schoolNo=" + post.getSchoolNo();
   }
 
