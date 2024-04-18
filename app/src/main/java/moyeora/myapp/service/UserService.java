@@ -1,14 +1,15 @@
 package moyeora.myapp.service;
 
-import java.util.List;
 import moyeora.myapp.vo.User;
+
+import java.util.List;
 public interface UserService {
 
     void add(User user);
 
-    User get(int no);
+  void save(User user);
 
-    int findUserGrade(int grade);
+    User get(int no);
 
     List<User> list();
 
@@ -16,7 +17,13 @@ public interface UserService {
 
     String getEmail(String name, String phone);
 
+  int updatePassword(User user);
+
     void delete(int no);
+
+  User findOAuth2User(String email, String provider);
+
+  User findByEmail(String email);
 
     List<String> findEmailByUserList(List<Integer> userList);
 

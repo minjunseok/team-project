@@ -2,13 +2,11 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="moyeora.myapp.dao.UserDao">
-
   <resultMap id="UserMap" type="User">
     <id column="user_no" property="no"/>
     <result column="name" property="name" />
-    <result column="pwd" property="pwd"/>
+    <result column="password" property="password"/>
     <result column="address" property="address"/>
     <result column="phone" property="phone"/>
     <result column="email" property="email"/>
@@ -16,24 +14,26 @@
     <result column="birth" property="birth"/>
     <result column="gender" property="gender"/>
     <result column="grade" property="grade"/>
-    <result column="login_type" property="loginType"/>
     <result column="created_at" property="createdAt"/>
     <result column="profile" property="profile"/>
     <result column="manner_point" property="mannerPoint"/>
     <result column="photo" property="photo"/>
     <result column="address_detail" property="addressDetail"/>
     <result column="stop_date" property="stopDate"/>
-<collection property="tags" ofType="UserTag">
-    <result column="user_no" property="userNo"/>
-    <result column="tag_no" property="tagNo"/>
-</collection>
+    <result column="tag_no" property="no"/>
+    <result column="login_type" property="loginType"/>
+    <result column="provider" property="provider"/>
+    <result column="provider_id" property="providerId"/>
+    <result column="role" property="role"/>
+    <collection property="tags" ofType="UserTag">
+      <result column="user_no" property="userNo"/>
+      <result column="tag_no" property="tagNo"/>
+    </collection>
   </resultMap>
 
-
-
   <insert id="add" parameterType="User">
-    insert into users(name,pwd,address,phone,email,nickname,birth,gender,profile,photo,manner_point)
-    values(#{name},#{pwd},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{profile},#{photo},36)
+    insert into users(name,password,address,phone,email,nickname,birth,gender,profile,photo,manner_point)
+    values(#{name},#{password},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{profile},#{photo},36)
   </insert>
 
 <select id="findBy" resultMap="UserMap" parameterType="int">
@@ -66,6 +66,11 @@
     values(#{no},#{no})
   </insert>
 
+  <insert id="save" parameterType="User" useGeneratedKeys="true" keyColumn="user_no" keyProperty="no">
+    insert into users(name,email,phone,provider,provider_id,role,created_at)
+    values(#{name},#{email},#{phone},#{provider},#{providerId},#{role},NOW())
+  </insert>
+
   <delete id="delete" parameterType="int">
     delete from users where user_no=#{value}
   </delete>
@@ -82,9 +87,9 @@
 
   <select id="findByNo" resultMap="UserMap" parameterType="int">
     select
-    user_no,
-    email,
-    name,
+      user_no,
+      email,
+      name,
     created_at
     from
     users
@@ -96,12 +101,12 @@
     select
     user_no,
     email,
-    pwd,
+    password,
     name
     from
     users
     where
-    email=#{email}
+        email=#{email}
   </select>
 
   <update id="update" parameterType="User">
@@ -113,67 +118,43 @@
   photo=#{photo}
   profile=#{profile}
   <if test="password != ''">
-    , pwd=#{password}
+    , password=#{password}
   </if>
   where
   user_no=#{no}
   </update>
 
-<update id="updateGrade">
-  update users
-    set grade=#{grade}
-  where user_no = #{no}
-</update>
+  <update id="updatePassword" parameterType="User">
+    update users set
+    password=#{password}
+    where
+    email=#{email}
+  </update>
 
-<select id="findEmailByUserList" parameterType="java.util.List">
-  select
-    email
-  from
-    users
-  where
-    user_no in
-  <foreach collection="userList" item="user" open="(" separator="," close=")">
-    #{user}
-  </foreach>
-</select>
-<update id="downGrade" parameterType="java.util.List">
-  update
-    users
-  set
-    grade = 0
-  where
-    user_no in
-  <foreach collection="userList" item="user" open="(" separator="," close=")">
-    #{user}
-  </foreach>
-</update>
-
-
-<select id="findAllNoMaster">
-  select
-    user_no,
-    name,
-    grade,
-    nickname,
-    email,
-    created_at,
-    stop_date
-  from
-    users
-  where
-    grade &lt;= 3
-  order by
-    grade desc, created_at desc
-  limit #{limit}
-</select>
-  <select id="findUserGrade" resultType="int" parameterType="int">
-    SELECT
-    u.grade
-    FROM
-    users u
-    WHERE
-    u.user_no = #{no}
+  <select id="findByNameAndPhone" resultType="string">
+    select
+      email
+    from
+      users
+    where
+      name=#{name}
+      and phone=#{phone}
   </select>
+
+  <select id="findOAuth2User" resultMap="UserMap">
+    select
+    user_no,
+    email,
+    name,
+    role
+    from
+    users
+    where
+    email=#{email}
+    and provider=#{provider}
+  </select>
+
+
 
 
 

@@ -1,49 +1,63 @@
 package moyeora.myapp.service.impl;
 
 import java.nio.charset.StandardCharsets;
-import moyeora.myapp.service.MailService;
+import moyeora.myapp.security.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.Random;
+import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 @Service
-public class DefaultMailService implements MailService {
+public class DefaultMailService {
+
+  @Value("${spring.mail.username}")
+  private String configEmail;
   @Autowired
   private JavaMailSender mailSender;
-  private int authCode;
-  public void createCode() {
-    Random r = new Random();
-    String randomNumber = "";
-    for(int i = 0; i < 6; i++) {
-      randomNumber += Integer.toString(r.nextInt(10));
-    }
-    authCode = Integer.parseInt(randomNumber);
+  @Autowired
+  private RedisUtil redisUtil;
+
+  private String setContext(String code, String template) {
+    Context context = new Context();
+    TemplateEngine templateEngine = new SpringTemplateEngine();
+    ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+    context.setVariable("code", code);
+
+    templateResolver.setPrefix("templates/mail/");
+    templateResolver.setSuffix(".html");
+    templateResolver.setTemplateMode(TemplateMode.HTML);
+    templateResolver.setCacheable(false);
+
+    templateEngine.setTemplateResolver(templateResolver);
+
+    return templateEngine.process(template, context);
   }
 
-  public String setText(String to) {
-    createCode();
-    String subject = "[moyeora] authentication code";
-    String text =
-        "[moyeora] 비밀번호 확인 인증" +
-            "<br><br>" + "인증코드 : " + authCode + "<br>";
-    sandEmail(to, subject, text);
-    return Integer.toString(authCode);
-  }
+  private MimeMessage createEmailForm(String to, String subject, String code, String template) throws MessagingException {
 
-  public void sandEmail(String to, String subject, String text) {
     MimeMessage message = mailSender.createMimeMessage();
-    try {
-      MimeMessageHelper helper = new MimeMessageHelper(message,true, StandardCharsets.UTF_8.name());
-      helper.setTo(to);
-      helper.setSubject(subject);
-      helper.setText(text,true);
-      mailSender.send(message);
-    } catch (MessagingException e) {
-      e.printStackTrace();
+    message.addRecipients(MimeMessage.RecipientType.TO, to);
+    message.setSubject(subject);
+    message.setFrom(configEmail);
+    message.setText(setContext(code, template), StandardCharsets.UTF_8.name(), "html");
+
+    return message;
+  }
+
+  @Transactional
+  public void sendEmail(String to, String subject, String code, String authId, String template) throws MessagingException {
+    if (redisUtil.existData(authId)) {
+      redisUtil.deleteData(authId);
     }
+    MimeMessage emailForm = createEmailForm(to, subject, code, template);
+    mailSender.send(emailForm);
   }
 }
