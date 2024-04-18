@@ -77,22 +77,18 @@
         });
     });
 </script>
-<a data-th-href="@{form}" href="form.html">새 글</a>
 
 <table border='1'>
-
     <thread>
         <tr>
             <th>작성자</th>
             <th>사진</th>
             <th>내용</th>
             <th>작성일</th>
-            <th>댓글목록</th>
             <th>...(설정)</th>
         </tr>
 
     </thread>
-
     <tbody>
     <tr data-th-each="post : ${postlists}" data-th-object="${post}">
 
@@ -112,6 +108,8 @@
         <td><span th:text="${#dates.format(comment.createdAt,'yyyy-MM-dd')}"></span>댓글목록</td>
         </tr></td>
         <td><a data-th-href="@{md(no=*{no})}" href="md.html?no=*{no}">...(설정)</a>
+        <td>
+            <a data-th-href="@{md(no=*{no}, schoolNo=*{schoolNo})}" href="md.html?(no=*{no}, schoolNo=*{schoolNo})">설정</a>
         </td>
     </tr>
     <!--    현준 리스트 작업 (검색창 오류 발생하면 보려고 놓아둔 것-->

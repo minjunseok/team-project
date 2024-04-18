@@ -4,6 +4,7 @@ import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Comment;
 import moyeora.myapp.vo.Post;
 import moyeora.myapp.vo.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.sql.Date;
 import java.util.List;
@@ -23,7 +24,7 @@ public interface PostService {
 
   List<Comment> getComments(int no);
 
-  int delete(int no);
+  int delete(int no, int schoolNo);
 
   AttachedFile getAttachedFile(int fileNo);
 
@@ -32,13 +33,13 @@ public interface PostService {
   int countAll(int categoryNo);
 
   public String findByPost(int schoolNo, String content);
+  public Post findByPost(@Param("no") int no, @Param("schoolNo") int schoolNo);
+
 
 
  List<Post> findBySchoolPostList(int schoolNo);
 
  Post get(int no, int schoolNo);
-
-
   public List<Post> findByLike();
 
   public List<Post> findByFollow();

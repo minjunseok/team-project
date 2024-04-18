@@ -59,17 +59,17 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
     values(#{content}, 1, #{userNo}, NOW())
 </insert>
 
-  <delete id="delete" parameterType="int">
+<delete id="delete" parameterType="int">
     delete from posts
-    where post_no=#{value}
-  </delete>
+    where post_no = #{no} and school_no = #{schoolNo}
+</delete>
 
     <update id="update" parameterType="Post">
-    update posts set
-      content=#{content}
-    where
-      post_no=#{no}
-  </update>
+      update posts set
+        content=#{content}
+      where
+        post_no=#{no} and school_no=#{schoolNo}
+    </update>
 
 
   <select id="findBy" resultMap="PostMap" parameterType="int">
@@ -291,7 +291,8 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
 
     p.post_no=#{no}
 
-    and p.school_no=#{schoolNo}
+<!--    and p.school_no=#{schoolNo}-->
+    and p.school_no=1
 
   </select>
   <select id="findBySchoolPostList" resultMap="PostMap">
