@@ -61,4 +61,9 @@ public class DefaultUserService implements UserService {
 
         return userDao.update(user);
     }
+
+    @Override
+    public int pwdUpdate(User user) {
+        return userDao.pwdUpdate(user);
+    }
 }

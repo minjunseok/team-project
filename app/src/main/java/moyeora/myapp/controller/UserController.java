@@ -80,7 +80,7 @@ public class UserController implements InitializingBean {
         }
     }
 
-    @PostMapping("update")
+@PostMapping("update")
 public String update(User user, MultipartFile file) throws Exception {
 
     User old = userService.get(42);
@@ -105,4 +105,11 @@ public String update(User user, MultipartFile file) throws Exception {
     return "redirect:index";
     }
 
+    @PostMapping("pwdUpdate")
+    public String update(User user) throws Exception {
+
+        userService.pwdUpdate(user);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ userService);
+        return "redirect:index";
+    }
 }
