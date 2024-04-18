@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>비트캠프 데브옵스 5기</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+
+<body>
+  <form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
+    <div>
+      스쿨 이름 : <input name='name' type='text'>
+    </div>
+    <div>
+      사진: <input type="file" id="image" name="file" accept="image/*" onchange="setThumbnail(event);"/>
+      <div id="school_image"></div>
+      <script>
+        function setThumbnail(event) {
+        var reader = new FileReader();
+
+        reader.onload = function(event) {
+          var img = document.createElement("img");
+          img.setAttribute("src", event.target.result);
+          document.querySelector("div#school_image").appendChild(img);
+        };
+
+        reader.readAsDataURL(event.target.files[0]);
+      }
+      </script>
+    </div>
+    <div>
+      스쿨 설명: <textarea name='content'></textarea>
+    </div>
+    <div>
+
+    </div>
+    <div>
+      <h2>관심사 선택</h2>
+    </div>
+
+    <tbody>
+    <tr data-th-each="tag : ${tags}">
+      <td>
+        <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="${tag.no}">
+      </td>
+      <td>
+        <span data-th-text="${tag.name}" >1</span>
+      </td>
+      <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+        <br>
+      </data-th-block>
+    </tr>
+    </tbody>
+
+    <h2>스쿨 공개 여부</h2>
+    <div>
+      <input type="radio" name="openRange" value="0"> 비공개
+      <input type="radio" name="openRange" value="1" checked> 공개
+    </div>
+
+    <button>개설 하기</button><br>
+
+  </form>
+</body>
+</html>
+

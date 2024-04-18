@@ -18,7 +18,6 @@
   <div data-th-text="*{photo}"></div>
 </div>
 
-
 <form th:action="@{/school/search}" method="get">
   <input type="text" name="name">
   <button type="submit">검색</button>
@@ -34,12 +33,12 @@
 
 
 <a style = "cursor: pointer" data-th-each="week : ${weeks}" data-th-onclick="@{'dataList(\'' + ${week} + '\')'}" data-th-text="${week}  "></a>
-<ol id = "byDate" data-th-each="class : ${classes}" data-th-object="${class}">
+<ol id = "byDate" data-th-each="schoolClasses : ${schoolClasses}" data-th-object="${schoolClasses}">
   <li data-th-text="*{name}"></li>
   <li data-th-text="*{photo}"></li>
   <li data-th-text="*{nowMemberCount} +  '/'  + *{member}"></li>
 </ol>
-<ol id="byDate" data-th-if="${classes.isEmpty()}">
+<ol id="byDate" data-th-if="${schoolClasses.isEmpty()}">
 </ol>
 <div id="map" style="width:500px;height:400px;">맵</div>
 
@@ -56,7 +55,7 @@ let mapOption;
 let mapContainer;
   const dataList = (week) => {
     map = new kakao.maps.Map(mapContainer, mapOption);
-    axios.get("class/list?date="+week)
+    axios.get("school_class/list?date="+week)
     .then(e => {
        $("#byDate").empty();
       var geocoder = new kakao.maps.services.Geocoder();  

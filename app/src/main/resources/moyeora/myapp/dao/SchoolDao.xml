@@ -19,9 +19,10 @@
 
 
 
-  <insert id="add" parameterType="School">
-    insert into schools(name,content,limited_man,photo,open_range,created_at)
-    values(#{name},#{content},#{limitedMan},#{photo},#{openRange},#{createdAt})
+  <insert id="add" parameterType="School"
+    useGeneratedKeys="true" keyColumn="school_no" keyProperty="no">
+    insert into schools(name,content,photo,open_range,created_at)
+    values(#{name},#{content},#{photo},#{openRange},now())
   </insert>
 
   <delete id="delete" parameterType="int">
@@ -30,26 +31,54 @@
   </delete>
   <select id="findHotSchool" resultMap="SchoolMap" parameterType="int">
     select
-    s.school_no,
-    s.name,
-    s.photo,
-    (select count(*) from school_users u where s.school_no = u.school_no) as now_member_count
+      s.school_no,
+      s.name,
+      s.photo,
+      (select count(*) from school_users u where s.school_no = u.school_no) as now_member_count
     from
-    schools as s
+      schools as s
     order by
-    now_member_count desc
+      now_member_count desc
   </select>
 
   <select id="findBySchoolName" resultMap="SchoolMap" parameterType="String">
     select
-    school_no,
-    name,
-    content
+      school_no,
+      name,
+      content
     from
-    schools
-    where name like '%${name}%'
+      schools
+    where name like #{name}
   </select>
 
+  <select id="findByNo" resultMap="SchoolMap">
+    select
+      school_no,
+      name,
+      stop,
+      open_range
+    from
+      schools
+    where
+      school_no=#{no}
+  </select>
+
+  <update id="stopSchool">
+    update schools
+      set stop=1
+    where
+      school_no = #{no}
+  </update>
+
+  <update id="updateSchoolOpenRange">
+    update
+      schools
+    set
+      open_range=#{openRange}
+    where
+      school_no=#{schoolNo}
+
+  </update>
 
 
 </mapper>

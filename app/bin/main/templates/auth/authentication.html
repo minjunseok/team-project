@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>moyeora</title>
+</head>
+<body>
+
+<div data-th-replace="header :: header">머리말</div>
+
+<h1>templates/auth/authentication.html</h1>
+
+<form data-th-if="${session.ok != true}" data-th-action="@{checkAuthenticationCode}" method="post">
+  <label>
+    인증번호:
+    <input name="authenticationCode" type="text" oninput="checkInput(this)">
+  </label>
+  <span data-th-if="${session.no}"> 인증번호가 일치하지 않습니다.</span>
+  <div id="DIV_MSG"></div>
+  <button>submit</button>
+</form>
+
+<div data-th-if="${session.ok}">
+  가입한 이메일: <span data-th-text="${session.email}"></span>
+</div>
+
+<div data-th-replace="footer :: footer">꼬리말</div>
+
+</body>
+
+<script>
+  function checkInput(obj) {
+    var regex = /^[0-9]*$/;
+    if(!regex.test(obj.value)){
+      document.getElementById("DIV_MSG").innerHTML = "숫자만 입력가능합니다.";
+    }
+  }
+</script>
+
+</html>

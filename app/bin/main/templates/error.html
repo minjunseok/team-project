@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>스쿨 오류</title>
+</head>
+<body>
+
+<h1>오류!</h1>
+
+<p data-th-if="${message != null}" data-th-text="${message}">스쿨오류 메시지</p>
+
+<pre data-th-if="${detail != null}" data-th-text="${detail}">스쿨 상세 오류 메시지</pre>
+
+
+</body>
+</html>

@@ -11,6 +11,8 @@ import java.beans.PropertyEditorSupport;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 
 @ControllerAdvice
@@ -21,6 +23,11 @@ public class GlobalControllerAdvice {
         webDataBinder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
             public void setAsText(String text) throws IllegalArgumentException {
                 this.setValue(Date.valueOf(text));
+            }
+        });
+        webDataBinder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
+            public void setAsText(String text) throws IllegalArgumentException {
+                this.setValue(LocalDateTime.parse(text));
             }
         });
     }
@@ -36,7 +43,7 @@ public class GlobalControllerAdvice {
 
         mv.addObject("detail", stringWriter.toString());
 
-        mv.setViewName("/error.html");
+        //mv.setViewName("/error.html");
         return mv;
     }
 }
