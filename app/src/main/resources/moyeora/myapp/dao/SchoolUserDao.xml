@@ -37,7 +37,7 @@
     select
       u.user_no as user_no,
       u.school_no as school_no,
-      u.grade_no as grade_no,
+      u.level_no as level_no,
       u.created_at as created_at,
       s.name as name,
       s.photo as photo
