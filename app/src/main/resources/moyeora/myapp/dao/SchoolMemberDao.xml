@@ -12,7 +12,7 @@
 
     <association property="level" javaType="Level">
         <id column="level_no" property="no"/>
-        <result column="level_name" property="name"/>
+        <result column="level_name" property="levelName"/>
     </association>
 
     <association property="school" javaType="School">
