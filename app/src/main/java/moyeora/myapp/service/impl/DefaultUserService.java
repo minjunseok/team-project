@@ -3,14 +3,18 @@ package moyeora.myapp.service.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.dao.SchoolUserDao;
 import moyeora.myapp.dao.TagDao;
 import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.dao.UserTagDao;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.vo.User;
+import moyeora.myapp.vo.UserTag;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -18,6 +22,7 @@ public class DefaultUserService implements UserService {
 
     private final UserDao userDao;
     private final UserTagDao userTagDao;
+    private final SchoolUserDao schoolUserDao;
     private final TagDao tagDao;
 
   @Override
@@ -34,6 +39,11 @@ public class DefaultUserService implements UserService {
     @Override
     public User get(int no) {
         return userDao.findBy(no);
+    }
+
+    @Override
+    public int findUserGrade(int grade) {
+        return userDao.findUserGrade(grade);
     }
 
     @Override

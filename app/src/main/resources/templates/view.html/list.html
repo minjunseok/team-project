@@ -10,10 +10,27 @@
 <body>
   <form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
     <div>
-      스쿨 이름 : <input name='email' type='text'>
+      스쿨 이름 : <input name='name' type='text'>
     </div>
     <div>
-      사진: <input name='file' type='file'>
+      사진: <input type="file" id="image" name="file" accept="image/*" onchange="setThumbnail(event);"/>
+      <div id="school_image"></div>
+      <script>
+        function setThumbnail(event) {
+        var reader = new FileReader();
+
+        reader.onload = function(event) {
+          var img = document.createElement("img");
+          img.setAttribute("src", event.target.result);
+          document.querySelector("div#school_image").appendChild(img);
+        };
+
+        reader.readAsDataURL(event.target.files[0]);
+      }
+      </script>
+    </div>
+    <div>
+      스쿨 설명: <textarea name='content'></textarea>
     </div>
     <div>
 
@@ -35,23 +52,16 @@
       </data-th-block>
     </tr>
     </tbody>
-<button>스쿨 설정</button><br>
-<div>
-  <a href="">게시글</a>
-  <a href="">회원 조회</a>
-  <a href="">일정 등록</a>
-</div>
 
+    <h2>스쿨 공개 여부</h2>
+    <div>
+      <input type="radio" name="openRange" value="0"> 비공개
+      <input type="radio" name="openRange" value="1" checked> 공개
+    </div>
 
+    <button>개설 하기</button><br>
 
-<div data-th-each="post : ${postlists}" data-th-object="${post}">
-  <input type="hidden" value="*{schoolNo}">
-  <td data-th-text="*{no}">번호</td>
-<!--  <a data-th-text="*{name}">이름</a>-->
-  <a data-th-text="*{content}">내용</a>
-<!--  <a data-th-text="*{photo}">사진<</a>-->
-  <a data-th-text="*{createdAt}">작성일</a>
-</div>
   </form>
 </body>
 </html>
+

@@ -166,13 +166,15 @@
     grade desc, created_at desc
   limit #{limit}
 </select>
+  <select id="findUserGrade" resultType="int" parameterType="int">
+    SELECT
+    u.grade
+    FROM
+    users u
+    WHERE
+    u.user_no = #{no}
+  </select>
 
-<update id="pwdUpdate" parameterType="User">
-update users set
-    pwd = #{pwd}
-where
-    user_no=#{no}
-</update>
 
 
 </mapper>

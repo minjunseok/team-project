@@ -1,15 +1,18 @@
 package moyeora.myapp.dao;
 import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface UserDao {
      public void add(User user);
 
      public User findBy(int no);
+
+     public int findUserGrade(int grade);
+
 
      public void updateGrade(int no, int grade);
 

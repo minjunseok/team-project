@@ -8,6 +8,8 @@ public interface UserService {
 
     User get(int no);
 
+    int findUserGrade(int grade);
+
     List<User> list();
 
     User get(String email);

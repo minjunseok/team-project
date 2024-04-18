@@ -110,4 +110,6 @@ public String update(User user, MultipartFile file) throws Exception {
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ userService);
         return "redirect:index";
     }
+
+
 }
