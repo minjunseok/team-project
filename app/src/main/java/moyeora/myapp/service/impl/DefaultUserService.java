@@ -31,12 +31,12 @@ public class DefaultUserService implements UserService {
     return userDao.findAll();
   }
 
-  @Override
-  public User get(int no) {
-    return userDao.findByNo(no);
-  }
+    @Override
+    public User get(int no) {
+        return userDao.findBy(no);
+    }
 
-  @Override
+    @Override
   public User get(String email) {
     return userDao.findByEmail(email);
   }
@@ -52,12 +52,6 @@ public class DefaultUserService implements UserService {
   }
 
   @Override
-  public void update(User user) {
-    //user.setPwd(passwordEncoder.encode(user.getPwd()));
-    userDao.update(user);
-  }
-
-  @Override
   public void delete(int no) {
     userDao.delete(no);
   }
@@ -70,6 +64,31 @@ public class DefaultUserService implements UserService {
   @Override
   public void downGrade(List<Integer> userList) {
     userDao.downGrade(userList);
+  }
+
+  @Override
+  public int pwdUpdate(User user) {
+      return userDao.pwdUpdate(user);
+  }
+
+  @Override
+  public int update(User user) {
+
+          userTagDao.deleteAllUserTagNo(user.getNo());
+      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+user.getNo());
+
+
+
+      if(user.getTagNums() != null && user.getTagNums().size() >=3) {
+          for(int tagNum : user.getTagNums()) {
+              userTagDao.add(tagNum, user.getNo());
+              System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+tagNum);
+              System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+user.getNo());
+
+          }
+      }
+
+      return userDao.update(user);
   }
 
 }

@@ -31,5 +31,5 @@ public interface UserDao {
       @Param("name")  String name,
       @Param("phone") String phone);
 
-  public List<User> findAllNoMaster(int limit);
+  public List<User> findAllNoMaster(int limit);     public int pwdUpdate(User user);
 }
