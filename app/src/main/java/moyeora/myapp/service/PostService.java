@@ -38,7 +38,6 @@ public interface PostService {
  List<Post> findBySchoolPostList(int schoolNo);
 
  Post get(int no, int schoolNo);
- Post get(int no, Integer schoolNo);
   public List<Post> findByLike();
 
   public List<Post> findByFollow();

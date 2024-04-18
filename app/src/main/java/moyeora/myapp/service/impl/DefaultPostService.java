@@ -137,9 +137,6 @@ public class DefaultPostService implements PostService {
   public Post get(int no , int schoolNo) {
     return postDao.findByPost(no, schoolNo);
   }
-  public Post get(int no , Integer schoolNo) {
-    return postDao.findByPost(no, schoolNo);
-  }
 
    // 필터를  내용으로 검색했을 때
     @Override
