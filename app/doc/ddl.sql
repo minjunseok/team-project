@@ -229,12 +229,16 @@ CREATE TABLE `schools` (
 	`open_range`  INT           NOT NULL  -- 공개범위
 );
 
+
 -- schools
 ALTER TABLE `schools`
 	ADD CONSTRAINT `PK_schools` -- schools 기본키
 	PRIMARY KEY (
 	`school_no` -- 스쿨번호
 	);
+
+ALTER TABLE schools
+ALTER COLUMN limited_man SET DEFAULT 30;
 
 -- schools 유니크 인덱스
 CREATE UNIQUE INDEX `UIX_schools`

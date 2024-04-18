@@ -1,9 +1,6 @@
 package moyeora.myapp.controller;
 
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.SchoolClassService;
 import moyeora.myapp.service.SchoolService;
@@ -14,9 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/index")
+@RequestMapping("index")
 public class MainPageController {
 
   private final SchoolService schoolService;
@@ -32,7 +32,7 @@ public class MainPageController {
     //해당 날짜주의 월화수목금토일 정보 가져오기
     model.addAttribute("weeks", schoolService.findWeek());
     //해당 날짜의 약속 정보를 전부 가져오기 , 지역 정보 추가해야함
-    model.addAttribute("classes", schoolClassService.findByDate(date));
+    model.addAttribute("schoolClasses", schoolClassService.findByDate(date));
 
     model.addAttribute("hotSchools", schoolService.findHotSchool(1));
   }

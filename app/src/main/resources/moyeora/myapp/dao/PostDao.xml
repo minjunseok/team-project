@@ -83,21 +83,21 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
 
   <select id="findByLike" resultMap="PostMap" parameterType="int">
     SELECT
-      u.user_no,
-      u.name AS user_name,
-      p.post_no,
-      s.school_no,
-      p.created_at,
-      (select count(*) from likes as l where l.post_no=p.post_no) as like_count,
-      (select count(*) from comments as c where c.post_no=p.post_no) as comment_count,
-      s.name AS school_name,
-      s.photo AS school_photo,
-      p.content AS post_content,
-      f.path,
-      f.name,
-      f.post_no
+    u.user_no,
+    u.name AS user_name,
+    p.post_no,
+    s.school_no,
+    p.created_at,
+    (select count(*) from likes as l where l.post_no=p.post_no) as like_count,
+    (select count(*) from comments as c where c.post_no=p.post_no) as comment_count,
+    s.name AS school_name,
+    s.photo AS school_photo,
+    p.content AS post_content,
+    f.path,
+    f.name,
+    f.post_no
     FROM
-      posts p
+    posts p
     INNER JOIN schools s ON s.school_no = p.school_no
     INNER JOIN users u ON p.user_no = u.user_no
     LEFT OUTER JOIN files f ON p.post_no = f.post_no
@@ -106,45 +106,45 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
   </select>
   <select id="findByFollow" resultMap="PostMap" parameterType="int">
     SELECT
-      u.user_no,
-      u.name AS user_name,
-      p.post_no,
-      s.school_no,
-      p.created_at,
-      (select count(*) from likes as l where l.post_no=p.post_no) as like_count,
-      (select count(*) from comments as c where c.post_no=p.post_no) as comment_count,
-      s.name AS school_name,
-      s.photo AS school_photo,
-      p.content AS post_content,
-      f.path,
-      f.name,
-      f.post_no
+    u.user_no,
+    u.name AS user_name,
+    p.post_no,
+    s.school_no,
+    p.created_at,
+    (select count(*) from likes as l where l.post_no=p.post_no) as like_count,
+    (select count(*) from comments as c where c.post_no=p.post_no) as comment_count,
+    s.name AS school_name,
+    s.photo AS school_photo,
+    p.content AS post_content,
+    f.path,
+    f.name,
+    f.post_no
     FROM
-      posts p
-      INNER JOIN schools s ON s.school_no = p.school_no
-      INNER JOIN users u ON p.user_no = u.user_no
-      INNER JOIN follows fo ON fo.follower_user_no = u.user_no
-      LEFT OUTER JOIN files f ON p.post_no = f.post_no
+    posts p
+    INNER JOIN schools s ON s.school_no = p.school_no
+    INNER JOIN users u ON p.user_no = u.user_no
+    INNER JOIN follows fo ON fo.follower_user_no = u.user_no
+    LEFT OUTER JOIN files f ON p.post_no = f.post_no
     where fo.following_user_no=#{no};
 
   </select>
   <select id="findByUser" resultMap="PostMap" parameterType="int">
     SELECT
-      u.user_no,
-      u.name AS user_name,
-      p.post_no,
-      s.school_no,
-      p.created_at,
-      (select count(*) from likes as l where l.post_no=p.post_no) as like_count,
-      (select count(*) from comments as c where c.post_no=p.post_no) as comment_count,
-      s.name AS school_name,
-      s.photo AS school_photo,
-      p.content AS post_content,
-      f.path,
-      f.name,
-      f.post_no
+    u.user_no,
+    u.name AS user_name,
+    p.post_no,
+    s.school_no,
+    p.created_at,
+    (select count(*) from likes as l where l.post_no=p.post_no) as like_count,
+    (select count(*) from comments as c where c.post_no=p.post_no) as comment_count,
+    s.name AS school_name,
+    s.photo AS school_photo,
+    p.content AS post_content,
+    f.path,
+    f.name,
+    f.post_no
     FROM
-      posts p
+    posts p
     INNER JOIN schools s ON s.school_no = p.school_no
     INNER JOIN users u ON p.user_no = u.user_no
     LEFT OUTER JOIN files f ON p.post_no = f.post_no
@@ -154,32 +154,27 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
 
   <select id="findBySchoolPost" resultMap="PostMap">
     select
-
-    post_no,
-    school_no,
-    user_no,
-    category_no,
-    content,
-    created_at
-
+      post_no,
+      school_no,
+      user_no,
+      category_no,
+      content,
+      created_at
     from
-
-    posts
+      posts
   </select>
   <select id="findAll" resultMap="PostMap">
     SELECT distinct
-    u.name,
-    p.post_no,
-    p.school_no,
-    p.user_no,
-    p.content,
-    p.created_at
+      u.name,
+      p.post_no,
+      p.school_no,
+      p.user_no,
+      p.content,
+      p.created_at
     FROM
-    posts AS p
-    JOIN
-    school_users AS su ON p.user_no = su.user_no
-    JOIN
-    users AS u ON su.user_no = u.user_no;
+      posts AS p
+    JOIN school_users AS su ON p.user_no = su.user_no
+    JOIN users AS u ON su.user_no = u.user_no;
   </select>
 
 <!-- 검색 내용이 포함된 게시글 찾기 -->
@@ -334,4 +329,8 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
 
 </mapper>
 
-
+<!--  <collection property="fileList" ofType="AttachedFile">-->
+<!--    <id column="file_no" property="no"/>-->
+<!--    <result column="file_path" property="filePath"/>-->
+<!--    <result column="post_no" property="postNo"/>-->
+<!--  </collection>-->

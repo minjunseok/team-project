@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>비트캠프 데브옵스 5기</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+
+<body>
+<form id="schoolForm" onsubmit="return validateForm()" action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
+    <div>
+        <div id="div1">
+            스쿨이름: <input name ='name' id="email" type="text">
+            <div id="state"></div>
+            <span id="message"></span>
+        </div>
+        <button type='button' onclick="document.getElementById('schoolForm').action='form'">중복 확인</button>
+    </div>
+
+
+    <div>
+        사진: <input type="file" id="image" name="file" accept="image/*" onchange="setThumbnail(event);"/>
+        <div id="school_image"></div>
+        <script>
+            function setThumbnail(event) {
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+              var img = document.createElement("img");
+              img.setAttribute("src", event.target.result);
+              document.querySelector("div#school_image").appendChild(img);
+            };
+
+            reader.readAsDataURL(event.target.files[0]);
+          }
+        </script>
+    </div>
+    <div>
+        스쿨 설명: <textarea name='content'></textarea>
+    </div>
+    <div>
+
+    </div>
+    <div>
+        <h2>관심사 선택</h2>
+    </div>
+
+    <script>
+        var schoolForm = document.getElementById('schoolForm');
+        function validateForm() {
+          console.log(schoolForm.action);
+          var fileInput = document.getElementById('image');
+          if (fileInput.files.length === 0) {
+            alert('스쿨 사진을 선택하세요.');
+            return false;
+          }
+
+          var checkboxes = document.getElementsByName('tagNums');
+          var isChecked = false;
+          for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+              isChecked = true;
+              break;
+            }
+          }
+          if (!isChecked) {
+            alert('관심사를 하나 이상 선택하세요.');
+            return false;
+          }
+
+          return true;
+        }
+
+        function checkDuplicateSchoolName() {
+          var schoolName = document.getElementById('schoolNameInput').value;
+          axios.post('/school/checkDuplicate', { name: schoolName })
+            .then(function(response) {
+              if (response.data === true) {
+              alert('이미 존재하는 학교 이름입니다.');
+            } else {
+              alert('사용할 수 있는 학교 이름입니다.');
+            }
+            console.log(response.data);
+          })
+          .catch(function(error) {
+            console.error('에러:', error);
+          });
+        }
+
+
+        // DOM API를 이용하여 이메일 입력 상자를 알아낸다.
+        var name = document.getElementById('name');
+        var state = document.getElementById('state');
+        var btn = document.getElementById('signupBtn');
+        var messageSpan = document.getElementById('message');
+
+        // 사용자가 버튼을 클릭하는 사건(event)이 발생했을 때
+        // 호출될 함수(event listener = event handler = callback)를 등록한다.
+        btn.addEventListener('click', function() {
+          // 입력 상자에 들어있는 값을 검사하여 이메일 중복 여부에 따라
+          // 아이콘을 출력한다.
+          if (name.value == "?" ) { // 존재하는 사용자일 경우
+            state.style.backgroundPosition = "-204px -1px";
+            messageSpan.innerHTML = "중복된 스쿨명입니다.";
+            messageSpan.style["color"] = "red";
+          } else {
+            state.style.backgroundPosition = "-167px -1px";
+            messageSpan.innerHTML = "사용할 수 있는 스쿨명입니다.";
+            messageSpan.style["color"] = "blue";
+    }
+  });
+
+    </script>
+
+    <tbody>
+    <tr data-th-each="tag : ${tags}">
+        <td>
+            <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="${tag.no}">
+        </td>
+        <td>
+            <span data-th-text="${tag.name}" >1</span>
+        </td>
+        <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+            <br>
+        </data-th-block>
+    </tr>
+    </tbody>
+
+
+    <h2>스쿨 공개 여부</h2>
+    <div>
+        <input type="radio" name="openRange" value="0"> 비공개
+        <input type="radio" name="openRange" value="1" checked> 공개
+    </div>
+
+    <button type="submit">개설 하기</button><br>
+
+</form>
+</body>
+</html>

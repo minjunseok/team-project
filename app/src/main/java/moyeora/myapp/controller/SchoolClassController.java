@@ -17,7 +17,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -83,14 +86,15 @@ public class SchoolClassController {
     Date startAtDate = Date.from(startAt2.atZone(zoneId).toInstant());
     Date endedAtDate = Date.from(endedAt2.atZone(zoneId).toInstant());
 
+    clazz.setStartAt(startAtDate);
+    clazz.setEndedAt(endedAtDate);
+    schoolClassService.add(clazz);
+
     System.out.println("=======classcontroller.startdate============>    " + startAtDate);
     System.out.println("=========classcontrollr.endeddate==========>    " + endedAtDate);
 
 
-    clazz.setStartAt(startAtDate);
-    clazz.setEndedAt(endedAtDate);
 
-    schoolClassService.add(clazz);
     System.out.println("=======classcontroller============>    " + clazz);
 
     JsonResult jsonResult = new JsonResult();

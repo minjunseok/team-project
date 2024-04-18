@@ -54,6 +54,17 @@
     where u.user_no=#{no}
   </select>
 
+  <select id="schoolUserLevelCount" resultType="int">
+    SELECT COUNT(*)
+    FROM school_users su
+    WHERE su.level_no = 4 AND su.user_no = #{no};
+  </select>
+
+  <insert id="insert" parameterType="SchoolUser">
+    INSERT INTO school_users (user_no,school_no, level_no, created_at)
+    VALUES (#{userNo},#{schoolNo}, #{levelNo}, now())
+  </insert>
+
   <select id="findBySchoolUserList" resultMap="SchoolUserMap">
 
     select
