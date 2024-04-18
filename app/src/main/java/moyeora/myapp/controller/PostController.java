@@ -86,6 +86,7 @@ public class PostController {
     post.setCreatedAt(new Date());
     postService.add(post);
 
+//    return "redirect:list?schoolNo=" + post.getSchoolNo();
     return "redirect:list?schoolNo=" + post.getSchoolNo();
   }
 
@@ -183,7 +184,7 @@ public class PostController {
 //    if (files.size() > 0) {
 //      post.setFileList(files);
 //    }
-
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
     postService.update(post);
 
     return "redirect:list?schoolNo=" + post.getSchoolNo();
