@@ -20,19 +20,26 @@ public interface UserDao {
 
      public void downGrade(List<Integer> userList);
 
-  public int delete(int no);
+  void save(User user);
 
-  public List<User> findAll();
+  int delete(int no);
 
-  public User findByNo(int no);
+  List<User> findAll();
 
-  public int update(User member);
+  User findByNo(int no);
 
-  public User findByEmail(@Param("email") String email);
+  int update(User user);
 
-  public String findByNameAndPhone(
-      @Param("name")  String name,
+  int updatePassword(User user);
+
+  User findByEmail(String email);
+
+  User findOAuth2User(String email, String provider);
+
+  String findByNameAndPhone(
+      @Param("name") String name,
       @Param("phone") String phone);
 
-  public List<User> findAllNoMaster(int limit);     public int pwdUpdate(User user);
+  public List<User> findAllNoMaster(int limit);
+  public int passwordUpdate(User user);
 }

@@ -1,24 +1,22 @@
 package moyeora.myapp.scheduler;
 
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.dao.SchoolUserDao;
-import moyeora.myapp.service.MailService;
 import moyeora.myapp.service.PaymentService;
 import moyeora.myapp.service.SchoolService;
 import moyeora.myapp.service.UserService;
+import moyeora.myapp.service.impl.DefaultMailService;
 import moyeora.myapp.vo.BillingKey;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class SubscriptionScheduler {
-  private final MailService mailService;
+  private final DefaultMailService mailService;
   private final PaymentService paymentService;
   private final UserService userService;
   private final SchoolService schoolService;
@@ -50,7 +48,7 @@ public class SubscriptionScheduler {
     String subject = "[moyeora] 정기구독 결제 실패입니다";
     String content = "잔액 부족, 카드 정지 등의 이유로 정기구독 결제에 실패하였습니다. 무료 요금제 외의 기능은 중단되며 7일 후에 중지된 데이터는 삭제됩니다";
     for(String email : emails) {
-      mailService.sandEmail(email,subject,content);
+      //mailService.sandEmail(email,subject,content);
     }
   }
 
