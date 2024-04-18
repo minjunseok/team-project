@@ -18,7 +18,7 @@
 
 <a data-th-text="*{content}">내용</a>
 
-<form action="view" data-th-object="${post}" enctype='multipart/form-data' method='get'>
+<form action="view.html" data-th-object="${post}" enctype='multipart/form-data' method='get'>
 
 
 
@@ -44,10 +44,10 @@
 <table>
   <tbody>
 <tr th:each="comment : ${comments}" th:object="${comment}">
-  <td><a th:text="*{writer.photo}"></a></td>
-  <td><a th:text="*{writer.nickname}"></a></td>
-  <td><a th:text="*{content}"></a></td>
-  <td><a th:text="${#dates.format(comment.createdAt,'yyyy-MM-dd')}"></a></td>
+  <td><span th:text="*{writer.photo}"></span></td>
+  <td><span th:text="*{writer.nickname}"></span></td>
+  <td><span th:text="*{content}"></span></td>
+  <td><span th:text="${#dates.format(comment.createdAt,'yyyy-MM-dd')}"></span></td>
 
 
 </tr>
@@ -55,7 +55,7 @@
 </table>
 <br>
 
-<input multiple name='comment' type='comment'>
+<input multiple name='comment' type='text'>
 
 <br>
 <button>댓글 등록</button>
@@ -67,8 +67,8 @@
   <tbody>
 
   <tr th:each="file : ${files}" th:object="${file}">
-    <td><a th:text="*{fileName}"></a></td>
-    <td><a th:text="*{type}"></a></td>
+    <td><span th:text="*{fileName}"></span></td>
+    <td><span th:text="*{type}"></span></td>
   </tr>
   </tbody>
 </table>
@@ -76,25 +76,6 @@
 <input multiple name='attachedFiles' type='file'>
 <br>
 <br>
-
-
-<!--    <td data-th-text="*{no}" href="view.html">번호</td>-->
-<!--    <td data-th-text="*{writer.photo}">사진</td>-->
-<!--    <td data-th-href="@{view(postNo=$postNo})}" data-th-text="*{content}"-->
-<!--        href="view.html">내용</td>-->
-<!--    <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>-->
-<!--  </tr>-->
-<!--  </tbody>-->
-<!--  </table>-->
-
-<!--<tr data-th-each="comment : ${comments}" data-th-object="${comment}">-->
-<!--<div>-->
-<!--  <td><a data-th-href="@{view(no=*{no})}" data-th-text="*{photo}"-->
-<!--         href="view.html"></a></td>-->
-<!--  <a data-th-text="*{nickname}">이름</a>-->
-<!--  <a data-th-text="*{content}">내용</a>-->
-<!--  <a data-th-text="*{createdAt}">댓글작성일</a>-->
-<!--  </tr>-->
 
 
 </body>

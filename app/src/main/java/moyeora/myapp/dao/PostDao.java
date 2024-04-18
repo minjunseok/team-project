@@ -29,6 +29,8 @@ public interface PostDao {
   public List<Post> findByFollow(int no);
 
   String findByPost(int schoolNo, String content);
+
+
   public List<Post> findBySchoolPost();
 
   // 필터 내용으로 검색했을 때
@@ -37,6 +39,7 @@ public interface PostDao {
   List<Post> findBySchoolUserName(int schoolNo, @Param("keyword") String keyword);
 
   List<Post> findBySchool(int schoolNo);
+
   List<Post> findBySchoolUserName(@Param("keyword") String keyword);
 //  Post findBy(int no);
 

@@ -12,6 +12,7 @@ import lombok.Data;
 @Data
 public class Post {
   private int no;
+  private String type;
   private String fileName;
   private String nickname;
   private String photo;
@@ -26,6 +27,8 @@ public class Post {
   private List<AttachedFile> files;
   private List<Comment> comments;
   private List<SchoolUser> schoolUsers;
+  private List<Post> posts;
   private School school;
   private SchoolUser schoolUser;
+  private String lNo;
 }

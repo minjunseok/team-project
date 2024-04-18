@@ -88,7 +88,19 @@ public class PostController {
 
     log.debug(schoolUserService.findBySchoolUserList(schoolNo));
     System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
-    model.addAttribute("postlists", postService.findBySchoolPostList(schoolNo));
+    List<Post> posts = postService.findBySchoolPostList(schoolNo);
+//    for (Post post : posts) {
+//      List<AttachedFile> attachedFiles = postService.getAttachedFiles(post.getNo());
+//      List<Comment> comments = postService.getComments(post.getNo());
+
+
+
+    for (Post post : posts) {
+//      List<AttachedFile> attachedFiles = postService.getAttachedFiles(schoolNo);
+      List<Comment> comments = postService.getComments(schoolNo);
+      post.setComments(comments);
+    }
+    model.addAttribute("postlists", posts);
     model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
   }
 
@@ -100,13 +112,12 @@ public class PostController {
     List<AttachedFile> attachedFiles = postService.getAttachedFiles(no);
     List<Comment> comments = postService.getComments(no);
 
+    log.debug(attachedFiles);
+    log.debug(comments);
+
     if (post == null) {
       throw new Exception("게시글 번호가 유효하지 않습니다.");
     }
-    System.out.println(post);
-    System.out.println(attachedFiles);
-    System.out.println(comments);
-
     model.addObject("comments", comments);
     model.addObject("files", attachedFiles);
     model.addObject("post", post);
@@ -139,10 +150,10 @@ public class PostController {
           Model model) {
     if (filter.equals("0")) { // 내용으로 검색
       List<Post> postList = postService.findBySchoolContent(schoolNo, keyword);
-      model.addAttribute("postList", postList);
+      model.addAttribute("postLists", postList);
     } else {                  // 작성자로 검색
       List<Post> postList = postService.findBySchoolUserName(schoolNo, keyword);
-      model.addAttribute("postList", postList);
+      model.addAttribute("postLists", postList);
     }
     return "post/list";
   }

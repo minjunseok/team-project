@@ -267,13 +267,13 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
         like_count DESC;
 </select>
 
-  <select id="findByPost" resultMap="PostMap" parameterType="int">
+  <select id="findByPost" resultMap="PostMap">
 
     select distinct
 
-    p.school_no,
+    p.school_no school_no,
     u.nickname,
-    p.post_no,
+    p.post_no post_no,
     u.photo,
     p.content,
     p.created_at
@@ -294,7 +294,7 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
     and p.school_no=#{schoolNo}
 
   </select>
-  <select id="findBySchoolPostList" resultMap="PostMap" parameterType="int">
+  <select id="findBySchoolPostList" resultMap="PostMap">
 
 
     SELECT DISTINCT
