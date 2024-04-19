@@ -8,14 +8,13 @@ import moyeora.myapp.util.FileUploadHelper;
 import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Comment;
 import moyeora.myapp.vo.Post;
-import moyeora.myapp.vo.SchoolUser;
-import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -28,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/post")
+@SessionAttributes("attachedFiles")
 public class PostController {
 
   //  private static final Log log = LogFactory.getLog(PostController.class);
@@ -38,10 +38,11 @@ public class PostController {
   private String uploadDir = "post/";
   private static final Log log = LogFactory.getLog(PostController.class);
 
+
   @Value("${ncp.storage.bucket}")
   private String bucketName;
 
-    @GetMapping("form")
+  @GetMapping("form")
   public void form() throws Exception {
 
   }
@@ -49,8 +50,8 @@ public class PostController {
   @PostMapping("add")
   public String add(
           Post post,
-          MultipartFile[] files,
-          HttpSession session) throws Exception {
+          HttpSession session,
+          SessionStatus sessionStatus) throws Exception {
 
 //    User loginUser = (User) session.getAttribute("loginUser");
 //    if (loginUser == null) {
@@ -65,26 +66,36 @@ public class PostController {
 //      throw new Exception("권한이 없습니다.");
 //    }
 
-    // 파일 업로드 및 AttachedFile 생성
-    List<AttachedFile> attachedFiles = new ArrayList<>();
-    for (MultipartFile file : files) {
-        if (file.getSize() == 0) {
-            continue;
+
+    // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
+    List<AttachedFile> fileList = (List<AttachedFile>) session.getAttribute("attachedFiles");
+
+
+    if (fileList != null) {
+      for (int i = fileList.size() - 1; i >= 0; i--) {
+        AttachedFile attachedFile = fileList.get(i);
+        if (post.getContent().indexOf(attachedFile.getFilePath()) == -1) {
+          // Object FileUploadHelper에 업로드 한 파일 중에서 게시글 콘텐트에 포함되지 않은 것은 삭제한다.
+          fileUploadHelper.delete(this.bucketName, this.uploadDir, attachedFile.getFilePath());
+          log.debug(String.format("%s 파일 삭제!", attachedFile.getFilePath()));
+          fileList.remove(i);
         }
-        String filename = fileUploadHelper.upload(this.bucketName, this.uploadDir, file);
-    // AttachedFile 객체 생성 후 파일 이름 설정
-        AttachedFile attachedFile = new AttachedFile();
-        attachedFile.setFileName(filename);
-        attachedFiles.add(attachedFile);
+      }
+      if (fileList.size() > 0) {
+        post.setFileList(fileList);
+      }
     }
 
 
-     // 'created_at' 필드에 현재 시간 설정
+    // 'created_at' 필드에 현재 시간 설정
     post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
 
     // 나머지 처리 코드
     post.setCreatedAt(new Date());
     postService.add(post);
+
+    // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
+    sessionStatus.setComplete();
 
     return "redirect:list?schoolNo=" + post.getSchoolNo();
   }
@@ -102,7 +113,6 @@ public class PostController {
 //    for (Post post : posts) {
 //      List<AttachedFile> attachedFiles = postService.getAttachedFiles(post.getNo());
 //      List<Comment> comments = postService.getComments(post.getNo());
-
 
 
     for (Post post : posts) {
