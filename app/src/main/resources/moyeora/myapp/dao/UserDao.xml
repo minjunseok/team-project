@@ -155,7 +155,14 @@
   </select>
 
 
-
+  <select id="findUserGrade" resultType="int">
+    SELECT
+    grade
+    FROM
+    users
+    WHERE
+    user_no=#{userNo}
+  </select>
 
 
 </mapper>

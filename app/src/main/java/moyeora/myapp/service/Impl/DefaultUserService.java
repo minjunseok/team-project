@@ -70,6 +70,10 @@ import java.util.List;
         }
 
         @Override
+        public int findUserGrade(int grade) {
+            return userDao.findUserGrade(grade);
+        }
+        @Override
         public int update(User user) {
 
             userTagDao.deleteAllUserTagNo(user.getNo());

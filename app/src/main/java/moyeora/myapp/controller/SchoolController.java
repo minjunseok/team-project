@@ -13,11 +13,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -47,7 +47,7 @@ public class SchoolController {
     }
 
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ school.getTags());
-    schoolService.add(school, 39,39);
+    schoolService.add(school, 2, 2);
     return "redirect:list";
 
   }
@@ -72,6 +72,25 @@ public class SchoolController {
     model.addAttribute("grade",schoolService.schoolUserLevelCount(userNo));
   }
 
+
+  @GetMapping("/checkDuplicateSchoolName")
+  @ResponseBody
+  public Map<String, Integer> checkDuplicateSchoolName(String schoolName) {
+    int count = schoolService.isNameExists(schoolName);
+
+    Map<String, Integer> response = new HashMap<>();
+    response.put("cnt", count);
+    return response;
+  }
+//  @PostMapping("checkDuplicateSchoolName")
+//  public String checkDuplicateSchoolName(@RequestParam("name") String name) {
+//    int count = schoolService.isNameExists(name);
+//    if (count > 0) {
+//      return "사용불가능한 스쿨명입니다.";
+//    } else {
+//      return "사용가능한 스쿨명입니다.";
+//    }
+//  }
 //  @GetMapping("postlist")
 //  public void findBySchoolPostList(Model model) {
 //    model.addAttribute("postliist",postService.findBySchoolPostList());
