@@ -57,6 +57,11 @@ public class FileUploadHelper implements InitializingBean, FileUpload {
   }
 
 
+  public String generateFileName(MultipartFile file) {
+    return file.getOriginalFilename();
+  }
+
+
   public String upload(String bucketName, String path, MultipartFile multipartFile)
     throws Exception {
     try (InputStream fileIn = multipartFile.getInputStream()) {
@@ -78,7 +83,6 @@ public class FileUploadHelper implements InitializingBean, FileUpload {
       //서버에 업로드 실행
       s3.putObject(putObjectRequest);
       log.debug(String.format("Object %s has been created.\n", objectName));
-      System.out.println("헬퍼실행@@@@@@@@@@@");
       return filename;
     }
   }

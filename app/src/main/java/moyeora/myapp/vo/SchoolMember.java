@@ -1,6 +1,7 @@
 package moyeora.myapp.vo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
