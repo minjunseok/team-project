@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.TagService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.util.FileUpload;
-import moyeora.myapp.util.FileUploadHelper;
-import moyeora.myapp.vo.Tag;
 import moyeora.myapp.vo.User;
 import moyeora.myapp.vo.UserTag;
 import org.apache.commons.logging.Log;
@@ -14,13 +12,13 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Controller
@@ -111,5 +109,5 @@ public String update(User user, MultipartFile file) throws Exception {
         return "redirect:index";
     }
 
-
+    
 }

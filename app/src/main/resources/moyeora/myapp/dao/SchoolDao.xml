@@ -80,5 +80,12 @@
 
   </update>
 
+  <select id="isNameExists" resultType="int" parameterType="String">
+    SELECT COUNT(*)
+    FROM
+    schools
+    WHERE
+    name = #{name}
+  </select>
 
 </mapper>

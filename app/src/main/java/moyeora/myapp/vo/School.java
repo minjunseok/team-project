@@ -1,11 +1,11 @@
 package moyeora.myapp.vo;
 
-import java.sql.Date;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.io.Serializable;
-import org.springframework.stereotype.Service;
+import java.sql.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,4 +24,5 @@ public class School implements Serializable {
   private List<Integer> tagNums;
   private List<SchoolTag> tags;
   private int stop;
+  private List<School> findAll;
 }
