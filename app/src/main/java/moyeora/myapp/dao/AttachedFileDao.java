@@ -8,6 +8,7 @@ import java.util.List;
 @Mapper
 public interface AttachedFileDao {
 
+
   void add(AttachedFile file);
 
   int addAll(List<AttachedFile> fileList);
@@ -23,4 +24,6 @@ public interface AttachedFileDao {
   List<AttachedFile> findAllByPostNo(int no);
 
   AttachedFile findByNo(int no);
+
+
 }

@@ -16,13 +16,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.springframework.web.servlet.ModelAndView;
 
 @RequiredArgsConstructor
 @Controller
@@ -35,6 +34,7 @@ public class PostController {
   private final FileUploadHelper fileUploadHelper;
   private final CommentService commentService;
   private final SchoolUserService schoolUserService;
+  private final FileUploadHelper FileNameGenerator;
   private String uploadDir = "post/";
   private static final Log log = LogFactory.getLog(PostController.class);
 
@@ -47,55 +47,119 @@ public class PostController {
 
   }
 
+//  @PostMapping("add")
+//  public String add(
+//          Post post,
+//          HttpSession session,
+//          SessionStatus sessionStatus) throws Exception {
+//
+////    User loginUser = (User) session.getAttribute("loginUser");
+////    if (loginUser == null) {
+////      throw new Exception("로그인하시기 바랍니다!");
+////    }
+////
+////    Post old = postService.get(post.getNo());
+////    if (old == null) {
+////      throw new Exception("번호가 유효하지 않습니다.");
+////
+////    } else if (old.getNo() != loginUser.getNo()) {
+////      throw new Exception("권한이 없습니다.");
+////    }
+//
+//
+//    // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
+//    List<AttachedFile> fileList = (List<AttachedFile>) session.getAttribute("attachedFiles");
+//
+//
+//    if (fileList != null) {
+//      for (int i = fileList.size() - 1; i >= 0; i--) {
+//        AttachedFile attachedFile = fileList.get(i);
+//        if (post.getContent().indexOf(attachedFile.getFilePath()) == -1) {
+//          // Object FileUploadHelper에 업로드 한 파일 중에서 게시글 콘텐트에 포함되지 않은 것은 삭제한다.
+//          fileUploadHelper.delete(this.bucketName, this.uploadDir, attachedFile.getFilePath());
+//          log.debug(String.format("%s 파일 삭제!", attachedFile.getFilePath()));
+//          fileList.remove(i);
+//        }
+//      }
+//      if (fileList.size() > 0) {
+//        post.setFileList(fileList);
+//      }
+//    }
+//
+//
+//     // 파일 업로드 로직을 추가해줍니다.
+//    for (MultipartFile file : files) {
+//        if (!file.isEmpty()) {
+//          String filename = FileNameGenerator.generateFileName(file); // 파일 이름 생성
+//            String objectName = this.uploadDir + filename;
+//            String filePath = this.fileUploadHelper.upload(this.bucketName, objectName, file);
+//            AttachedFile attachedFile = new AttachedFile();
+//            attachedFile.setFilePath(filePath);
+//            fileList.add(attachedFile);
+//        }
+//    }
+//
+//
+//
+//    // 'created_at' 필드에 현재 시간 설정
+//    post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
+//
+//    // 나머지 처리 코드
+//    post.setCreatedAt(new Date());
+//    postService.add(post);
+//
+//    // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
+//    sessionStatus.setComplete();
+//
+//    return "redirect:list?schoolNo=" + post.getSchoolNo();
+//  }
+
+
   @PostMapping("add")
   public String add(
           Post post,
+          @RequestParam("files") MultipartFile[] files, // 파일 업로드를 위한 파라미터 추가
           HttpSession session,
           SessionStatus sessionStatus) throws Exception {
 
-//    User loginUser = (User) session.getAttribute("loginUser");
-//    if (loginUser == null) {
-//      throw new Exception("로그인하시기 바랍니다!");
-//    }
-//
-//    Post old = postService.get(post.getNo());
-//    if (old == null) {
-//      throw new Exception("번호가 유효하지 않습니다.");
-//
-//    } else if (old.getNo() != loginUser.getNo()) {
-//      throw new Exception("권한이 없습니다.");
-//    }
-
-
     // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
-    List<AttachedFile> fileList = (List<AttachedFile>) session.getAttribute("attachedFiles");
+    List<AttachedFile> fileList = post.getFileList();
 
+    // 파일 업로드 로직을 추가해줍니다.
+    List<String> uploadedFiles = new ArrayList<>();
+    if (files != null && files.length > 0) {
+      for (MultipartFile file : files) {
+        if (!file.isEmpty()) {
+          String filename = FileNameGenerator.generateFileName(file); // 파일 이름 생성
+          String objectName = this.uploadDir + filename;
+          String filePath = this.fileUploadHelper.upload(this.bucketName, objectName, file);
 
-    if (fileList != null) {
-      for (int i = fileList.size() - 1; i >= 0; i--) {
-        AttachedFile attachedFile = fileList.get(i);
-        if (post.getContent().indexOf(attachedFile.getFilePath()) == -1) {
-          // Object FileUploadHelper에 업로드 한 파일 중에서 게시글 콘텐트에 포함되지 않은 것은 삭제한다.
-          fileUploadHelper.delete(this.bucketName, this.uploadDir, attachedFile.getFilePath());
-          log.debug(String.format("%s 파일 삭제!", attachedFile.getFilePath()));
-          fileList.remove(i);
+          // 밑에 주석 걸고나서 이거 주석 풀면 됨
+//          postService.add(String.format(filename));
+
+          // 초기화 주석걸고 업로드된 파일 이름 추가까지 다 주석
+          AttachedFile attachedFile = new AttachedFile();
+          attachedFile.setFilePath(filePath);
+          fileList.add(attachedFile);
+          uploadedFiles.add(filename); // 업로드된 파일 이름 추가
         }
-      }
-      if (fileList.size() > 0) {
-        post.setFileList(fileList);
       }
     }
 
+    // 업로드된 파일 이름들을 DB에 저장
+    for (String uploadedFile : uploadedFiles) {
+      AttachedFile attachedFile = new AttachedFile();
+      attachedFile.setFilePath(uploadedFile);
+      post.getFileList().add(attachedFile);
+    }
 
+    // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
+    sessionStatus.setComplete();
     // 'created_at' 필드에 현재 시간 설정
     post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
 
     // 나머지 처리 코드
-    post.setCreatedAt(new Date());
     postService.add(post);
-
-    // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
-    sessionStatus.setComplete();
 
     return "redirect:list?schoolNo=" + post.getSchoolNo();
   }
