@@ -1,26 +1,15 @@
 package moyeora.myapp.controller;
 
-import java.util.List;
-import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.CommentService;
 import moyeora.myapp.service.PostService;
 import moyeora.myapp.service.SchoolUserService;
 import moyeora.myapp.util.FileUploadHelper;
-import moyeora.myapp.vo.AttachedFile;
-import moyeora.myapp.vo.Comment;
-import moyeora.myapp.vo.Post;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 @RequiredArgsConstructor
 @Controller
