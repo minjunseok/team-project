@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import lombok.*;
 
-@NoArgsConstructor
+@NoArgsConstructor // Mybatis 가 사용할 기본 생성자
 @AllArgsConstructor
 @Builder
 @Data

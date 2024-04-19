@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.TagService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.util.FileUpload;
-import moyeora.myapp.util.FileUploadHelper;
-import moyeora.myapp.vo.Tag;
 import moyeora.myapp.vo.User;
 import moyeora.myapp.vo.UserTag;
 import org.apache.commons.logging.Log;
