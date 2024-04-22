@@ -36,13 +36,16 @@
 
 <h1>스쿨 게시글 리스트</h1>
 <!-- 검색창-->
-<form action='/post/search' method="post">
+<form id="postSearchForm" action="/post/search" method="get">
+<!--<form data-th-action='@{/post/search}' method="post" data-th-if="${#strings.equals(content, '내용')}">-->
     <div>
         <select name="filter">
             <option value="0">내용</option>
             <option value="1">작성자</option>
         </select>
-        <input name='keyword' type='text' placeholder='검색어 입력'>
+        <input name='keyword' type='text' placeholder='검색어를 입력하세요.'>
+        <input name='schoolNo' type='hidden' value='1'><!-- schoolNo를 Integer로 선언 -->
+<!--        <input th:if="${schoolNo != null}" name="schoolNo" type="hidden" th:value="${schoolNo}">&lt;!&ndash; schoolNo를 Integer로 선언 &ndash;&gt;-->
         <button>검색</button>
     </div>
 </form>
@@ -51,7 +54,7 @@
     <!-- 검색 결과가 여기에 표시될 것입니다 -->
 </div>
 
-<script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
     $(document).ready(function() {
         // 폼이 제출되었을 때의 동작 설정
         $("#postSearchForm").submit(function(event) {
@@ -78,7 +81,9 @@
     });
 </script>
 
-<a data-th-href="@{form(schoolNo=*{schoolNo})}" href="form.html">새 글</a>
+<a data-th-href="@{form(schoolNo=1)}" href="form.html">새 글</a>
+<!--<a data-th-href="@{form(schoolNo=*{schoolNo})}" href="form.html" th:if="${loginUser != null}">새 글</a>-->
+<!--<a href="#"  th:if="${loginUser == null}" onclick="alert('로그인이 필요합니다.'); return false;">새 글</a>-->
 <table border='1'>
     <thread>
         <tr>
@@ -91,7 +96,7 @@
 
     </thread>
     <tbody>
-    <tr data-th-each="post : ${postlists}" data-th-object="${post}">
+    <tr data-th-each="post : ${postList}" data-th-object="${post}">
 
         <td data-th-text="*{writer.nickname}">작성자</td>
         <td data-th-text="*{writer.photo}">사진</td>

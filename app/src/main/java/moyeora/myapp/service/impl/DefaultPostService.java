@@ -51,10 +51,10 @@ public class DefaultPostService implements PostService {
 
 
   // String으로 데이터 이름 강제 부여
-//  @Override
-//  public void add(String post) {
-//     postDao.add(post);
-//  }
+  @Override
+  public void add(String post) {
+     postDao.add(post);
+  }
 
   @Override
   public List<Post> findAll(int categoryNo) {
