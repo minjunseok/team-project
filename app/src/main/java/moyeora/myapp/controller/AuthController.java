@@ -1,25 +1,22 @@
 package moyeora.myapp.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
+import moyeora.myapp.security.config.PasswordEncoderConfig;
+import moyeora.myapp.security.util.RedisUtil;
+import moyeora.myapp.service.UserService;
+import moyeora.myapp.service.impl.DefaultMailService;
+import moyeora.myapp.vo.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Random;
-import javax.mail.MessagingException;
-import lombok.RequiredArgsConstructor;
-import moyeora.myapp.security.config.PasswordEncoderConfig;
-import moyeora.myapp.service.Impl.DefaultMailService;
-import moyeora.myapp.service.UserService;
-import moyeora.myapp.security.util.RedisUtil;
-import moyeora.myapp.vo.User;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @Controller
