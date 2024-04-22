@@ -18,7 +18,7 @@ public interface PostService {
   void add(Post post);
 
   // String으로 이미지 이름 강제 저장
-//  void add(String post);
+  void add(String post);
 
   List<Post> findAll(int categoryNo);
 

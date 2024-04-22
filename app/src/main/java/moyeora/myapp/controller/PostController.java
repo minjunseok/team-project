@@ -8,6 +8,7 @@ import moyeora.myapp.util.FileUploadHelper;
 import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Comment;
 import moyeora.myapp.vo.Post;
+import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -122,6 +123,19 @@ public class PostController {
           HttpSession session,
           SessionStatus sessionStatus) throws Exception {
 
+//    User loginUser = (User) session.getAttribute("loginUser");
+//    if (loginUser == null) {
+//      throw new Exception("로그인하시기 바랍니다!");
+//    }
+//
+//    Post old = postService.get(post.getNo());
+//    if (old == null) {
+//      throw new Exception("번호가 유효하지 않습니다.");
+//
+//    } else if (old.getNo() != loginUser.getNo()) {
+//      throw new Exception("권한이 없습니다.");
+//    }
+
     // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
     List<AttachedFile> fileList = post.getFileList();
 
@@ -135,7 +149,7 @@ public class PostController {
           String filePath = this.fileUploadHelper.upload(this.bucketName, objectName, file);
 
           // 밑에 주석 걸고나서 이거 주석 풀면 됨
-//          postService.add(String.format(filename));
+          postService.add(String.format(filename));
 
           // 초기화 주석걸고 업로드된 파일 이름 추가까지 다 주석
           AttachedFile attachedFile = new AttachedFile();
@@ -158,7 +172,6 @@ public class PostController {
     // 'created_at' 필드에 현재 시간 설정
     post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
 
-    // 나머지 처리 코드
     postService.add(post);
 
     return "redirect:list?schoolNo=" + post.getSchoolNo();
@@ -173,18 +186,18 @@ public class PostController {
 
     log.debug(schoolUserService.findBySchoolUserList(schoolNo));
     System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
-    List<Post> posts = postService.findBySchoolPostList(schoolNo);
+    List<Post> postList = postService.findBySchoolPostList(schoolNo);
 //    for (Post post : posts) {
 //      List<AttachedFile> attachedFiles = postService.getAttachedFiles(post.getNo());
 //      List<Comment> comments = postService.getComments(post.getNo());
 
 
-    for (Post post : posts) {
+    for (Post post : postList) {
 //      List<AttachedFile> attachedFiles = postService.getAttachedFiles(schoolNo);
       List<Comment> comments = postService.getComments(schoolNo);
       post.setComments(comments);
     }
-    model.addAttribute("postlists", posts);
+    model.addAttribute("postList", postList);
     model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
   }
 
@@ -212,20 +225,26 @@ public class PostController {
 
 
   // 검색창에 필터로 검색했을 때
-  @PostMapping("search")
+  @GetMapping("search")
   public String searchPostsByContent(
-          int schoolNo,
+//          int schoolNo,
+          @RequestParam("schoolNo") Integer schoolNo,
           @RequestParam("keyword") String keyword,
           @RequestParam("filter") String filter,
           Model model) {
     if (filter.equals("0")) { // 내용으로 검색
       List<Post> postList = postService.findBySchoolContent(schoolNo, keyword);
+      int i = 0;
+      for(Post post : postList){
+        log.debug(String.format("cnt : %s", i++));
+        log.debug(String.format("post content : %s",post.getContent()));
+      }
       model.addAttribute("postList", postList);
     } else {                  // 작성자로 검색
       List<Post> postList = postService.findBySchoolUserName(schoolNo, keyword);
       model.addAttribute("postList", postList);
     }
-    return "post/list";
+    return "redirect:list?schoolNo=" + schoolNo + "&keyword=" + keyword + "&filter=" + filter;
   }
 
   @PostMapping("update")
