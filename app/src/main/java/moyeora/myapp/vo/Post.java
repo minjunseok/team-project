@@ -31,4 +31,5 @@ public class Post {
   private School school;
   private SchoolUser schoolUser;
   private String lNo;
+
 }
