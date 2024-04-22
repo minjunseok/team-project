@@ -59,6 +59,14 @@ dependencies {
     //AWS S3 API 라이브러리
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.688'
 
+    //kafka
+    implementation 'org.apache.kafka:kafka-clients:3.0.0'
+    implementation 'org.apache.kafka:kafka-streams:3.0.0'
+    implementation 'org.apache.kafka:kafka_2.13:3.0.0'
+
+    //elasticsearch
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
 

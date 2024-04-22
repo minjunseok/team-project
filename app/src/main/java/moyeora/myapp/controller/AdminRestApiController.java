@@ -1,14 +1,17 @@
 package moyeora.myapp.controller;
 
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.dto.admin.school.AdminSchoolBlackUpdateRequestDTO;
+import moyeora.myapp.dto.admin.school.AdminSchoolListResponseDTO;
+import moyeora.myapp.dto.admin.user.AdminBlackUpdateRequestDTO;
+import moyeora.myapp.dto.admin.user.AdminRoleUpdateRequestDTO;
+import moyeora.myapp.dto.admin.user.AdminUserListResponseDTO;
 import moyeora.myapp.service.AdminService;
-import moyeora.myapp.vo.User;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,8 +21,53 @@ public class AdminRestApiController {
   private final AdminService adminService;
 
   @GetMapping("user/list")
-  public ResponseEntity<List<User>> userList(int pageSize) {
-    return ResponseEntity.status(200).body(adminService.findByPageSize(pageSize));
+  @ResponseBody
+  public ResponseEntity<List<AdminUserListResponseDTO>> userList(int pageSize) {
+    System.out.println(adminService.findUserByPageSize(pageSize));
+    return ResponseEntity.status(200).body(adminService.findUserByPageSize(pageSize));
   }
 
+  @PostMapping("user/blackUpdate")
+  @ResponseBody
+  public ResponseEntity<?> blackUpdate(@RequestBody AdminBlackUpdateRequestDTO adminBlackUpdateRequestDTO) {
+    System.out.println(adminBlackUpdateRequestDTO);
+    adminService.updateBlackList(adminBlackUpdateRequestDTO);
+    return ResponseEntity.status(200).build();
+  }
+
+  @PostMapping("user/roleUpdate")
+  @ResponseBody
+  public ResponseEntity<?> roleUpdate(@RequestBody AdminRoleUpdateRequestDTO adminRoleUpdateRequestDTO) {
+    adminService.roleUpdate(adminRoleUpdateRequestDTO);
+    return ResponseEntity.status(200).build();
+  }
+
+  @GetMapping("user/search")
+  @ResponseBody
+  public ResponseEntity<List<AdminUserListResponseDTO>> userSearch(String userInfo) {
+    System.out.println("@@@@@@@" + userInfo);
+    return ResponseEntity.status(200).body(adminService.userSearch(userInfo));
+  }
+
+  @GetMapping("school/list")
+  @ResponseBody
+  public ResponseEntity<List<AdminSchoolListResponseDTO>> schoolList(int pageSize) {
+    System.out.println(adminService.findSchoolByPageSize(pageSize) + "@@@@@@@");
+    return ResponseEntity.status(200).body(adminService.findSchoolByPageSize(pageSize));
+  }
+
+
+  @PostMapping("school/blackUpdate")
+  @ResponseBody
+  public ResponseEntity<?> schoolBlackUpdate(@RequestBody AdminSchoolBlackUpdateRequestDTO adminSchoolBlackUpdateRequestDTO) {
+    System.out.println(adminSchoolBlackUpdateRequestDTO);
+    adminService.updateSchoolBlackList(adminSchoolBlackUpdateRequestDTO);
+    return ResponseEntity.status(200).build();
+  }
+
+  @GetMapping("school/search")
+  @ResponseBody
+  public ResponseEntity<List<AdminSchoolListResponseDTO>> schoolSearch(String schoolInfo) {
+    return ResponseEntity.status(200).body(adminService.schoolSearch(schoolInfo));
+  }
 }

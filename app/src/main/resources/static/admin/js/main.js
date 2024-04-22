@@ -1279,8 +1279,8 @@
         window.location.href = url;
       }
     });
-  
-  
+
+
   })(jQuery);
 (function ($) {
   // USE STRICT
@@ -1311,7 +1311,7 @@
 
   // Europe Map
   try {
-    
+
     var vmap1 = $('#vmap1');
     if(vmap1[0]) {
       vmap1.vectorMap( {
@@ -1330,7 +1330,7 @@
 
   // USA Map
   try {
-    
+
     var vmap2 = $('#vmap2');
 
     if(vmap2[0]) {
@@ -1360,7 +1360,7 @@
 
   // Germany Map
   try {
-    
+
     var vmap3 = $('#vmap3');
     if(vmap3[0]) {
       vmap3.vectorMap( {
@@ -1375,14 +1375,14 @@
         }
       });
     }
-    
+
   } catch (error) {
     console.log(error);
   }
-  
+
   // France Map
   try {
-    
+
     var vmap4 = $('#vmap4');
     if(vmap4[0]) {
       vmap4.vectorMap( {
@@ -1421,10 +1421,10 @@
   } catch (error) {
     console.log(error);
   }
-  
+
   // Brazil Map
   try {
-    
+
     var vmap6 = $('#vmap6');
     if(vmap6[0]) {
       vmap6.vectorMap( {

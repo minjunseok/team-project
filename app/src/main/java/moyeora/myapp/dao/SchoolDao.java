@@ -1,12 +1,14 @@
 package moyeora.myapp.dao;
 
 
-import java.util.List;
+import moyeora.myapp.dto.admin.school.AdminSchoolListResponseDTO;
 import moyeora.myapp.dto.school.admin.SchoolOpenRangeUpdateRequestDTO;
 import moyeora.myapp.vo.School;
-import moyeora.myapp.vo.SchoolUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Mapper
 public interface SchoolDao {
@@ -34,5 +36,11 @@ public interface SchoolDao {
   public void stopSchool(int no);
 
   public void updateSchoolOpenRange(SchoolOpenRangeUpdateRequestDTO schoolOpenRangeUpdateRequestDTO);
+
+  List<AdminSchoolListResponseDTO> findAllByPageSize(int offset, int limit);
+
+  void updateBlackList(int schoolNo, LocalDate date);
+
+  List<AdminSchoolListResponseDTO> findBySchoolInfo(String schoolInfo);
 
 }
