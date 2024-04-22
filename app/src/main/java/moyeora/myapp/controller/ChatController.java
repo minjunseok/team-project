@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RequiredArgsConstructor
@@ -19,8 +20,10 @@ public class ChatController {
     private final DefaultChatService chatService;
 
     @GetMapping("chatTest")
-    public String chatTestForm() {
-        return "/chat/form";
+    public String chatTestForm(Model model) {
+        model.addAttribute("schoolNo",3);
+        model.addAttribute("sender",1) ;
+        return "/chat/test";
     }
 
     @MessageMapping("/gm")
@@ -29,6 +32,7 @@ public class ChatController {
                 ("/sub/gm/" + gm.getSchoolNo(), gm);
         log.info("메세지 전송 성공");
         log.info(gm.toString());
+//        String result = HtmlUtils.htmlEscape((gm.getMessage()) + "!");
         chatService.save(gm);
     }
 }

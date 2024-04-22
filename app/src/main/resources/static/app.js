@@ -44,7 +44,13 @@ function disconnect() {
 function sendName() {
     stompClient.publish({
         destination: "/pub/gm",
-        body: JSON.stringify({'name': $("#name").val()})
+        body: JSON.stringify({
+        'schoolNo': $("#schoolNo").val(),
+        'sender': $("#sender").val(),
+        'message': $("#message").val(),
+        'photo': "",
+        'sendDate': $("#sendDate").val()
+        })
     });
 }
 

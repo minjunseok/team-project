@@ -27,8 +27,14 @@
     <div class="col-md-6">
       <form class="form-inline">
         <div class="form-group">
-          <label for="name">What is your name?</label>
-          <input class="form-control" id="name" placeholder="Your name here..." type="text">
+          <label for="schoolNo"></label>
+          <input class="form-control" data-th-value="${schoolNo}" id="schoolNo" placeholder="schoolNo" type="text">
+          <label for="sender"></label>
+          <input class="form-control" data-th-value="${sender}" id="sender" placeholder="sender" type="text">
+          <label for="message">message</label>
+          <input class="form-control" id="message" placeholder="message" type="text">
+          <label for="sendDate">sendDate</label>
+          <input class="form-control" id="sendDate" placeholder="sendDate" type="datetime-local">
         </div>
         <button class="btn btn-default" id="send" type="submit">Send</button>
       </form>
