@@ -1,10 +1,10 @@
 package moyeora.myapp.service;
 
 
-import java.util.List;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
-import moyeora.myapp.vo.User;
+
+import java.util.List;
 
 public interface SchoolService {
 
@@ -34,5 +34,6 @@ public interface SchoolService {
   int schoolUserLevelCount(int count);
   public void stopSchool(int no);
   public List<List<Integer>> findSchoolNoByUserNo(List<Integer> userList);
+
 
 }

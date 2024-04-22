@@ -1,8 +1,11 @@
 package moyeora.myapp.dao;
+
+import moyeora.myapp.dto.admin.user.AdminUserListResponseDTO;
 import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Mapper
@@ -40,6 +43,12 @@ public interface UserDao {
       @Param("name") String name,
       @Param("phone") String phone);
 
-  public List<User> findAllNoMaster(int limit);
   public int passwordUpdate(User user);
+  public List<AdminUserListResponseDTO> findAllNoMaster(int offset ,int limit);
+
+    void updateBlackList(int userNo, LocalDate date);
+
+    void updateRole(int userNo, int auth);
+
+    List<AdminUserListResponseDTO> findByUserInfo(String userInfo);
 }

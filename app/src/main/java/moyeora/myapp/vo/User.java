@@ -37,6 +37,7 @@ public class User implements Serializable {
     private String provider;
     private String providerId;
     private String role;
+    private int auth;
 
 
 

@@ -31,10 +31,9 @@
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
-
 </head>
 
-<body>
+<body >
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
         <header class="header-mobile d-block d-lg-none">
@@ -151,11 +150,11 @@
                             <a class="statistics" href="#">
                                 <i class="fas fa-chart-bar"></i>통계</a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="user">
                                 <i class="zmdi zmdi-account-calendar"></i>회원 관리</a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="school">
                                 <i class="fas fa-table"></i>스쿨 관리</a>
                         </li>
@@ -315,12 +314,11 @@
                                 <!-- USER DATA-->
                                 <div class="user-data m-b-30">
                                     <h3 class="title-3 m-b-30">
-                                        <i class="zmdi zmdi-account-calendar"></i>회원 관리</h3>
+                                        <i class="fas fa-table"></i>스쿨 관리</h3>
                                     <div class="filters m-b-45">
                                         <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
                                             <div class="form-header">
-                                                <input class="au-input au-input--xl" type="text" id="user_search"
-                                                       name="search" placeholder="사용자의 이름/닉네임/이메일을 입력해주세요"/>
+                                                <input class="au-input au-input--xl" type="text" id="school_search" name="search" placeholder="스쿨 이름을 입력해 주세요" />
                                                 <button class="au-btn--submit" id="search_button">
                                                     <i class="zmdi zmdi-search"></i>
                                                 </button>
@@ -328,9 +326,6 @@
                                             <div style="height : 20px;" class="dropDownSelect2"></div>
                                             <div>
                                                 <button class="btn btn-outline-danger btn-sm" id="stop">정지</button>
-                                                <button class="btn btn-outline-danger btn-sm" id="role_update">관리자
-                                                    부여/강등
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -344,14 +339,14 @@
                                                             <span class="au-checkmark"></span>
                                                         </label>
                                                     </td>
-                                                    <td>회원 정보</td>
-                                                    <td>권한</td>
+                                                    <td>스쿨 정보</td>
+                                                    <td>인원</td>
                                                     <td>정지</td>
-                                                    <td>가입일</td>
+                                                    <td>개설일</td>
                                                     <td>제한일</td>
                                                 </tr>
                                             </thead>
-                                            <tbody id="userlist">
+                                            <tbody id="schoolList">
                                             </tbody>
                                         </table>
                                     </div>
@@ -394,122 +389,86 @@
     <script src="js/moment.js"></script>
 </body>
 <script>
-    const userList = () => {
-        const psize = $("#pageSize").val()
-        axios.get("user/list?pageSize="+psize)
-        .then(e=> {
-          console.log(e)
-          $("#pageSize").val(Number(psize)+1);
-          console.log($("#pageSize").val());
-          for(d of e.data) {
-            let text;
-            text += '<tr><td><label class="au-checkbox"><input type="checkbox" name="check"><span class="au-checkmark"></span></td>'
-            text += '<input type="hidden" class="userNo" value='+d.no+'>'
-            text += '<td><div class="table-data__info"><h5>'+d.name+'</h5><h6>'+d.nickname+'</h6><span><a href="#">'+d.email+'</a></span></div></td>'
-
-            if(d.auth===1) {
-              text += '<td><span class="role admin">admin</span></td>'
-            }
-            if(d.auth===0) {
-              text += '<td><span class="role user">user</span></td>'
-            }
-            text += '<td><div class="rs-select2--trans rs-select2--sm">'
-            text += '<select class="js-select2 black" name="property">'
-            text += '<option selected="selected" value=0>정지 해제</option>'
-            text += '<option value=1>1 주</option>'
-            text += '<option value=2>1 달</option>'
-            text += '<option value=3>영구 정지</option>'
-            text += '</select><div class="dropDownSelect2"></div></div></td>'
-            text += '<td><div class="table-data__info"><span>'+moment(d.createdAt).format('YYYY-MM-DD')+'</span></div></td>'
-            text += '<td><div class="table-data__info"><span>'+moment(d.stopDate).format('YYYY-MM-DD')+'</span></div></td></tr>'
-            $("#userlist").append(text)
-          }
-        })
+const schoolList = () => {
+    const psize = $("#pageSize").val()
+    axios.get("school/list?pageSize="+psize)
+    .then(e=> {
+      $("#pageSize").val(Number(psize)+1);
+      console.log($("#pageSize").val());
+      for(d of e.data) {
+        let text;
+        text += '<tr><td><label class="au-checkbox"><input type="checkbox" name="check"><span class="au-checkmark"></span></td>'
+        text += '<input type="hidden" class="schoolNo" value='+d.no+'>'
+        text += '<td><div class="table-data__info"><a href="https://kr.object.ncloudstorage.com/moyeorastorage/school/'+d.photo+'"</a><img src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/'+d.photo+'?type=f&w=40&h=40"><h5>'+d.name+'</h5></div></td>'
+        text += '<td><span class="">'+d.nowMan+'/' + d.limitedMan +'</span></td>'
+        text += '<td><div class="rs-select2--trans rs-select2--sm">'
+        text += '<select class="js-select2 black" name="property">'
+        text += '<option selected="selected" value=0>정지 해제</option>'
+        text += '<option value=1>1 주</option>'
+        text += '<option value=2>1 달</option>'
+        text += '<option value=3>영구 정지</option>'
+        text += '</select><div class="dropDownSelect2"></div></div></td>'
+        text += '<td><div class="table-data__info"><span>'+moment(d.createdAt).format('YYYY-MM-DD')+'</span></div></td>'
+        text += '<td><div class="table-data__info"><span>'+moment(d.limitedAt).format('YYYY-MM-DD')+'</span></div></td></tr>'
+        $("#schoolList").append(text)
       }
-
-    const blackCheck = () => {
-            const checkboxes = document.querySelectorAll('input[name="check"]:checked');
-            let userNoList = [];
-            let blackValue = [];
-            checkboxes.forEach(checkbox => {
-                    userNoList.push(checkbox.parentNode.parentNode.parentNode.querySelector(".userNo").value)
-                    blackValue.push(checkbox.parentNode.parentNode.parentNode.querySelector(".black").value)
-                }
-            )
-            axios.post("user/blackUpdate", {
-                userNoList,
-                blackValue
-            })
-            .then(()=> {
-                $("#pageSize").val(1);
-                $("#moreviewBox").show();
-                $("#userlist").empty();
-                userList();
-            })
-
-        }
-
-
-    const adminCheck = () => {
-            const checkboxes = document.querySelectorAll('input[name="check"]:checked');
-            let userNoList = [];
-            let roleValue = [];
-            checkboxes.forEach(checkbox => {
-                    userNoList.push(checkbox.parentNode.parentNode.parentNode.querySelector(".userNo").value)
-                    roleValue.push(checkbox.parentNode.parentNode.parentNode.parentNode.querySelector(".role").innerText)
-                }
-            )
-            console.log(roleValue)
-            axios.post("user/roleUpdate", {
-                userNoList,
-                roleValue
-            })
-            .then(() => {
-                $("#pageSize").val(1);
-                $("#moreviewBox").show();
-                $("#userlist").empty();
-                userList();
-            })
-
-        }
-    const userSearch = () => {
-      const userInfo = document.getElementById("user_search").value
-      axios.get("user/search?userInfo="+userInfo)
-      .then(e=> {
-        $("#moreviewBox").hide();
-        $("#userlist").empty();
-          for(d of e.data) {
-            let text;
-            text += '<tr><td><label class="au-checkbox"><input type="checkbox" name="check"><span class="au-checkmark"></span></td>'
-            text += '<input type="hidden" class="userNo" value='+d.no+'>'
-            text += '<td><div class="table-data__info"><h5>'+d.name+'</h5><h6>'+d.nickname+'</h6><span><a href="#">'+d.email+'</a></span></div></td>'
-            if(d.auth===1) {
-              text += '<td><span class="role admin">admin</span></td>'
-            }
-            if(d.auth===0) {
-              text += '<td><span class="role user">user</span></td>'
-            }
-            text += '<td><div class="rs-select2--trans rs-select2--sm">'
-            text += '<select class="js-select2 black" name="property">'
-            text += '<option selected="selected" value=0>정지 해제</option>'
-            text += '<option value=1>1 주</option>'
-            text += '<option value=2>1 달</option>'
-            text += '<option value=3>영구 정지</option>'
-            text += '</select><div class="dropDownSelect2"></div></div></td>'
-            text += '<td><div class="table-data__info"><span>'+moment(d.createdAt).format('YYYY-MM-DD')+'</span></div></td>'
-            text += '<td><div class="table-data__info"><span>'+moment(d.stopDate).format('YYYY-MM-DD')+'</span></div></td></tr>'
-            $("#userlist").append(text)
-          }
-        })
-    }
-    $(document).ready(() => {
-        userList();
-
     })
-    document.getElementById("moreview").addEventListener('click', userList)
-    document.getElementById("stop").addEventListener('click', blackCheck)
-    document.getElementById("role_update").addEventListener('click', adminCheck)
-    document.getElementById("search_button").addEventListener('click', userSearch)
+  }
+
+const blackCheck = () => {
+        const checkboxes = document.querySelectorAll('input[name="check"]:checked');
+        let schoolNoList = [];
+        let blackValue = [];
+        checkboxes.forEach(checkbox => {
+                schoolNoList.push(checkbox.parentNode.parentNode.parentNode.querySelector(".schoolNo").value)
+                blackValue.push(checkbox.parentNode.parentNode.parentNode.querySelector(".black").value)
+            }
+        )
+        axios.post("school/blackUpdate", {
+            schoolNoList,
+            blackValue
+        })
+        .then(()=> {
+            $("#pageSize").val(1);
+            $("#moreviewBox").show();
+            $("#schoolList").empty();
+            schoolList();
+        })
+
+    }
+const schoolSearch = () => {
+  const schoolInfo = document.getElementById("school_search").value
+  axios.get("school/search?schoolInfo="+schoolInfo)
+  .then(e=> {
+    $("#moreviewBox").hide();
+    $("#schoolList").empty();
+      for(d of e.data) {
+         console.log(d);
+        let text;
+        text += '<tr><td><label class="au-checkbox"><input type="checkbox" name="check"><span class="au-checkmark"></span></td>'
+        text += '<input type="hidden" class="schoolNo" value='+d.no+'>'
+        text += '<td><div class="table-data__info"><a href="https://kr.object.ncloudstorage.com/moyeorastorage/school/'+d.photo+'"</a><img src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/'+d.photo+'?type=f&w=40&h=40"><h5>'+d.name+'</h5></div></td>'
+        text += '<td><span class="">'+d.nowMan+'/' + d.limitedMan +'</span></td>'
+        text += '<td><div class="rs-select2--trans rs-select2--sm">'
+        text += '<select class="js-select2 black" name="property">'
+        text += '<option selected="selected" value=0>정지 해제</option>'
+        text += '<option value=1>1 주</option>'
+        text += '<option value=2>1 달</option>'
+        text += '<option value=3>영구 정지</option>'
+        text += '</select><div class="dropDownSelect2"></div></div></td>'
+        text += '<td><div class="table-data__info"><span>'+moment(d.createdAt).format('YYYY-MM-DD')+'</span></div></td>'
+        text += '<td><div class="table-data__info"><span>'+moment(d.limitedAt).format('YYYY-MM-DD')+'</span></div></td></tr>'
+        $("#schoolList").append(text)
+      }
+    })
+}
+document.getElementById("moreview").addEventListener('click', schoolList)
+document.getElementById("stop").addEventListener('click', blackCheck)
+document.getElementById("search_button").addEventListener('click', schoolSearch)
+    $(document).ready(() => {
+    schoolList();
+
+})
 </script>
 </html>
 <!-- end document-->

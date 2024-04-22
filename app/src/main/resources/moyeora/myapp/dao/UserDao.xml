@@ -25,6 +25,7 @@
     <result column="provider" property="provider"/>
     <result column="provider_id" property="providerId"/>
     <result column="role" property="role"/>
+    <result column="auth" property="auth"/>
     <collection property="tags" ofType="UserTag">
       <result column="user_no" property="userNo"/>
       <result column="tag_no" property="tagNo"/>
@@ -154,8 +155,67 @@
     and provider=#{provider}
   </select>
 
+  <select id="findAllNoMaster" resultMap="UserMap">
+    select
+    user_no,
+    name,
+    auth,
+    nickname,
+    email,
+    created_at,
+    stop_date
+    from
+    users
+    where
+    auth &lt;= 1
+    order by
+    auth desc, created_at desc
+    limit #{limit} offset #{offset}
+  </select>
+
+  <update id="updateBlackList">
+    update
+      users
+    set
+    stop_date =
+        #{date}
+    where
+      user_no =
+      #{userNo}
+  </update>
 
 
+  <update id="updateRole">
+    update
+    users
+    set
+    auth =
+    #{auth}
+    where
+    user_no =
+    #{userNo}
+  </update>
+
+
+  <select id="findByUserInfo" resultMap="UserMap">
+    select
+      user_no,
+      name,
+      auth,
+      nickname,
+      email,
+      created_at,
+      stop_date
+    from
+      users
+    where
+      auth &lt;= 1
+    and
+      (name like '%${userInfo}%' or nickname like '%${userInfo}%' or email like '%${userInfo}%')
+    order by
+    auth desc, created_at desc
+
+  </select>
 
 
 </mapper>

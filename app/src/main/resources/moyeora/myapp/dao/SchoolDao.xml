@@ -10,10 +10,12 @@
   <result column="name" property="name"/>
   <result column="content" property="content"/>
   <result column="limited_man" property="limitedMan"/>
+  <result column="now_man" property="nowMan"/>
   <result column="photo" property="photo"/>
   <result column="open_range" property="openRange"/>
   <result column="created_at" property="createdAt"/>
   <result column="now_member_count" property="nowMemberCount"/>
+  <result column="limited_at" property="limitedAt"/>
 </resultMap>
 
 
@@ -79,6 +81,60 @@
       school_no=#{schoolNo}
 
   </update>
+
+  <select id="findAllByPageSize" resultMap="SchoolMap">
+    select
+    s.school_no,
+    s.name,
+    s.limited_man,
+    s.photo,
+    s.created_at,
+    s.limited_at,
+    count(u.school_no) as now_man
+    from
+    schools s
+    inner join school_users u
+    on
+    s.school_no = u.school_no
+    group by
+    u.school_no
+    order by
+    school_no desc
+    limit #{limit} offset #{offset}
+  </select>
+
+  <update id="updateBlackList">
+    update
+    schools
+    set
+    limited_at =
+    #{date}
+    where
+    school_no =
+    #{schoolNo}
+  </update>
+
+  <select id="findBySchoolInfo" resultMap="SchoolMap">
+    select
+    s.school_no,
+    s.name,
+    s.limited_man,
+    s.photo,
+    s.created_at,
+    s.limited_at,
+    count(u.school_no) as now_man
+    from
+    schools s
+    inner join school_users u
+    on
+    s.school_no = u.school_no
+    where
+    s.name like '%${schoolInfo}%'
+    group by
+    u.school_no
+    order by
+    school_no desc
+  </select>
 
 
 </mapper>
