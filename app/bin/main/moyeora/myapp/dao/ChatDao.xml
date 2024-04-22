@@ -5,26 +5,32 @@
 
 <mapper namespace="moyeora.myapp.dao.ChatDao">
 
-  <insert id="addChatMessage" parameterType="ChatMessage">
-    insert into users(school_no,user_no,message,created_at,photo)
-    values( #{schoolNo} ,#{sender} ,#{message} ,'' ,'')
+    <resultMap id="ChatMap" type="Gm">
+        <id column="gm_no" property="no"/>
+        <result column="school_no" property="schoolNo"/>
+        <result column="user_no" property="sender"/>
+        <result column="message" property="message"/>
+        <result column="photo" property="photo"/>
+        <result column="created_at" property="sendDate"/>
+    </resultMap>
+
+  <insert id="save" parameterType="Gm">
+    insert into gm(school_no, user_no, message, photo, created_at)
+    values(#{schoolNo}, #{sender} ,#{message} ,#{photo} ,#{sendDate})
   </insert>
 
-  <select id="findChatMessageByChatRoomNo" parameterType="int" resultType="ChatMessage">
-    select
-      gm_no
-      school_no,
-      user_no,
-      message,
-      created_at,
-      photo
-    from
-      gm
-    where
-      school_no=#{school_no}
-  </select>
-
-
-
+<!--  <select id="findChatMessageByChatRoomNo" parameterType="int" resultType="ChatMessage">-->
+<!--    select-->
+<!--      gm_no-->
+<!--      school_no,-->
+<!--      user_no,-->
+<!--      message,-->
+<!--      created_at,-->
+<!--      photo-->
+<!--    from-->
+<!--      Gm-->
+<!--    where-->
+<!--      school_no=#{school_no}-->
+<!--  </select>-->
 
 </mapper>

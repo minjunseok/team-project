@@ -73,13 +73,11 @@
         user_no,
         email,
         pwd,
-        name,
-        provider,
-        provider_id
+        name
     from
         users
     where
-        email=#{email}
+        email=#{value}
   </select>
 
   <update id="update" parameterType="User">
@@ -101,7 +99,7 @@
     update users set
       pwd=#{password}
     where
-      user_no=#{no}
+    email=#{email}
   </update>
 
   <select id="findByNameAndPhone" resultType="string">
