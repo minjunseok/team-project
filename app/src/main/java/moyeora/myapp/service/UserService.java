@@ -31,5 +31,5 @@ public interface UserService {
 
     int update(User user);
 
-    int pwdUpdate(User user);
+  int passwordUpdate(User user);
 }
