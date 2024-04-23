@@ -1,14 +1,14 @@
-package moyeora.myapp.security.oauth;
+package moyeora.myapp.security.OAuth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moyeora.myapp.security.PrincipalDetails;
-import moyeora.myapp.security.oauth.userInfo.GoogleOAuth2UserInfo;
-import moyeora.myapp.security.oauth.userInfo.KakaoOAuth2UserInfo;
-import moyeora.myapp.security.oauth.userInfo.NaverOAuth2UserInfo;
-import moyeora.myapp.security.oauth.userInfo.OAuth2UserInfo;
+import moyeora.myapp.security.OAuth.userInfo.GoogleOAuth2UserInfo;
+import moyeora.myapp.security.OAuth.userInfo.KakaoOAuth2UserInfo;
+import moyeora.myapp.security.OAuth.userInfo.NaverOAuth2UserInfo;
+import moyeora.myapp.security.OAuth.userInfo.OAuth2UserInfo;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.security.util.RedisUtil;
 import moyeora.myapp.vo.User;

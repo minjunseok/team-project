@@ -153,13 +153,13 @@ public class DefaultPostService implements PostService {
 
   // 필터를  내용으로 검색했을 때
   @Override
-  public List<Post> findBySchoolContent(int schoolNo, String keyword) {
-    return postDao.findBySchoolContent(schoolNo, keyword);
+  public List<Post> findBySchoolContent(int schoolNo, String keyword, String content) {
+    return postDao.findBySchoolContent(schoolNo, keyword, content);
   }
 
   // 필터를 작성자로 검색했을 때
-  public List<Post> findBySchoolUserName(int schoolNo, String keyword) {
-    return postDao.findBySchoolUserName(schoolNo, keyword);
+  public List<Post> findBySchoolUserName(int schoolNo, String keyword, String nickname) {
+    return postDao.findBySchoolUserName(schoolNo, keyword, nickname);
   }
 
   @Override
