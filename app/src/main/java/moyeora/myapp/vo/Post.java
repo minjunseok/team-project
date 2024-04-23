@@ -14,7 +14,7 @@ public class Post {
   private int no;
   private String type;
   private String fileName;
-  private String nickname;
+  private User nickname;
   private String photo;
   private int schoolNo;
   private int userNo;

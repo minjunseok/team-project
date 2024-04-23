@@ -1,4 +1,4 @@
-package moyeora.myapp.security.oauth;
+package moyeora.myapp.security.OAuth;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -9,7 +9,6 @@ import moyeora.myapp.security.util.RedisUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
