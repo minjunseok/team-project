@@ -131,7 +131,7 @@ public class AuthController {
   @PostMapping("verifyCode")
   public String verifyCode(String email, String code, String authId, Model model)
       throws Exception {
-    String savedCode = (String) redisUtil.getData(authId);
+    String savedCode = (String) redisUtil.getData(authId + "_e");
     if (savedCode == null) {
       model.addAttribute("status","savedCode == null");
     } else if (!savedCode.equals(code)) {

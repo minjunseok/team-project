@@ -24,6 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -37,6 +38,7 @@ public class UserController implements InitializingBean {
     private final DefaultMailService mailService;
     private final RedisUtil redisUtil;
     private final String uploadDir = "user/";
+    private String authId;
   @Value("${ncp.storage.bucket}") private String bucket;
 
 
@@ -64,12 +66,12 @@ public class UserController implements InitializingBean {
         user.setRole(Role.USER.getKey());
         userService.add(user);
 
-        return "redirect:index";
+        return "redirect:/index";
     }
 
     @GetMapping("view")
     public void view(Model model) throws Exception {
-        User user = userService.get(59);
+        User user = userService.get(1);
 
         System.out.println("============>");
         System.out.println(user);
@@ -92,7 +94,7 @@ public class UserController implements InitializingBean {
 @PostMapping("update")
 public String update(User user, MultipartFile file) throws Exception {
 
-    User old = userService.get(59);
+    User old = userService.get(1);
     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + old);
     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + old.getNo());
     if (old == null) {
@@ -114,15 +116,15 @@ public String update(User user, MultipartFile file) throws Exception {
     userService.update(user);
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ user);
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ userService);
-    return "redirect:/home";
+    return "redirect:/index";
     }
 
     @PostMapping("passwordUpdate")
     @ResponseBody
-    public String update(@RequestBody String password, int no) throws Exception {
+    public String update(@RequestBody String password) throws Exception {
         User user = new User();
         user.setPassword(password);
-        user.setNo(no);
+        user.setNo(63);
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + password);
 
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ userService);
@@ -134,36 +136,76 @@ public String update(User user, MultipartFile file) throws Exception {
 
 
     @PostMapping("sendEmail")
-    public String sendEmail(String email, Model model) throws Exception {
+    @ResponseBody
+    public Object sendEmail(@RequestBody String email, Model model) throws Exception {
 
-        String authId = doSend(email, "[moyeora] authentication code", createCode(),
+        authId = doSend(email, "[moyeora] authentication code", createCode(),
                 createAuthId(email), "form");
         model.addAttribute("authId", authId);
         model.addAttribute("status", "sent");
         redisUtil.setDataExpire(authId + "_e", email, 60 * 5L);
 
-        return "redirect:/user/form";
+
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@" + authId + "_e");
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@" + email);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@" + authId);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@" + model.getAttribute("status"));
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("authId", authId);
+        return result;
     }
 
 
     private String doSend(String email, String subject, String code, String authId, String template)
             throws MessagingException {
+
         mailService.sendEmail(email, subject, code, authId, template);
+
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$" + email);
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$" + authId);
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$" + subject);
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$" + template);
         redisUtil.setDataExpire(authId, code, 60 * 5L);
         return authId;
     }
 
     @PostMapping("verifyCode")
-    public String verifyCode(String email, String code, String authId, Model model)
+    @ResponseBody
+    public Object verifyCode(
+            String email,
+            String code,
+            String authId,
+            Model model)
             throws Exception {
+
+
         String savedCode = (String) redisUtil.getData(authId);
+
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$" + email);
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$" + code);
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$" + authId);
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$" + model);
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$" + savedCode);
+
         if (savedCode == null) {
             model.addAttribute("status", "savedCode == null");
         } else if (!savedCode.equals(code)) {
             model.addAttribute("status", "savedCode != code");
+        } else {
+            String userEmail = (String) redisUtil.getData(authId + "_e");
+            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + userEmail);
+            model.addAttribute("status", "okok");
+            if (redisUtil.existData(authId)) {
+                redisUtil.deleteData(authId);
+                Map<String, Object> result = new HashMap<>();
+                result.put("status", "success");
+                return result;
+            }
         }
-
-        return "/user/form";
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", "fail");
+        return result;
     }
 
     private String createAuthId(String email) throws NoSuchAlgorithmException { // 이메일로 항상 유지되는 키값으로 사용할것.
