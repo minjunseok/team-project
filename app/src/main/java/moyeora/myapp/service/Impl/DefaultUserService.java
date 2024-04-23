@@ -108,6 +108,7 @@ import java.util.List;
 
         @Override
         public int updatePassword(User user) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userDao.updatePassword(user);
         }
 
