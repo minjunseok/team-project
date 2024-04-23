@@ -41,20 +41,20 @@ public class DefaultPostService implements PostService {
   @Override
   public void add(Post post) {
     postDao.add(post);
-//    if (post.getFileList() != null && post.getFileList().size() > 0) {
-//      for (AttachedFile attachedFile : post.getFileList()) {
-//        attachedFile.setPostNo(post.getNo());
-//      }
-//      attachedFileDao.addAll(post.getFileList());
-//    }
+    if (post.getFileList() != null && post.getFileList().size() > 0) {
+      for (AttachedFile attachedFile : post.getFileList()) {
+        attachedFile.setPostNo(post.getNo());
+      }
+      attachedFileDao.addAll(post.getFileList());
+    }
   }
 
 
   // String으로 데이터 이름 강제 부여
-  @Override
-  public void add(String post) {
-     postDao.add(post);
-  }
+//  @Override
+//  public void add(String post) {
+//     postDao.add(post);
+//  }
 
   @Override
   public List<Post> findAll(int categoryNo) {
@@ -153,13 +153,13 @@ public class DefaultPostService implements PostService {
 
   // 필터를  내용으로 검색했을 때
   @Override
-  public List<Post> findBySchoolContent(int schoolNo, String keyword, String content) {
-    return postDao.findBySchoolContent(schoolNo, keyword, content);
+  public List<Post> findBySchoolContent(int schoolNo, String keyword) {
+    return postDao.findBySchoolContent(schoolNo, keyword);
   }
 
   // 필터를 작성자로 검색했을 때
-  public List<Post> findBySchoolUserName(int schoolNo, String keyword, String nickname) {
-    return postDao.findBySchoolUserName(schoolNo, keyword, nickname);
+  public List<Post> findBySchoolUserName(int schoolNo, String keyword) {
+    return postDao.findBySchoolUserName(schoolNo, keyword);
   }
 
   @Override
