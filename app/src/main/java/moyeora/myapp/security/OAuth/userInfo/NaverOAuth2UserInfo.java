@@ -1,4 +1,4 @@
-package moyeora.myapp.security.oauth.userInfo;
+package moyeora.myapp.security.OAuth.userInfo;
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;

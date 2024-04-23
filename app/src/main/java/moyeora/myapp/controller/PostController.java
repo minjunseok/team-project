@@ -253,12 +253,14 @@ public String searchPostsByContent(
         @RequestParam("schoolNo") Integer schoolNo,
         @RequestParam("keyword") String keyword,
         @RequestParam("filter") String filter,
+        @RequestParam("content") String content,
+        @RequestParam("nickname") String nickname,
         Model model) {
     List<Post> postList;
     if (filter.equals("0")) { // 내용으로 검색
-        postList = postService.findBySchoolContent(schoolNo, keyword);
+        postList = postService.findBySchoolContent(schoolNo, keyword, content);
     } else { // 작성자로 검색
-        postList = postService.findBySchoolUserName(schoolNo, keyword);
+        postList = postService.findBySchoolUserName(schoolNo, keyword, nickname);
     }
     model.addAttribute("postList", postList);
     return "post/list"; // list.html을 반환
