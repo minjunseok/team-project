@@ -148,8 +148,8 @@ public class PostController {
           String objectName = this.uploadDir + filename;
           String filePath = this.fileUploadHelper.upload(this.bucketName, objectName, file);
 
-          // 밑에 주석 걸고나서 이거 주석 풀면 됨
-          postService.add(String.format(filename));
+//          // 밑에 주석 걸고나서 이거 주석 풀면 됨
+//          postService.add(String.format(filename));
 
           // 초기화 주석걸고 업로드된 파일 이름 추가까지 다 주석
           AttachedFile attachedFile = new AttachedFile();
@@ -160,12 +160,12 @@ public class PostController {
       }
     }
 
-    // 업로드된 파일 이름들을 DB에 저장
-    for (String uploadedFile : uploadedFiles) {
-      AttachedFile attachedFile = new AttachedFile();
-      attachedFile.setFilePath(uploadedFile);
-      post.getFileList().add(attachedFile);
-    }
+//    // 업로드된 파일 이름들을 DB에 저장
+//    for (String uploadedFile : uploadedFiles) {
+//      AttachedFile attachedFile = new AttachedFile();
+//      attachedFile.setFilePath(uploadedFile);
+//      post.getFileList().add(attachedFile);
+//    }
 
     // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
     sessionStatus.setComplete();
@@ -224,28 +224,46 @@ public class PostController {
   }
 
 
-  // 검색창에 필터로 검색했을 때
-  @GetMapping("search")
-  public String searchPostsByContent(
-//          int schoolNo,
-          @RequestParam("schoolNo") Integer schoolNo,
-          @RequestParam("keyword") String keyword,
-          @RequestParam("filter") String filter,
-          Model model) {
+//  // 검색창에 필터로 검색했을 때
+//  @GetMapping("search")
+//  public String searchPostsByContent(
+////          int schoolNo,
+//          @RequestParam("schoolNo") Integer schoolNo,
+//          @RequestParam("keyword") String keyword,
+//          @RequestParam("filter") String filter,
+//          Model model) {
+//    if (filter.equals("0")) { // 내용으로 검색
+//      List<Post> postList = postService.findBySchoolContent(schoolNo, keyword);
+//      int i = 0;
+//      for(Post post : postList){
+//        log.debug(String.format("cnt : %s", i++));
+//        log.debug(String.format("post content : %s",post.getContent()));
+//      }
+//      model.addAttribute("postList", postList);
+//    } else {                  // 작성자로 검색
+//      List<Post> postList = postService.findBySchoolUserName(schoolNo, keyword);
+//      model.addAttribute("postList", postList);
+//    }
+//    return "redirect:list?schoolNo=" + schoolNo + "&keyword=" + keyword + "&filter=" + filter;
+//  }
+
+
+@GetMapping("search")
+public String searchPostsByContent(
+        @RequestParam("schoolNo") Integer schoolNo,
+        @RequestParam("keyword") String keyword,
+        @RequestParam("filter") String filter,
+        Model model) {
+    List<Post> postList;
     if (filter.equals("0")) { // 내용으로 검색
-      List<Post> postList = postService.findBySchoolContent(schoolNo, keyword);
-      int i = 0;
-      for(Post post : postList){
-        log.debug(String.format("cnt : %s", i++));
-        log.debug(String.format("post content : %s",post.getContent()));
-      }
-      model.addAttribute("postList", postList);
-    } else {                  // 작성자로 검색
-      List<Post> postList = postService.findBySchoolUserName(schoolNo, keyword);
-      model.addAttribute("postList", postList);
+        postList = postService.findBySchoolContent(schoolNo, keyword);
+    } else { // 작성자로 검색
+        postList = postService.findBySchoolUserName(schoolNo, keyword);
     }
-    return "redirect:list?schoolNo=" + schoolNo + "&keyword=" + keyword + "&filter=" + filter;
-  }
+    model.addAttribute("postList", postList);
+    return "post/list"; // list.html을 반환
+}
+
 
   @PostMapping("update")
   public String update(
