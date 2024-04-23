@@ -18,7 +18,7 @@ public interface PostService {
   void add(Post post);
 
   // String으로 이미지 이름 강제 저장
-  void add(String post);
+//  void add(String post);
 
   List<Post> findAll(int categoryNo);
 
@@ -55,9 +55,9 @@ public interface PostService {
 
 
 // 필터 내용으로 검색했을 때
- public List<Post> findBySchoolContent(int schoolNo, String keyword, String content);
+ public List<Post> findBySchoolContent(int schoolNo, String keyword);
  // 필터 작성자로 검색했을 때
- public List<Post> findBySchoolUserName(int schoolNo, String keyword, String nickname);
+ public List<Post> findBySchoolUserName(int schoolNo, String keyword);
 
  public List<Post> findBySchool(int schoolNo);
 }
