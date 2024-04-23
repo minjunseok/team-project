@@ -11,7 +11,7 @@ public interface PostDao {
   void add(Post post);
 
   // String으로 이미지 이름 강제 저장
-  void add(String post);
+//  void add(String post);
 
   List<Post> findAll(@Param("categoryNo") int categoryNo);
 
@@ -37,9 +37,9 @@ public interface PostDao {
   public List<Post> findBySchoolPost();
 
   // 필터 내용으로 검색했을 때
-  List<Post> findBySchoolContent(int schoolNo, @Param("keyword") String keyword, String content);
+  List<Post> findBySchoolContent(int schoolNo, @Param("keyword") String keyword);
   // 필터 작성자로 검색했을 때
-  List<Post> findBySchoolUserName(int schoolNo, @Param("keyword") String keyword, String nickname);
+  List<Post> findBySchoolUserName(int schoolNo, @Param("keyword") String keyword);
 
   List<Post> findBySchool(int schoolNo);
 

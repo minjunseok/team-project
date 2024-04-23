@@ -23,30 +23,30 @@
             <textarea id="summernote" name='content'></textarea>
         </div>
 
-        <div>
+         <div>
             <input type="checkbox" id="notice" name="post" value="1">공지로 등록
             <script>
 
             </script>
-            <button id="btn_submit">등록</button>
+            <button>등록</button>
         </div>
     </form>
 
 
     <script>
-        const btn_submit = document.querySelector('#btn_submit')
-        btn_submit.addEventListener("click", () => {
-            var markupStr = $('#summernote').summernote('code');
-            console.log(markupStr);
-        })
+
         $(document).ready(function() {
 
             $('#summernote').summernote({
                 height: 300,
                 width: 500,
                 callbacks: {
+                    onImageUpload: function(files) {
+                        uploadImage(files[0]);
+                    }
                 }
-            })})
+            });
+        })
     </script>
 
     </body>
