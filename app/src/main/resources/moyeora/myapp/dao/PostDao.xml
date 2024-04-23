@@ -183,6 +183,7 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
     SELECT
         u.user_no,
         u.name,
+        u.photo,
         p.post_no,
         s.school_no,
         p.created_at,
@@ -214,6 +215,7 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
     SELECT
         u.user_no,
         u.name,
+        u.photo,
         p.post_no,
         s.school_no,
         p.created_at,
