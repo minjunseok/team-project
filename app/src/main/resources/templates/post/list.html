@@ -45,7 +45,7 @@
         </select>
         <input name='keyword' type='text' placeholder='검색어를 입력하세요.'>
         <input name='schoolNo' type='hidden' value='1'><!-- schoolNo를 Integer로 선언 -->
-<!--                <input th:if="${schoolNo != null}" name="schoolNo" type="hidden" th:value="${schoolNo}">&lt;!&ndash; schoolNo를 Integer로 선언 &ndash;&gt;-->
+        <!--                <input th:if="${schoolNo != null}" name="schoolNo" type="hidden" th:value="${schoolNo}">&lt;!&ndash; schoolNo를 Integer로 선언 &ndash;&gt;-->
         <button>검색</button>
     </div>
 </form>
@@ -110,24 +110,39 @@
         <!--            <img data-th-src="${https://kr.object.ncloudstorage.com/moyeorastorage}/user-photos/${post.writer.photo}" alt="프로필 사진">-->
         <!--        </td>--> <!-- 서버에 저장된 회원 프로필 사진 경로 지정해야함-->
 
-
+<!--            @@@@@@ 이 코드 안되면 아래 코드 적용해보기@@@@@@@  -->
         <td>
-            <a data-th-href="@{'view/' + *{schoolNo}(no=*{no})}" th:utext="*{content}">내용</a>
+            <a data-th-href="@{'view/' + *{schoolNo}(no=*{no})}" th:utext="*{content}"
+               data-th-if="*{fileList[0].filePath}"
+               data-th-each="file : *{fileList}" data-th-object="${file}"
+               data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/post' + *{filePath}}"
+               data-th-text="*{filePath}">내용 & 사진.gif</a>
         </td>
         <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
         <td><a data-th-href="@{md(no=*{no}, schoolNo=*{schoolNo})}"
                href="md.html?(no=*{no}, schoolNo=*{schoolNo})">설정</a></td>
+
+
+<!--            @@@@@@@ 위에 코드 안되면 아래 코드 적용해보기@@@@@@@  -->
+
+<!--        <td>-->
+<!--            &lt;!&ndash; 포스트 내용과 이미지를 함께 출력합니다. &ndash;&gt;-->
+<!--            <div data-th-utext="${post.content}"></div>-->
+
+<!--            &lt;!&ndash; 포스트의 첨부 이미지가 있는 경우에만 출력합니다. &ndash;&gt;-->
+<!--            <div data-th-if="${post.fileList != null}">-->
+<!--                <ul>-->
+<!--                    &lt;!&ndash; 첨부 이미지 파일의 URL을 이용하여 이미지를 출력합니다. &ndash;&gt;-->
+<!--                    <li data-th-each="file : ${post.fileList}" data-th-object="${file}">-->
+<!--                        <img data-th-src="${file.filePath}" alt="첨부 이미지">-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </td>-->
+
     </tr>
-    <!--    현준 리스트 작업 (검색창 오류 발생하면 보려고 놓아둔 것-->
-    <!--    <tr data-th-each="post : ${postList}" data-th-object="${post}">-->
-    <!--        <td><a data-th-href="@{list(schoolNo=${schoolNo}, no=*{no})}" data-th-text="*{writer.name}"-->
-    <!--               href="list.html">홍길동</a></td>-->
-    <!--        <td><span th:utext="*{content}"></span></td>-->
-    <!--        <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">2024-03-27</td>-->
-    <!--        <td>-->
-    <!--            <a data-th-href="@{md(no=*{no})}" href="md.html?no=*{no}">설정</a>-->
-    <!--        </td>-->
-    <!--    </tr>-->
+
+
     </tbody>
 </table>
 </body>

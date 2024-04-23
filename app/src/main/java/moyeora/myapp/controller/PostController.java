@@ -35,7 +35,6 @@ public class PostController {
   private final FileUploadHelper fileUploadHelper;
   private final CommentService commentService;
   private final SchoolUserService schoolUserService;
-  private final FileUploadHelper FileNameGenerator;
   private String uploadDir = "post/";
   private static final Log log = LogFactory.getLog(PostController.class);
 
@@ -48,78 +47,11 @@ public class PostController {
 
   }
 
-//  @PostMapping("add")
-//  public String add(
-//          Post post,
-//          HttpSession session,
-//          SessionStatus sessionStatus) throws Exception {
-//
-////    User loginUser = (User) session.getAttribute("loginUser");
-////    if (loginUser == null) {
-////      throw new Exception("로그인하시기 바랍니다!");
-////    }
-////
-////    Post old = postService.get(post.getNo());
-////    if (old == null) {
-////      throw new Exception("번호가 유효하지 않습니다.");
-////
-////    } else if (old.getNo() != loginUser.getNo()) {
-////      throw new Exception("권한이 없습니다.");
-////    }
-//
-//
-//    // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
-//    List<AttachedFile> fileList = (List<AttachedFile>) session.getAttribute("attachedFiles");
-//
-//
-//    if (fileList != null) {
-//      for (int i = fileList.size() - 1; i >= 0; i--) {
-//        AttachedFile attachedFile = fileList.get(i);
-//        if (post.getContent().indexOf(attachedFile.getFilePath()) == -1) {
-//          // Object FileUploadHelper에 업로드 한 파일 중에서 게시글 콘텐트에 포함되지 않은 것은 삭제한다.
-//          fileUploadHelper.delete(this.bucketName, this.uploadDir, attachedFile.getFilePath());
-//          log.debug(String.format("%s 파일 삭제!", attachedFile.getFilePath()));
-//          fileList.remove(i);
-//        }
-//      }
-//      if (fileList.size() > 0) {
-//        post.setFileList(fileList);
-//      }
-//    }
-//
-//
-//     // 파일 업로드 로직을 추가해줍니다.
-//    for (MultipartFile file : files) {
-//        if (!file.isEmpty()) {
-//          String filename = FileNameGenerator.generateFileName(file); // 파일 이름 생성
-//            String objectName = this.uploadDir + filename;
-//            String filePath = this.fileUploadHelper.upload(this.bucketName, objectName, file);
-//            AttachedFile attachedFile = new AttachedFile();
-//            attachedFile.setFilePath(filePath);
-//            fileList.add(attachedFile);
-//        }
-//    }
-//
-//
-//
-//    // 'created_at' 필드에 현재 시간 설정
-//    post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
-//
-//    // 나머지 처리 코드
-//    post.setCreatedAt(new Date());
-//    postService.add(post);
-//
-//    // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
-//    sessionStatus.setComplete();
-//
-//    return "redirect:list?schoolNo=" + post.getSchoolNo();
-//  }
-
-
   @PostMapping("add")
+  @ResponseBody
   public String add(
           Post post,
-          @RequestParam("files") MultipartFile[] files, // 파일 업로드를 위한 파라미터 추가
+          @RequestParam("file") MultipartFile[] files, // 여러 파일을 받기 위해 배열로 선언합니다.
           HttpSession session,
           SessionStatus sessionStatus) throws Exception {
 
@@ -137,45 +69,102 @@ public class PostController {
 //    }
 
     // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
-    List<AttachedFile> fileList = post.getFileList();
+    List<AttachedFile> fileList = new ArrayList<>();
 
-    // 파일 업로드 로직을 추가해줍니다.
-    List<String> uploadedFiles = new ArrayList<>();
-    if (files != null && files.length > 0) {
-      for (MultipartFile file : files) {
-        if (!file.isEmpty()) {
-          String filename = FileNameGenerator.generateFileName(file); // 파일 이름 생성
-          String objectName = this.uploadDir + filename;
-          String filePath = this.fileUploadHelper.upload(this.bucketName, objectName, file);
-
-//          // 밑에 주석 걸고나서 이거 주석 풀면 됨
-//          postService.add(String.format(filename));
-
-          // 초기화 주석걸고 업로드된 파일 이름 추가까지 다 주석
-          AttachedFile attachedFile = new AttachedFile();
-          attachedFile.setFilePath(filePath);
-          fileList.add(attachedFile);
-          uploadedFiles.add(filename); // 업로드된 파일 이름 추가
-        }
+    for (int i = fileList.size() - 1; i >= 0; i--) {
+      AttachedFile attachedFile = fileList.get(i);
+      if (post.getContent().indexOf(attachedFile.getFilePath()) == -1) {
+        // FileUploadHelper에 업로드 한 파일 중에서 게시글 콘텐트에 포함되지 않은 것을 삭제한다.
+        fileUploadHelper.delete(this.bucketName, this.uploadDir, attachedFile.getFilePath());
+        log.debug(String.format("%s 파일 삭제!", attachedFile.getFilePath()));
+        fileList.remove(i);
       }
     }
 
+    // 업로드된 파일을 처리합니다.
+    for (MultipartFile file : files) {
+      // 파일 업로드 처리
+      String filename = fileUploadHelper.upload(this.bucketName, this.uploadDir, file);
+      // AttachedFile 객체 생성 후 fileList에 추가
+      fileList.add(AttachedFile.builder().filePath(filename).build());
+    }
+
+    if (fileList.size() > 0) {
+      post.setFileList(fileList);
+    }
+
+    // 'created_at' 필드에 현재 시간 설정
+    post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
+
+    postService.add(post);
+
+    // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
+    sessionStatus.setComplete();
+
+    return "redirect:list?schoolNo=" + post.getSchoolNo();
+  }
+
+
+//  @PostMapping("add")
+//  public String add(
+//          Post post,
+//          @RequestParam("files") MultipartFile[] files, // 파일 업로드를 위한 파라미터 추가
+//          HttpSession session,
+//          SessionStatus sessionStatus) throws Exception {
+//
+////    User loginUser = (User) session.getAttribute("loginUser");
+////    if (loginUser == null) {
+////      throw new Exception("로그인하시기 바랍니다!");
+////    }
+////
+////    Post old = postService.get(post.getNo());
+////    if (old == null) {
+////      throw new Exception("번호가 유효하지 않습니다.");
+////
+////    } else if (old.getNo() != loginUser.getNo()) {
+////      throw new Exception("권한이 없습니다.");
+////    }
+//
+//    // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
+//    List<AttachedFile> fileList = post.getFileList();
+//
+//    // 파일 업로드 로직을 추가해줍니다.
+//    List<String> uploadedFiles = new ArrayList<>();
+//    if (files != null && files.length > 0) {
+//      for (MultipartFile file : files) {
+//        if (!file.isEmpty()) {
+//          String filename = FileNameGenerator.generateFileName(file); // 파일 이름 생성
+//          String objectName = this.uploadDir + filename;
+//          String filePath = this.fileUploadHelper.upload(this.bucketName, objectName, file);
+//
+//          // 밑에 주석 걸고나서 이거 주석 풀면 됨
+//          postService.add(String.format(filename));
+//
+//          // 초기화 주석걸고 업로드된 파일 이름 추가까지 다 주석
+//          AttachedFile attachedFile = new AttachedFile();
+//          attachedFile.setFilePath(filePath);
+//          fileList.add(attachedFile);
+//          uploadedFiles.add(filename); // 업로드된 파일 이름 추가
+//        }
+//      }
+//    }
+//
 //    // 업로드된 파일 이름들을 DB에 저장
 //    for (String uploadedFile : uploadedFiles) {
 //      AttachedFile attachedFile = new AttachedFile();
 //      attachedFile.setFilePath(uploadedFile);
 //      post.getFileList().add(attachedFile);
 //    }
-
-    // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
-    sessionStatus.setComplete();
-    // 'created_at' 필드에 현재 시간 설정
-    post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
-
-    postService.add(post);
-
-    return "redirect:list?schoolNo=" + post.getSchoolNo();
-  }
+//
+//    // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
+//    sessionStatus.setComplete();
+//    // 'created_at' 필드에 현재 시간 설정
+//    post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
+//
+//    postService.add(post);
+//
+//    return "redirect:list?schoolNo=" + post.getSchoolNo();
+//  }
 
 
   @GetMapping("list")
@@ -248,23 +237,24 @@ public class PostController {
 //  }
 
 
-@GetMapping("search")
-public String searchPostsByContent(
-        @RequestParam("schoolNo") Integer schoolNo,
-        @RequestParam("keyword") String keyword,
-        @RequestParam("filter") String filter,
-        @RequestParam("content") String content,
-        @RequestParam("nickname") String nickname,
-        Model model) {
+  @GetMapping("search")
+  public String searchPostsByContent(
+          @RequestParam("schoolNo") Integer schoolNo,
+          @RequestParam("keyword") String keyword,
+          @RequestParam("filter") String filter,
+          Model model) {
     List<Post> postList;
     if (filter.equals("0")) { // 내용으로 검색
-        postList = postService.findBySchoolContent(schoolNo, keyword, content);
+      postList = postService.findBySchoolContent(schoolNo, keyword);
     } else { // 작성자로 검색
-        postList = postService.findBySchoolUserName(schoolNo, keyword, nickname);
+      postList = postService.findBySchoolUserName(schoolNo, keyword);
     }
+
+    log.debug("@@@@@@@@@@@@@@@@@@@@@@@@");
+
     model.addAttribute("postList", postList);
     return "post/list"; // list.html을 반환
-}
+  }
 
 
   @PostMapping("update")
