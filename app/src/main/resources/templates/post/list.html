@@ -110,38 +110,23 @@
         <!--            <img data-th-src="${https://kr.object.ncloudstorage.com/moyeorastorage}/user-photos/${post.writer.photo}" alt="프로필 사진">-->
         <!--        </td>--> <!-- 서버에 저장된 회원 프로필 사진 경로 지정해야함-->
 
-<!--            @@@@@@ 이 코드 안되면 아래 코드 적용해보기@@@@@@@  -->
+
         <td>
-            <a data-th-href="@{'view/' + *{schoolNo}(no=*{no})}" th:utext="*{content}"
-               data-th-if="*{fileList[0].filePath}"
-               data-th-each="file : *{fileList}" data-th-object="${file}"
-               data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/post' + *{filePath}}"
-               data-th-text="*{filePath}">내용 & 사진.gif</a>
+            <div>
+            <a data-th-href="@{'view/' + *{schoolNo}(no=*{no})}" th:utext="*{post.content}">내용</a>
+            </div>
+                    <!-- 첨부 이미지 파일의 URL을 이용하여 이미지를 출력합니다. -->
+                    <a data-th-each="file : ${post.fileList}" data-th-object="${file}">
+                        <img data-th-src="${file.filePath}" alt="post.file">
+                    </a>
+
+            </div>
         </td>
+
         <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
         <td><a data-th-href="@{md(no=*{no}, schoolNo=*{schoolNo})}"
                href="md.html?(no=*{no}, schoolNo=*{schoolNo})">설정</a></td>
-
-
-<!--            @@@@@@@ 위에 코드 안되면 아래 코드 적용해보기@@@@@@@  -->
-
-<!--        <td>-->
-<!--            &lt;!&ndash; 포스트 내용과 이미지를 함께 출력합니다. &ndash;&gt;-->
-<!--            <div data-th-utext="${post.content}"></div>-->
-
-<!--            &lt;!&ndash; 포스트의 첨부 이미지가 있는 경우에만 출력합니다. &ndash;&gt;-->
-<!--            <div data-th-if="${post.fileList != null}">-->
-<!--                <ul>-->
-<!--                    &lt;!&ndash; 첨부 이미지 파일의 URL을 이용하여 이미지를 출력합니다. &ndash;&gt;-->
-<!--                    <li data-th-each="file : ${post.fileList}" data-th-object="${file}">-->
-<!--                        <img data-th-src="${file.filePath}" alt="첨부 이미지">-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--        </td>-->
-
     </tr>
-
 
     </tbody>
 </table>
