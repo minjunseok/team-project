@@ -25,6 +25,7 @@ public class Post {
   private int commentCount;
   private User writer;
   private List<AttachedFile> fileList;
+  private int fileCount;
   private List<Comment> comments;
   private List<SchoolUser> schoolUsers;
   private List<Post> posts;

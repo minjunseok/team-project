@@ -22,13 +22,6 @@
       <result column="nickname" property="nickname"/>
     </association>
 
-    <association property="nickname" javaType="User">
-      <id column="user_no" property="no"/>
-      <result column="name" property="name"/>
-      <result column="photo" property="photo"/>
-      <result column="writer" property="writer"/>
-    </association>
-
     <association property="schoolUser" javaType="SchoolUser">
       <id column="user_no" property="userNo"/>
     </association>
@@ -189,9 +182,7 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
 <select id="findBySchoolContent" resultMap="PostMap">
     SELECT
         u.user_no,
-<!--        u.name,-->
-        u.nickname, <!-- u.name 대신 적용-->
-        u.photo,
+        u.name,
         p.post_no,
         s.school_no,
         p.created_at,
@@ -222,10 +213,7 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
 <select id="findBySchoolUserName" resultMap="PostMap">
     SELECT
         u.user_no,
-<!--        u.name,-->
-        u.nickname, <!-- u.name 대신 적용-->
-        u.photo,
-        u.nickname,
+        u.name,
         p.post_no,
         s.school_no,
         p.created_at,
