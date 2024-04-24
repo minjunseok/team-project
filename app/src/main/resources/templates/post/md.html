@@ -36,19 +36,36 @@
     </div>
 
 </form>
+<input type="checkbox" id="notice" name="post" value="1">공지로 등록
+<!-- 게시글 주소 복사 버튼 -->
+<button id="copyLinkButton">주소 복사</button>
 
 <script>
     $(document).ready(function () {
 
-    // Summernote를 초기화하고 내용을 보여줍니다.
-    $('#summernoteContent').summernote({
-        height: 300,
-        width: 500,
-        callbacks: {
-        }
-    });
+        // Summernote를 초기화하고 내용을 보여줍니다.
+        $('#summernoteContent').summernote({
+            height: 300,
+            width: 500,
+            callbacks: {}
+        });
 
-});
+        // 게시글 주소 복사 버튼 클릭 이벤트
+        $('#copyLinkButton').click(function () {
+            // 현재 페이지의 URL을 가져와 복사합니다.
+            var url = window.location.href;
+            // 클립보드에 복사할 텍스트를 생성합니다.
+            var tempInput = document.createElement('input');
+            tempInput.value = url;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            // 복사가 완료되었다는 메시지를 출력합니다. (선택 사항)
+            alert('게시글 주소가 복사되었습니다.');
+        });
+
+    });
 
 </script>
 
