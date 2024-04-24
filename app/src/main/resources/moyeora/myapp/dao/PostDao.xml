@@ -182,7 +182,8 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
 <select id="findBySchoolContent" resultMap="PostMap">
     SELECT
         u.user_no,
-        u.name,
+        u.nickname,
+        u.photo,
         p.post_no,
         s.school_no,
         p.created_at,
@@ -209,11 +210,13 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
 </select>
 
 
+
 <!-- 작성자 이름으로 게시글 검색 -->
 <select id="findBySchoolUserName" resultMap="PostMap">
-    SELECT
+   SELECT
         u.user_no,
-        u.name,
+        u.nickname,
+        u.photo,
         p.post_no,
         s.school_no,
         p.created_at,
@@ -227,24 +230,27 @@ useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
         f.post_no
     FROM
         posts p
+	INNER JOIN
+		school_users su ON su.school_no = p.school_no
     INNER JOIN
-        schools s ON s.school_no = p.school_no
+        schools s ON s.school_no = su.school_no
     INNER JOIN
-        users u ON p.user_no = u.user_no
+        users u ON su.user_no = u.user_no
     LEFT OUTER JOIN
         files f ON p.post_no = f.post_no
     WHERE
-        u.name LIKE '%${keyword}%'
+        u.nickname LIKE '%${keyword}%'
     ORDER BY
         like_count DESC;
 </select>
+
 
 <!-- 게시판 스쿨번호에 맞게 출력 -->
 
 <select id="findBySchool" resultMap="PostMap" parameterType="int">
     SELECT
         u.user_no,
-        u.name,
+        u.nickname,
         p.post_no,
         p.school_no,
         p.created_at,
