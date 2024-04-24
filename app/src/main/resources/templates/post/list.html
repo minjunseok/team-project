@@ -45,7 +45,7 @@
         <input name='keyword' type='text' placeholder='검색어를 입력하세요.'>
         <input name='schoolNo' type='hidden' value='1'><!-- schoolNo를 Integer로 선언 -->
         <!--                <input th:if="${schoolNo != null}" name="schoolNo" type="hidden" th:value="${schoolNo}">&lt;!&ndash; schoolNo를 Integer로 선언 &ndash;&gt;-->
-        <button>검색</button>
+        <button id="postSearchForm">검색</button>
     </div>
 </form>
 
@@ -57,7 +57,7 @@
             event.preventDefault();
 
             // 입력된 content를 가져옵니다.
-            var content = $("#searchContent").val();
+            var content = $("input[name='keyword']").val();
             var filter = $("select[name='filter']").val();
             var schoolNo = $("input[name='schoolNo']").val();
 
@@ -66,9 +66,8 @@
                 type: "GET",
                 url: "/post/search", // 검색을 처리할 서버의 엔드포인트
                 data: {
-                    content: content,
                     schoolNo: schoolNo,
-                    keyword: keyword,
+                    keyword: content,
                     filter: filter}, // 검색어를 전달합니다.
                 success: function(response) {
                     // 검색 결과를 받아와서 HTML로 표시합니다.
@@ -92,7 +91,7 @@
 <table border='1'>
     <thread>
         <tr>
-            <th>작성자</th>
+            <th>닉네임</th>
             <th>사진</th>
             <th>내용</th>
             <th>작성일</th>
@@ -101,7 +100,7 @@
 
     </thread>
     <tbody>
-    <tr data-th-each="post : ${postlists}" data-th-object="${post}">
+    <tr data-th-each="post : ${postList}" data-th-object="${post}">
 
         <td data-th-text="*{writer.nickname}">작성자</td>
         <td data-th-text="*{writer.photo}">사진</td>
