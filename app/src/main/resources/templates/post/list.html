@@ -86,8 +86,9 @@
 </div>
 
 <a data-th-href="@{form(schoolNo=1)}" href="form.html">새 글</a>
-<!--<a data-th-href="@{form(schoolNo=*{schoolNo})}" href="form.html" th:if="${loginUser != null}">새 글</a>-->
-<!--<a href="#"  th:if="${loginUser == null}" onclick="alert('로그인이 필요합니다.'); return false;">새 글</a>-->
+
+<!--미가입 회원은 새 글 대신 가입하기가 출력되며 가입하기를 눌렀을 때 바로 회원으로 가입 됨-->
+<a data-th-href="" href="">가입하기</a>
 <table border='1'>
     <thread>
         <tr>
