@@ -24,8 +24,12 @@
     </div>
 
     <div>
-        <input type="checkbox" id="notice" name="post" value="1">공지로 등록
-       <button id="btn_submit">등록</button>
+        <!-- 공지로 등록하는 체크박스 -->
+        <!--   gradeMd =  체크박스는 관리자만 보이게 설정     -->
+        <!--   gradeMdLabel =  공지로등록이라는 텍스트는 관리자만 보이게 설정     -->
+        <label for="gradeMd" id="gradeMdLabel" style="display: none;">공지로 등록</label>
+        <input type="checkbox" id="gradeMd" name="post" value="1" style="display: none;">
+        <button id="btn_submit">등록</button>
     </div>
 </form>
 
@@ -43,7 +47,19 @@
             width: 500,
             callbacks: {
             }
-        })})
+        })
+
+        // 서버에서 사용자의 등급 정보를 전달합니다.
+        var userGrade = "${userGrade}"; // "매니저" 또는 "부매니저"를 나타내는 값
+
+        // "매니저" 또는 "부매니저"인 경우 체크박스를 보이도록 설정
+        if (userGrade === "admin" || userGrade === "sub-admin") {
+            $('#gradeMd').show();
+            $('#gradeMdLabel').show();
+        }
+
+
+    })
 </script>
 
 </body>

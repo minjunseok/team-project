@@ -18,8 +18,6 @@
 </head>
 <body>
 
-<div data-th-replace="header :: header">(새 글 or 글 수정)</div>
-
 <h1 data-th-text="${postNo}">피드</h1>
 
 
@@ -36,9 +34,14 @@
     </div>
 
 </form>
-<input type="checkbox" id="notice" name="post" value="1">공지로 등록
+<!-- 공지로 등록하는 체크박스 -->
+<label for="gradeMd" id="gradeMdLabel" style="display: none;">공지로 등록</label>
+<input type="checkbox" id="gradeMd" name="post" value="1" style="display: none;">
 <!-- 게시글 주소 복사 버튼 -->
 <button id="copyLinkButton">주소 복사</button>
+
+<!--게시글 신고 href url 걸면 됨-->
+<button>게시글 신고</button>
 
 <script>
     $(document).ready(function () {
@@ -64,6 +67,17 @@
             // 복사가 완료되었다는 메시지를 출력합니다. (선택 사항)
             alert('게시글 주소가 복사되었습니다.');
         });
+
+        // 서버에서 사용자의 등급 정보를 전달합니다.
+        var userGrade = "${userGrade}"; // "매니저" 또는 "부매니저"를 나타내는 값
+
+        // "매니저" 또는 "부매니저"인 경우 체크박스를 보이도록 설정
+        if (userGrade === "admin" || userGrade === "sub-admin") {
+            $('#gradeMd').show();
+            $('#gradeMdLabel').show();
+        }
+
+
 
     });
 
