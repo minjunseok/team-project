@@ -50,43 +50,12 @@
 
   </resultMap>
 
-<!--<insert id="add" parameterType="Post"-->
-<!--    useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">-->
-<!--    insert into posts(content, school_no, user_no, created_at)-->
-<!--&lt;!&ndash;    values(#{content}, #{schoolNo}, #{userNo}, NOW())&ndash;&gt;-->
-<!--    values(#{content}, 1, 1, NOW())-->
-<!--</insert>-->
-
-<insert id="add" parameterType="Post" useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
-    <selectKey keyProperty="userNo" resultType="int" order="BEFORE">
-        SELECT user_no FROM users WHERE user_id = #{user.userId};
-    </selectKey>
-    <selectKey keyProperty="userGrade" resultType="int" order="BEFORE">
-        SELECT u.grade
-        FROM users u
-        INNER JOIN school_users su ON u.user_no = su.user_no
-        WHERE su.school_no = #{schoolNo} AND u.user_no = #{userNo};
-    </selectKey>
-    insert into posts(content, school_no, user_no, user_grade, created_at)
-    values(#{content}, #{schoolNo}, #{userNo}, #{userGrade}, NOW());
+<insert id="add" parameterType="Post"
+    useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
+    insert into posts(content, school_no, user_no, created_at)
+<!--    values(#{content}, #{schoolNo}, #{userNo}, NOW())-->
+    values(#{content}, 1, 1, NOW())
 </insert>
-
-
-
-    <!--    유저 등급 정보 가져오기-->
-    <select id="userGrade" parameterType="int" resultType="int">
-      SELECT
-	    u.user_no,
-	    u.grade,
-        u.nickname,
-        u.created_At
-      FROM
-        users u
-      INNER
-        JOIN school_users su ON u.user_no = su.user_no
-      WHERE
-        su.school_no = #{schoolNo};
-  </select>
 
 
 
