@@ -9,6 +9,7 @@ import moyeora.myapp.util.FileUploadHelper;
 import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Comment;
 import moyeora.myapp.vo.Post;
+import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/post")
+@SessionAttributes("attachedFiles")
 public class PostController {
 
   //  private static final Log log = LogFactory.getLog(PostController.class);
@@ -50,7 +52,6 @@ public class PostController {
   @PostMapping("add")
   public String add(
           Post post,
-          MultipartFile[] files, // 파일 업로드를 위한 파라미터 추가
           HttpSession session,
           SessionStatus sessionStatus) throws Exception {
 
@@ -68,18 +69,28 @@ public class PostController {
 //    }
 
 
+    // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
+    List<AttachedFile> attachedFiles = (List<AttachedFile>) session.getAttribute("attachedFiles");
 
-    // 파일 업로드 로직을 추가해줍니다.
-    ArrayList<AttachedFile> fileList = new ArrayList<>();
-    if (fileList != null && fileList.size() > 0) {
-      for (MultipartFile file : files) {
-        if (!file.isEmpty()) {
-          String filename = this.fileUpload.upload(this.bucketName, this.uploadDir, file);
-          fileList.add(AttachedFile.builder().filePath(filename).build()); // 업로드된 파일 이름 추가
+
+     // attachedFiles가 null이 아닌지 확인합니다.
+    if (attachedFiles != null) {
+      // attachedFiles가 null이 아닐 경우에만 처리합니다.
+
+      for (int i = attachedFiles.size() - 1; i >= 0; i--) {
+        AttachedFile attachedFile = attachedFiles.get(i);
+        if (post.getContent().indexOf(attachedFile.getFilePath()) == -1) {
+          // Object Storage에 업로드 한 파일 중에서 게시글 콘텐트에 포함되지 않은 것은 삭제한다.
+          fileUpload.delete(this.bucketName, this.uploadDir, attachedFile.getFilePath());
+          log.debug(String.format("%s 파일 삭제!", attachedFile.getFilePath()));
+          attachedFiles.remove(i);
         }
-
-
       }
+      if (attachedFiles.size() > 0) {
+        post.setFileList(attachedFiles);
+      }
+      // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
+      sessionStatus.setComplete();
     }
 
     // 'created_at' 필드에 현재 시간 설정
@@ -90,6 +101,53 @@ public class PostController {
 
     return "redirect:list?schoolNo=" + post.getSchoolNo();
   }
+
+
+
+
+//  @PostMapping("add")
+//  public String add(
+//          Post post,
+//          MultipartFile[] files, // 파일 업로드를 위한 파라미터 추가
+//          HttpSession session,
+//          SessionStatus sessionStatus) throws Exception {
+//
+//    //    User loginUser = (User) session.getAttribute("loginUser");
+////    if (loginUser == null) {
+////      throw new Exception("로그인하시기 바랍니다!");
+////    }
+////
+////    Post old = postService.get(post.getNo());
+////    if (old == null) {
+////      throw new Exception("번호가 유효하지 않습니다.");
+////
+////    } else if (old.getNo() != loginUser.getNo()) {
+////      throw new Exception("권한이 없습니다.");
+////    }
+//
+//
+//
+//    // 파일 업로드 로직을 추가해줍니다.
+//    ArrayList<AttachedFile> fileList = new ArrayList<>();
+//    if (fileList != null && fileList.size() > 0) {
+//      for (MultipartFile file : files) {
+//        if (!file.isEmpty()) {
+//          String filename = this.fileUpload.upload(this.bucketName, this.uploadDir, file);
+//          fileList.add(AttachedFile.builder().filePath(filename).build()); // 업로드된 파일 이름 추가
+//        }
+//
+//
+//      }
+//    }
+//
+//    // 'created_at' 필드에 현재 시간 설정
+//    post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
+//
+//    // 나머지 처리 코드
+//    postService.add(post);
+//
+//    return "redirect:list?schoolNo=" + post.getSchoolNo();
+//  }
 
 
   @GetMapping("list")
@@ -244,30 +302,69 @@ public class PostController {
   }
 
 
-////  @GetMapping("file/delete")
-//  public String fileDelete(int category, int no, HttpSession session) throws Exception {
-//
+  @GetMapping("file/delete")
+  public String fileDelete(int no, Post post, HttpSession session) throws Exception {
+
 //    User loginUser = (User) session.getAttribute("loginUser");
 //    if (loginUser == null) {
 //      throw new Exception("로그인하시기 바랍니다!");
 //    }
-//
-//    AttachedFile file = postService.getAttachedFile(no);
-//    if (file == null) {
-//      throw new Exception("첨부파일 번호가 유효하지 않습니다.");
-//    }
-//
-//    User writer = postService.get(file.getPostNo()).getWriter();
+
+    AttachedFile fileList = postService.getAttachedFile(no);
+    if (fileList == null) {
+      throw new Exception("첨부파일 번호가 유효하지 않습니다.");
+    }
+
+//    User writer = postService.get(fileList.getPostNo()).getWriter();
 //    if (writer.getNo() != loginUser.getNo()) {
 //      throw new Exception("권한이 없습니다.");
 //    }
-//
-//    postService.deleteAttachedFile(no);
-//
-//    //fileUploadHelper.delete(this.bucketName, this.uploadDir, file.getFilePath());
-//
-//    return "redirect:../view?category=" + category + "&no=" + file.getPostNo();
-//  }
+
+    postService.deleteAttachedFile(no);
+
+    //fileUploadHelper.delete(this.bucketName, this.uploadDir, file.getFilePath());
+
+    return "redirect:list?schoolNo=" + post.getSchoolNo();
+  }
+
+   @PostMapping("file/upload")
+  @ResponseBody
+  public Object fileUpload(
+      MultipartFile[] files,
+      HttpSession session,
+      Model model) throws Exception {
+
+    //    User loginUser = (User) session.getAttribute("loginUser");
+//    if (loginUser == null) {
+//      throw new Exception("로그인하시기 바랍니다!");
+//    }
+
+    // FileUpoladHelper Object Storage에 저장한 파일의 이미지 이름을 보관할 컬렉션을 준비한다.
+    ArrayList<AttachedFile> fileList = new ArrayList<>();
+
+    // 클라이언트가 보낸 멀티파트 파일을 FileUpoladHelper Object Storage에 업로드한다.
+    for (MultipartFile file : files) {
+      if (file.getSize() == 0) {
+        continue;
+      }
+      String filename = fileUpload.upload(this.bucketName, this.uploadDir, file);
+      fileList.add(AttachedFile.builder().filePath(filename).build());
+    }
+
+    // 업로드한 파일 목록을 세션에 보관한다.
+    ArrayList<AttachedFile> oldfileList = (ArrayList<AttachedFile>) session.getAttribute("attachedFiles");
+    if (oldfileList != null) {
+      oldfileList.addAll(fileList);
+      model.addAttribute("fileList", oldfileList);
+    } else {
+      model.addAttribute("fileList", fileList);
+    }
+
+    // 클라이언트에서 이미지 이름을 가지고 <img> 태그를 생성할 수 있도록
+    // 업로드한 파일의 이미지 정보를 보낸다.
+    return fileList;
+  }
+
 
 
 //  @GetMapping("/post/{schoolNo}")

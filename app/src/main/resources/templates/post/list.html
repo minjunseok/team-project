@@ -85,12 +85,12 @@
     <!-- 검색 결과가 여기에 표시될 것입니다 -->
 </div>
 
-<th:block th:if="${schoolUser}">
-    <a data-th-href="@{/form(schoolNo=*{schoolNo})}" href="form.html">새 글</a>
-</th:block>
-<th:block th:unless="${schoolUser}">
-    <button id="joinButton">가입하기</button>
-</th:block>
+<!--<th:block th:if="${schoolUser}">-->
+    <a data-th-href="@{form(schoolNo=*{schoolNo})}" href="form.html">새 글</a>
+<!--</th:block>-->
+<!--<th:block th:unless="${schoolUser}">-->
+<!--    <button id="joinButton">가입하기</button>-->
+<!--</th:block>-->
 
 <table border='1'>
     <thread>
