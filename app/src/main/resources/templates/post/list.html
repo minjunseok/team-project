@@ -85,10 +85,13 @@
     <!-- 검색 결과가 여기에 표시될 것입니다 -->
 </div>
 
-<a data-th-href="@{form(schoolNo=1)}" href="form.html">새 글</a>
+<th:block th:if="${schoolUser}">
+    <a data-th-href="@{/form(schoolNo=*{schoolNo})}" href="form.html">새 글</a>
+</th:block>
+<th:block th:unless="${schoolUser}">
+    <button id="joinButton">가입하기</button>
+</th:block>
 
-<!--미가입 회원은 새 글 대신 가입하기가 출력되며 가입하기를 눌렀을 때 바로 회원으로 가입 됨-->
-<a data-th-href="" href="">가입하기</a>
 <table border='1'>
     <thread>
         <tr>
@@ -115,5 +118,48 @@
 
     </tbody>
 </table>
+
+
+    <!--스쿨에 가입하지 않은 유저 가입하기 처리-->
+<script>
+
+      // 문서가 로드되면 실행될 함수
+    $(document).ready(function() {
+        // 가입하기 버튼에 이벤트 리스너 추가
+        $("#joinButton").click(function() {
+            join(); // join 함수 호출
+        });
+    });
+
+
+    function join(userNo) {
+        // 사용자 가입 처리를 위한 AJAX 요청
+        $.ajax({
+            type: "POST",
+            url: "/schooluser/addSchoolUser",  // 가입 처리를 담당하는 엔드포인트
+            data: {
+                user_no: userNo  // 사용자 닉네임 전달
+            },
+            success: function(response) {
+                // 가입이 성공적으로 처리되면 사용자 레벨을 1로 설정합니다.
+                // 이 부분은 서버에서 처리합니다.
+                alert("가입이 완료되었습니다.");
+                console.log("사용자 가입 성공");
+            },
+            error: function(xhr, status, error) {
+                alert("가입 실패. 다시 시도해 주십시오.");
+                console.error("가입 요청 실패:", error);
+
+                console.log("HTTP 상태 코드", xhr.status);
+                console.log("에러 메시지", xhr.responseText);
+
+            }
+        });
+    }
+</script>
+
+
+
+
 </body>
 </html>

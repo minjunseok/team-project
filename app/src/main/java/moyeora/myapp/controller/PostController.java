@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.CommentService;
 import moyeora.myapp.service.PostService;
 import moyeora.myapp.service.SchoolUserService;
+import moyeora.myapp.util.FileUpload;
 import moyeora.myapp.util.FileUploadHelper;
 import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Comment;
@@ -27,15 +28,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/post")
-@SessionAttributes("attachedFiles")
 public class PostController {
 
   //  private static final Log log = LogFactory.getLog(PostController.class);
   private final PostService postService;
-  private final FileUploadHelper fileUploadHelper;
+  private final FileUpload fileUpload;
   private final CommentService commentService;
   private final SchoolUserService schoolUserService;
-  private  final FileUploadHelper FileNameGenerator;
   private String uploadDir = "post/";
   private static final Log log = LogFactory.getLog(PostController.class);
 
@@ -48,35 +47,49 @@ public class PostController {
 
   }
 
- @PostMapping("add")
-public String add(
-        Post post,
-        @RequestParam("files") MultipartFile[] files, // 파일 업로드를 위한 파라미터 추가
-        HttpSession session,
-        SessionStatus sessionStatus) throws Exception {
+  @PostMapping("add")
+  public String add(
+          Post post,
+          MultipartFile[] files, // 파일 업로드를 위한 파라미터 추가
+          HttpSession session,
+          SessionStatus sessionStatus) throws Exception {
+
+    //    User loginUser = (User) session.getAttribute("loginUser");
+//    if (loginUser == null) {
+//      throw new Exception("로그인하시기 바랍니다!");
+//    }
+//
+//    Post old = postService.get(post.getNo());
+//    if (old == null) {
+//      throw new Exception("번호가 유효하지 않습니다.");
+//
+//    } else if (old.getNo() != loginUser.getNo()) {
+//      throw new Exception("권한이 없습니다.");
+//    }
+
+
 
     // 파일 업로드 로직을 추가해줍니다.
-    List<String> uploadedFiles = new ArrayList<>();
-    if (files != null && files.length > 0) {
-        for (MultipartFile file : files) {
-            if (!file.isEmpty()) {
-                String filename = FileNameGenerator.generateFileName(file); // 파일 이름 생성
-                String objectName = this.uploadDir + filename;
-                String filePath = this.fileUploadHelper.upload(this.bucketName, objectName, file);
-                uploadedFiles.add(filename); // 업로드된 파일 이름 추가
-            }
+    ArrayList<AttachedFile> fileList = new ArrayList<>();
+    if (fileList != null && fileList.size() > 0) {
+      for (MultipartFile file : files) {
+        if (!file.isEmpty()) {
+          String filename = this.fileUpload.upload(this.bucketName, this.uploadDir, file);
+          fileList.add(AttachedFile.builder().filePath(filename).build()); // 업로드된 파일 이름 추가
         }
+
+
+      }
     }
 
     // 'created_at' 필드에 현재 시간 설정
     post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
 
-   // 나머지 처리 코드
-   postService.add(post);
+    // 나머지 처리 코드
+    postService.add(post);
 
     return "redirect:list?schoolNo=" + post.getSchoolNo();
-}
-
+  }
 
 
   @GetMapping("list")
@@ -164,18 +177,18 @@ public String add(
 //    }
 
 
-    ArrayList<AttachedFile> attachedFiles = new ArrayList<>();
-    if (post.getCategoryNo() == 1) {
+    ArrayList<AttachedFile> fileList = new ArrayList<>();
+    if (fileList != null && fileList.size() > 0) {
       for (MultipartFile file : files) {
-        if (file.getSize() == 0) {
-          continue;
+        if (!file.isEmpty()) {
+          String filename = this.fileUpload.upload(this.bucketName, this.uploadDir, file);
+          fileList.add(AttachedFile.builder().filePath(filename).build()); // 업로드된 파일 이름 추가
         }
-        String filename = fileUploadHelper.upload(this.bucketName, this.uploadDir, file);
-        attachedFiles.add(AttachedFile.builder().filePath(filename).build());
       }
     }
-    if (attachedFiles.size() > 0) {
-      post.setFileList(attachedFiles);
+
+    if (fileList.size() > 0) {
+      post.setFileList(fileList);
     }
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
     postService.update(post);

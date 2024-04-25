@@ -1,5 +1,6 @@
 package moyeora.myapp.service;
 
+import moyeora.myapp.vo.Level;
 import moyeora.myapp.vo.User;
 
 import java.util.List;
@@ -32,4 +33,6 @@ public interface UserService {
     int update(User user);
 
     int pwdUpdate(User user);
+
+
 }
