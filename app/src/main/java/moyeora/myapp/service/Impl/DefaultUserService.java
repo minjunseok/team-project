@@ -5,6 +5,7 @@ import moyeora.myapp.dao.TagDao;
 import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.dao.UserTagDao;
 import moyeora.myapp.service.UserService;
+import moyeora.myapp.vo.Level;
 import moyeora.myapp.vo.User;
 import org.springframework.stereotype.Service;
 
@@ -108,4 +109,6 @@ import java.util.List;
         public User findByEmail(String email) {
             return userDao.findByEmail(email);
         }
+
+
     }

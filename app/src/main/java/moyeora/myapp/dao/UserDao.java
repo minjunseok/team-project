@@ -1,4 +1,5 @@
 package moyeora.myapp.dao;
+import moyeora.myapp.vo.Level;
 import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -42,4 +43,6 @@ public interface UserDao {
 
   public List<User> findAllNoMaster(int limit);
   public int passwordUpdate(User user);
+
+
 }

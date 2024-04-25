@@ -2,9 +2,11 @@ package moyeora.myapp.dao;
 
 import java.util.List;
 
+import moyeora.myapp.vo.Level;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.dto.school.admin.SchoolMemberUpdateRequestDTO;
 import moyeora.myapp.vo.SchoolUser;
+import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,4 +37,6 @@ public interface SchoolUserDao {
 
   int findAdmin(int userNo, int schoolNo);
   int findSubAdmin(int userNo, int schoolNo);
+
+    public void addSchoolUser(SchoolUser schoolUser);
 }
