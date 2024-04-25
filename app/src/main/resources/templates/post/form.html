@@ -35,32 +35,59 @@
 
 
 <script>
-    const btn_submit = document.querySelector('#btn_submit')
-    btn_submit.addEventListener("click", () => {
-        var markupStr = $('#summernote').summernote('code');
-        console.log(markupStr);
-    })
-    $(document).ready(function() {
+  $(document).ready(function() {
+    $('#summernote').summernote({
+      height: 300,
+      width: 500,
+      callbacks: {
+        onInit: function() {
+          console.log('Summernote 생성됨!');
+        },
+        onImageUpload: function(files) {
 
-        $('#summernote').summernote({
-            height: 300,
-            width: 500,
-            callbacks: {
+          let data = new FormData();
+          for (const file of files) {
+            data.append("files", file);
+          }
+          $.ajax({
+            url: 'file/upload', // 절대경로: http://localhost:8888/board2/file/upload
+            type: 'POST',
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            data: data
+          })
+          .done(function(result) {
+            if (result.length == 0) {
+              alert('로그인 하세요!');
+              return;
             }
-        })
 
-        // 서버에서 사용자의 등급 정보를 전달합니다.
-        var userGrade = "${userGrade}"; // "매니저" 또는 "부매니저"를 나타내는 값
+            // 서버에서 받은 업로드 파일 이름을 가지고 <img> 태그를 설정한다.
+            for (const attachedFile of result) {
+              $('#summernote').summernote('insertImage',
+                'https://kr.object.ncloudstorage.com/moyeorastorage/post/'
+                + attachedFile.filePath);
+            }
+          });
 
-        // "매니저" 또는 "부매니저"인 경우 체크박스를 보이도록 설정
-        if (userGrade === "admin" || userGrade === "sub-admin") {
-            $('#gradeMd').show();
-            $('#gradeMdLabel').show();
         }
+      }
+    });
 
+  });
 
-    })
+//     // 서버에서 사용자의 등급 정보를 전달합니다.
+//        var userGrade = "${userGrade}"; // "매니저" 또는 "부매니저"를 나타내는 값
+//
+//        // "매니저" 또는 "부매니저"인 경우 체크박스를 보이도록 설정
+//        if (userGrade === "admin" || userGrade === "sub-admin") {
+//            $('#gradeMd').show();
+//            $('#gradeMdLabel').show();
+//        }
+
 </script>
 
 </body>
 </html>
+
