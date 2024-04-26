@@ -2,6 +2,7 @@ package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.security.util.RedisUtil;
+import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.service.TagService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.service.impl.DefaultMailService;
@@ -40,8 +41,7 @@ public class UserController implements InitializingBean {
     private final String uploadDir = "user/";
     private String authId;
   @Value("${ncp.storage.bucket}") private String bucket;
-
-
+  private final UserDao userDao;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -231,4 +231,11 @@ public String update(User user, MultipartFile file) throws Exception {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
     }
+
+  @PostMapping("/userNo")
+  @ResponseBody
+  public User getUserNo(@RequestParam("user_no") int no) {
+    return userService.get(no);
+  }
 }
+

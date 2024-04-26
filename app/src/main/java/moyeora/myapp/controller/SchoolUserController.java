@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.CommentService;
 import moyeora.myapp.service.PostService;
 import moyeora.myapp.service.SchoolUserService;
+import moyeora.myapp.service.UserService;
 import moyeora.myapp.util.FileUploadHelper;
 import moyeora.myapp.vo.Post;
 import moyeora.myapp.vo.SchoolUser;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/schooluser")
+@RequestMapping("/schoolUser")
 public class SchoolUserController {
 
   //  private static final Log log = LogFactory.getLog(PostController.class);
@@ -27,6 +28,7 @@ public class SchoolUserController {
   private final SchoolUserService schoolUserService;
   private final FileUploadHelper fileUploadHelper;
   private final CommentService commentService;
+  private UserService userService;
   private String uploadDir = "post/";
   private static final Log log = LogFactory.getLog(SchoolUserController.class);
 
@@ -49,20 +51,38 @@ public class SchoolUserController {
 //    model.addAttribute("schoolusers", schoolUserService.findBySchoolUserList(schoolNo));
 //  }
 
+
+
   // 사용자 가입 처리를 담당하는 메서드
   @PostMapping("/addSchoolUser")
   @ResponseBody
   public String addSchoolUser(
-          SchoolUser schoolUser) {
+          @RequestParam(value = "userNo", required = false) int userNo,
+          @RequestParam(value = "schoolNo") int schoolNo
+          /*@RequestParam("schoolNo") int schoolNo*/) {
     try {
-         // 사용자를 가입시키고 레벨을 1로 설정
-    schoolUserService.addSchoolUser(schoolUser);
-      return "success"; // 가입 성공시 success 반환
+      // 1. UserService를 통해 유저 정보 조회
+      User user = userService.get(userNo);
+      if (user == null) {
+        return "error: 유저를 찾을 수 없습니다.";
+      }
+      log.debug(schoolNo);
+
+      // 2. 스쿨 유저 추가
+      SchoolUser schoolUser = new SchoolUser();
+      schoolUser.setUserNo(64);
+      schoolUser.setSchoolNo(1); // 예시로 스쿨 번호 1을 사용합니다.
+      schoolUser.setLevelNo(1); // 레벨 1로 설정
+
+      schoolUserService.addSchoolUser(userNo);
+
+      return "success: 스쿨 가입이 완료되었습니다.";
     } catch (Exception e) {
-      log.error("가입 처리 중 오류 발생: " + e.getMessage());
-      return "error"; // 가입 실패시 error 반환
+      e.printStackTrace();
+      return "error: 스쿨 가입 중 오류가 발생했습니다.";
     }
-
   }
-
 }
+
+
+
