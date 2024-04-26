@@ -73,9 +73,9 @@ public class PostController {
     List<AttachedFile> attachedFiles = (List<AttachedFile>) session.getAttribute("attachedFiles");
 
 
-     // attachedFiles가 null이 아닌지 확인합니다.
+     // attachedFiles가 null이 아닌지 확인
     if (attachedFiles != null) {
-      // attachedFiles가 null이 아닐 경우에만 처리합니다.
+      // attachedFiles가 null이 아닐 경우에만 처리
 
       for (int i = attachedFiles.size() - 1; i >= 0; i--) {
         AttachedFile attachedFile = attachedFiles.get(i);
@@ -103,53 +103,6 @@ public class PostController {
   }
 
 
-
-
-//  @PostMapping("add")
-//  public String add(
-//          Post post,
-//          MultipartFile[] files, // 파일 업로드를 위한 파라미터 추가
-//          HttpSession session,
-//          SessionStatus sessionStatus) throws Exception {
-//
-//    //    User loginUser = (User) session.getAttribute("loginUser");
-////    if (loginUser == null) {
-////      throw new Exception("로그인하시기 바랍니다!");
-////    }
-////
-////    Post old = postService.get(post.getNo());
-////    if (old == null) {
-////      throw new Exception("번호가 유효하지 않습니다.");
-////
-////    } else if (old.getNo() != loginUser.getNo()) {
-////      throw new Exception("권한이 없습니다.");
-////    }
-//
-//
-//
-//    // 파일 업로드 로직을 추가해줍니다.
-//    ArrayList<AttachedFile> fileList = new ArrayList<>();
-//    if (fileList != null && fileList.size() > 0) {
-//      for (MultipartFile file : files) {
-//        if (!file.isEmpty()) {
-//          String filename = this.fileUpload.upload(this.bucketName, this.uploadDir, file);
-//          fileList.add(AttachedFile.builder().filePath(filename).build()); // 업로드된 파일 이름 추가
-//        }
-//
-//
-//      }
-//    }
-//
-//    // 'created_at' 필드에 현재 시간 설정
-//    post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
-//
-//    // 나머지 처리 코드
-//    postService.add(post);
-//
-//    return "redirect:list?schoolNo=" + post.getSchoolNo();
-//  }
-
-
   @GetMapping("list")
   public void list(Model model, int schoolNo) {
     System
@@ -170,6 +123,7 @@ public class PostController {
 //      post.setComments(comments);
 //    }
     model.addAttribute("postList", posts);
+    model.addAttribute("schoolNo", schoolNo);
     model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
   }
 
@@ -293,7 +247,6 @@ public class PostController {
   public String md(
           int no,
           @RequestParam("schoolNo") int schoolNo,
-//          @RequestParam(required = false) Integer schoolNo, // Integer로 변경하여 널 허용 (로그인 구현되면 필요 없음)
           Model model) throws Exception {
     Post post = postService.get(no, schoolNo);
     model.addAttribute("post", post);
@@ -364,14 +317,5 @@ public class PostController {
     // 업로드한 파일의 이미지 정보를 보낸다.
     return fileList;
   }
-
-
-
-//  @GetMapping("/post/{schoolNo}")
-//  public String getPostsBySchool(@PathVariable int schoolNo, Model model) {
-//    List<Post> posts = postService.findBySchool(schoolNo);
-//    model.addAttribute("posts", posts);
-//    return "post/list";
-//  }
 
 }

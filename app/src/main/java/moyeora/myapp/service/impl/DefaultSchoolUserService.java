@@ -26,8 +26,19 @@ public class DefaultSchoolUserService implements SchoolUserService {
     return schoolUserDao.findBySchoolUserList(schoolNo);
   }
 
+//  @Override
+//  public void addSchoolUser(SchoolUser schoolUser) {
+//    schoolUserDao.addSchoolUser(schoolUser);
+//  }
+
   @Override
-  public void addSchoolUser(SchoolUser schoolUser) {
-    schoolUserDao.addSchoolUser(schoolUser);
+  public void addSchoolUser(int userNo) {
+    schoolUserDao.addSchoolUser(userNo);
   }
+
+
+//  @Override
+//  public void addSchoolUser(SchoolUser schoolUser) {
+//    schoolUserDao.addSchoolUser(schoolUser);
+//  }
 }

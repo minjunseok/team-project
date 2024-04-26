@@ -85,12 +85,12 @@
     <!-- 검색 결과가 여기에 표시될 것입니다 -->
 </div>
 
-<!--<th:block th:if="${schoolUser}">-->
+<th:block th:if="${schoolUser}">
     <a data-th-href="@{form(schoolNo=*{schoolNo})}" href="form.html">새 글</a>
-<!--</th:block>-->
-<!--<th:block th:unless="${schoolUser}">-->
-<!--    <button id="joinButton">가입하기</button>-->
-<!--</th:block>-->
+</th:block>
+<th:block th:unless="${schoolUser}">
+    <button id="joinButton">가입하기</button>
+</th:block>
 
 <table border='1'>
     <thread>
@@ -116,43 +116,69 @@
                href="md.html?(no=*{no}, schoolNo=*{schoolNo})">설정</a></td>
     </tr>
 
+
     </tbody>
 </table>
 
+    <input type="hidden" id="schoolNo" value="*{schoolNo}">
 
-    <!--스쿨에 가입하지 않은 유저 가입하기 처리-->
+<!--스쿨에 가입하지 않은 유저 가입하기 처리-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
-      // 문서가 로드되면 실행될 함수
+    // 문서가 로드되면 실행될 함수
     $(document).ready(function() {
         // 가입하기 버튼에 이벤트 리스너 추가
         $("#joinButton").click(function() {
-            join(); // join 함수 호출
+//            let sc = new DataForm();
+            let schoolNo = $('#schoolNo').val();
+//            sc.append("schoolNo", schoolNo);
+            join(schoolNo); // 가입 처리 함수 호출
         });
     });
 
-
-    function join(userNo) {
-        // 사용자 가입 처리를 위한 AJAX 요청
+    // 사용자 가입 처리 함수
+    function join(schoolNo) {
+        // 서버로 사용자 가입 요청을 보냅니다.
         $.ajax({
-            type: "POST",
-            url: "/schooluser/addSchoolUser",  // 가입 처리를 담당하는 엔드포인트
+            type: "POST", // 또는 GET, 서버의 요청 방식에 따라 변경할 수 있습니다.
+            url: "/user/userNo?schoolNo=" + schoolNo, // 사용자 정보를 가져오는 엔드포인트를 호출합니다.
+//            data: { user_no: "64" }, // 실제 user_no 값을 123 대신에 입력하세요
+            success: function(response) {
+                const userNo = response.no; // 변경된 사용자 정보 필드에 맞게 수정
+                // 가입 처리 함수 호출
+                // 사용자 번호를 user_no라는 파라미터로 전달할 수 있습니다.
+                // 이 부분을 서버 코드에서 해당하는 로직에 맞게 수정해야 합니다.
+                addSchoolUser(userNo);
+            },
+            error: function(xhr, status, error) {
+                console.error("사용자 정보 요청 실패:", error);
+                alert("사용자 정보를 가져오지 못했습니다. 다시 시도해주세요.");
+            }
+        });
+
+        console.log("====>")
+    }
+
+    // 스쿨에 가입하는 함수
+    function addSchoolUser(userNo) {
+        console.log("@@@@===>")
+        // 서버로 사용자 가입 요청을 보냅니다.
+        $.ajax({
+            type: "POST", // 또는 GET, 서버의 요청 방식에 따라 변경할 수 있습니다.
+            url: "/schoolUser/addSchoolUser", // 스쿨에 가입하는 엔드포인트를 호출합니다.
             data: {
-                user_no: userNo  // 사용자 닉네임 전달
+                user_no: userNo // 사용자 번호를 전달합니다.
             },
             success: function(response) {
-                // 가입이 성공적으로 처리되면 사용자 레벨을 1로 설정합니다.
-                // 이 부분은 서버에서 처리합니다.
+                // 가입이 성공한 경우의 동작을 여기에 추가합니다.
                 alert("가입이 완료되었습니다.");
                 console.log("사용자 가입 성공");
             },
             error: function(xhr, status, error) {
-                alert("가입 실패. 다시 시도해 주십시오.");
+                // 가입이 실패한 경우의 동작을 여기에 추가합니다.
+                alert("가입에 실패했습니다. 다시 시도해 주세요.");
                 console.error("가입 요청 실패:", error);
-
-                console.log("HTTP 상태 코드", xhr.status);
-                console.log("에러 메시지", xhr.responseText);
-
             }
         });
     }
