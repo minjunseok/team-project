@@ -1,6 +1,7 @@
 package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.service.TagService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.util.FileUpload;
@@ -26,6 +27,7 @@ public class UserController implements InitializingBean {
   private final UserService userService;
   private final TagService tagService;
   private final FileUpload fileUpload;
+  private final UserDao userDao;
   private final String uploadDir = "user/";
   ;
   @Value("${ncp.storage.bucket}")
@@ -106,5 +108,11 @@ public class UserController implements InitializingBean {
     userService.pwdUpdate(user);
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + userService);
     return "redirect:index";
+  }
+
+  @PostMapping("/userNo")
+  @ResponseBody
+  public User getUserNo(@RequestParam("user_no") int no) {
+    return userService.get(no);
   }
 }
