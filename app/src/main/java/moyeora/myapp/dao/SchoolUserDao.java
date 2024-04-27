@@ -39,5 +39,5 @@ public interface SchoolUserDao {
   int findSubAdmin(int userNo, int schoolNo);
 
 //    public void addSchoolUser(SchoolUser schoolUser);
-    public void addSchoolUser(int userNo);
+    public void addSchoolUser(int userNo, int schoolNo);
 }

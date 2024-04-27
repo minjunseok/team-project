@@ -32,8 +32,8 @@ public class DefaultSchoolUserService implements SchoolUserService {
 //  }
 
   @Override
-  public void addSchoolUser(int userNo) {
-    schoolUserDao.addSchoolUser(userNo);
+  public void addSchoolUser(int userNo, int schoolNo) {
+    schoolUserDao.addSchoolUser(userNo, schoolNo);
   }
 
 
