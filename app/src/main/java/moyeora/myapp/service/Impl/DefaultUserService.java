@@ -42,9 +42,7 @@ import java.util.List;
         }
 
         @Override
-        public User get(int no) {
-            return userDao.findBy(no);
-        }
+        public User get(int no) { return userDao.findByNo(no); }
 
         @Override
         public User get(String email) {

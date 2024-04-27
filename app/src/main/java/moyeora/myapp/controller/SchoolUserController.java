@@ -11,23 +11,28 @@ import moyeora.myapp.vo.SchoolUser;
 import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
+@RestController
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/schoolUser")
+@RequestMapping("schoolUser")
 public class SchoolUserController {
 
   //  private static final Log log = LogFactory.getLog(PostController.class);
   private final PostService postService;
+
+  @Autowired
   private final SchoolUserService schoolUserService;
   private final FileUploadHelper fileUploadHelper;
   private final CommentService commentService;
+
+  @Autowired
   private UserService userService;
   private String uploadDir = "post/";
   private static final Log log = LogFactory.getLog(SchoolUserController.class);
@@ -52,14 +57,21 @@ public class SchoolUserController {
 //  }
 
 
-
   // 사용자 가입 처리를 담당하는 메서드
   @PostMapping("/addSchoolUser")
   @ResponseBody
-  public String addSchoolUser(
-          @RequestParam(value = "userNo", required = false) int userNo,
-          @RequestParam(value = "schoolNo") int schoolNo
-          /*@RequestParam("schoolNo") int schoolNo*/) {
+  public String addSchoolUser(@RequestBody Map<String, Integer> requestData) {
+    Integer userNo = requestData.get("userNo");
+
+    // requestData.get("userNo")를 통해 받아온 값이 null인지 확인하고,
+    // null이 아닐 경우에만 Integer로 변환하여 사용해야 합니다.
+//    Integer userNo = requestData.containsKey("userNo") ? requestData.get("userNo") : null;
+//    if (userNo == null) {
+//      return "error: userNo가 유효하지 않습니다.";
+//    }
+
+    Integer schoolNo = requestData.get("schoolNo");
+
     try {
       // 1. UserService를 통해 유저 정보 조회
       User user = userService.get(userNo);
@@ -70,11 +82,11 @@ public class SchoolUserController {
 
       // 2. 스쿨 유저 추가
       SchoolUser schoolUser = new SchoolUser();
-      schoolUser.setUserNo(64);
-      schoolUser.setSchoolNo(1); // 예시로 스쿨 번호 1을 사용합니다.
-      schoolUser.setLevelNo(1); // 레벨 1로 설정
+      schoolUser.setUserNo(userNo);
+      schoolUser.setSchoolNo(schoolNo);
+      schoolUser.setLevelNo(1); // 유저의 스쿨 레벨을 1로 설정
 
-      schoolUserService.addSchoolUser(userNo);
+      schoolUserService.addSchoolUser(userNo, schoolNo);
 
       return "success: 스쿨 가입이 완료되었습니다.";
     } catch (Exception e) {

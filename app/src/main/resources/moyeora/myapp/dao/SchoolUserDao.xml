@@ -39,8 +39,10 @@
 
   <insert id="addSchoolUser" parameterType="SchoolUser">
   INSERT INTO
-    school_users (user_no, school_no, level_no, created_at)
-    values (#{userNo}, #{schoolNo}, #{levelNo}, NOW())
+<!--    school_users (user_no, school_no, level_no, created_at)-->
+<!--    values (#{userNo}, #{schoolNo}, #{levelNo}, NOW())-->
+    school_users (user_no, school_no, created_at)
+    values (#{userNo}, #{schoolNo}, NOW())
   </insert>
 
 
