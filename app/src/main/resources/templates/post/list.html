@@ -120,56 +120,57 @@
     </tbody>
 </table>
 
-    <input type="hidden" id="schoolNo" value="*{schoolNo}">
+
 
 <!--스쿨에 가입하지 않은 유저 가입하기 처리-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js" integrity="sha512-vuLOE4Fh9lfxaN9n81Vl1HwrqMYz9WKoNmsHNC7Hz7OWX4k4O7FjCyQ1tQ82RJExao+Fas40RLiS5PCfVRGgnQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
     // 문서가 로드되면 실행될 함수
     $(document).ready(function() {
         // 가입하기 버튼에 이벤트 리스너 추가
         $("#joinButton").click(function() {
-//            let sc = new DataForm();
-            let schoolNo = $('#schoolNo').val();
-//            sc.append("schoolNo", schoolNo);
+            const searchParam = window.location.search.replace('?','');
+            const {schoolNo} = window.Qs.parse(searchParam);
             join(schoolNo); // 가입 처리 함수 호출
         });
     });
+
 
     // 사용자 가입 처리 함수
     function join(schoolNo) {
         // 서버로 사용자 가입 요청을 보냅니다.
         $.ajax({
             type: "POST", // 또는 GET, 서버의 요청 방식에 따라 변경할 수 있습니다.
-            url: "/user/userNo?schoolNo=" + schoolNo, // 사용자 정보를 가져오는 엔드포인트를 호출합니다.
-//            data: { user_no: "64" }, // 실제 user_no 값을 123 대신에 입력하세요
+            url: "/user/userNo", // 사용자 정보를 가져오는 엔드포인트를 호출합니다.
+            data: { user_no: "64" }, // 실제 user_no 값을 123 대신에 입력하세요
             success: function(response) {
                 const userNo = response.no; // 변경된 사용자 정보 필드에 맞게 수정
+                console.log("@@@@@@@==>" + userNo);
                 // 가입 처리 함수 호출
                 // 사용자 번호를 user_no라는 파라미터로 전달할 수 있습니다.
                 // 이 부분을 서버 코드에서 해당하는 로직에 맞게 수정해야 합니다.
-                addSchoolUser(userNo);
+                addSchoolUser(userNo, schoolNo);
             },
             error: function(xhr, status, error) {
                 console.error("사용자 정보 요청 실패:", error);
                 alert("사용자 정보를 가져오지 못했습니다. 다시 시도해주세요.");
             }
         });
-
-        console.log("====>")
     }
 
     // 스쿨에 가입하는 함수
-    function addSchoolUser(userNo) {
-        console.log("@@@@===>")
+    function addSchoolUser(userNo, schoolNo) {
         // 서버로 사용자 가입 요청을 보냅니다.
         $.ajax({
             type: "POST", // 또는 GET, 서버의 요청 방식에 따라 변경할 수 있습니다.
             url: "/schoolUser/addSchoolUser", // 스쿨에 가입하는 엔드포인트를 호출합니다.
-            data: {
-                user_no: userNo // 사용자 번호를 전달합니다.
-            },
+            contentType: "application/json", // 요청 헤더의 Content-Type을 JSON으로 설정
+            data: JSON.stringify({ // 데이터를 JSON 형식으로 변환하여 전송
+                userNo: userNo,
+                schoolNo: schoolNo
+            }),
             success: function(response) {
                 // 가입이 성공한 경우의 동작을 여기에 추가합니다.
                 alert("가입이 완료되었습니다.");

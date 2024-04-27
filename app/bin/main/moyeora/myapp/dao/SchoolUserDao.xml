@@ -8,7 +8,6 @@
     <id column="user_no" property="userNo"/>
     <result column="school_no" property="schoolNo"/>
     <result column="level_no" property="levelNo"/>
-    <result column="level_no" property="levelNo"/>
     <result column="created_at" property="createdAt"/>
     
     <association property="member" javaType="User">
@@ -24,6 +23,7 @@
 
     <association property="level" javaType="Level">
       <result column="level_name" property="levelName"/>
+      <result column="level_no" property="levelNo"/>
     </association>
 
     <collection property="schools" ofType="School">
@@ -35,7 +35,15 @@
   </resultMap>
 
 
+<!--스쿨에 가입하지 않은 유저가 스쿨 가입을 할 때-->
 
+  <insert id="addSchoolUser" parameterType="SchoolUser">
+  INSERT INTO
+<!--    school_users (user_no, school_no, level_no, created_at)-->
+<!--    values (#{userNo}, #{schoolNo}, #{levelNo}, NOW())-->
+    school_users (user_no, school_no, created_at)
+    values (#{userNo}, #{schoolNo}, NOW())
+  </insert>
 
 
 
