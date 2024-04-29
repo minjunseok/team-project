@@ -12,7 +12,7 @@ public interface SchoolUserService {
   List<SchoolUser> findBySchoolUserList(int schoolNo);
 
 //  void addSchoolUser (SchoolUser schoolUser);
-  void addSchoolUser (int userNo, int schoolNo);
+  void addSchoolUser (int userNo, int schoolNo, int levelNo);
   }
 
 

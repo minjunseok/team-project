@@ -23,6 +23,8 @@ import javax.mail.MessagingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +42,10 @@ public class UserController implements InitializingBean {
     private final RedisUtil redisUtil;
     private final String uploadDir = "user/";
     private String authId;
-  @Value("${ncp.storage.bucket}") private String bucket;
   private final UserDao userDao;
+  private final HttpSession session;
+  @Value("${ncp.storage.bucket}")
+  private String bucket;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -234,8 +238,20 @@ public String update(User user, MultipartFile file) throws Exception {
 
   @PostMapping("/userNo")
   @ResponseBody
-  public User getUserNo(@RequestParam("user_no") int no) {
-    return userService.get(no);
+  public User getUserNo(HttpSession session) {
+
+    log.debug("@@@@@@@@@@==>" + session.getAttribute("SecurityContextImpl"));
+    Enumeration<?> attrName = session.getAttributeNames();
+    while (attrName.hasMoreElements()) {
+      String attr = (String) attrName.nextElement();
+      System.out.println("@@@@@@@@@@@@@=>"+session.getAttribute(attr));
+    }
+    log.debug("@@@@@@@@@@==>>>>" + session);
+    User loginUser = (User) session.getAttribute("loginUser");
+      if (loginUser == null) {
+        throw new RuntimeException("로그인 된 사용자 정보를 찾을 수 없습니다.");
+      }
+    return loginUser;
   }
 }
 
