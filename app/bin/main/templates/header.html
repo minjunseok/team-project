@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 
-<html lang='ko' xmlns:th="http://www.w3.org/1999/xhtml">
-
-<!--<html lang='en'>-->
-
+<html lang='ko' xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
   <meta charset='UTF-8'>
-  <title>2조 팀플</title>
+  <title>moyeora - 모여라에서 취미가 맞는 친구를 사귀어 보세요!</title>
 
   <style>
         img {
@@ -21,10 +18,6 @@
 
 <header data-th-fragment="header">
   <img src='https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'>
-  <a data-th-href="@{/assignment/list}">과제</a>
-  <a data-th-href="@{/board/list(category=1)}">게시글</a>
-  <a data-th-href="@{/member/list}">회원</a>
-  <a data-th-href="@{/board/list(category=2)}">가입인사</a>
   <a sec:authorize="isAuthenticated()" data-th-href="@{/auth/logout}"><span sec:authentication="name"></span> 로그아웃</a>
   <a sec:authorize="isAnonymous()" data-th-href="@{/auth/form}">로그인</a>
   <a data-th-href="@{/chat/gm?schoolNo=1}">gm</a>
