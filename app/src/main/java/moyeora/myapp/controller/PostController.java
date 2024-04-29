@@ -35,7 +35,6 @@ public class PostController {
   //  private static final Log log = LogFactory.getLog(PostController.class);
   private final PostService postService;
   private final FileUpload fileUpload;
-  private final CommentService commentService;
   private final SchoolUserService schoolUserService;
   private String uploadDir = "post/";
   private static final Log log = LogFactory.getLog(PostController.class);
@@ -55,7 +54,7 @@ public class PostController {
           HttpSession session,
           SessionStatus sessionStatus) throws Exception {
 
-    //    User loginUser = (User) session.getAttribute("loginUser");
+//        User loginUser = (User) session.getAttribute("loginUser");
 //    if (loginUser == null) {
 //      throw new Exception("로그인하시기 바랍니다!");
 //    }
@@ -112,16 +111,7 @@ public class PostController {
     log.debug(schoolUserService.findBySchoolUserList(schoolNo));
     System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
     List<Post> posts = postService.findBySchoolPostList(schoolNo);
-//    for (Post post : posts) {
-//      List<AttachedFile> attachedFiles = postService.getAttachedFiles(post.getNo());
-//      List<Comment> comments = postService.getComments(post.getNo());
 
-
-//    for (Post post : posts) {
-//      List<AttachedFile> attachedFiles = postService.getAttachedFiles(schoolNo);
-//      List<Comment> comments = postService.getComments(schoolNo);
-//      post.setComments(comments);
-//    }
     model.addAttribute("postList", posts);
     model.addAttribute("schoolNo", schoolNo);
     model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));

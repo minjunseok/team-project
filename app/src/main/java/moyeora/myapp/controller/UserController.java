@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class UserController implements InitializingBean {
   private final TagService tagService;
   private final FileUpload fileUpload;
   private final UserDao userDao;
+  private final HttpSession session;
   private final String uploadDir = "user/";
   ;
   @Value("${ncp.storage.bucket}")
@@ -112,7 +115,19 @@ public class UserController implements InitializingBean {
 
   @PostMapping("/userNo")
   @ResponseBody
-  public User getUserNo(@RequestParam("user_no") int no) {
-    return userService.get(no);
+  public User getUserNo(HttpSession session) {
+
+    log.debug("@@@@@@@@@@==>" + session.getAttribute("SecurityContextImpl"));
+    Enumeration<?> attrName = session.getAttributeNames();
+    while (attrName.hasMoreElements()) {
+      String attr = (String) attrName.nextElement();
+      System.out.println("@@@@@@@@@@@@@=>"+session.getAttribute(attr));
+    }
+    log.debug("@@@@@@@@@@==>>>>" + session);
+    User loginUser = (User) session.getAttribute("loginUser");
+      if (loginUser == null) {
+        throw new RuntimeException("로그인 된 사용자 정보를 찾을 수 없습니다.");
+      }
+    return loginUser;
   }
 }
