@@ -115,7 +115,7 @@
             processData: false,
             
         }).done(function(result) {
-                for (let classEvent of result) {
+            for (let classEvent of result) {
                 calendar.addEvent({
                 title: classEvent.name,
                 start: classEvent.startAt,
@@ -468,26 +468,23 @@ function displayPlaces(places) {
             });
             
             kakao.maps.event.addListener(marker, 'click', function() {
+                alert(JSON.stringify(place.road_address_name));
                 document.getElementById("location").value = place.place_name;
                 document.getElementById("locationDetail").value = place.address_name ;
-                
-                var mapModal = document.querySelector("#mapModal");
-                var mapModalInstance = bootstrap.Modal.getInstance(mapModal);
-                mapModalInstance.hide();
+<!--                closeMapModal();-->
                 
                 
                 console.log( "@@@@@@@@" + JSON.stringify(place));
                 console.log(JSON.stringify(place.road_address_name));
                 console.log(JSON.stringify(place.address_name));
+                console.log(JSON.stringify(place.x));
+                console.log(JSON.stringify(place.y));
 		    });
 		    
 		    itemEl.onclick =  function () {
+		        alert(JSON.stringify(place.road_address_name));
 		        document.getElementById("location").value = place.place_name;
                 document.getElementById("locationDetail").value = place.address_name;
-                
-                var mapModal = document.querySelector("#mapModal");
-                var mapModalInstance = bootstrap.Modal.getInstance(mapModal);
-                mapModalInstance.hide();
             };
 		    
 
@@ -626,13 +623,17 @@ function removeAllChildNods(el) {
     resultDiv.innerHTML = message;
     
 });
-</script>
 
-<script>
+let mapModal;
+
+     function closeMapModal() {
+        mapModal.hide();
+     };
+     
     
     // 지도 모달 닫힘 이벤트 처리
     document.querySelector("#mapModal").addEventListener('hide.bs.modal', function() {
-        console.log("mapModal 모달이 숨겨집니다.1");
+        console.log("mapModal 모달이 숨겨집니다.");
     });
 
 
