@@ -123,9 +123,10 @@
 
 
 <!--스쿨에 가입하지 않은 유저 가입하기 처리-->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js" integrity="sha512-vuLOE4Fh9lfxaN9n81Vl1HwrqMYz9WKoNmsHNC7Hz7OWX4k4O7FjCyQ1tQ82RJExao+Fas40RLiS5PCfVRGgnQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js"
+        integrity="sha512-vuLOE4Fh9lfxaN9n81Vl1HwrqMYz9WKoNmsHNC7Hz7OWX4k4O7FjCyQ1tQ82RJExao+Fas40RLiS5PCfVRGgnQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
 <script>
     // 문서가 로드되면 실행될 함수
     $(document).ready(function() {
@@ -144,9 +145,14 @@
         $.ajax({
             type: "POST", // 또는 GET, 서버의 요청 방식에 따라 변경할 수 있습니다.
             url: "/user/userNo", // 사용자 정보를 가져오는 엔드포인트를 호출합니다.
-            data: { user_no: "64" }, // 실제 user_no 값을 123 대신에 입력하세요
+//            data: { user_no: userNo }, // 실제 user_no 값을 123 대신에 입력하세요
             success: function(response) {
-                const userNo = response.no; // 변경된 사용자 정보 필드에 맞게 수정
+                const loginUser = response.no; // 변경된 사용자 정보 필드에 맞게 수정
+                if (!loginUser) {
+                    console.error("로그인한 사용자 정보가 없습니다.");
+                    return;
+                }
+                const userNo = loginUser.no;
                 console.log("@@@@@@@==>" + userNo);
                 // 가입 처리 함수 호출
                 // 사용자 번호를 user_no라는 파라미터로 전달할 수 있습니다.

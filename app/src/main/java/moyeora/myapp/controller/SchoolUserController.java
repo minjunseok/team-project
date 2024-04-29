@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @RestController
@@ -60,16 +62,16 @@ public class SchoolUserController {
   // 사용자 가입 처리를 담당하는 메서드
   @PostMapping("/addSchoolUser")
   @ResponseBody
-  public String addSchoolUser(@RequestBody Map<String, Integer> requestData) {
+  public String addSchoolUser(
+          HttpSession session,
+          @RequestBody Map<String, Integer> requestData) throws Exception {
+
+    User loginUser = (User) session.getAttribute("loginUser");
+    if (loginUser == null) {
+      throw new Exception("로그인하시기 바랍니다!");
+    }
+
     Integer userNo = requestData.get("userNo");
-
-    // requestData.get("userNo")를 통해 받아온 값이 null인지 확인하고,
-    // null이 아닐 경우에만 Integer로 변환하여 사용해야 합니다.
-//    Integer userNo = requestData.containsKey("userNo") ? requestData.get("userNo") : null;
-//    if (userNo == null) {
-//      return "error: userNo가 유효하지 않습니다.";
-//    }
-
     Integer schoolNo = requestData.get("schoolNo");
 
     try {
@@ -86,7 +88,7 @@ public class SchoolUserController {
       schoolUser.setSchoolNo(schoolNo);
       schoolUser.setLevelNo(1); // 유저의 스쿨 레벨을 1로 설정
 
-      schoolUserService.addSchoolUser(userNo, schoolNo);
+      schoolUserService.addSchoolUser(userNo, schoolNo, schoolUser.getLevelNo());
 
       return "success: 스쿨 가입이 완료되었습니다.";
     } catch (Exception e) {
