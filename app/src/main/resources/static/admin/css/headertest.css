@@ -14,6 +14,11 @@ a {
     color: var(--text-color);
 }
 
+img {
+    width: 150px;
+    height: 60px;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -36,6 +41,7 @@ a {
     display: flex;
     list-style: none;
     padding-left: 0;
+    margin-left: auto;
 }
 
 .header_menu li {
@@ -52,6 +58,7 @@ a {
     color: #CBBCA7;
     display: flex;
     padding-left: 0;
+    margin-right: 30px;
 }
 
 .header_icons il {
@@ -66,7 +73,7 @@ a {
     color: #CBBCA7;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 600px) {
     .header {
         flex-direction: column;
         align-items:  flex-start;
@@ -102,5 +109,10 @@ a {
 }
 
 hr {
-    color: #CBBCA7;
+    border: none;
+    /* 기본 테두리 제거 */
+    height: 12px;
+    /* 높이 설정 */
+    background-color: #CBBCA7;
+    /* 색상 설정 */
 }
