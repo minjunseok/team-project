@@ -1,12 +1,13 @@
 package moyeora.myapp.vo;
 
 
-import java.util.Date;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
 public class SchoolClass {
   private int no;
   private int schoolNo;

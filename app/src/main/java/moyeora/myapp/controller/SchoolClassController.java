@@ -1,11 +1,6 @@
 package moyeora.myapp.controller;
 
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.SchoolClassService;
 import moyeora.myapp.service.SchoolMemberService;
@@ -22,6 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/schoolclass")
@@ -104,7 +105,20 @@ public class SchoolClassController {
 
   }
 
+  @GetMapping("maptest2")
+  public void test2() throws Exception {
+
+  }
 
 
+  @GetMapping("maptest")
+  public void test() throws Exception {
 
+  }
+
+
+  @GetMapping("maptest3")
+  public void test3() throws Exception {
+
+  }
 }

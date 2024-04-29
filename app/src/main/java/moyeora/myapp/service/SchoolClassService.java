@@ -1,7 +1,8 @@
 package moyeora.myapp.service;
 
-import java.util.List;
 import moyeora.myapp.vo.SchoolClass;
+
+import java.util.List;
 
 public interface SchoolClassService {
 
@@ -11,6 +12,8 @@ public interface SchoolClassService {
   public List<SchoolClass> findByUserAddress(String address);
 
   void add(SchoolClass clazz);
+
+  SchoolClass get(int no);
 
   public List<SchoolClass> schoolCalendarList(int schoolNo);
 }

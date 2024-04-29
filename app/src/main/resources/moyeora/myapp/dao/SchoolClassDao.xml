@@ -41,7 +41,8 @@
 
   </select>
 
-<insert id="add" parameterType="SchoolClass">
+<insert id="add" parameterType="SchoolClass"
+    useGeneratedKeys="true" keyColumn="class_no" keyProperty="no">
     insert into school_classes(school_no,user_no,name,content,location,start_at,created_at,ended_at,member,repeat_set,photo,location_detail)
     values(#{schoolNo},#{userNo},#{name},#{content},#{location},#{startAt},current_timestamp,#{endedAt},#{member},#{repeatSet},
     #{photo},#{locationDetail})
