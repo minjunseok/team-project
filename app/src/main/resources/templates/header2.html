@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headerFragment">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 공통된 스타일시트 -->
+    <link rel="stylesheet" href="/static/admin/css/header.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+          rel="stylesheet">
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/ee5cb5f44c.js"
+            crossorigin="anonymous"></script>
+    <!-- 헤더 JavaScript -->
+    <script src="/static/admin/js/header.js" defer></script>
+</head>
+<style>
+    :root {
+    --background-color: #white;
+    --accent-color: rgb(236, 226, 218);
+}
+
+body {
+    margin: 0;
+    font-family: 'Source Code Pro';
+}
+
+.header a {
+    text-decoration: none;
+    color:  #CBBCA7;
+}
+
+
+img {
+    width: 350px;
+    height: 100px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-color);
+    padding: 8px 12px;
+}
+
+.header_logo {
+    font-size: 24px;
+    color: white;
+}
+
+.header_logo i {
+    color: #CBBCA7;
+}
+
+.header_menu {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    margin-left: 600px;
+}
+
+.header_menu li {
+    padding: 8px 12px;
+}
+
+.header_menu li:hover {
+    background-color: var(--accent-color);
+    border-radius: 20px;
+}
+
+.header_icons {
+    list-style: none;
+    color: #CBBCA7;
+    display: flex;
+    padding-left: 0;
+    margin-right: 100px;
+}
+
+.header_icons il {
+    padding: 8px 12px;
+}
+
+hr {
+    border: none;
+    height: 12px;
+    background-color: #CBBCA7;
+}
+
+</style>
+<body>
+
+<header data-th-fragment="header2">
+    <nav class="header">
+        <div class="navbar_logo">
+            <a href=""> <!-- 이미지를 눌렀을 때 메인홈으로 이동하는 주소 넣으면 됨. -->
+                <img src="/static/img/moyeoraL.png" alt="moyeora로고">
+            </a>
+        </div>
+
+        <ul class="header_menu"> <!--각 태크에 맞게 기능 연결 하면 됨.-->
+            <li><a href="">회원가입</a></li>
+            <li><a sec:authorize="isAnonymous()" data-th-href="@{/auth/form}">로그인</a></li>
+            <li><a sec:authorize="isAuthenticated()" data-th-href="@{/auth/logout}">
+                <span sec:authentication="name"></span> 로그아웃</a></li>
+            <li><a href="">Feed</a></li>
+            <li><a data-th-href="@{/chat/gm?schoolNo=1}">gm</a></li>
+        </ul>
+
+        <ul class="header_icons">
+            <a href=""> <!-- 아이콘 클릭했을 때 사용자 설정으로 이동하는 기능 추가하면 됨. -->
+                <i class="fa-solid fa-user"></i>
+            </a>
+        </ul>
+    </nav>
+
+    <hr/>
+
+</header>
+
+</body>
+</html>

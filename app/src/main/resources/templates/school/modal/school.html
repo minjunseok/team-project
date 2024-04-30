@@ -9,7 +9,7 @@
 <div class="modal" id="schoolInfoModal" data-th-fragment="school-modal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form data-th-object="${school}" id="schoolInfoForm">
+            <form data-th-object="${school}" id="schoolInfoForm" enctype="multipart/form-data">
                 <input type="hidden" id="schoolNo" name="schoolNo" value="">
                 <div class="modal-header">
                     <h5 class="modal-title">스쿨 정보 수정</h5>
@@ -102,6 +102,8 @@
             });
         }
 
+
+
         function update() {
             // 선택된 태그 번호를 배열로 저장
             var tagNums = [];
@@ -122,6 +124,7 @@
             tagNums.forEach(tagNum => {
                 formData.append('tagNums', tagNum);
             });
+
             // 파일이 있을 경우 추가
             var fileInput = document.getElementById('school_photo');
             var file = fileInput.files[0];
@@ -132,8 +135,9 @@
                 // 파일이 없을 때 기존 파일명을 formData에 추가
                 let previousPhotoUrl = document.getElementById('school_photo1').src;
                 let previousPhotoFileName = previousPhotoUrl.substring(previousPhotoUrl.lastIndexOf('/') + 1);
-                formData.append('previousPhoto', previousPhotoFileName);
+                formData.append('previousPhotoFileName', previousPhotoFileName);
             }
+
 
             // AJAX를 사용하여 서버에 데이터 전송
             axios.post("/school/admin/update", formData)

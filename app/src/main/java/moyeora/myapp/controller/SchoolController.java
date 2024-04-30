@@ -50,7 +50,7 @@ public class SchoolController implements InitializingBean {
       school.setPhoto(filename);
     }
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ school.getTags());
-    schoolService.add(school, 63, 63);
+    schoolService.add(school, 65, 65);
     return "redirect:list";
   }
 
