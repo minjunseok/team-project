@@ -15,35 +15,7 @@
 </head>
 <body>
 
-<!--헤더 시작-->
-    <nav class="header">
-        <div class="navbar_logo">
-            <a href=""> <!-- 이미지를 눌렀을 때 메인홈으로 이동하는 주소 넣으면 됨. -->
-                <img src="/static/img/moyeoraL.jpeg" alt="moyeora로고">
-            </a>
-        </div>
-
-        <ul class="header_menu"> <!--각 태크에 맞게 기능 연결 하면 됨.-->
-            <li><a href="">회원가입</a></li>
-            <li><a sec:authorize="isAnonymous()" data-th-href="@{/auth/form}">로그인</a></li>
-            <li><a sec:authorize="isAuthenticated()" data-th-href="@{/auth/logout}">
-                <span sec:authentication="name"></span> 로그아웃</a></li>
-            <li><a href="">Feed</a></li>
-            <li><a data-th-href="@{/chat/gm?schoolNo=1}">gm</a></li>
-        </ul>
-
-        <ul class="header_icons">
-            <a href=""> <!-- 아이콘 클릭했을 때 사용자 설정으로 이동하는 기능 추가하면 됨. -->
-                <i class="fa-solid fa-user"></i>
-            </a>
-        </ul>
-    </nav>
-
-    <hr/>
-<!--헤더 끝-->
-
-
-
+<div th:replace="header.html :: header"></div>
 
 
 <h1>스쿨 회원 리스트</h1>
