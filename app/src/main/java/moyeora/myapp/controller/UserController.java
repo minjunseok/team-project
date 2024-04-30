@@ -1,7 +1,10 @@
 package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
+<<<<<<< HEAD
 import moyeora.myapp.security.util.RedisUtil;
+=======
+>>>>>>> ccd3fa51ec007f602d2496543dc2d03e8afee64f
 import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.service.TagService;
 import moyeora.myapp.service.UserService;
@@ -19,16 +22,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+<<<<<<< HEAD
 import javax.mail.MessagingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+=======
+>>>>>>> ccd3fa51ec007f602d2496543dc2d03e8afee64f
 import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Map;
 import java.util.Random;
+=======
+>>>>>>> ccd3fa51ec007f602d2496543dc2d03e8afee64f
 
 @RequiredArgsConstructor
 @Controller
@@ -38,6 +47,7 @@ public class UserController implements InitializingBean {
   private final UserService userService;
   private final TagService tagService;
   private final FileUpload fileUpload;
+<<<<<<< HEAD
     private final DefaultMailService mailService;
     private final RedisUtil redisUtil;
     private final String uploadDir = "user/";
@@ -46,19 +56,60 @@ public class UserController implements InitializingBean {
   private final HttpSession session;
   @Value("${ncp.storage.bucket}")
   private String bucket;
+=======
+  private final UserDao userDao;
+  private final HttpSession session;
+  private final String uploadDir = "user/";
+  ;
+  @Value("${ncp.storage.bucket}")
+  private String bucket;
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
 
-        log.debug(String.format("uploadDir: %s", this.uploadDir));
+  @Override
+  public void afterPropertiesSet() throws Exception {
+>>>>>>> ccd3fa51ec007f602d2496543dc2d03e8afee64f
+
+    log.debug(String.format("uploadDir: %s", this.uploadDir));
+  }
+
+  @GetMapping("form")
+  public void form(Model model) throws Exception {
+
+    model.addAttribute("tags", tagService.findAllTag());
+  }
+
+  @PostMapping("add")
+  public String add(User user, MultipartFile file) throws Exception {
+
+
+    if (file.getSize() > 0) {
+      String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
+      user.setPhoto(filename);
+    }
+    userService.add(user);
+
+    return "redirect:index";
+  }
+
+  @GetMapping("view")
+  public void view(Model model) throws Exception {
+    User user = userService.get(42);
+    List<UserTag> userTags = user.getTags();
+    HashMap<Integer, UserTag> userTagMap = new HashMap<>();
+    for (UserTag userTag : userTags) {
+      userTagMap.put(userTag.getTagNo(), userTag);
     }
 
-    @GetMapping("form")
-    public void form(Model model) throws Exception{
-
-        model.addAttribute("tags",tagService.findAllTag());
+    System.out.println(user);
+    model.addAttribute("user", user);
+    model.addAttribute("userTagMap", userTagMap);
+    model.addAttribute("tags", tagService.findAllTag());
+    for (UserTag tag : user.getTags()) {
+      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@" + tag.getTagNo());
     }
+  }
 
+<<<<<<< HEAD
     @PostMapping("add")
     public String add(User user, MultipartFile file) throws Exception{
         System.out.println(user);
@@ -97,27 +148,32 @@ public class UserController implements InitializingBean {
 
 @PostMapping("update")
 public String update(User user, MultipartFile file) throws Exception {
+=======
+  @PostMapping("update")
+  public String update(User user, MultipartFile file) throws Exception {
+>>>>>>> ccd3fa51ec007f602d2496543dc2d03e8afee64f
 
     User old = userService.get(1);
     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + old);
     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + old.getNo());
     if (old == null) {
-        throw new Exception("회원 번호가 유효하지 않습니다.");
+      throw new Exception("회원 번호가 유효하지 않습니다.");
     }
     user.setNo(old.getNo());
 
     user.setCreatedAt(old.getCreatedAt());
 
 
-    if(file.getSize() > 0){
-        String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
-        user.setPhoto(filename);
-        fileUpload.delete(this.bucket, this.uploadDir, old.getPhoto());
+    if (file.getSize() > 0) {
+      String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
+      user.setPhoto(filename);
+      fileUpload.delete(this.bucket, this.uploadDir, old.getPhoto());
     } else {
-        user.setPhoto(old.getPhoto());
+      user.setPhoto(old.getPhoto());
     }
 
     userService.update(user);
+<<<<<<< HEAD
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ user);
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ userService);
     return "redirect:/index";
@@ -246,6 +302,31 @@ public String update(User user, MultipartFile file) throws Exception {
       String attr = (String) attrName.nextElement();
       System.out.println("@@@@@@@@@@@@@=>"+session.getAttribute(attr));
     }
+=======
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + user);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + userService);
+    return "redirect:index";
+  }
+
+  @PostMapping("pwdUpdate")
+  public String update(User user) throws Exception {
+
+    userService.pwdUpdate(user);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + userService);
+    return "redirect:index";
+  }
+
+  @PostMapping("/userNo")
+  @ResponseBody
+  public User getUserNo(HttpSession session) {
+
+    log.debug("@@@@@@@@@@==>" + session.getAttribute("SecurityContextImpl"));
+    Enumeration<?> attrName = session.getAttributeNames();
+    while (attrName.hasMoreElements()) {
+      String attr = (String) attrName.nextElement();
+      System.out.println("@@@@@@@@@@@@@=>"+session.getAttribute(attr));
+    }
+>>>>>>> ccd3fa51ec007f602d2496543dc2d03e8afee64f
     log.debug("@@@@@@@@@@==>>>>" + session);
     User loginUser = (User) session.getAttribute("loginUser");
       if (loginUser == null) {
