@@ -1,202 +1,226 @@
 <!DOCTYPE html>
-<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/admin/css/header.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
-          rel="stylesheet">
+<html
+  lang="en"
+  xmlns:th="http://www.w3.org/1999/xhtml"
+  xmlns:sec="http://www.w3.org/1999/xhtml"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/admin/css/header.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+      rel="stylesheet"
+    />
     <title>스쿨 메인페이지</title>
-    <script src="https://kit.fontawesome.com/ee5cb5f44c.js"
-            crossorigin="anonymous"></script>
-    <script src="/static/admin/js/header.js" defer></script>
-</head>
-<body>
+    <script
+      src="https://kit.fontawesome.com/ee5cb5f44c.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- <script src="/admin/js/header.js" defer></script> -->
+  </head>
+  <body>
+<!--    <div id="header"></div>-->
 
-<div th:replace="header.html :: header"></div>
+<div data-th-replace="header :: header"></div>
 
+    <h1>스쿨 회원 리스트</h1>
 
-<h1>스쿨 회원 리스트</h1>
-
-<table border='1'>
-    <thread>
+    <table border="1">
+      <thread>
         <tr>
-            <th>회원명</th>
-            <th>프로필 사진</th>
-            <th>회원 등급</th>
+          <th>회원명</th>
+          <th>프로필 사진</th>
+          <th>회원 등급</th>
         </tr>
-    </thread>
+      </thread>
 
-    <tbody>
+      <tbody>
+        <tr
+          data-th-each="schoolUser : ${schoolUsers}"
+          data-th-object="${schoolUser}"
+        >
+          <td data-th-text="*{writer.nickname}">작성자</td>
+          <td data-th-text="*{writer.photo}">사진</td>
+          <td data-th-text="*{level.levelName}">회원 등급</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <tr data-th-each="schoolUser : ${schoolUsers}" data-th-object="${schoolUser}">
+    <br />
+    <br />
 
-        <td data-th-text="*{writer.nickname}">작성자</td>
-        <td data-th-text="*{writer.photo}">사진</td>
-        <td data-th-text="*{level.levelName}">회원 등급</td>
-    </tr>
-    </tbody>
-</table>
-
-<br>
-<br>
-
-<h1>스쿨 게시글 리스트</h1>
-<!-- 검색창-->
-<form action='/post/search' method="post">
-    <div>
+    <h1>스쿨 게시글 리스트</h1>
+    <!-- 검색창-->
+    <form action="/post/search" method="post">
+      <div>
         <select name="filter">
-            <option value="0">내용</option>
-            <option value="1">작성자</option>
+          <option value="0">내용</option>
+          <option value="1">작성자</option>
         </select>
-        <input name='keyword' type='text' placeholder='검색어를 입력하세요.'>
-        <input name='schoolNo' type='hidden' value='1'><!-- schoolNo를 Integer로 선언 -->
+        <input name="keyword" type="text" placeholder="검색어를 입력하세요." />
+        <input
+          name="schoolNo"
+          type="hidden"
+          value="1"
+        /><!-- schoolNo를 Integer로 선언 -->
         <!--                <input th:if="${schoolNo != null}" name="schoolNo" type="hidden" th:value="${schoolNo}">&lt;!&ndash; schoolNo를 Integer로 선언 &ndash;&gt;-->
         <button id="postSearchForm">검색</button>
+      </div>
+    </form>
+
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    >
+        $(document).ready(function() {
+          // 폼이 제출되었을 때의 동작 설정
+          $("#postSearchForm").submit(function(event) {
+              // 폼의 기본 동작인 페이지 리로드를 막습니다.
+              event.preventDefault();
+
+              // 입력된 content를 가져옵니다.
+              var content = $("input[name='keyword']").val();
+              var filter = $("select[name='filter']").val();
+              var schoolNo = $("input[name='schoolNo']").val();
+
+              // 서버에 검색 요청을 보냅니다.
+              $.ajax({
+                  type: "GET",
+                  url: "/post/search", // 검색을 처리할 서버의 엔드포인트
+                  data: {
+                      schoolNo: schoolNo,
+                      keyword: content,
+                      filter: filter}, // 검색어를 전달합니다.
+                  success: function(response) {
+                      // 검색 결과를 받아와서 HTML로 표시합니다.
+                      $("#searchResult").html(response);
+                  },
+                  error: function(xhr, status, error) {
+                      console.error("검색 요청 실패:", error);
+                  }
+              });
+          });
+      });
+    </script>
+
+    <div id="searchResult">
+      <!-- 검색 결과가 여기에 표시될 것입니다 -->
     </div>
-</form>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
-    $(document).ready(function() {
-        // 폼이 제출되었을 때의 동작 설정
-        $("#postSearchForm").submit(function(event) {
-            // 폼의 기본 동작인 페이지 리로드를 막습니다.
-            event.preventDefault();
+    <th:block th:if="${schoolUser}">
+      <a data-th-href="@{form(schoolNo=*{schoolNo})}" href="form.html">새 글</a>
+    </th:block>
+    <th:block th:unless="${schoolUser}">
+      <button id="joinButton">가입하기</button>
+    </th:block>
 
-            // 입력된 content를 가져옵니다.
-            var content = $("input[name='keyword']").val();
-            var filter = $("select[name='filter']").val();
-            var schoolNo = $("input[name='schoolNo']").val();
-
-            // 서버에 검색 요청을 보냅니다.
-            $.ajax({
-                type: "GET",
-                url: "/post/search", // 검색을 처리할 서버의 엔드포인트
-                data: {
-                    schoolNo: schoolNo,
-                    keyword: content,
-                    filter: filter}, // 검색어를 전달합니다.
-                success: function(response) {
-                    // 검색 결과를 받아와서 HTML로 표시합니다.
-                    $("#searchResult").html(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error("검색 요청 실패:", error);
-                }
-            });
-        });
-    });
-</script>
-
-<div id="searchResult">
-    <!-- 검색 결과가 여기에 표시될 것입니다 -->
-</div>
-
-<th:block th:if="${schoolUser}">
-    <a data-th-href="@{form(schoolNo=*{schoolNo})}" href="form.html">새 글</a>
-</th:block>
-<th:block th:unless="${schoolUser}">
-    <button id="joinButton">가입하기</button>
-</th:block>
-
-<table border='1'>
-    <thread>
+    <table border="1">
+      <thread>
         <tr>
-            <th>닉네임</th>
-            <th>사진</th>
-            <th>내용</th>
-            <th>작성일</th>
-            <th>...(설정)</th>
+          <th>닉네임</th>
+          <th>사진</th>
+          <th>내용</th>
+          <th>작성일</th>
+          <th>...(설정)</th>
         </tr>
+      </thread>
+      <tbody>
+        <tr data-th-each="post : ${postList}" data-th-object="${post}">
+          <td data-th-text="*{writer.nickname}">작성자</td>
+          <td data-th-text="*{writer.photo}">사진</td>
+          <td>
+            <a
+              data-th-href="@{'view/' + *{schoolNo}(no=*{no})}"
+              th:utext="*{content}"
+              >내용</a
+            >
+          </td>
+          <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">
+            작성일
+          </td>
+          <td>
+            <a
+              data-th-href="@{md(no=*{no}, schoolNo=*{schoolNo})}"
+              href="md.html?(no=*{no}, schoolNo=*{schoolNo})"
+              >설정</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-    </thread>
-    <tbody>
-    <tr data-th-each="post : ${postList}" data-th-object="${post}">
-
-        <td data-th-text="*{writer.nickname}">작성자</td>
-        <td data-th-text="*{writer.photo}">사진</td>
-        <td>
-            <a data-th-href="@{'view/' + *{schoolNo}(no=*{no})}" th:utext="*{content}">내용</a>
-        </td>
-        <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
-        <td><a data-th-href="@{md(no=*{no}, schoolNo=*{schoolNo})}"
-               href="md.html?(no=*{no}, schoolNo=*{schoolNo})">설정</a></td>
-    </tr>
-    </tbody>
-</table>
-
-
-<!--스쿨에 가입하지 않은 유저 가입하기 처리-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js"
-        integrity="sha512-vuLOE4Fh9lfxaN9n81Vl1HwrqMYz9WKoNmsHNC7Hz7OWX4k4O7FjCyQ1tQ82RJExao+Fas40RLiS5PCfVRGgnQ=="
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer"></script>
-<script>
-    // 문서가 로드되면 실행될 함수
-    $(document).ready(function() {
+    <!--스쿨에 가입하지 않은 유저 가입하기 처리-->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js"
+      integrity="sha512-vuLOE4Fh9lfxaN9n81Vl1HwrqMYz9WKoNmsHNC7Hz7OWX4k4O7FjCyQ1tQ82RJExao+Fas40RLiS5PCfVRGgnQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      // 문서가 로드되면 실행될 함수
+      $(document).ready(function () {
+//        $("#header").load("/templates/header.html");
         // 가입하기 버튼에 이벤트 리스너 추가
-        $("#joinButton").click(function() {
-            const searchParam = window.location.search.replace('?','');
-            const {schoolNo} = window.Qs.parse(searchParam);
-            join(schoolNo); // 가입 처리 함수 호출
+        $("#joinButton").click(function () {
+          const searchParam = window.location.search.replace("?", "");
+          const { schoolNo } = window.Qs.parse(searchParam);
+          join(schoolNo); // 가입 처리 함수 호출
         });
-    });
+      });
 
-
-    // 사용자 가입 처리 함수
-    function join(schoolNo) {
+      // 사용자 가입 처리 함수
+      function join(schoolNo) {
         // 서버로 사용자 가입 요청을 보냅니다.
         $.ajax({
-            type: "POST", // 또는 GET, 서버의 요청 방식에 따라 변경할 수 있습니다.
-            url: "/user/userNo", // 사용자 정보를 가져오는 엔드포인트를 호출합니다.
-            //            data: { user_no: userNo }, // 실제 user_no 값을 123 대신에 입력하세요
-            success: function(response) {
-                const loginUser = response.no; // 변경된 사용자 정보 필드에 맞게 수정
-                if (!loginUser) {
-                    console.error("로그인한 사용자 정보가 없습니다.");
-                    return;
-                }
-                const userNo = loginUser.no;
-                console.log("@@@@@@@==>" + userNo);
-                // 가입 처리 함수 호출
-                // 사용자 번호를 user_no라는 파라미터로 전달할 수 있습니다.
-                // 이 부분을 서버 코드에서 해당하는 로직에 맞게 수정해야 합니다.
-                addSchoolUser(userNo, schoolNo);
-            },
-            error: function(xhr, status, error) {
-                console.error("사용자 정보 요청 실패:", error);
-                alert("사용자 정보를 가져오지 못했습니다. 다시 시도해주세요.");
+          type: "POST", // 또는 GET, 서버의 요청 방식에 따라 변경할 수 있습니다.
+          url: "/user/userNo", // 사용자 정보를 가져오는 엔드포인트를 호출합니다.
+          //            data: { user_no: userNo }, // 실제 user_no 값을 123 대신에 입력하세요
+          success: function (response) {
+            const loginUser = response.no; // 변경된 사용자 정보 필드에 맞게 수정
+            if (!loginUser) {
+              console.error("로그인한 사용자 정보가 없습니다.");
+              return;
             }
+            const userNo = loginUser.no;
+            console.log("@@@@@@@==>" + userNo);
+            // 가입 처리 함수 호출
+            // 사용자 번호를 user_no라는 파라미터로 전달할 수 있습니다.
+            // 이 부분을 서버 코드에서 해당하는 로직에 맞게 수정해야 합니다.
+            addSchoolUser(userNo, schoolNo);
+          },
+          error: function (xhr, status, error) {
+            console.error("사용자 정보 요청 실패:", error);
+            alert("사용자 정보를 가져오지 못했습니다. 다시 시도해주세요.");
+          },
         });
-    }
+      }
 
-    // 스쿨에 가입하는 함수
-    function addSchoolUser(userNo, schoolNo) {
+      // 스쿨에 가입하는 함수
+      function addSchoolUser(userNo, schoolNo) {
         // 서버로 사용자 가입 요청을 보냅니다.
         $.ajax({
-            type: "POST", // 또는 GET, 서버의 요청 방식에 따라 변경할 수 있습니다.
-            url: "/schoolUser/addSchoolUser", // 스쿨에 가입하는 엔드포인트를 호출합니다.
-            contentType: "application/json", // 요청 헤더의 Content-Type을 JSON으로 설정
-            data: JSON.stringify({ // 데이터를 JSON 형식으로 변환하여 전송
-                userNo: userNo,
-                schoolNo: schoolNo
-            }),
-            success: function(response) {
-                // 가입이 성공한 경우의 동작을 여기에 추가합니다.
-                alert("가입이 완료되었습니다.");
-                console.log("사용자 가입 성공");
-            },
-            error: function(xhr, status, error) {
-                // 가입이 실패한 경우의 동작을 여기에 추가합니다.
-                alert("가입에 실패했습니다. 다시 시도해 주세요.");
-                console.error("가입 요청 실패:", error);
-            }
+          type: "POST", // 또는 GET, 서버의 요청 방식에 따라 변경할 수 있습니다.
+          url: "/schoolUser/addSchoolUser", // 스쿨에 가입하는 엔드포인트를 호출합니다.
+          contentType: "application/json", // 요청 헤더의 Content-Type을 JSON으로 설정
+          data: JSON.stringify({
+            // 데이터를 JSON 형식으로 변환하여 전송
+            userNo: userNo,
+            schoolNo: schoolNo,
+          }),
+          success: function (response) {
+            // 가입이 성공한 경우의 동작을 여기에 추가합니다.
+            alert("가입이 완료되었습니다.");
+            console.log("사용자 가입 성공");
+          },
+          error: function (xhr, status, error) {
+            // 가입이 실패한 경우의 동작을 여기에 추가합니다.
+            alert("가입에 실패했습니다. 다시 시도해 주세요.");
+            console.error("가입 요청 실패:", error);
+          },
         });
-    }
-</script>
-
-
-</body>
+      }
+    </script>
+  </body>
 </html>
