@@ -14,10 +14,11 @@
   <result column="open_range" property="openRange"/>
   <result column="created_at" property="createdAt"/>
   <result column="now_member_count" property="nowMemberCount"/>
+
+  <collection property="tags" ofType="SchoolTag">
+    <id column="tag_no" property="tagNo"/>
+  </collection>
 </resultMap>
-
-
-
 
   <insert id="add" parameterType="School"
     useGeneratedKeys="true" keyColumn="school_no" keyProperty="no">
@@ -77,7 +78,6 @@
       open_range=#{openRange}
     where
       school_no=#{schoolNo}
-
   </update>
 
   <select id="isNameExists" resultType="int" parameterType="String">
@@ -88,4 +88,31 @@
     name = #{name}
   </select>
 
+  <update id="update" parameterType="School">
+    update schools set
+    name=#{name},
+    photo=#{photo},
+    content=#{content}
+    where
+    school_no=#{no}
+  </update>
+
+
+  <select id="findBySchool" resultMap="SchoolMap" parameterType="int">
+    SELECT
+      s.school_no,
+      s.name,
+      s.content,
+      s.photo,
+      st.tag_no,
+      t.name
+    FROM
+      schools s
+    LEFT JOIN
+      school_tags st ON s.school_no = st.school_no
+    LEFT JOIN
+      tags t ON t.tag_no = st.tag_no
+    WHERE
+      s.school_no = #{no}
+  </select>
 </mapper>

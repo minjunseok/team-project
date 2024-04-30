@@ -102,10 +102,6 @@ public class DefaultSchoolService implements SchoolService {
     return null;
   }
 
-  @Override
-  public int update(School school) {
-    return 0;
-  }
 
   @Override
   public int delete(int postNo) {
@@ -151,10 +147,5 @@ public class DefaultSchoolService implements SchoolService {
     return schoolDao.isNameExists(name);
   }
 
-
-  @Override
-  public List<School> getAllSchools(String name) {
-    return schoolDao.getAllSchools(name);
-  }
 }
 

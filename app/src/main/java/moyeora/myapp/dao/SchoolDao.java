@@ -37,5 +37,5 @@ public interface SchoolDao {
 
   int isNameExists(String name);
 
-  List<School> getAllSchools(String name);
+  School findBySchool(int schoolNo);
 }

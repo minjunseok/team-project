@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset='UTF-8'>
+    <title>비트캠프 데브옵스 5기</title>
+</head>
+<body>
+
+
+<div data-th-replace="header :: header">머리말</div>
+
+<h1>스쿨 회원 리스트</h1>
+
+<table border='1'>
+    <thread>
+        <tr>
+            <th>회원명</th>
+            <th>프로필 사진</th>
+            <th>회원 등급</th>
+        </tr>
+    </thread>
+
+    <tbody>
+
+    <tr data-th-each="schoolUser : ${schoolUsers}" data-th-object="${schoolUser}">
+
+        <td data-th-text="*{writer.nickname}">작성자</td>
+        <td data-th-text="*{writer.photo}">사진</td>
+        <td data-th-text="*{level.levelName}">회원 등급</td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<br>
+
+<h1>스쿨 게시글 리스트</h1>
+<!-- 검색창-->
+<form action='/post/search' method="post">
+    <div>
+        <select name="filter">
+            <option value="0">내용</option>
+            <option value="1">작성자</option>
+        </select>
+        <input name='keyword' type='text' placeholder='검색어를 입력하세요.'>
+        <input name='schoolNo' type='hidden' value='1'><!-- schoolNo를 Integer로 선언 -->
+        <!--                <input th:if="${schoolNo != null}" name="schoolNo" type="hidden" th:value="${schoolNo}">&lt;!&ndash; schoolNo를 Integer로 선언 &ndash;&gt;-->
+        <button id="postSearchForm">검색</button>
+    </div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    $(document).ready(function() {
+        // 폼이 제출되었을 때의 동작 설정
+        $("#postSearchForm").submit(function(event) {
+            // 폼의 기본 동작인 페이지 리로드를 막습니다.
+            event.preventDefault();
+
+            // 입력된 content를 가져옵니다.
+            var content = $("input[name='keyword']").val();
+            var filter = $("select[name='filter']").val();
+            var schoolNo = $("input[name='schoolNo']").val();
+
+            // 서버에 검색 요청을 보냅니다.
+            $.ajax({
+                type: "GET",
+                url: "/post/search", // 검색을 처리할 서버의 엔드포인트
+                data: {
+                    schoolNo: schoolNo,
+                    keyword: content,
+                    filter: filter}, // 검색어를 전달합니다.
+                success: function(response) {
+                    // 검색 결과를 받아와서 HTML로 표시합니다.
+                    $("#searchResult").html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error("검색 요청 실패:", error);
+                }
+            });
+        });
+    });
+</script>
+
+<div id="searchResult">
+    <!-- 검색 결과가 여기에 표시될 것입니다 -->
+</div>
+
+<th:block th:if="${schoolUser}">
+    <a data-th-href="@{form(schoolNo=1)}" href="form.html">새 글</a>
+</th:block>
+<th:block th:unless="${schoolUser}">
+    <button id="joinButton">가입하기</button>
+</th:block>
+
+<table border='1'>
+    <thread>
+        <tr>
+            <th>닉네임</th>
+            <th>사진</th>
+            <th>내용</th>
+            <th>작성일</th>
+            <th>...(설정)</th>
+        </tr>
+
+    </thread>
+    <tbody>
+    <tr data-th-each="post : ${postList}" data-th-object="${post}">
+
+        <td data-th-text="*{writer.nickname}">작성자</td>
+        <td data-th-text="*{writer.photo}">사진</td>
+        <td>
+            <a data-th-href="@{'view/' + *{schoolNo}(no=*{no})}" th:utext="*{content}">내용</a>
+        </td>
+        <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
+        <td><a data-th-href="@{md(no=*{no}, schoolNo=*{schoolNo})}"
+               href="md.html?(no=*{no}, schoolNo=*{schoolNo})">설정</a></td>
+    </tr>
+
+    </tbody>
+</table>
+
+
+<!--스쿨에 가입하지 않은 유저 가입하기 처리-->
+<script>
+
+    // 문서가 로드되면 실행될 함수
+  $(document).ready(function() {
+      // 가입하기 버튼에 이벤트 리스너 추가
+      $("#joinButton").click(function() {
+          join(); // join 함수 호출
+      });
+  });
+
+
+  function join() {
+      // 사용자 가입 처리를 위한 AJAX 요청
+      $.ajax({
+          type: "POST",
+          url: "/schooluser/addSchoolUser",  // 가입 처리를 담당하는 엔드포인트
+          data: {
+              user_no: user_no  // 사용자 닉네임 전달
+          },
+          success: function(response) {
+              // 가입이 성공적으로 처리되면 사용자 레벨을 1로 설정합니다.
+              // 이 부분은 서버에서 처리합니다.
+              alert("가입이 완료되었습니다.");
+              console.log("사용자 가입 성공");
+          },
+          error: function(xhr, status, error) {
+              alert("가입 실패. 다시 시도해 주십시오.");
+              console.error("가입 요청 실패:", error);
+          }
+      });
+  }
+</script>
+
+
+</body>
+</html>
