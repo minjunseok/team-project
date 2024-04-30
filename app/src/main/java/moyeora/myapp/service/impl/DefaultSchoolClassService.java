@@ -2,9 +2,12 @@ package moyeora.myapp.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.dao.AlertDao;
 import moyeora.myapp.dao.ClassUserDao;
 import moyeora.myapp.dao.SchoolClassDao;
+import moyeora.myapp.dao.SchoolMemberDao;
 import moyeora.myapp.service.SchoolClassService;
+import moyeora.myapp.vo.Alert;
 import moyeora.myapp.vo.SchoolClass;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,8 @@ public class DefaultSchoolClassService implements SchoolClassService {
 
   private final SchoolClassDao schoolClassDao;
   private final ClassUserDao classUserDao;
+  private final SchoolMemberDao schoolMemberDao;
+  private final AlertDao alertDao;
 
   @Override
   public List<SchoolClass> findByDate(String date) {
@@ -40,6 +45,22 @@ public class DefaultSchoolClassService implements SchoolClassService {
     System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + clazz.getUserNo());
     System.out.println("$$$$$$$$$$$$$$$$$$$$444$$$" + clazz.getSchoolNo());
     System.out.println("#########################" + clazz.getNo());
+  }
+
+  @Override
+  public void addAlert(Alert alert, SchoolClass clazz) {
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@" + alert.getUserNo());
+    System.out.println("$$$$$$$$$$$$$$$$$$$" + alert.getToUserNo());
+    System.out.println("==============================================");
+    clazz.getNo();
+    clazz.getContent();
+    clazz.getName();
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@" + clazz.getNo());
+    System.out.println("$$$$$$$$$$$$$$$$$$$" + clazz.getContent());
+    System.out.println("$$$$$$$$$$$$$$$$$$$" + clazz.getName());
+    System.out.println("==============================================");
+    alertDao.addAlert(alert);
+
   }
 
   @Override

@@ -105,6 +105,16 @@ public class SchoolClassController {
 
   }
 
+//  @PostMapping("addAlert")
+//  public Object addAlert(Alert alert, SchoolClass clazz) throws Exception {
+////    clazz.getNo();
+//    alert.setUserNo(1);
+//    System.out.println("@@@@@@@@@@@@@@@@@@@@" + alert);
+//    System.out.println("@@@@@@@@@@@@@@@");
+//    schoolClassService.addAlert(alert, clazz);
+//    return "alertTest?schoolNo=1";
+//  }
+
   @GetMapping("maptest2")
   public void test2() throws Exception {
 
@@ -117,8 +127,11 @@ public class SchoolClassController {
   }
 
 
-  @GetMapping("maptest3")
-  public void test3() throws Exception {
+  @GetMapping("alertTest")
+  public void test3(Model model, int schoolNo) throws Exception {
+
+    model.addAttribute("schoolMembers", schoolMemberService.list(schoolNo));
+    System.out.println("=====classcontorller.schoolMember==============>    " + schoolMemberService);
 
   }
 }
