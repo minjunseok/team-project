@@ -49,7 +49,7 @@ public class PostController {
   @PostMapping("add")
   public String add(
           Post post,
-          MultipartFile[] attachedFiles,
+          MultipartFile[] files,
           HttpSession session) throws Exception {
 
 //    User loginUser = (User) session.getAttribute("loginUser");
@@ -66,8 +66,8 @@ public class PostController {
 //    }
 
     // 파일 업로드 및 AttachedFile 생성
-    List<AttachedFile> files = new ArrayList<>();
-    for (MultipartFile file : attachedFiles) {
+    List<AttachedFile> attachedFiles = new ArrayList<>();
+    for (MultipartFile file : files) {
         if (file.getSize() == 0) {
             continue;
         }
@@ -75,7 +75,7 @@ public class PostController {
     // AttachedFile 객체 생성 후 파일 이름 설정
         AttachedFile attachedFile = new AttachedFile();
         attachedFile.setFileName(filename);
-        files.add(attachedFile);
+        attachedFiles.add(attachedFile);
     }
 
 
@@ -136,21 +136,6 @@ public class PostController {
     return model;
   }
 
-//@RequestMapping("list")
-//public String list(
-//        @RequestParam(defaultValue = "1") int categoryNo,
-//        Model model,
-//        Integer schoolNo) throws Exception {
-//  model.addAttribute("postList", postService.findAll(categoryNo));
-//  model.addAttribute("postNo",  categoryNo == 0 ? "일반" : "공지");
-//  model.addAttribute("categoryNo",  categoryNo);
-//
-//        // 학교 번호를 모델에 추가
-//        model.addAttribute("schoolNo", schoolNo); // 학교 번호를 가져온다.
-//
-//  return "post/list";
-//}
-
 
   // 검색창에 필터로 검색했을 때
   @PostMapping("search")
@@ -172,7 +157,7 @@ public class PostController {
   @PostMapping("update")
   public String update(
           Post post,
-          MultipartFile[] attachedFiles,
+          MultipartFile[] files,
           HttpSession session) throws Exception {
 
 //    User loginUser = (User) session.getAttribute("loginUser");
@@ -187,20 +172,21 @@ public class PostController {
 //    } else if (old.getNo() != loginUser.getNo()) {
 //      throw new Exception("권한이 없습니다.");
 //    }
-//
-//    ArrayList<AttachedFile> files = new ArrayList<>();
-//    if (post.getCategoryNo() == 1) {
-//      for (MultipartFile file : attachedFiles) {
-//        if (file.getSize() == 0) {
-//          continue;
-//        }
-//        String filename = fileUploadHelper.upload(this.bucketName, this.uploadDir, file);
-//        files.add(AttachedFile.builder().filePath(filename).build());
-//      }
-//    }
-//    if (files.size() > 0) {
-//      post.setFileList(files);
-//    }
+
+
+    ArrayList<AttachedFile> attachedFiles = new ArrayList<>();
+    if (post.getCategoryNo() == 1) {
+      for (MultipartFile file : files) {
+        if (file.getSize() == 0) {
+          continue;
+        }
+        String filename = fileUploadHelper.upload(this.bucketName, this.uploadDir, file);
+        attachedFiles.add(AttachedFile.builder().filePath(filename).build());
+      }
+    }
+    if (attachedFiles.size() > 0) {
+      post.setFileList(attachedFiles);
+    }
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
     postService.update(post);
 
@@ -229,13 +215,13 @@ public class PostController {
 //    } else if (post.getNo() != loginUser.getNo()) {
 //      throw new Exception("권한이 없습니다.");
 //    }
-
+//
 //    List<AttachedFile> files = postService.getAttachedFiles(no);
-
+//
     postService.delete(no, schoolNo);
-
+//
 //    for (AttachedFile file : files) {
-    //fileUploadHelper.delete(this.bucketName, this.uploadDir, file.getFilePath());
+//    fileUploadHelper.delete(this.bucketName, this.uploadDir, file.getFilePath());
 //    }
 
     return "redirect:list?schoolNo=" + post.getSchoolNo();
