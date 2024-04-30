@@ -13,6 +13,7 @@ body {
     color:  #CBBCA7;
 }
 
+
 img {
     width: 350px;
     height: 100px;
@@ -24,7 +25,6 @@ img {
     align-items: center;
     background-color: var(--background-color);
     padding: 8px 12px;
-    
 }
 
 .header_logo {
@@ -40,7 +40,7 @@ img {
     display: flex;
     list-style: none;
     padding-left: 0;
-    margin-left: 650px;
+    margin-left: 600px;
 }
 
 .header_menu li {
