@@ -32,5 +32,11 @@ public interface UserService {
 
     int update(User user);
 
+<<<<<<< HEAD
   int passwordUpdate(User user);
+=======
+    int pwdUpdate(User user);
+
+
+>>>>>>> ccd3fa51ec007f602d2496543dc2d03e8afee64f
 }

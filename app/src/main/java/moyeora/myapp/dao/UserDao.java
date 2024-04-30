@@ -1,5 +1,8 @@
 package moyeora.myapp.dao;
+<<<<<<< HEAD
 
+=======
+>>>>>>> ccd3fa51ec007f602d2496543dc2d03e8afee64f
 import moyeora.myapp.vo.Level;
 import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
@@ -46,4 +49,8 @@ public interface UserDao {
 
   public int passwordUpdate(User user);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ccd3fa51ec007f602d2496543dc2d03e8afee64f
 }

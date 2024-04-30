@@ -13,7 +13,10 @@ body {
     color:  #CBBCA7;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ccd3fa51ec007f602d2496543dc2d03e8afee64f
 img {
     width: 350px;
     height: 100px;
@@ -25,6 +28,10 @@ img {
     align-items: center;
     background-color: var(--background-color);
     padding: 8px 12px;
+<<<<<<< HEAD
+=======
+    
+>>>>>>> ccd3fa51ec007f602d2496543dc2d03e8afee64f
 }
 
 .header_logo {
@@ -40,7 +47,11 @@ img {
     display: flex;
     list-style: none;
     padding-left: 0;
+<<<<<<< HEAD
     margin-left: 600px;
+=======
+    margin-left: 650px;
+>>>>>>> ccd3fa51ec007f602d2496543dc2d03e8afee64f
 }
 
 .header_menu li {
