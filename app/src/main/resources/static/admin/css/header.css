@@ -1,5 +1,4 @@
 :root {
-    --text-color: #CBBCA7;
     --background-color: #white;
     --accent-color: rgb(236, 226, 218);
 }
@@ -9,9 +8,9 @@ body {
     font-family: 'Source Code Pro';
 }
 
-a {
+.header a {
     text-decoration: none;
-    color: var(--text-color);
+    color:  #CBBCA7;
 }
 
 img {
