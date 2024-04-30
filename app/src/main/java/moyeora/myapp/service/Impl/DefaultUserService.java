@@ -6,7 +6,6 @@ import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.dao.UserTagDao;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.vo.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,22 +16,12 @@ import java.util.List;
 
         private final UserDao userDao;
         private final UserTagDao userTagDao;
-        private final PasswordEncoder passwordEncoder;
         private final TagDao tagDao;
 
         @Override
         public void add(User user) {
-
-            if (user.getPassword() != null) {
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
-            }
+            //user.setPwd(passwordEncoder.encode(user.getPwd()));
             userDao.add(user);
-            if (user.getTagNums() != null && user.getTagNums().size() >= 3) {
-                for (int tagNum : user.getTagNums()) {
-
-                    userTagDao.add(tagNum, user.getNo());
-                }
-            }
         }
 
         @Override
@@ -76,11 +65,14 @@ import java.util.List;
         }
 
         @Override
-        public int passwordUpdate(User user) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        public int pwdUpdate(User user) {
             return userDao.passwordUpdate(user);
         }
 
+        @Override
+        public int findUserGrade(int grade) {
+            return userDao.findUserGrade(grade);
+        }
         @Override
         public int update(User user) {
 
@@ -108,7 +100,6 @@ import java.util.List;
 
         @Override
         public int updatePassword(User user) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userDao.updatePassword(user);
         }
 

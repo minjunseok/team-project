@@ -1,8 +1,8 @@
 package moyeora.myapp.service.impl;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.SchoolDao;
+import moyeora.myapp.dao.SchoolTagDao;
 import moyeora.myapp.dao.SchoolUserDao;
 import moyeora.myapp.dto.school.admin.SchoolMemberUpdateRequestDTO;
 import moyeora.myapp.dto.school.admin.SchoolOpenRangeUpdateRequestDTO;
@@ -11,12 +11,15 @@ import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
 public class DefaultSchoolAdminService implements SchoolAdminService {
   private final SchoolUserDao schoolUserDao;
   private final SchoolDao schoolDao;
+  private final SchoolTagDao schoolTagDao;
 
   public List<SchoolUser> findUserBySchoolNo(int schoolNo,int levelNo) {
     return schoolUserDao.findUserBySchoolNo(schoolNo,levelNo);
@@ -58,4 +61,36 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
   public int authSubAdmin(int userNo, int schoolNo) {
     return schoolUserDao.findSubAdmin(userNo, schoolNo);
   }
+
+  @Override
+  public School getSchool(int schoolNo) {
+    return schoolDao.findBySchool(schoolNo);
+  }
+
+  @Override
+  public int update(School school) {
+
+    if (school.getName() == null || school.getName().isEmpty()) {
+      throw new IllegalArgumentException("스쿨명을 입력하세요.");
+    }
+    if (school.getTagNums() != null) {
+      schoolDao.add(school);
+      for (int tagNum : school.getTagNums()) {
+        schoolTagDao.add(tagNum, school.getNo());
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + tagNum);
+      }
+
+//      SchoolUser schoolUser = new SchoolUser();
+//      schoolUser.setSchoolNo(school.getNo());
+      //SchoolUser schoolUser = new SchoolUser();
+      //schoolUser.setLevelNo(4);
+
+      if (school.getName() == null || school.getName().isEmpty()) {
+        throw new IllegalArgumentException("스쿨명을 입력하세요.");
+      }
+    }
+    return schoolDao.update(school);
+  }
 }
+
+
