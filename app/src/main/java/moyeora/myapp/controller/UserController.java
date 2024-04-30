@@ -48,7 +48,6 @@ public class UserController implements InitializingBean {
     @PostMapping("add")
     public String add(User user, MultipartFile file) throws Exception{
 
-
         if(file.getSize() > 0){
             String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
             user.setPhoto(filename);
@@ -108,6 +107,4 @@ public String update(User user, MultipartFile file) throws Exception {
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ userService);
         return "redirect:index";
     }
-
-    
 }

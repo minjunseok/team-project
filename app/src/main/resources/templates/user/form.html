@@ -163,9 +163,9 @@
     비밀번호: <input id="pwd" name='pwd' onchange="check_pwd()" placeholder="비밀번호." required size="20" type='password'>
   </div>
   <small> *대소문자 특수기호 가능</small>
-<div>
- 비밀번호 확인: <input id="pwd2" name="pwd2" onchange="check_pwd()" type="password">&nbsp;<span id="check"></span>
-</div>
+  <div>
+    비밀번호 확인: <input id="pwd2" name="pwd2" onchange="check_pwd()" type="password">&nbsp;<span id="check"></span>
+  </div>
 
 
   <div>
@@ -187,9 +187,9 @@
 
   <div>
     주소지:
-  <input onclick="sample2_execDaumPostcode()" type="button" value="우편번호 찾기"><br>
-  <input id="address" name="address" placeholder="주소" type="text"><br>
-  <input id="addressDetail" name="addressDetail" placeholder="상세주소" type="text">
+    <input onclick="sample2_execDaumPostcode()" type="button" value="우편번호 찾기"><br>
+    <input id="address" name="address" placeholder="주소" type="text"><br>
+    <input id="addressDetail" name="addressDetail" placeholder="상세주소" type="text">
 
   </div>
 
@@ -202,31 +202,31 @@
   </div>
 
   <div>
-  <input name="gender" type="radio" value="0"> 남자
-  <input name="gender" type="radio" value="1"> 여자
-    </div>
+    <input name="gender" type="radio" value="0"> 남자
+    <input name="gender" type="radio" value="1"> 여자
+  </div>
 
 
-<div>
-  <h2>관심사 선택</h2>
-</div>
+  <div>
+    <h2>관심사 선택</h2>
+  </div>
 
-<tbody>
-<tr data-th-each="tag : ${tags}">
-  <td>
-    <input data-th-checkbox="true" data-th-value="${tag.no}" name="tagNums" type="checkbox">
-  </td>
-  <td>
-    <span data-th-text="${tag.name}">1</span>
-  </td>
-  <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
-<br>
-  </data-th-block>
-</tr>
-</tbody>
+  <tbody>
+  <tr data-th-each="tag : ${tags}">
+    <td>
+      <input data-th-checkbox="true" data-th-value="${tag.no}" name="tagNums" type="checkbox">
+    </td>
+    <td>
+      <span data-th-text="${tag.name}">1</span>
+    </td>
+    <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+      <br>
+    </data-th-block>
+  </tr>
+  </tbody>
 
-<br>
-<br>
+  <br>
+  <br>
 
 
   <div>

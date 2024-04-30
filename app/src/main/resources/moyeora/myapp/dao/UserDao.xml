@@ -99,14 +99,14 @@
 
   <select id="findByEmail" resultMap="UserMap" parameterType="string">
     select
-    user_no,
-    email,
-    password,
-    name
+      user_no,
+      email,
+      password,
+      name
     from
-    users
+      users
     where
-        email=#{email}
+      email=#{email}
   </select>
 
   <update id="update" parameterType="User">
