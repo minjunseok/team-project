@@ -39,10 +39,6 @@ import java.util.List;
             return userDao.findByEmail(email);
         }
 
-//  @Override
-//  public User get(String email, String password) {
-//    return userDao.findByEmailAndPassword(email, password);
-//  }
 
         @Override
         public String getEmail(String name, String phone) {

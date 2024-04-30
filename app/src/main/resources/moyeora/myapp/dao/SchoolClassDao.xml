@@ -19,7 +19,12 @@
     <result column="photo" property="photo"/>
     <result column="now_member_count" property="nowMemberCount"/>
     <result column="location_detail" property="locationDetail"/>
+
   </resultMap>
+
+
+
+
 
     <select id="findByDate" resultMap="ClassMap" parameterType="String">
         select

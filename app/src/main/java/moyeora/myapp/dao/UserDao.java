@@ -7,18 +7,18 @@ import java.util.List;
 
 @Mapper
 public interface UserDao {
-     public void add(User user);
+    public void add(User user);
 
-     public User findBy(int no);
+    public User findBy(int no);
 
-     public int findUserGrade(int grade);
+    public int findUserGrade(int grade);
 
 
-     public void updateGrade(int no, int grade);
+    public void updateGrade(int no, int grade);
 
-     List<String> findEmailByUserList(List<Integer> userList);
+    List<String> findEmailByUserList(List<Integer> userList);
 
-     public void downGrade(List<Integer> userList);
+    public void downGrade(List<Integer> userList);
 
   void save(User user);
 
