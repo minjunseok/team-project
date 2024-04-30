@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,46 +16,35 @@
 </head>
 
 <body>
-    <nav class="header">
-        <div class="navbar_logo">
-            <a href=""> <!-- 이미지를 눌렀을 때 메인홈으로 이동하는 주소 넣으면 됨. -->
-            <img src="/team-project/app/src/main/resources/static/img/moyeoraL.jpeg" alt="moyeora로고">
-            </a>
-        </div>
+<div th:fragment="header">
+    <header>
 
-    <nav class="header">
-        <div class="navbar_logo">
-            <a href=""> <!-- 이미지를 눌렀을 때 메인홈으로 이동하는 주소 넣으면 됨. -->
-                <img src="/static/img/moyeoraL.jpeg" alt="moyeora로고">
-            </a>
-        </div>
+        <nav class="header">
+            <div class="navbar_logo">
+                <a href=""> <!-- 이미지를 눌렀을 때 메인홈으로 이동하는 주소 넣으면 됨. -->
+                    <img src="/static/img/moyeoraL.jpeg" alt="moyeora로고">
+                </a>
+            </div>
 
-        <ul class="header_menu"> <!--각 태크에 맞게 기능 연결 하면 됨.-->
-            <li><a href="">회원가입</a></li>
-            <li><a sec:authorize="isAnonymous()" data-th-href="@{/auth/form}">로그인</a></li>
-            <li><a sec:authorize="isAuthenticated()" data-th-href="@{/auth/logout}">
-                <span sec:authentication="name"></span> 로그아웃</a></li>
-            <li><a href="">Feed</a></li>
-            <li><a data-th-href="@{/chat/gm?schoolNo=1}">gm</a></li>
-        </ul>
+            <ul class="header_menu"> <!--각 태크에 맞게 기능 연결 하면 됨.-->
+                <li><a href="">회원가입</a></li>
+                <li><a sec:authorize="isAnonymous()" data-th-href="@{/auth/form}">로그인</a></li>
+                <li><a sec:authorize="isAuthenticated()" data-th-href="@{/auth/logout}">
+                    <span sec:authentication="name"></span> 로그아웃</a></li>
+                <li><a href="">Feed</a></li>
+                <li><a data-th-href="@{/chat/gm?schoolNo=1}">gm</a></li>
+            </ul>
 
-        <ul class="header_icons">
-            <a href=""> <!-- 아이콘 클릭했을 때 사용자 설정으로 이동하는 기능 추가하면 됨. -->
-                <i class="fa-solid fa-user"></i>
-            </a>
-        </ul>
-    </nav>
+            <ul class="header_icons">
+                <a href=""> <!-- 아이콘 클릭했을 때 사용자 설정으로 이동하는 기능 추가하면 됨. -->
+                    <i class="fa-solid fa-user"></i>
+                </a>
+            </ul>
+        </nav>
 
-    <hr/>
+        <hr/>
+    </header>
+</div>
 
-        <ul class="header_icons">
-            <a href=""> <!-- 아이콘 클릭했을 때 사용자 설정으로 이동하는 기능 추가하면 됨. -->
-            <i class="fa-solid fa-user"></i>
-            </a>
-        </ul>
-    </nav>
-
-    <hr/>
-    
 </body>
 </html>
