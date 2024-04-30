@@ -1,9 +1,5 @@
 package moyeora.myapp.service.impl;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.SchoolDao;
 import moyeora.myapp.dao.SchoolTagDao;
@@ -13,10 +9,15 @@ import moyeora.myapp.service.SchoolService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
-import moyeora.myapp.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -101,10 +102,6 @@ public class DefaultSchoolService implements SchoolService {
     return null;
   }
 
-  @Override
-  public int update(School school) {
-    return 0;
-  }
 
   @Override
   public int delete(int postNo) {
@@ -142,5 +139,13 @@ public class DefaultSchoolService implements SchoolService {
   public void stopSchool(int schoolNo) {
     schoolDao.stopSchool(schoolNo);
   }
+
+
+
+  @Override
+  public int isNameExists(String name) {
+    return schoolDao.isNameExists(name);
+  }
+
 }
 

@@ -1,10 +1,11 @@
 package moyeora.myapp.service;
 
-import java.util.List;
 import moyeora.myapp.dto.school.admin.SchoolMemberUpdateRequestDTO;
 import moyeora.myapp.dto.school.admin.SchoolOpenRangeUpdateRequestDTO;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
+
+import java.util.List;
 
 public interface SchoolAdminService {
 
@@ -23,4 +24,8 @@ public interface SchoolAdminService {
   int authAdmin(int userNo, int schoolNo);
 
   int authSubAdmin(int userNo, int schoolNo);
+
+  School getSchool(int schoolNo);
+
+  int update(School school);
 }

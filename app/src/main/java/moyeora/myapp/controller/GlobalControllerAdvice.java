@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Date;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 
 @ControllerAdvice
@@ -43,7 +42,7 @@ public class GlobalControllerAdvice {
 
         mv.addObject("detail", stringWriter.toString());
 
-        //mv.setViewName("/error.html");
+        mv.setViewName("error");
         return mv;
     }
 }

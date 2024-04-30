@@ -1,12 +1,14 @@
 package moyeora.myapp.vo;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class School implements Serializable {
   private static final long  serialVersionUID = 100L;
   private int no;
@@ -22,4 +24,5 @@ public class School implements Serializable {
   private List<Integer> tagNums;
   private List<SchoolTag> tags;
   private int stop;
+  private List<School> findAll;
 }
