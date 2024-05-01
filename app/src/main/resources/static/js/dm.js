@@ -41,15 +41,15 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendName() {
+function sendMessage() {
     stompClient.publish({
-        destination: "/pub/gm",
+        destination: "/pub/dm",
         body: JSON.stringify({
         'schoolNo': $("#schoolNo").val(),
         'sender': $("#sender").val(),
         'message': $("#message").val(),
         'photo': "",
-        'sendDate': $("#sendDate").val()
+        'sendDate': moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
         })
     });
 }
@@ -62,5 +62,5 @@ $(function () {
     $("form").on('submit', (e) => e.preventDefault());
     $( "#connect" ).click(() => connect());
     $( "#disconnect" ).click(() => disconnect());
-    $( "#send" ).click(() => sendName());
+    $( "#send" ).click(() => sendMessage());
 });
