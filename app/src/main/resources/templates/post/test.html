@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta charset="UTF-8">
+		<link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+					integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
+		<script crossorigin="anonymous" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+						src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+		<title>Title</title>
+</head>
+<body>
+
+<button id="btn1" type="button">초대하기</button>
+<div class="modal" id="myModal" tabindex="-1">
+		<div class="modal-dialog">
+				<div class="modal-content">
+<!--						<div class="modal-header">-->
+<!--								<h5 class="modal-title">일정등록</h5>-->
+<!--								<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>-->
+<!--						</div>-->
+						<div class="modal-body">
+
+								<button id="md" type="button">글 수정</button>
+								<button id="delete" type="button">글 삭제</button>
+								<!--<a data-th-href="@{delete(schoolNo=*{schoolNo}, post_no=${post.no})}">[삭제]</a>-->
+								<button id="copyLinkButton" type="button">주소 복사</button>
+								<button id="report" type="button">게시글 신고</button>
+								<label for="gradeMd" id="gradeMdLabel" style="display: none">공지로 등록</label>
+								<input type="checkbox" id="gradeMd" name="post" value="1" style="display: none"/>
+								<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">닫기</button>
+								<button class="btn btn-primary" type="button"
+												onclick="addEvent(); closeModal();">등록
+								</button>
+								<!--								<div class="modal-footer">-->
+<!--								</div>-->
+						</div>
+
+				</div>
+		</div>
+</div>
+
+<script>
+		document.querySelector("#btn1").onclick = function () {
+				const myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
+				myModal.show();
+		};
+
+</script>
+
+</body>
+</html>
