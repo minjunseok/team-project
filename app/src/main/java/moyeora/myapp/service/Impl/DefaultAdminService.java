@@ -10,8 +10,11 @@ import moyeora.myapp.dto.admin.user.AdminBlackUpdateRequestDTO;
 import moyeora.myapp.dto.admin.user.AdminRoleUpdateRequestDTO;
 import moyeora.myapp.dto.admin.user.AdminUserListResponseDTO;
 import moyeora.myapp.service.AdminService;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +98,8 @@ public class DefaultAdminService implements AdminService {
   }
 
   public List<AdminSchoolListResponseDTO> schoolSearch(String schoolInfo) {
-    return schoolDao.findBySchoolInfo(schoolInfo);
+    Type listType = new TypeToken<List<AdminSchoolListResponseDTO>>() {
+    }.getType();
+    return new ModelMapper().map(schoolDao.findBySchoolInfo(schoolInfo), listType);
   }
 }
