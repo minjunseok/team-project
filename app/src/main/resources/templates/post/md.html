@@ -20,7 +20,6 @@
 		<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 	</head>
 	<body>
-		<h1 data-th-text="${postNo}">피드</h1>
 
 		<form
 			action="update"
@@ -46,10 +45,14 @@
 				name="content"
 				style="display: none"
 			></textarea>
+
 			<div>
 				<button type="submit">저장</button>
 			</div>
+
 		</form>
+
+
 		<!-- 공지로 등록하는 체크박스 -->
 		<label
 			for="gradeMd"
