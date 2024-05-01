@@ -1,6 +1,5 @@
 package moyeora.myapp.service;
 
-import moyeora.myapp.vo.Alert;
 import moyeora.myapp.vo.SchoolClass;
 
 import java.util.List;
@@ -18,5 +17,5 @@ public interface SchoolClassService {
 
   public List<SchoolClass> schoolCalendarList(int schoolNo);
 
-  void addAlert(Alert alert, SchoolClass clazz);
+
 }

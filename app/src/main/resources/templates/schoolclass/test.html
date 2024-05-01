@@ -166,40 +166,40 @@
     <div>
         인원: <input name='member' type='text'>
     </div>
-
-<button id="btn1" type="button">초대하기</button>
-    <div class="modal" id="myModal2" tabindex="-1">
-        <div class="modal-dialog">
-        <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">멤버 초대</h5>
-        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-      </div>
-      <div class="modal-body">
-            <table>
-                <thead>
-                    <tr>
-                    <th>사진</th>
-                    <th>닉네임</th>
-                    <th>등급</th>
-                    <th>초대하기</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                <tr data-th-each="schoolMember : ${schoolMembers}" data-th-object="${schoolMember}">
-                    <td data-th-text="*{photo}">사진</td>
-                    <td data-th-text="*{nickname}">가나다</td>
-                    <td data-th-text="*{level.name}">블랙</td>
-                </tr>
-
-            </table>
         
-            </div>
-         </div>
-        </div>
-    </div>
-    <div>
+        <!--<button id="btn1" type="button">초대하기</button>-->
+        <!--    <div class="modal" id="myModal2" tabindex="-1">-->
+        <!--        <div class="modal-dialog">-->
+        <!--        <div class="modal-content">-->
+        <!--      <div class="modal-header">-->
+        <!--        <h5 class="modal-title">멤버 초대</h5>-->
+        <!--        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>-->
+        <!--      </div>-->
+        <!--      <div class="modal-body">-->
+        <!--            <table>-->
+        <!--                <thead>-->
+        <!--                    <tr>-->
+        <!--                    <th>사진</th>-->
+        <!--                    <th>닉네임</th>-->
+        <!--                    <th>등급</th>-->
+        <!--                    <th>초대하기</th>-->
+        <!--                    </tr>-->
+        <!--                </thead>-->
+        <!--                <tbody>-->
+        
+        <!--                <tr data-th-each="schoolMember : ${schoolMembers}" data-th-object="${schoolMember}">-->
+        <!--                    <td data-th-text="*{photo}">사진</td>-->
+        <!--                    <td data-th-text="*{nickname}">가나다</td>-->
+        <!--                    <td data-th-text="*{level.name}">블랙</td>-->
+        <!--                </tr>-->
+        
+        <!--            </table>-->
+        <!--        -->
+        <!--            </div>-->
+        <!--         </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--    <div>-->
         정기여부:<input name="repeatSet" type="radio" value="0"> 정기
         <input name="repeatSet" type="radio" value="1"> 번개
 

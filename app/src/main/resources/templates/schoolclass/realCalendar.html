@@ -115,6 +115,7 @@
             processData: false,
             
         }).done(function(result) {
+                console.log(result);
                 for (let classEvent of result) {
                 calendar.addEvent({
                 title: classEvent.name,
@@ -154,15 +155,9 @@
             nowIndicator: true, // 현재 시간 마크
             locale: 'ko' , // 한국어 설정
             dateClick: function(info) {
-<!--            var startAt = info.dateStr; // 클릭한 날짜 정보-->
-<!--            document.getElementById('startAt2').value = startAt;-->
                 myModal1();
               
             },
-<!--    select: function(info) {-->
-<!--      alert('selected ' + info.startStr + ' to ' + info.endStr);-->
-<!--    }-->
-<!--        일정 상세보기 할때 사용-->
         
         });
         calendar.render();
@@ -200,7 +195,7 @@
 
     <div>
         종료 시간 <br>
-        날짜 시간 설정: <input name="endedAt2" type="datetime-local">
+        날짜 시간 설정: <input name="endedAt2" type="datetime-local" onchange="checkEndDate()">
 
     </div>
 
@@ -215,47 +210,47 @@
         인원: <input name='member' type='text'>
     </div>
         
-        <!--         초대하기 부분 보류-->
-        <!--<button id="btn1" type="button">초대하기</button>-->
-        <!--    <div class="modal" id="myModal2" tabindex="-1">-->
-        <!--      <div class="modal-dialog modal-dialog-scrollable">-->
-        <!--        <div class="modal-content">-->
-        <!--          <div class="modal-header">-->
-        <!--            <h5 class="modal-title">멤버 초대</h5>-->
-        <!--            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>-->
-        <!--          </div>-->
-        <!--          <div class="modal-body">-->
-        <!--            <table>-->
-        <!--                <thead>-->
-        <!--                <tr>-->
-        <!--                    <th>사진</th>-->
-        <!--                    <th>닉네임</th>-->
-        <!--                    <th>등급</th>-->
-        <!--                    <th>초대하기</th>-->
-        <!--                </tr>-->
-        <!--                </thead>-->
-        <!--                <tbody>-->
-        <!--                -->
-        <!--                <tr data-th-each="schoolMember : ${schoolMembers}" data-th-object="${schoolMember}">-->
-        <!--                    -->
-        <!--                    <td>-->
-        <!--                        <a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + *{photo}}"-->
-        <!--                           data-th-if="*{photo}">-->
-        <!--                            <img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/' + *{photo}(type=f,w=80,h=80)}"></a><br>-->
-        <!--                        <a data-th-unless="*{photo}" href='/img/default-photo.jpeg'>-->
-        <!--                            <img height='80px' src='/img/default-photo.jpeg'> </a>-->
+        <!--                 초대하기 부분 보류-->
+        <!--        <button id="btn1" type="button">초대하기</button>-->
+        <!--            <div class="modal" id="myModal2" tabindex="-1">-->
+        <!--              <div class="modal-dialog modal-dialog-scrollable">-->
+        <!--                <div class="modal-content">-->
+        <!--                  <div class="modal-header">-->
+        <!--                    <h5 class="modal-title">멤버 초대</h5>-->
+        <!--                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>-->
+        <!--                  </div>-->
+        <!--                  <div class="modal-body">-->
+        <!--                    <table>-->
+        <!--                        <thead>-->
+        <!--                        <tr>-->
+        <!--                            <th>사진</th>-->
+        <!--                            <th>닉네임</th>-->
+        <!--                            <th>등급</th>-->
+        <!--                            <th>초대하기</th>-->
+        <!--                        </tr>-->
+        <!--                        </thead>-->
+        <!--                        <tbody>-->
         <!--                        -->
-        <!--                    </td>-->
-        <!--                    <td data-th-text="*{nickname}">가나다</td>-->
-        <!--                    <td data-th-text="*{level.levelName}">블랙</td>-->
-        <!--                </tr>-->
-        
-        <!--            </table>-->
+        <!--                        <tr data-th-each="schoolMember : ${schoolMembers}" data-th-object="${schoolMember}">-->
+        <!--                            -->
+        <!--                            <td>-->
+        <!--                                <a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + *{photo}}"-->
+        <!--                                   data-th-if="*{photo}">-->
+        <!--                                    <img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/' + *{photo}(type=f,w=80,h=80)}"></a><br>-->
+        <!--                                <a data-th-unless="*{photo}" href='/img/default-photo.jpeg'>-->
+        <!--                                    <img height='80px' src='/img/default-photo.jpeg'> </a>-->
+        <!--                                -->
+        <!--                            </td>-->
+        <!--                            <td data-th-text="*{nickname}">가나다</td>-->
+        <!--                            <td data-th-text="*{level.levelName}">블랙</td>-->
+        <!--                        </tr>-->
         <!--        -->
-        <!--        </div>-->
-        <!--         </div>-->
-        <!--        </div>-->
-        <!--    </div>-->
+        <!--                    </table>-->
+        <!--                -->
+        <!--                </div>-->
+        <!--                 </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
     
     <div>
         정기여부:<input name="repeatSet" type="radio" value="0"> 정기
@@ -277,6 +272,32 @@
   </div>
 </div>
 
+<script>
+function checkEndDate() {
+    var startDateInput = document.querySelector("input[name='startAt2']");
+    var endDateInput = document.querySelector("input[name='endedAt2']");
+
+    console.log(startDateInput);
+    console.log(endDateInput);
+    console.log("==========================");
+
+    var startDateValue = new Date(startDateInput.value);
+    var endDateValue = new Date(endDateInput.value);
+    console.log(startDateInput.value);
+    console.log(endDateInput.value);
+  
+    
+    var startTimestamp = startDateValue.getTime();
+    var endTimestamp = endDateValue.getTime();
+
+    // 종료일이 시작일보다 이전인 경우
+    if (endTimestamp <= startTimestamp) {
+        alert('종료 시간은 모임일 날짜와 시간을 넘을 수 없습니다.');
+        endDateInput.value = '';
+    }
+}
+
+</script>
 
 <script>
 
@@ -297,6 +318,7 @@ let myModal;
         var name = new String (document.querySelector("input[name='name']").value);
         var startDate = new Date(document.querySelector("input[name='startAt2']").value);
         var endDate = new Date(document.querySelector("input[name='endedAt2']").value);
+      
         
         if (isNaN(endDate.valueOf())) {
             return;
@@ -324,13 +346,13 @@ let myModal;
                 allDay: true
             });
             console.log("서버에 이벤트를 성공적으로 추가했습니다.");
+           
+           form.reset();
+           console.log("리셋되었습니다");
         });
     }
     
-<!--    document.querySelector("#btn1").onclick = function() {-->
-<!--        const myModal = new bootstrap.Modal(document.getElementById('myModal2'), {})-->
-<!--         myModal.show();-->
-<!--    };-->
+    
     
 </script>
 

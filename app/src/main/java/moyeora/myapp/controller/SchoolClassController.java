@@ -105,33 +105,29 @@ public class SchoolClassController {
 
   }
 
-//  @PostMapping("addAlert")
-//  public Object addAlert(Alert alert, SchoolClass clazz) throws Exception {
-////    clazz.getNo();
-//    alert.setUserNo(1);
-//    System.out.println("@@@@@@@@@@@@@@@@@@@@" + alert);
-//    System.out.println("@@@@@@@@@@@@@@@");
-//    schoolClassService.addAlert(alert, clazz);
-//    return "alertTest?schoolNo=1";
-//  }
+  @GetMapping("findByNo")
+  @ResponseBody
+  public Object test(int classNo) throws Exception {
+    //model.addAttribute("schoolClass", schoolClassService.findByDetailView(classNo));
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    //System.out.println("=====classcontorller==============>    " + schoolClassService.findByDetailView(classNo));
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-  @GetMapping("maptest2")
-  public void test2() throws Exception {
-
+    return schoolClassService.get(classNo);
   }
 
 
-  @GetMapping("maptest")
-  public void test() throws Exception {
+  @GetMapping("viewTest")
+  public Object test3(int classNo) throws Exception {
+
+
+    JsonResult jsonResult = new JsonResult();
+
+    jsonResult.setStatus("success");
+
+    return jsonResult;
+
 
   }
 
-
-  @GetMapping("alertTest")
-  public void test3(Model model, int schoolNo) throws Exception {
-
-    model.addAttribute("schoolMembers", schoolMemberService.list(schoolNo));
-    System.out.println("=====classcontorller.schoolMember==============>    " + schoolMemberService);
-
-  }
 }
