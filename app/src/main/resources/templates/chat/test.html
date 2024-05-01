@@ -1,58 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
 <head>
-  <title>Hello WebSocket</title>
-  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
-  <link href="/main.css" rel="stylesheet">
+  <meta charset='UTF-8'>
+  <title>비트캠프 데브옵스 5기</title>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
-  <script src="/app.js"></script>
 </head>
 <body>
-<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
-  enabled. Please enable
-  Javascript and reload this page!</h2></noscript>
-<div class="container" id="main-content">
-  <div class="row">
-    <div class="col-md-6">
-      <form class="form-inline">
-        <div class="form-group">
-          <label for="connect">WebSocket connection:</label>
-          <button class="btn btn-default" id="connect" type="submit">Connect</button>
-          <button class="btn btn-default" disabled="disabled" id="disconnect" type="submit">Disconnect
-          </button>
-        </div>
-      </form>
-    </div>
-    <div class="col-md-6">
-      <form class="form-inline">
-        <div class="form-group">
-          <label for="schoolNo"></label>
-          <input class="form-control" data-th-value="${schoolNo}" id="schoolNo" placeholder="schoolNo" type="text">
-          <label for="sender"></label>
-          <input class="form-control" data-th-value="${sender}" id="sender" placeholder="sender" type="text">
-          <label for="message">message</label>
-          <input class="form-control" id="message" placeholder="message" type="text">
-          <label for="sendDate">sendDate</label>
-          <input class="form-control" id="sendDate" placeholder="sendDate" type="datetime-local">
-        </div>
-        <button class="btn btn-default" id="send" type="submit">Send</button>
-      </form>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <table class="table table-striped" id="conversation">
-        <thead>
-        <tr>
-          <th>Greetings</th>
-        </tr>
-        </thead>
-        <tbody id="greetings">
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+<h1>test rwatr</h1>
+<script>
+  var sender = [[${sender}]]
+  var receiver = [[${receiver}]]
+  var room = [[${room}]]
+  console.log(room);
+</script>
+
 </body>
 </html>

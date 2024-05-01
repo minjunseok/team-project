@@ -1,24 +1,209 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset='UTF-8'>
-  <title>moyeora</title>
+  <title>Hello WebSocket</title>
+  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
+  <link href="/css/chat.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
 </head>
 <body>
-
-<div data-th-replace="header :: header">머리말</div>
-
-<h1>templates/gm/gm.html</h1>
-
-<form data-th-action="@{add}" method='post'>
-  <div>
-    gm: <input name='gm' type='text'>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+  enabled. Please enable
+  Javascript and reload this page!</h2></noscript>
+<div class="container" id="main-content">
+  <div class="row">
+    <div class="col-md-6">
+      <form class="form-inline">
+        <div class="form-group">
+          <label for="connect">WebSocket connection:</label>
+          <button class="btn btn-default" id="connect" type="submit">Connect</button>
+          <button class="btn btn-default" disabled="disabled" id="disconnect" type="submit">Disconnect
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
-  <div>
-    <input type="submit" value="전송">
+  <div class="row">
+    <div class="col-md-12">
+      <div id="conversation"></div>
+    </div>
   </div>
-</form>
-<div data-th-replace="footer :: footer">꼬리말</div>
+  <div class="col-md-6">
+    <form id="main-form" class="form-inline" enctype="multipart/form-data">
+      <div class="form-group">
+        <input class="form-control" id="message" placeholder="message" type="text">
+        <input class="form-control" id="photo" name="photo" type="file">
+      </div>
+      <button class="btn btn-default" id="send" type="submit">Send</button>
+    </form>
+  </div>
+</div>
+
+<script th:inline="javascript">
+
+var schoolNo = [[${schoolNo}]]
+var sender = [[${sender}]]
+var chatList = [[${chatList}]]
+var photo = "";
+var sendDate = "";
+
+function connect() {
+    stompClient.activate();
+}
+
+const stompClient = new StompJs.Client({
+    brokerURL: 'ws://localhost:8080/ws'
+});
+
+stompClient.onConnect = (frame) => {
+    setConnected(true);
+    console.log('Connected: ' + frame);
+    loadChat(chatList);
+
+    stompClient.subscribe('/sub/gm/' + schoolNo, (gm) => {
+        showMessage(JSON.parse(gm.body));
+    });
+};
+
+stompClient.onWebSocketError = (error) => {
+    console.error('Error with websocket', error);
+};
+
+stompClient.onStompError = (frame) => {
+    console.error('Broker reported error: ' + frame.headers['message']);
+    console.error('Additional details: ' + frame.body);
+};
+
+function setConnected(connected) {
+    $("#connect").prop("disabled", connected);
+    $("#disconnect").prop("disabled", !connected);
+    if (connected) {
+        $("#conversation").show();
+    }
+    else {
+        $("#conversation").hide();
+    }
+}
+
+function connect() {
+    stompClient.activate();
+}
+
+function disconnect() {
+    stompClient.deactivate();
+    setConnected(false);
+    console.log("Disconnected");
+}
+
+function sendMessage() {
+    let gm = {
+        schoolNo : schoolNo,
+        sender : sender,
+        message : $("#message").val(),
+        photo : "",
+        sendDate : moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+    }
+
+    let formData = new FormData();
+    if(photo != "") {
+      Array.from(photo).forEach((el) => {
+      formData.append("photo", el);
+      });
+    }
+    formData.append("gm", new Blob([JSON.stringify(gm)], {type: "application/json"}));
+
+    $.ajax({
+      type: "POST",
+      url: "/addGm",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (result) {
+          console.log("success: " + result.message);
+          stompClient.publish({
+          destination: "/pub/gm",
+          body: JSON.stringify({
+            'schoolNo': result.schoolNo,
+            'sender': result.sender,
+            'message': result.message,
+            'photo': result.photo,
+            'sendDate': moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+          })
+        });
+      },
+      error: function () {
+          console.log("error: ajax 전송 테스트");
+		  }
+    });
+}
+
+function showMessage(gm) {
+    if(gm.sender == sender) {
+      if(gm.message.length > 0) {
+        $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" + gm.message + "</div></div>");
+      }
+      if(gm.photo.length > 0) {
+        $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" +
+        "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/gm/" + gm.photo + ">" +
+        "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/gm/" + gm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>"
+        + "</div></div>");
+      }
+    } else {
+      if(gm.message.length > 0) {
+        $("#conversation").append("<div class = 'message-container received-message'><div class = 'message-text'>" + gm.message + "</div></div>");
+      }
+      if(gm.photo.length > 0) {
+        $("#conversation").append("<div class = 'message-container received-message'><div class = 'message-text'>" +
+        "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/gm/" + gm.photo + ">" +
+        "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/gm/" + gm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
+      }
+    }
+    $("#main-form")[0].reset();
+}
+function loadChat(chatList) {
+    if(chatList != null) {
+      for(chat in chatList) {
+        if(chatList[chat].sender == sender) {
+          if(chatList[chat].message.length > 0) {
+            $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" + chatList[chat].message + "</div></div>");
+          }
+          if(chatList[chat].photo.length > 0) {
+            $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" +
+            "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/gm/" + chatList[chat].photo + ">" +
+            "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/gm/" + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
+          }
+        } else {
+          if(chatList[chat].message.length > 0) {
+            $("#conversation").append("<div class = 'message-container received-message'><div class = 'message-text'>" + chatList[chat].message + "</div></div>");
+          }
+          if(chatList[chat].photo.length > 0) {
+            $("#conversation").append("<div class = 'message-container received-message'><div class = 'message-text'>" +
+            "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/gm/" + chatList[chat].photo + ">" +
+            "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/gm/" + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
+          }
+        }
+      }
+    }
+    $('#conversation').scrollTop($('#conversation')[0].scrollHeight);
+}
+
+function setFiles() {
+  photo = $("#photo")[0].files;
+  $("#message").val("");
+  console.log(photo);
+}
+
+$(function () {
+    connect();
+    console.log(photo);
+    $("form").on('submit', (e) => e.preventDefault());
+    $( "#disconnect" ).click(() => disconnect());
+    $( "#send" ).click(() => sendMessage());
+    $( "#photo" ).change(() => setFiles());
+});
+</script>
 
 </body>
 </html>

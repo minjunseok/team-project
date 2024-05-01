@@ -5,7 +5,8 @@
 
 <mapper namespace="moyeora.myapp.dao.ChatDao">
 
-    <resultMap id="ChatMap" type="Gm">
+    <!--resultMap-->
+    <resultMap id="gmMap" type="Gm">
         <id column="gm_no" property="no"/>
         <result column="school_no" property="schoolNo"/>
         <result column="user_no" property="sender"/>
@@ -14,23 +15,84 @@
         <result column="created_at" property="sendDate"/>
     </resultMap>
 
-  <insert id="save" parameterType="Gm">
-    insert into gm(school_no, user_no, message, photo, created_at)
-    values(#{schoolNo}, #{sender} ,#{message} ,#{photo} ,#{sendDate})
-  </insert>
+    <resultMap id="dmMap" type="Dm">
+        <id column="dm_no" property="no"/>
+        <result column="user_no2" property="sender"/>
+        <result column="user_no" property="receiver"/>
+        <result column="message" property="message"/>
+        <result column="photo" property="photo"/>
+        <result column="created_at" property="sendDate"/>
+        <result column="room_no" property="roomNo"/>
+    </resultMap>
 
-<!--  <select id="findChatMessageByChatRoomNo" parameterType="int" resultType="ChatMessage">-->
-<!--    select-->
-<!--      gm_no-->
-<!--      school_no,-->
-<!--      user_no,-->
-<!--      message,-->
-<!--      created_at,-->
-<!--      photo-->
-<!--    from-->
-<!--      Gm-->
-<!--    where-->
-<!--      school_no=#{school_no}-->
-<!--  </select>-->
+    <resultMap id="dmRoomMap" type="DmRoom">
+        <id column="room_no" property="no"/>
+        <result column="user_no" property="user1"/>
+        <result column="user_no2" property="user2"/>
+        <result column="created_date" property="createdDate"/>
+    </resultMap>
+
+    <!--Gm-->
+    <insert id="saveGm" parameterType="Gm">
+        insert into gm(school_no, user_no, message, photo, created_at)
+        values(#{schoolNo}, #{sender} ,#{message} ,#{photo} ,#{sendDate})
+    </insert>
+
+    <select id="findGmListBySchoolNo" resultMap="gmMap" parameterType="int">
+        select
+            *
+        from
+            gm
+        where
+            school_no = #{value}
+    </select>
+
+    <!--Dm-->
+    <insert id="saveDm" parameterType="Dm">
+        insert into dm(user_no2, user_no, message, photo, created_at, room_no)
+        values(#{sender}, #{receiver} ,#{message} ,#{photo} ,#{sendDate}, #{roomNo})
+    </insert>
+
+    <select id="findDmListBySenderAndReceiver" resultMap="dmMap" parameterType="int">
+        select
+            *
+        from
+            dm
+        where
+            (user_no2 = #{sender} and user_no = #{receiver}) or (user_no2 = #{receiver} and user_no = #{sender})
+    </select>
+
+    <select id="findDmListByRoomNo" resultMap="dmMap" parameterType="int">
+        select
+            *
+        from
+            dm
+        where
+            room_no = #{value}
+    </select>
+
+    <!--DmRoom-->
+    <insert id="addDmRoom" parameterType="DmRoom" useGeneratedKeys="true" keyColumn="room_no" keyProperty="no">
+        insert into dm_room(user_no, user_no2)
+        values(#{user1}, #{user2})
+    </insert>
+
+    <select id="findDmRoomByNo" resultMap="dmRoomMap" parameterType="int">
+        select
+            *
+        from
+            dm_room
+        where
+            room_no = #{value}
+    </select>
+
+    <select id="findDmRoomByUserNo" resultMap="dmRoomMap" parameterType="int">
+        select
+            *
+        from
+            dm_room
+        where
+            (user_no = #{user1} and user_no2 = #{user2}) or (user_no = #{user2} and user_no2 = #{user1})
+    </select>
 
 </mapper>

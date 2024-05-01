@@ -1,22 +1,40 @@
 package moyeora.myapp.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
+import java.sql.Timestamp;
 import lombok.Builder;
 import lombok.Data;
 
-import java.sql.Date;
-
 @Data
-public class Gm {
+public class Gm implements Serializable {
+
+    private static final long serialVersionUID = 100L;
+
     private int no;
     private int schoolNo;
     private int sender;
     private String message;
     private String photo;
-    private Date sendDate;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private Timestamp sendDate;
 
     @Builder
-    public Gm(int schoolNo, int sender, String message, String photo, @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")Date sendDate) {
+    public Gm() {
+    }
+
+    @Builder
+    public Gm(int no, int schoolNo, int sender, String message, String photo, @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")Timestamp sendDate) {
+        this.no = no;
+        this.schoolNo = schoolNo;
+        this.sender = sender;
+        this.message = message;
+        this.photo = photo;
+        this.sendDate = sendDate;
+    }
+
+    @Builder
+    public Gm(int schoolNo, int sender, String message, String photo, @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")Timestamp sendDate) {
         this.schoolNo = schoolNo;
         this.sender = sender;
         this.message = message;

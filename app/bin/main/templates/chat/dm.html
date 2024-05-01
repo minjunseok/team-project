@@ -15,7 +15,7 @@
 <div class="container" id="main-content">
   <div class="row">
     <div class="col-md-6">
-      <form class="form-inline">
+      <form id="main-form" class="form-inline">
         <div class="form-group">
           <label for="connect">WebSocket connection:</label>
           <button class="btn btn-default" id="connect" type="submit">Connect</button>
@@ -31,7 +31,7 @@
     </div>
   </div>
   <div class="col-md-6">
-    <form id="main-form" class="form-inline" enctype="multipart/form-data">
+    <form class="form-inline" enctype="multipart/form-data">
       <div class="form-group">
         <input class="form-control" id="message" placeholder="message" type="text">
         <input class="form-control" id="photo" name="photo" type="file">
@@ -43,11 +43,15 @@
 
 <script th:inline="javascript">
 
-var schoolNo = [[${schoolNo}]]
 var sender = [[${sender}]]
+var receiver = [[${receiver}]]
 var chatList = [[${chatList}]]
+var room = [[${room}]]
 var photo = "";
 var sendDate = "";
+
+console.log(room);
+console.log(room.no);
 
 function connect() {
     stompClient.activate();
@@ -62,8 +66,8 @@ stompClient.onConnect = (frame) => {
     console.log('Connected: ' + frame);
     loadChat(chatList);
 
-    stompClient.subscribe('/sub/gm/' + schoolNo, (gm) => {
-        showMessage(JSON.parse(gm.body));
+    stompClient.subscribe('/sub/dm/' + room.no, (dm) => {
+        showMessage(JSON.parse(dm.body));
     });
 };
 
@@ -98,13 +102,15 @@ function disconnect() {
 }
 
 function sendMessage() {
-    let gm = {
-        schoolNo : schoolNo,
+    let dm = {
         sender : sender,
+        receiver : receiver,
         message : $("#message").val(),
         photo : "",
-        sendDate : moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+        sendDate : moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+        roomNo : room.no
     }
+    console.log(dm);
 
     let formData = new FormData();
     if(photo != "") {
@@ -112,24 +118,25 @@ function sendMessage() {
       formData.append("photo", el);
       });
     }
-    formData.append("gm", new Blob([JSON.stringify(gm)], {type: "application/json"}));
+    formData.append("dm", new Blob([JSON.stringify(dm)], {type: "application/json"}));
 
     $.ajax({
       type: "POST",
-      url: "/addGm",
+      url: "/addDm",
       data: formData,
       contentType: false,
       processData: false,
       success: function (result) {
           console.log("success: " + result.message);
           stompClient.publish({
-          destination: "/pub/gm",
+          destination: "/pub/dm",
           body: JSON.stringify({
-            'schoolNo': result.schoolNo,
             'sender': result.sender,
+            'receiver': result.receiver,
             'message': result.message,
             'photo': result.photo,
-            'sendDate': moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+            'sendDate': moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+            'roomNo': room.no,
           })
         });
       },
@@ -139,40 +146,43 @@ function sendMessage() {
     });
 }
 
-function showMessage(gm) {
-    if(gm.sender == sender) {
-      if(gm.message.length > 0) {
-        $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" + gm.message + "</div></div>");
+function showMessage(dm) {
+    if(dm.sender == sender) {
+      if(dm.message.length > 0) {
+        $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" + dm.message + "</div></div>");
       }
-      if(gm.photo.length > 0) {
+      if(dm.photo.length > 0) {
         $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" +
-        "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/gm/" + gm.photo + ">" +
-        "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/gm/" + gm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>"
+        "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/dm/" + dm.photo + ">" +
+        "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/dm/" + dm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>"
         + "</div></div>");
       }
     } else {
-      if(gm.message.length > 0) {
-        $("#conversation").append("<div class = 'message-container received-message'><div class = 'message-text'>" + gm.message + "</div></div>");
+      if(dm.message.length > 0) {
+        $("#conversation").append("<div class = 'message-container received-message'><div class = 'message-text'>" + dm.message + "</div></div>");
       }
-      if(gm.photo.length > 0) {
+      if(dm.photo.length > 0) {
         $("#conversation").append("<div class = 'message-container received-message'><div class = 'message-text'>" +
-        "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/gm/" + gm.photo + ">" +
-        "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/gm/" + gm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
+        "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/dm/" + dm.photo + ">" +
+        "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/dm/" + dm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
       }
     }
-    $("#main-form")[0].reset();
+    $("#message").val("");
+    $("#photo").val("");
 }
+
 function loadChat(chatList) {
     if(chatList != null) {
       for(chat in chatList) {
+
         if(chatList[chat].sender == sender) {
           if(chatList[chat].message.length > 0) {
             $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" + chatList[chat].message + "</div></div>");
           }
           if(chatList[chat].photo.length > 0) {
             $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" +
-            "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/gm/" + chatList[chat].photo + ">" +
-            "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/gm/" + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
+            "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/dm/" + chatList[chat].photo + ">" +
+            "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/dm/" + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
           }
         } else {
           if(chatList[chat].message.length > 0) {
@@ -180,8 +190,8 @@ function loadChat(chatList) {
           }
           if(chatList[chat].photo.length > 0) {
             $("#conversation").append("<div class = 'message-container received-message'><div class = 'message-text'>" +
-            "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/gm/" + chatList[chat].photo + ">" +
-            "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/gm/" + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
+            "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/dm/" + chatList[chat].photo + ">" +
+            "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/dm/" + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
           }
         }
       }
@@ -197,7 +207,6 @@ function setFiles() {
 
 $(function () {
     connect();
-    console.log(photo);
     $("form").on('submit', (e) => e.preventDefault());
     $( "#disconnect" ).click(() => disconnect());
     $( "#send" ).click(() => sendMessage());
