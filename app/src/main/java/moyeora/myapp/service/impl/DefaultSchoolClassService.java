@@ -7,7 +7,6 @@ import moyeora.myapp.dao.ClassUserDao;
 import moyeora.myapp.dao.SchoolClassDao;
 import moyeora.myapp.dao.SchoolMemberDao;
 import moyeora.myapp.service.SchoolClassService;
-import moyeora.myapp.vo.Alert;
 import moyeora.myapp.vo.SchoolClass;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +34,7 @@ public class DefaultSchoolClassService implements SchoolClassService {
   @Override
   public void add(SchoolClass clazz) {
 
-    schoolClassDao.add(clazz);
+    schoolClassDao.insert(clazz);
     System.out.println("$$$$$$$$$$$$$$$$$$$" + clazz.getSchoolNo());
     System.out.println("$$$$$$$$$$$$$$$$$$$" + clazz.getUserNo());
     System.out.println("$$$$$$$$$$$$$$$$$$$" + clazz.getNo());
@@ -47,21 +46,6 @@ public class DefaultSchoolClassService implements SchoolClassService {
     System.out.println("#########################" + clazz.getNo());
   }
 
-  @Override
-  public void addAlert(Alert alert, SchoolClass clazz) {
-    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@" + alert.getUserNo());
-    System.out.println("$$$$$$$$$$$$$$$$$$$" + alert.getToUserNo());
-    System.out.println("==============================================");
-    clazz.getNo();
-    clazz.getContent();
-    clazz.getName();
-    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@" + clazz.getNo());
-    System.out.println("$$$$$$$$$$$$$$$$$$$" + clazz.getContent());
-    System.out.println("$$$$$$$$$$$$$$$$$$$" + clazz.getName());
-    System.out.println("==============================================");
-    alertDao.addAlert(alert);
-
-  }
 
   @Override
   public List<SchoolClass> findBySchoolUser(int schoolNo) {
@@ -72,11 +56,18 @@ public class DefaultSchoolClassService implements SchoolClassService {
   @Override
   public List<SchoolClass> schoolCalendarList(int schoolNo) {
 
-    return schoolClassDao.schoolCalendarList(schoolNo);
+    return schoolClassDao.findBySchool(schoolNo);
   }
 
+
   @Override
-  public SchoolClass get(int no) {
-    return null;
+  public SchoolClass get(int classNo) {
+    SchoolClass sc = schoolClassDao.findByNo(classNo);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    System.out.println(sc);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+    return sc;
+
   }
 }

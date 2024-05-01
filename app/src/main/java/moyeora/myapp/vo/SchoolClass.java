@@ -24,5 +24,7 @@ public class SchoolClass {
   private int nowMemberCount;
   private String locationDetail;
 
-
+  private Level level;
+  private User user;
+  private ClassUser classUser;
 }

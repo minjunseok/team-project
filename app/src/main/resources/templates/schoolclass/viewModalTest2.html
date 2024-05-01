@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    
+    
+    
+    
+    
+    <title>일정상세보기</title>
+    
+
+
+</head>
+<body>
+<h1>일정상세보기 모달 Test </h1>
+<button id="mapBtn" type="button">일정상세보기Test</button>
+
+
+
+<div class="modal" id="mapModal" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">지도테스트</h5>
+            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+          </div>
+      <div class="modal-body">
+        
+         <div>
+          
+            <a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + *{photo}}"
+               data-th-if="*{photo}">
+              <img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/' + *{photo}(type=f,w=80,h=80)}"></a><br>
+            <a data-th-unless="*{photo}" href='/img/default-photo.jpeg'>
+              <img height='80px' src='/img/default-photo.jpeg'></a><br>
+         </div>
+      
+         
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div>
+    사진:
+    <a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + *{photo}}" data-th-if="*{photo}">
+      <img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/' + *{photo}(type=f,w=80,h=80)}"></a><br>
+    <a data-th-unless="*{photo}" href='/img/default-photo.jpeg'>
+      <img height='80px' src='/img/default-photo.jpeg'></a><br>
+    <input name='file' type='file'>
+</div>
+
+  <div>
+   <input data-th-value='*{classNo}' disabled name='classNo' type='text'>
+  </div>
+
+  <div>
+    이메일: <input data-th-value='*{schoolNo}' disabled name='schoolNo' type='text'>
+  </div>
+
+
+
+
+<script>
+    document.querySelector("#mapBtn").onclick = function() {
+    const mapModal = new bootstrap.Modal(document.getElementById('mapModal'), {})
+         mapModal.show();
+    };
+    
+    document.querySelector("#mapModal").addEventListener('shown.bs.modal', function() {
+        var modalMapContainer = document.querySelector('.map_wrap');
+        var width = modalMapContainer.clientWidth;
+        var height = modalMapContainer.clientHeight;
+      
+        // Kakao Maps API의 resize 함수를 사용하여 지도의 크기를 조정합니다.
+ 
+        map.relayout();
+        // 키워드로 장소를 검색합니다
+        searchPlaces();
+    });
+    
+</script>
+</body>
+</html>

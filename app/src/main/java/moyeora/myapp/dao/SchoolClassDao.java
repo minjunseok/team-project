@@ -13,9 +13,11 @@ public interface SchoolClassDao {
 
   public List<SchoolClass> findByUserAddress(String address);
 
-  public void add(SchoolClass clazz);
+  public void insert(SchoolClass clazz);
+
   public List<SchoolClass> findBySchoolUser(int schoolNo);
 
-  public List<SchoolClass> schoolCalendarList(int schoolNo);
+  public List<SchoolClass> findBySchool(int schoolNo);
 
+  SchoolClass findByNo(int classNo);
 }

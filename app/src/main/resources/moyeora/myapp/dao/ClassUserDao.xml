@@ -11,6 +11,12 @@
 
 </resultMap>
 
+
+
+
+
+
+
 <insert id="add">
     insert into class_users(user_no,class_no,school_no)
     values (#{userNo},#{classNo},#{schoolNo})

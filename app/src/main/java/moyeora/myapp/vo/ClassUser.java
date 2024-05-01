@@ -8,4 +8,5 @@ public class ClassUser {
     private int schoolNo;
     private int userNo;
     private int classNo;
+    
 }
