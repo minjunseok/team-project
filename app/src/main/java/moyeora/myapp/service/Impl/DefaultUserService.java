@@ -112,4 +112,10 @@ import java.util.List;
         public User findByEmail(String email) {
             return userDao.findByEmail(email);
         }
+
+//        public String getUserPhotoUrl(Long userId) {
+//            // 매퍼를 통해 데이터베이스에서 사용자의 프로필 이미지 URL을 가져옵니다.
+//            User user = userMapper.findById(userId);
+//            return user.getPhotoUrl();
+//        }
     }

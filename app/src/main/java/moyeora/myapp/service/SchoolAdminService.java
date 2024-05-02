@@ -25,7 +25,10 @@ public interface SchoolAdminService {
 
   int authSubAdmin(int userNo, int schoolNo);
 
+
   School getSchool(int schoolNo);
 
   int update(School school);
+
+  int isNameExists(String name);
 }

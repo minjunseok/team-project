@@ -88,6 +88,8 @@
     name = #{name}
   </select>
 
+
+
   <update id="update" parameterType="School">
     update schools set
     name=#{name},

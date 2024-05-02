@@ -1,34 +1,74 @@
 <!DOCTYPE html>
-
-<html lang='ko' xmlns:th="http://www.w3.org/1999/xhtml">
-
-<!--<html lang='en'>-->
-
-
+<html lang="ko" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset='UTF-8'>
-  <title>2조 팀플</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/static/admin/css/header.css" type="text/css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet"/>
 
-  <style>
-        img {
-            width: 80px;
-            height: 80px;
-        }
-   </style>
-
+  <title>moyeora - 모여라에서 취미가 맞는 친구를 사귀어 보세요!</title>
+  <script src="https://kit.fontawesome.com/ee5cb5f44c.js" crossorigin="anonymous"></script>
+  <script src="/static/admin/js/header.js" defer></script>
 </head>
-<body>
 
-<header data-th-fragment="header">
-  <img src='https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'>
-  <a data-th-href="@{/assignment/list}">과제</a>
-  <a data-th-href="@{/board/list(category=1)}">게시글</a>
-  <a data-th-href="@{/member/list}">회원</a>
-  <a data-th-href="@{/board/list(category=2)}">가입인사</a>
-  <a sec:authorize="isAuthenticated()" data-th-href="@{/auth/logout}"><span sec:authentication="name"></span> 로그아웃</a>
-  <a sec:authorize="isAnonymous()" data-th-href="@{/auth/form}">로그인</a>
-  <a data-th-href="@{/chat/gm?schoolNo=1}">gm</a>
-</header>
+<body>
+<div th:fragment="header">
+  <header>
+    <nav class="header">
+      <div class="navbar_logo">
+        <a href="">
+          <img src="/static/img/moyeoraL.png" alt="moyeora로고" class="logo"/>
+        </a>
+      </div>
+
+      <ul class="header_menu">
+        <li><a data-th-href="@{/user/form}">회원가입</a></li>
+        <li sec:authorize="isAnonymous()"><a data-th-href="@{/auth/form}">로그인</a></li>
+        <li sec:authorize="isAuthenticated()">
+          <a data-th-href="@{/auth/logout}"><span sec:authentication="name"></span> 로그아웃</a>
+        </li>
+        <li><a href="">Feed</a></li>
+        <li><a data-th-href="@{/chat/gm?schoolNo=1}">gm</a></li>
+      </ul>
+
+      <ul class="header_icons">
+        <a href="">
+          <i class="fa-solid fa-user"></i>
+        </a>
+      </ul>
+
+      <!-- 사용자 사진을 표시할 빈 img 태그를 추가합니다. -->
+      <img src="" alt="사용자 사진" id="userPhoto" class="user_photo"/>
+
+    </nav>
+
+    <hr/>
+  </header>
+</div>
+
+<script>
+  // 사용자의 사진을 가져와서 img 태그의 src 속성으로 설정하는 함수입니다.
+  fetchUserPhoto();
+
+  function fetchUserPhoto() {
+    // 실제 사용자 사진 URL을 가져오는 함수로 대체해야 합니다.
+    // 예를 들어, 서버에서 가져오거나 localStorage에서 가져올 수 있습니다.
+    var userPhotoURL = getUserPhotoURL();
+
+    // 사용자 사진 URL을 img 태그의 src 속성으로 설정합니다.
+    document.getElementById("userPhoto").src = userPhotoURL;
+  }
+
+  // 사용자 사진 URL을 가져오는 더미 함수입니다. (실제 구현으로 대체하세요)
+  function getUserPhotoURL() {
+    // 사용자의 사진 URL을 반환합니다.
+    // 예를 들어, 정적 URL을 반환하거나 서버에서 가져올 수 있습니다.
+    return "/static/img/user_photo.jpg";
+  }
+</script>
 
 </body>
 </html>
