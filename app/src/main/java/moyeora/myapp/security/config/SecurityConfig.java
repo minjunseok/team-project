@@ -8,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import moyeora.myapp.security.CustomAuthenticationFailureHandler;
 import moyeora.myapp.security.CustomAuthenticationSuccessHandler;
-import moyeora.myapp.security.oauth.PrincipalOauth2UserService;
 import moyeora.myapp.security.oauth.OAuth2AuthenticationFailureHandler;
 import moyeora.myapp.security.oauth.OAuth2AuthenticationSuccessHandler;
+import moyeora.myapp.security.oauth.PrincipalOauth2UserService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -74,7 +74,6 @@ public class SecurityConfig {
             .loginProcessingUrl("/auth/login")
             .successHandler(customAuthenticationSuccessHandler)
             .failureHandler(customAuthenticationFailureHandler)
-            .defaultSuccessUrl("/")
             .permitAll()
         )
         .oauth2Login((oauth2) -> oauth2
