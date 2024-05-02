@@ -2,10 +2,11 @@
 <configuration status="info" name="spring-boot-log-to-kafka-example" packages="io.woolford">
     <Appenders>
         <Kafka name="Kafka" topic="kafka-elk-test-log">
-            <JSONLayout/>
+            <JSONLayout compact="false" eventEol="true"/>
             <Property name="bootstrap.servers">localhost:9092</Property>
         </Kafka>
         <Console name="Console" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true"/>
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
     </Appenders>
