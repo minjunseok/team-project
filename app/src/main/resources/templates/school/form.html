@@ -3,9 +3,78 @@
 
 <head>
     <meta charset='UTF-8'>
-    <title>비트캠프 데브옵스 5기</title>
+    <title>모여라</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            //height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        label {
+            width: 150px;
+            margin-right: 10px;
+        }
+
+        input[type="text"],
+        textarea {
+            flex: 1;
+            padding: 5px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #school_image img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -127,6 +196,11 @@
         var schoolName = $("#name").val();
         console.log("Sending schoolName: " + schoolName);
 
+        if (schoolName.length < 2) {
+            alert("스쿨이름을 2자 이상 입력하세요.");
+            return; // 길이가 충족되지 않으면 함수 종료
+        }
+
         $.ajax({
             url: "checkDuplicateSchoolName",
             type: 'GET',
@@ -156,16 +230,17 @@
     });
 
 
-    document.querySelector("#form1").onsubmit = () => {
-        var name = document.querySelector("#name");
-        if (name.value == "" || name.value.length < 2) {
-            alert("스쿨이름을 2자 이상을 입력하세요.");
-            return false; // false를 리턴하면 입력 폼의 값을 서버에 제출하지 않는다.
-            // 즉 HTTP 요청을 수행하지 않는다.
-        }
-        // true를 리턴하거나 아무것도 리턴하지 않으면 원래대로
-        // 입력 폼의 값을 서버에 제출한다. 즉 HTTP 요청을 수행한다.
-    };
+<!--    document.querySelector("#form1").onsubmit = () => {-->
+<!--        var name = document.querySelector("#name");-->
+<!--        if (name.value == "" || name.value.length < 2) {-->
+<!--            alert("스쿨이름을 2자 이상을 입력하세요.");-->
+<!--            return false; // false를 리턴하면 입력 폼의 값을 서버에 제출하지 않는다.-->
+<!--            // 즉 HTTP 요청을 수행하지 않는다.-->
+<!--        }-->
+<!--        // true를 리턴하거나 아무것도 리턴하지 않으면 원래대로-->
+<!--        // 입력 폼의 값을 서버에 제출한다. 즉 HTTP 요청을 수행한다.-->
+<!--    };-->
+
 
 </script>
 </body>

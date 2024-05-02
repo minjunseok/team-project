@@ -74,7 +74,7 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
       throw new IllegalArgumentException("스쿨명을 입력하세요.");
     }
     if (school.getTagNums() != null) {
-      schoolDao.add(school);
+      schoolDao.update(school);
       for (int tagNum : school.getTagNums()) {
         schoolTagDao.add(tagNum, school.getNo());
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + tagNum);
@@ -91,6 +91,12 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
     }
     return schoolDao.update(school);
   }
+
+  @Override
+  public int isNameExists(String name) {
+    return schoolDao.isNameExists(name);
+  }
+
 }
 
 

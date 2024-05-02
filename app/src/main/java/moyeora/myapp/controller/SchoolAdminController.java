@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -194,20 +195,21 @@ public class SchoolAdminController {
     @PostMapping("update")
     public String update(
             School school,
-            @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "file", required = false) MultipartFile file,
             HttpSession session) throws Exception {
 
-        School loginUser = (School) session.getAttribute("loginUser");
-        if (loginUser == null) {
-            throw new Exception("로그인하시기 바랍니다!");
-        }
-
-        School old = schoolService.get(school.getNo());
-        if (old == null) {
-            throw new Exception("번호가 유효하지 않습니다.");
-        } else if (old.getNo() != loginUser.getNo()) {
-            throw new Exception("권한이 없습니다.");
-        }
+//        School loginUser = (School) session.getAttribute("loginUser");
+//        if (loginUser == null) {
+//            throw new Exception("로그인하시기 바랍니다!");
+//        }
+//
+        School old = schoolAdminService.getSchool(school.getNo());
+        log.debug(old);
+//        if (old == null) {
+//            throw new Exception("번호가 유효하지 않습니다.");
+//        } else if (old.getNo() != loginUser.getNo()) {
+//            throw new Exception("권한이 없습니다.");
+//        }
 
         // 파일 업로드 및 처리
         if (file != null && !file.isEmpty()) {
@@ -221,7 +223,18 @@ public class SchoolAdminController {
         schoolAdminService.update(school);
         // 업데이트 후 리다이렉트
         //return "redirect:list";
-        return "redirect:school/admin?schoolNo=" + school.getNo();
+        return "redirect:/school/admin?schoolNo=" + school.getNo();
+    }
+
+
+    @GetMapping("/checkDuplicateSchoolName")
+    @ResponseBody
+    public Map<String, Integer> checkDuplicateSchoolName(String schoolName) {
+        int count = schoolService.isNameExists(schoolName);
+
+        Map<String, Integer> response = new HashMap<>();
+        response.put("cnt", count);
+        return response;
     }
 
 }
