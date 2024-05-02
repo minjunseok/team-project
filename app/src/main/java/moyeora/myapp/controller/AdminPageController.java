@@ -38,4 +38,8 @@ public class AdminPageController {
 
   @GetMapping("school")
   public void school() {}
+
+  @GetMapping("post")
+  public void post() {
+  }
 }
