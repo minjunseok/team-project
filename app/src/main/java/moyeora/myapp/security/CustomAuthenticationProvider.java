@@ -27,14 +27,16 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     String email = authentication.getName();
     String password = (String)authentication.getCredentials();
 
-    if(!passwordEncoder.matches(password, principalDetailService.loadUserByUsername(email).getPassword())) {
+    PrincipalDetails principal = (PrincipalDetails) principalDetailService.loadUserByUsername(email);
+
+    if(!passwordEncoder.matches(password, principal.getPassword())) {
       throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
     }
 
     List<GrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority(Role.USER.getKey()));
 
-    return new UsernamePasswordAuthenticationToken(email,password);
+    return new UsernamePasswordAuthenticationToken(principal,password,authorities);
 
   }
 
