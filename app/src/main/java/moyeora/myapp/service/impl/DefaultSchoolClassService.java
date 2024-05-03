@@ -6,6 +6,8 @@ import moyeora.myapp.dao.AlertDao;
 import moyeora.myapp.dao.ClassUserDao;
 import moyeora.myapp.dao.SchoolClassDao;
 import moyeora.myapp.dao.SchoolMemberDao;
+import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
+import moyeora.myapp.dto.schoolclass.SchoolClassRequestDTO;
 import moyeora.myapp.service.SchoolClassService;
 import moyeora.myapp.vo.SchoolClass;
 import org.springframework.stereotype.Service;
@@ -34,13 +36,18 @@ public class DefaultSchoolClassService implements SchoolClassService {
   @Override
   public void add(SchoolClass clazz) {
 
-    schoolClassDao.insert(clazz);
+    schoolClassDao.add(clazz);
     System.out.println("$$$$$$$$$$$$$$$$$$$" + clazz.getSchoolNo());
     System.out.println("$$$$$$$$$$$$$$$$$$$" + clazz.getUserNo());
     System.out.println("$$$$$$$$$$$$$$$$$$$" + clazz.getNo());
     System.out.println("=================================================");
 
-    classUserDao.add(clazz.getUserNo(),  clazz.getNo(), clazz.getSchoolNo() );
+    SchoolClassRequestDTO schoolClassRequestDTO = new SchoolClassRequestDTO();
+    schoolClassRequestDTO.setSchoolNo(clazz.getSchoolNo());
+    schoolClassRequestDTO.setClassNo(clazz.getNo());
+    schoolClassRequestDTO.setUserNo(clazz.getUserNo());
+
+    classUserDao.insert(schoolClassRequestDTO);
     System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + clazz.getUserNo());
     System.out.println("$$$$$$$$$$$$$$$$$$$$444$$$" + clazz.getSchoolNo());
     System.out.println("#########################" + clazz.getNo());
@@ -69,5 +76,44 @@ public class DefaultSchoolClassService implements SchoolClassService {
 
     return sc;
 
+  }
+
+  @Override
+  public void insert(SchoolClassRequestDTO schoolClassRequestDTO) {
+    classUserDao.insert(schoolClassRequestDTO);
+    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    System.out.println(schoolClassRequestDTO);
+    System.out.println("#########################");
+  }
+
+
+  @Override
+  public void memberDelete(SchoolClassRequestDTO schoolClassRequestDTO) {
+    classUserDao.memberDelete(schoolClassRequestDTO);
+    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    System.out.println(schoolClassRequestDTO);
+    System.out.println("#########################");
+  }
+
+  @Override
+  public void classDelete(ClassDeleteDTO classDeleteDTO) {
+    SchoolClassRequestDTO schoolClassRequestDTO = new SchoolClassRequestDTO();
+//    System.out.println("===========================");
+//    System.out.println(schoolClassRequestDTO);
+//    System.out.println("===========================");
+//    classUserDao.memberDelete(schoolClassRequestDTO);
+
+    System.out.println("@@@@@@@@@@@@");
+    System.out.println(classDeleteDTO);
+    System.out.println("======================");
+
+
+    schoolClassDao.classDelete(classDeleteDTO);
+
+  }
+
+  @Override
+  public boolean isMember(int classNo, int userNo) {
+    return classUserDao.countMember(classNo, userNo) == 1;
   }
 }

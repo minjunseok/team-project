@@ -6,8 +6,6 @@
     <!-- FullCalendar 라이브러리의 6.1.11 버전을 가져옵니다.   -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css" rel="stylesheet">
     <!--FullCalendar 라이브러리의 5.10.1 버전의 CSS 파일을 가져옵니다.    -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
-    <!--FullCalendar 라이브러리의 5.10.1 버전을 가져옵니다.    -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <!--Moment.js 라이브러리의 2.18.1 버전을 가져옵니다.    -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
@@ -149,9 +147,9 @@
                 return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
             },
             //initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
-            selectable : true, // 달력 일자 드래그 설정가능
-            droppable : true,
-            editable : true,
+            selectable : false, // 달력 일자 드래그 설정가능
+            droppable : false,
+            editable : false,
             nowIndicator: true, // 현재 시간 마크
             locale: 'ko' , // 한국어 설정
             dateClick: function(info) {
@@ -295,6 +293,12 @@ function checkEndDate() {
         alert('종료 시간은 모임일 날짜와 시간을 넘을 수 없습니다.');
         endDateInput.value = '';
     }
+    
+    if (endTimestamp - startTimestamp >= 24 * 60 * 60 * 1000) {
+        alert('모임은 하루만 설정할 수 있습니다');
+        endDateInput.value = '';
+    }
+    
 }
 
 </script>

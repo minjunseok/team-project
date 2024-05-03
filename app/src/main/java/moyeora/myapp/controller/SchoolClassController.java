@@ -2,6 +2,8 @@ package moyeora.myapp.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
+import moyeora.myapp.dto.schoolclass.SchoolClassRequestDTO;
 import moyeora.myapp.service.SchoolClassService;
 import moyeora.myapp.service.SchoolMemberService;
 import moyeora.myapp.util.FileUpload;
@@ -12,16 +14,14 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -33,6 +33,7 @@ public class SchoolClassController {
   private final SchoolClassService schoolClassService;
   private final FileUpload fileUpload;
   private final SchoolMemberService schoolMemberService;
+
   private final String uploadDir =  "schoolclass/";
   @Value("${ncp.storage.bucket}") private String bucket;
 
@@ -107,13 +108,57 @@ public class SchoolClassController {
 
   @GetMapping("findByNo")
   @ResponseBody
-  public Object test(int classNo) throws Exception {
-    //model.addAttribute("schoolClass", schoolClassService.findByDetailView(classNo));
-    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    //System.out.println("=====classcontorller==============>    " + schoolClassService.findByDetailView(classNo));
-    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+  public Object findByNo(int classNo) throws Exception {
+    HashMap<String, Object> result = new HashMap<>();
+    result.put("schoolClass", schoolClassService.get(classNo));
+    result.put("isMember", schoolClassService.isMember(classNo, 4));
+    return result;
+  }
 
-    return schoolClassService.get(classNo);
+  @PostMapping("insert")
+  @ResponseBody
+  public Object attend(@RequestBody SchoolClassRequestDTO schoolClassRequestDTO) throws Exception {
+    schoolClassRequestDTO.setUserNo(4);
+    schoolClassService.insert(schoolClassRequestDTO);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+    System.out.println(schoolClassRequestDTO);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+    return "";
+  }
+
+
+  @PostMapping("memberDelete")
+  @ResponseBody
+  public Object MemberDelete(@RequestBody SchoolClassRequestDTO schoolClassRequestDTO) throws Exception {
+    schoolClassRequestDTO.setUserNo(4);
+    schoolClassService.memberDelete(schoolClassRequestDTO);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+    System.out.println(schoolClassRequestDTO);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+    return "";
+  }
+
+  @PostMapping("classDelete")
+  @ResponseBody
+  public void classDelete(@RequestBody SchoolClass clazz) throws Exception {
+
+    ClassDeleteDTO classDeleteDTO = new ClassDeleteDTO();
+    classDeleteDTO.setClassNo(clazz.getNo());
+    System.out.println("@@@@@@@@@@@@@" + clazz.getNo());
+
+    classDeleteDTO.setUserNo(2);
+
+    SchoolClassRequestDTO schoolClassRequestDTO = new SchoolClassRequestDTO();
+    schoolClassRequestDTO.setSchoolNo(clazz.getSchoolNo());
+    schoolClassRequestDTO.setClassNo(classDeleteDTO.getClassNo());
+    System.out.println("@@@@@@@@@@@@@");
+    System.out.println(schoolClassRequestDTO);
+    System.out.println("@@@@@@@@@@@@@");
+
+    schoolClassService.memberDelete(schoolClassRequestDTO);
+    schoolClassService.classDelete(classDeleteDTO);
+
+
   }
 
 
@@ -130,4 +175,10 @@ public class SchoolClassController {
 
   }
 
+
+  @GetMapping("test")
+  public void test1() throws Exception {
+
+
+  }
 }

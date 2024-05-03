@@ -12,12 +12,27 @@
 </resultMap>
 
 
+<select id="countMember">
+select count(*)
+from
+    class_users
+where
+    class_no = #{classNo}
+    and
+    user_no = #{userNo}
+</select>
 
+<delete id="memberDelete">
+delete
+from
+    class_users
+where
+     class_no = #{classNo}
+     and
+     school_no = #{schoolNo}
+</delete>
 
-
-
-
-<insert id="add">
+<insert id="insert">
     insert into class_users(user_no,class_no,school_no)
     values (#{userNo},#{classNo},#{schoolNo})
 </insert>

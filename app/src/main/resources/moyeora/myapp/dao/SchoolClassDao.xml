@@ -66,7 +66,7 @@
 
   </select>
 
-<insert id="insert" parameterType="SchoolClass"
+<insert id="add" parameterType="SchoolClass"
     useGeneratedKeys="true" keyColumn="class_no" keyProperty="no">
     insert into school_classes(school_no,user_no,name,content,location,start_at,created_at,ended_at,member,repeat_set,photo,location_detail)
     values(#{schoolNo},#{userNo},#{name},#{content},#{location},#{startAt},current_timestamp,#{endedAt},#{member},#{repeatSet},
@@ -117,6 +117,17 @@ WHERE
   sc.class_no = #{classNo}
 
 </select>
+
+<delete id="classDelete">
+delete
+from
+    school_classes
+where
+    user_no = #{userNo}
+    and
+    class_no = #{classNo}
+
+</delete>
 
 
 </mapper>
