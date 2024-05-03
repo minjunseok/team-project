@@ -2,23 +2,19 @@
 <html lang='en'>
 <head>
     <meta charset='utf-8'/>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     <!-- FullCalendar 라이브러리의 6.1.11 버전을 가져옵니다.   -->
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css" rel="stylesheet">
-    <!--FullCalendar 라이브러리의 5.10.1 버전의 CSS 파일을 가져옵니다.    -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
-    <!--FullCalendar 라이브러리의 5.10.1 버전을 가져옵니다.    -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <!--Moment.js 라이브러리의 2.18.1 버전을 가져옵니다.    -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
-    <!--FullCalendar 라이브러리의 5.10.1 버전의 로케일 파일을 가져옵니다.-->
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
     <script crossorigin="anonymous"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -31,6 +27,48 @@
 <!--캘린더를 초기화하고 뷰를 랜더링하는 역할을 한다.    -->
     </script>
     
+    <style>
+.map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+.map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
+.map_wrap {position:relative;width:100%;height:500px;}
+#menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
+.bg_white {background:#fff;}
+#menu_wrap hr { height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
+#menu_wrap .option{text-align: center;}
+#menu_wrap .option p {margin:10px 0;}
+#menu_wrap .option button {margin-left:5px;}
+#placesList li {list-style: none;}
+#placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
+#placesList .item span {display: block;margin-top:4px;}
+#placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+#placesList .item .info{padding:10px 0 10px 55px;}
+#placesList .info .gray {color:#8a8a8a;}
+#placesList .info .jibun {padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
+#placesList .info .tel {color:#009900;}
+#placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
+#placesList .item .marker_1 {background-position: 0 -10px;}
+#placesList .item .marker_2 {background-position: 0 -56px;}
+#placesList .item .marker_3 {background-position: 0 -102px}
+#placesList .item .marker_4 {background-position: 0 -148px;}
+#placesList .item .marker_5 {background-position: 0 -194px;}
+#placesList .item .marker_6 {background-position: 0 -240px;}
+#placesList .item .marker_7 {background-position: 0 -286px;}
+#placesList .item .marker_8 {background-position: 0 -332px;}
+#placesList .item .marker_9 {background-position: 0 -378px;}
+#placesList .item .marker_10 {background-position: 0 -423px;}
+#placesList .item .marker_11 {background-position: 0 -470px;}
+#placesList .item .marker_12 {background-position: 0 -516px;}
+#placesList .item .marker_13 {background-position: 0 -562px;}
+#placesList .item .marker_14 {background-position: 0 -608px;}
+#placesList .item .marker_15 {background-position: 0 -654px;}
+#pagination {margin:10px auto;text-align: center;}
+#pagination a {display:inline-block;margin-right:10px;}
+#pagination .on {font-weight: bold; cursor: default;color:#777;}
+        .item-hidden {
+            display: none;
+        }
+</style>
+
 
 </head>
 <body>
@@ -41,6 +79,10 @@
 <script>
 
     let calendar;
+    let schoolNo;
+    let classNo;
+    let eventObj;
+    let deleteId;
     
     window.onload = function() {
         // 페이지가 완전히 출력된 후 수행할 작업을 둔다.
@@ -67,12 +109,13 @@
                 end : classEvent.endedAt,
                 allDay: true,
                 extendedProps: {
-                    classNo: classEvent.no
+                    classNo: classEvent.no,
                 }
              });
             }
-            console.log("@@@@@@@@@@@@@@@@@@");
             console.log(result);
+            console.log("@@@@@@@@@@@@@@@@@@");
+           
         });
     };
     
@@ -85,6 +128,7 @@
                 center : 'title',
                 end : 'dayGridMonth,dayGridWeek,dayGridDay'
             },
+            
             customButtons: {
                 add: {
                     text: '일정등록',
@@ -97,7 +141,6 @@
             titleFormat : function(date) {
                 return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
             },
-            //initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
             selectable : false, // 달력 일자 드래그 설정가능
             droppable : false,
             editable : false,
@@ -107,13 +150,15 @@
                 myModal1();
             },
             
-<!--            바를 클릭하면 나오는 부분 view부분-->
+                <!--바를 클릭하면 나오는 부분 view부분-->
             eventClick: function(info) {
                 viewModal1();
-                var eventObj = info.event;
-                console.log(info.event);
+                 eventObj = info.event;
+                 console.log("=========================");
                  console.log(eventObj);
-                 var classNo = eventObj.extendedProps.classNo;
+                 console.log(eventObj._def.defId);
+                  console.log("=========================");
+                 classNo = eventObj.extendedProps.classNo;
                     console.log(classNo);
                  
                     
@@ -126,25 +171,33 @@
                         responseType:'json'
                       })
                         .then(function (response) {
-                            var responseData = response.data;
-                            console.log(responseData);
+                            console.log(response.data);
+                            var responseData = response.data.schoolClass;
+                            
                             
                             document.getElementById('name').textContent = responseData.name;
                             document.getElementById('content').textContent = responseData.content;
                             document.getElementById('levelName').textContent = responseData.level.levelName;
                             document.getElementById('nickname').textContent = responseData.user.nickname;
-                            document.getElementById('location').textContent = responseData.location;
+                            document.getElementById('keyword').value = responseData.location;
                             document.getElementById('locationDetail').textContent = responseData.locationDetail;
                             document.getElementById('member').textContent = responseData.member;
                             document.getElementById('nowMemberCount').textContent = responseData.nowMemberCount;
                             document.getElementById('startAt').textContent = responseData.startAt;
+                            schoolNo = responseData.schoolNo;
                             
+                            console.log(response.data.isMember);
+                            if(response.data.isMember == true){
+                                $('#cancelButton').removeClass("item-hidden");
+                            } else {
+                                $('#submitButton').removeClass("item-hidden");
+                            }
                             
                             console.log("===============================================");
                             
                             var photoElement = document.getElementById('photo');
                                 if (responseData.photo) {
-                                    photoElement.src = 'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/schoolclass/' + responseData.photo + '?type=f&w=160&h=160';
+                                    photoElement.src = 'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/schoolclass/' + responseData.photo + '?type=f&w=300&h=300';
                                    
                                     console.log("=======================사진========================");
                                 } else {
@@ -153,57 +206,91 @@
                                     console.log("=====================기본 사진==========================");
                                 }
                                 console.log(responseData.photo);
+                                searchPlaces();
+                                console.log("searchPlaces");
                         })
                         .catch(function (error) {
                             console.error('에러 발생:', error);
                         });
                         
-            },
-        });
-        
+            console.log("%%%%%%%%%%%%%%%%%%%");
+            console.log(eventObj);
+            console.log("%%%%%%%%%%%%%%%%%");
+            
+                // 삭제 버튼 클릭 시 removeEvent 함수 호출
+                $('#deleteEvent').on('click', function () {
+                    removeEvent(eventObj);
+                });
+            
+            }
+            
+          });
+          
+          
+           function removeEvent(eventObj) {
+                $('#deleteEvent').on('click', function () {
+
+                if (eventObj) {
+                    // FullCalendar에서 이벤트를 제거하는 코드 추가
+                    var eventId = eventObj.id; // 삭제할 이벤트의 ID를 가져옵니다.
+                    console.log(eventObj);
+                    var calendarEvent = calendar.getEventById(eventId);
+                    if (calendarEvent) {
+                        calendarEvent.remove(); // FullCalendar에서 이벤트를 제거합니다.
+                    closeModal(); // 모달을 닫습니다.
+    
+                  axios({
+                    method: 'POST',
+                    url: '/schoolclass/classDelete',
+                    data: {
+                        no : classNo,
+                        schoolNo: schoolNo
+                    }
+                    //responseType:'json'
+                  })
+                    .then(function (response) {
+                        console.log("삭제하기 실행");
+                    })
+                    .catch(function (error) {
+                        console.error('에러 발생:', error);
+                    });
+                  console.log(classNo);
+                  }
+                }
+             });
+         }
+         
+         
+         
+         
         calendar.render();
     });
-
+    
+    
 </script>
 
 
-
 <div class="modal" id="viewModal" tabindex="-1">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">일정등록</h5>
+        <h5 class="modal-title">일정 상세보기</h5>
         <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
       </div>
+      
       <div class="modal-body">
-          
-          <div>
-<!--              <img id="photo"></img>-->
-          </div>
-          
-            
               
-          <div>
+      
                 제목: <span id="name" data-th-text="${name}"></span>
-          </div>
-          <div>
                 nickname: <span id="nickname" data-th-text="${nickname}"></span>
-          </div>
-          <div>
-                content: <span id="content" data-th-text="${content}"></span>
-          </div>
-          <div>
                 levelName: <span id="levelName" data-th-text="${levelName}"></span>
-          </div>
           <div>
-                location: <span id="location" data-th-text="${location}"></span>
+              <form id="attendClass" style="display: inline-block;">
+                  <button type="button" class="btn btn-success item-hidden" id="submitButton">참가하기</button>
+                  <button type="button" class="btn btn-secondary item-hidden" id="cancelButton">참가 취소하기</button>
+              </form>
           </div>
-          <div>
-                locationDetail: <span id="locationDetail" data-th-text="${locationDetail}"></span>
-          </div>
-          <div>
-                photo: <img id="photo">
-          </div>
+         
            <div>
                 member: <span id="member" data-th-text="${member}"></span>
           </div>
@@ -213,26 +300,403 @@
           <div>
                 startAt: <span id="startAt" data-th-text="${startAt}" data-th-format="YYYY-MM-DD"></span>
           </div>
+          <div>
+                photo: <img id="photo">
+          </div>
+          <div> content: <span id="content" data-th-text="${content}"></span> </div>
+          <div>
+                locationDetail: <span id="locationDetail" data-th-text="${locationDetail}"></span>
+          </div>
+        
           
-         
+          <div class="map_wrap">
+                    <div id="map" style="width:100%;height:100%;"></div>
+                
+                    <div id="menu_wrap" class="bg_white">
+                        <div class="option">
+                            <div>
+                                <form onsubmit="searchPlaces(); return false;">
+                                    키워드 : <input type="text" data-th-text="${location}" id="keyword" size="15">
+                                    <button type="submit">검색하기</button>
+                                </form>
+                            </div>
+                        </div>
+                        <hr>
+                        <ul id="placesList"></ul>
+                        <div id="pagination"></div>
+                    </div>
+          </div>
+          
+          <button id="deleteEvent" class="btn btn-danger" onclick="closeModal()">삭제하기</button>
+          
       </div>
+      
       
     </div>
   </div>
 </div>
+
 <script>
     let viewModal;
-        function viewModal1() {
-             viewModal = new bootstrap.Modal(document.getElementById('viewModal'), {})
-            console.log('모달을 표시합니다.');
-            viewModal.show();
-        };
+    
+    
+    function viewModal1() {
+         viewModal = new bootstrap.Modal(document.getElementById('viewModal'), {})
+        console.log('모달을 표시합니다.');
+        viewModal.show();
+    };
         
-         function closeModal() {
-            viewModal.hide();
-        };
+    document.querySelector("#viewModal").addEventListener('shown.bs.modal', function() {
+        var modalMapContainer = document.querySelector('.map_wrap');
+      
+        // Kakao Maps API의 resize 함수를 사용하여 지도의 크기를 조정합니다.
+ 
+        map.relayout();
+        // 키워드로 장소를 검색합니다
+        console.log("maprelayout");
+        
+    });
+    
+    function closeModal() {
+         viewModal = new bootstrap.Modal(document.getElementById('viewModal'), {})
+         console.log('모달을 닫습니다.');
+         viewModal.hide();
+    };
+    
+    document.querySelector("#viewModal").addEventListener('hidden.bs.modal', function() {
+        $('#cancelButton').addClass("item-hidden");
+        $('#submitButton').addClass("item-hidden");
+    });
+    
+</script>
+
+<script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services"></script>
+<script>
+// 마커를 담을 배열입니다
+var markers = [];
+
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+ mapOption = {
+        center: new kakao.maps.LatLng(37.50736, 127.034435), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+    
+
+// 지도를 생성합니다
+var map = new kakao.maps.Map(mapContainer, mapOption);
+console.log("지도생성");
+
+
+
+// 장소 검색 객체를 생성합니다
+var ps = new kakao.maps.services.Places();
+
+// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+
+
+// 키워드 검색을 요청하는 함수입니다
+function searchPlaces() {
+
+    var keyword = document.getElementById('keyword').value;
+
+    if (!keyword.replace(/^\s+|\s+$/g, '')) {
+        alert('키워드를 입력해주세요!');
+        return false;
+    }
+
+    // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+    ps.keywordSearch( keyword, placesSearchCB);
+}
+
+// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+function placesSearchCB(data, status, pagination) {
+    if (status === kakao.maps.services.Status.OK) {
+
+        // 정상적으로 검색이 완료됐으면
+        // 검색 목록과 마커를 표출합니다
+        displayPlaces(data);
+
+        // 페이지 번호를 표출합니다
+        displayPagination(pagination);
+
+    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+
+        alert('검색 결과가 존재하지 않습니다.');
+        return;
+
+    } else if (status === kakao.maps.services.Status.ERROR) {
+
+        alert('검색 결과 중 오류가 발생했습니다.');
+        return;
+
+    }
+}
+
+// 검색 결과 목록과 마커를 표출하는 함수입니다
+function displayPlaces(places) {
+
+    var listEl = document.getElementById('placesList'),
+    menuEl = document.getElementById('menu_wrap'),
+    fragment = document.createDocumentFragment(),
+    bounds = new kakao.maps.LatLngBounds(),
+    listStr = '';
+    
+    // 검색 결과 목록에 추가된 항목들을 제거합니다
+    removeAllChildNods(listEl);
+
+    // 지도에 표시되고 있는 마커를 제거합니다
+    removeMarker();
+    
+    for ( var i=0; i<places.length; i++ ) {
+
+        // 마커를 생성하고 지도에 표시합니다
+        var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+            marker = addMarker(placePosition, i),
+            itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        bounds.extend(placePosition);
+        
+
+        // 마커와 검색결과 항목에 mouseover 했을때
+        // 해당 장소에 인포윈도우에 장소명을 표시합니다
+        // mouseout 했을 때는 인포윈도우를 닫습니다
+        (function(marker, title, place) {
+            kakao.maps.event.addListener(marker, 'mouseover', function() {
+                displayInfowindow(marker, title);
+            });
+
+            kakao.maps.event.addListener(marker, 'mouseout', function() {
+                infowindow.close();
+            });
+            
+            kakao.maps.event.addListener(marker, 'click', function() {
+                document.getElementById("location").value = place.place_name;
+                document.getElementById("locationDetail").value = place.address_name ;
+                
+                var mapModal = document.querySelector("#mapModal");
+                var mapModalInstance = bootstrap.Modal.getInstance(mapModal);
+                mapModalInstance.hide();
+                
+                
+                console.log( "@@@@@@@@" + JSON.stringify(place));
+                console.log(JSON.stringify(place.road_address_name));
+                console.log(JSON.stringify(place.address_name));
+		    });
+		    
+		    itemEl.onclick =  function () {
+		        document.getElementById("location").value = place.place_name;
+                document.getElementById("locationDetail").value = place.address_name;
+                
+                var mapModal = document.querySelector("#mapModal");
+                var mapModalInstance = bootstrap.Modal.getInstance(mapModal);
+                mapModalInstance.hide();
+            };
+		    
+
+            itemEl.onmouseover =  function () {
+                displayInfowindow(marker, title);
+            };
+
+            itemEl.onmouseout =  function () {
+                infowindow.close();
+            };
+        })(marker, places[i].place_name, places[i]);
+            console.log(places[i].place_name);
+            console.log(places[i].road_address_name);
+           console.log(places[i]);
+           
+
+        fragment.appendChild(itemEl);
+    }
+
+    // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
+    listEl.appendChild(fragment);
+    menuEl.scrollTop = 0;
+
+    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+    map.setBounds(bounds);
+}
+
+// 검색결과 항목을 Element로 반환하는 함수입니다
+function getListItem(index, places) {
+
+    var el = document.createElement('li'),
+    itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+                '<div class="info">' +
+                '   <h5>' + places.place_name + '</h5>';
+
+    if (places.road_address_name) {
+        itemStr += '    <span>' + places.road_address_name + '</span>' +
+                    '   <span class="jibun gray">' +  places.address_name  + '</span>';
+    } else {
+        itemStr += '    <span>' +  places.address_name  + '</span>';
+    }
+      
+      itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+                '</div>';
+
+    el.innerHTML = itemStr;
+    el.className = 'item';
+
+    return el;
+}
+
+// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+function addMarker(position, idx, title) {
+    var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+        imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+        imgOptions =  {
+            spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+            spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+            offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+        },
+        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+            marker = new kakao.maps.Marker({
+            position: position, // 마커의 위치
+            image: markerImage
+        });
+
+    marker.setMap(map); // 지도 위에 마커를 표출합니다
+    markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+    return marker;
+}
+
+// 지도 위에 표시되고 있는 마커를 모두 제거합니다
+function removeMarker() {
+    for ( var i = 0; i < markers.length; i++ ) {
+        markers[i].setMap(null);
+    }
+    markers = [];
+}
+
+// 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+function displayPagination(pagination) {
+    var paginationEl = document.getElementById('pagination'),
+        fragment = document.createDocumentFragment(),
+        i;
+
+    // 기존에 추가된 페이지번호를 삭제합니다
+    while (paginationEl.hasChildNodes()) {
+        paginationEl.removeChild (paginationEl.lastChild);
+    }
+
+    for (i=1; i<=pagination.last; i++) {
+        var el = document.createElement('a');
+        el.href = "#";
+        el.innerHTML = i;
+
+        if (i===pagination.current) {
+            el.className = 'on';
+        } else {
+            el.onclick = (function(i) {
+                return function() {
+                    pagination.gotoPage(i);
+                }
+            })(i);
+        }
+
+        fragment.appendChild(el);
+    }
+    paginationEl.appendChild(fragment);
+}
+
+// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+// 인포윈도우에 장소명을 표시합니다
+function displayInfowindow(marker, title) {
+    var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+    infowindow.setContent(content);
+    infowindow.open(map, marker);
+}
+
+ // 검색결과 목록의 자식 Element를 제거하는 함수입니다
+function removeAllChildNods(el) {
+    while (el.hasChildNodes()) {
+        el.removeChild (el.lastChild);
+    }
+}
     
     
+
+</script>
+
+<script>
+    var submitButton = document.getElementById('submitButton');
+    var attendClass = document.getElementById('attendClass');
+
+    // 클릭 이벤트에 대한 핸들러를 추가합니다.
+
+    $("#submitButton").click(function() {
+    
+      axios({
+        method: 'POST',
+        url: '/schoolclass/insert',
+        data: {
+            classNo: classNo,
+            schoolNo: schoolNo
+        },
+        responseType:'json'
+      })
+        .then(function (response) {
+            let count = document.getElementById('nowMemberCount').innerText
+            count = Number(count) + 1
+            document.getElementById('nowMemberCount').innerText = count
+            var responseData = response.data;
+            console.log(responseData);
+            $('#cancelButton').removeClass("item-hidden");
+            $('#submitButton').addClass("item-hidden");
+        })
+        .catch(function (error) {
+            console.error('에러 발생:', error);
+        });
+      console.log(classNo);
+      console.log(schoolNo);
+        // 폼을 제출하지 않도록 합니다.
+        event.preventDefault();
+    });
+ 
+ </script>
+
+
+ <script>
+    
+    $("#cancelButton").click(function() {
+    
+      axios({
+        method: 'POST',
+        url: '/schoolclass/memberDelete',
+        data: {
+            classNo: classNo,
+            schoolNo: schoolNo
+        },
+        responseType:'json'
+      })
+        .then(function (response) {
+            let count = document.getElementById('nowMemberCount').innerText
+            count = Number(count) - 1
+            document.getElementById('nowMemberCount').innerText = count
+            var responseData = response.data;
+            console.log(responseData);
+            $('#cancelButton').addClass("item-hidden");
+            $('#submitButton').removeClass("item-hidden");
+        })
+        .catch(function (error) {
+            console.error('에러 발생:', error);
+        });
+      console.log(classNo);
+      console.log(schoolNo);
+        // 폼을 제출하지 않도록 합니다.
+        event.preventDefault();
+    });
+ 
+
+ 
 </script>
 
 
