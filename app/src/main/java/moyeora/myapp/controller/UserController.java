@@ -102,9 +102,22 @@ public String update(User user, MultipartFile file) throws Exception {
 
     @PostMapping("pwdUpdate")
     public String update(User user) throws Exception {
-
         userService.pwdUpdate(user);
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ userService);
         return "redirect:index";
     }
+
+
+    @GetMapping("userProfile")
+    public String userProfile(int no, Model model) {
+        // 사용자 서비스를 사용하여 사용자 정보를 가져옵니다.
+        User user = userService.get(no);
+        // 모델에 사용자 정보를 추가합니다.
+        model.addAttribute("user", user);
+        // userProfile.html로 이동합니다.
+        return "header";
+
+    }
 }
+
+

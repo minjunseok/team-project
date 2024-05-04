@@ -38,4 +38,8 @@ public interface SchoolDao {
   int isNameExists(String name);
 
   School findBySchool(int schoolNo);
+
+  int deleteSchool(int schoolNo);
+
+
 }

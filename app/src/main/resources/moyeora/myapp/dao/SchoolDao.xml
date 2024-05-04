@@ -117,4 +117,12 @@
     WHERE
       s.school_no = #{no}
   </select>
+
+
+
+
+
+  <delete id="deleteSchool" parameterType="int">
+    DELETE FROM schools WHERE school_no = #{value};
+  </delete>
 </mapper>

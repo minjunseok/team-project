@@ -164,5 +164,15 @@
     user_no=#{userNo}
   </select>
 
+  <select id="userProfile" resultType="int">
+    SELECT
+      name,
+      photo
+    FROM
+      users
+    WHERE
+      user_no=#{userNo}
+  </select>
+
 
 </mapper>

@@ -31,4 +31,7 @@ public interface SchoolAdminService {
   int update(School school);
 
   int isNameExists(String name);
+
+  int deleteSchool(int schoolNo);
+
 }
