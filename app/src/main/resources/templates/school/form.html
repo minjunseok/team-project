@@ -196,14 +196,11 @@
         var schoolName = $("#name").val();
         console.log("Sending schoolName: " + schoolName);
 
-<<<<<<< HEAD
         if (schoolName.length < 2) {
             alert("스쿨이름을 2자 이상 입력하세요.");
             return; // 길이가 충족되지 않으면 함수 종료
         }
 
-=======
->>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
         $.ajax({
             url: "checkDuplicateSchoolName",
             type: 'GET',
@@ -233,7 +230,6 @@
     });
 
 
-<<<<<<< HEAD
 <!--    document.querySelector("#form1").onsubmit = () => {-->
 <!--        var name = document.querySelector("#name");-->
 <!--        if (name.value == "" || name.value.length < 2) {-->
@@ -245,18 +241,6 @@
 <!--        // 입력 폼의 값을 서버에 제출한다. 즉 HTTP 요청을 수행한다.-->
 <!--    };-->
 
-=======
-    document.querySelector("#form1").onsubmit = () => {
-        var name = document.querySelector("#name");
-        if (name.value == "" || name.value.length < 2) {
-            alert("스쿨이름을 2자 이상을 입력하세요.");
-            return false; // false를 리턴하면 입력 폼의 값을 서버에 제출하지 않는다.
-            // 즉 HTTP 요청을 수행하지 않는다.
-        }
-        // true를 리턴하거나 아무것도 리턴하지 않으면 원래대로
-        // 입력 폼의 값을 서버에 제출한다. 즉 HTTP 요청을 수행한다.
-    };
->>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
 
 </script>
 </body>
