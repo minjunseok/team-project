@@ -25,7 +25,6 @@ public interface SchoolAdminService {
 
   int authSubAdmin(int userNo, int schoolNo);
 
-<<<<<<< HEAD
 
   School getSchool(int schoolNo);
 
@@ -35,9 +34,4 @@ public interface SchoolAdminService {
 
   int deleteSchool(int schoolNo);
 
-=======
-  School getSchool(int schoolNo);
-
-  int update(School school);
->>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
 }

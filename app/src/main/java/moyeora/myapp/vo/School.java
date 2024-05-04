@@ -1,11 +1,6 @@
 package moyeora.myapp.vo;
 
-<<<<<<< HEAD
 import lombok.Data;
-=======
-import lombok.Getter;
-import lombok.Setter;
->>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
 
 import java.io.Serializable;
 import java.sql.Date;

@@ -20,4 +20,8 @@
     values (#{tagNo},#{schoolNo})
   </insert>
 
+
+  <delete id="deleteSchoolTags" parameterType="int">
+    DELETE FROM school_tags WHERE school_no = #{value};
+  </delete>
 </mapper>

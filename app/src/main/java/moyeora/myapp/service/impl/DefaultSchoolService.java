@@ -147,9 +147,6 @@ public class DefaultSchoolService implements SchoolService {
     return schoolDao.isNameExists(name);
   }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
 }
 
