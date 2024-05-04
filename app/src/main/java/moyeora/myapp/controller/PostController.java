@@ -1,15 +1,12 @@
 package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.service.CommentService;
 import moyeora.myapp.service.PostService;
 import moyeora.myapp.service.SchoolUserService;
 import moyeora.myapp.util.FileUpload;
-import moyeora.myapp.util.FileUploadHelper;
 import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Comment;
 import moyeora.myapp.vo.Post;
-import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,13 +15,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.springframework.web.servlet.ModelAndView;
 
 @RequiredArgsConstructor
 @Controller
@@ -221,26 +217,28 @@ public class PostController {
 //      throw new Exception("권한이 없습니다.");
 //    }
 //
-//    List<AttachedFile> files = postService.getAttachedFiles(no);
-//
+        List<AttachedFile> files = postService.getAttachedFiles(no);
+
         postService.delete(no, schoolNo);
-//
-//    for (AttachedFile file : files) {
-//    fileUploadHelper.delete(this.bucketName, this.uploadDir, file.getFilePath());
-//    }
+
+        for (AttachedFile file : files) {
+            fileUpload.delete(this.bucketName, this.uploadDir, file.getFilePath());
+        }
 
         return "redirect:list?schoolNo=" + post.getSchoolNo();
     }
 
 
-    @GetMapping("md")
+    @GetMapping("md/{postNo}")
     public String md(
-            int no,
+            @PathVariable("postNo") int no,
             @RequestParam("schoolNo") int schoolNo,
             Model model) throws Exception {
-        Post post = postService.get(no, schoolNo);
+        Post post = postService.findByPost(no, schoolNo);
         model.addAttribute("post", post);
         model.addAttribute("content", post.getContent()); // "content" 데이터 추가
+
+
         return "post/md";
     }
 
@@ -307,5 +305,4 @@ public class PostController {
         // 업로드한 파일의 이미지 정보를 보낸다.
         return fileList;
     }
-
 }
