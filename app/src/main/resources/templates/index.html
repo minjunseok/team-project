@@ -55,54 +55,54 @@
 </div>
 
 <script>
-let map;
-let mapOption;
-let mapContainer;
-  const dataList = (week) => {
-    map = new kakao.maps.Map(mapContainer, mapOption);
-    axios.get("school_class/list?date="+week)
-    .then(e => {
-       $("#byDate").empty();
-      var geocoder = new kakao.maps.services.Geocoder();  
-      for(let data of e.data) {
-        $("#byDate").append("<li>" + data.name +"</li>")
-        $("#byDate").append("<li>" + data.photo +"</li>")
-        $("#byDate").append("<li>" + data.nowMemberCount + "/" + data.member + "</li>")
-        geocoder.addressSearch(""+data.location+"", function(result,status) {
-          console.log("adsasddasasdasd")
-          if(status ==kakao.maps.services.Status.OK) {
-            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                    var marker = new kakao.maps.Marker({
-                        map: map,
-                        position: coords
-                    });
-                    var infowindow = new kakao.maps.InfoWindow({
-                        content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
-                    });
-                    infowindow.open(map, marker);
-                    map.setCenter(coords);
-                      }
-                    })
+  let map;
+  let mapOption;
+  let mapContainer;
+    const dataList = (week) => {
+      map = new kakao.maps.Map(mapContainer, mapOption);
+      axios.get("school_class/list?date="+week)
+      .then(e => {
+         $("#byDate").empty();
+        var geocoder = new kakao.maps.services.Geocoder();
+        for(let data of e.data) {
+          $("#byDate").append("<li>" + data.name +"</li>")
+          $("#byDate").append("<li>" + data.photo +"</li>")
+          $("#byDate").append("<li>" + data.nowMemberCount + "/" + data.member + "</li>")
+          geocoder.addressSearch(""+data.location+"", function(result,status) {
+            console.log("adsasddasasdasd")
+            if(status ==kakao.maps.services.Status.OK) {
+              var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                      var marker = new kakao.maps.Marker({
+                          map: map,
+                          position: coords
+                      });
+                      var infowindow = new kakao.maps.InfoWindow({
+                          content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+                      });
+                      infowindow.open(map, marker);
+                      map.setCenter(coords);
+                        }
+                      })
+
+        }
+      })
+    }
+
+  var geocoder = new kakao.maps.services.Geocoder();
+
+
+  mapContainer = document.getElementById('map')
+  geocoder.addressSearch('서울특별시 서초구 방배로 93', function(result, status) {
+      console.log("테스트");
+       if (status === kakao.maps.services.Status.OK) {
+          mapOption = {
+          center: new kakao.maps.LatLng(result[0].y, result[0].x),
+          level: 6
+      };
+      map = new kakao.maps.Map(mapContainer, mapOption);
 
       }
-    })
-  }
-
-var geocoder = new kakao.maps.services.Geocoder();  
-
-
-mapContainer = document.getElementById('map') 
-geocoder.addressSearch('서울특별시 서초구 방배로 93', function(result, status) {
-    console.log("테스트");
-     if (status === kakao.maps.services.Status.OK) {
-        mapOption = {
-        center: new kakao.maps.LatLng(result[0].y, result[0].x),
-        level: 6
-    };
-    map = new kakao.maps.Map(mapContainer, mapOption);
-
-    }
-});
+  });
 
 
 

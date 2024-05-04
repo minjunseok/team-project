@@ -18,9 +18,9 @@ public interface SchoolDao {
   int delete(int schoolNo);
 
   List<School> findAll(
-      @Param("category_no") int categoryNo,
-      @Param("offset") int offset,
-      @Param("rowCount") int rowCount);
+          @Param("category_no") int categoryNo,
+          @Param("offset") int offset,
+          @Param("rowCount") int rowCount);
 
   School findBy(int postNo);
 

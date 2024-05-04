@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="moyeora.myapp.dao.UserDao">
   <resultMap id="UserMap" type="User">
     <id column="user_no" property="no"/>
@@ -36,30 +36,30 @@
     values(#{name},#{password},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{profile},#{photo},36)
   </insert>
 
-<select id="findBy" resultMap="UserMap" parameterType="int">
+  <select id="findBy" resultMap="UserMap" parameterType="int">
     select
-        u.name,
-        u.address,
-        u.phone,
-        u.email,
-        u.nickname,
-        u.birth,
-        u.gender,
-        u.grade,
-        u.created_at,
-        u.profile,
-        u.manner_point,
-        u.photo,
-        u.address_detail,
-        ut.user_no,
-        ut.tag_no
+    u.name,
+    u.address,
+    u.phone,
+    u.email,
+    u.nickname,
+    u.birth,
+    u.gender,
+    u.grade,
+    u.created_at,
+    u.profile,
+    u.manner_point,
+    u.photo,
+    u.address_detail,
+    ut.user_no,
+    ut.tag_no
     from
-        users as u
+    users as u
     inner join
-        user_tags as ut on u.user_no = ut.user_no
+    user_tags as ut on u.user_no = ut.user_no
     where
-        u.user_no =#{no};
-</select>
+    u.user_no =#{no};
+  </select>
 
   <insert id="add2" parameterType="list">
     insert into member_tags(user_no,tag_no)
@@ -87,9 +87,9 @@
 
   <select id="findByNo" resultMap="UserMap" parameterType="int">
     select
-      user_no,
-      email,
-      name,
+    user_no,
+    email,
+    name,
     created_at
     from
     users
@@ -99,29 +99,29 @@
 
   <select id="findByEmail" resultMap="UserMap" parameterType="string">
     select
-      user_no,
-      email,
-      password,
-      name
+    user_no,
+    email,
+    password,
+    name
     from
-      users
+    users
     where
-      email=#{email}
+    email=#{email}
   </select>
 
   <update id="update" parameterType="User">
-  update users set
-  email=#{email},
-  nickname=#{nickname},
-  phone=#{phone},
-  address=#{address},
-  photo=#{photo}
-  profile=#{profile}
-  <if test="password != ''">
-    , password=#{password}
-  </if>
-  where
-  user_no=#{no}
+    update users set
+    email=#{email},
+    nickname=#{nickname},
+    phone=#{phone},
+    address=#{address},
+    photo=#{photo}
+    profile=#{profile}
+    <if test="password != ''">
+      , password=#{password}
+    </if>
+    where
+    user_no=#{no}
   </update>
 
   <update id="updatePassword" parameterType="User">
@@ -133,12 +133,12 @@
 
   <select id="findByNameAndPhone" resultType="string">
     select
-      email
+    email
     from
-      users
+    users
     where
-      name=#{name}
-      and phone=#{phone}
+    name=#{name}
+    and phone=#{phone}
   </select>
 
   <select id="findOAuth2User" resultMap="UserMap">
@@ -166,14 +166,13 @@
 
   <select id="userProfile" resultType="int">
     SELECT
-      name,
-      photo
+    name,
+    photo
     FROM
-      users
+    users
     WHERE
-      user_no=#{userNo}
+    user_no=#{userNo}
   </select>
-
 
 
 </mapper>

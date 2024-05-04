@@ -12,8 +12,5 @@
     select * from tags
   </select>
 
-  <delete id="deleteSchoolTags" parameterType="int">
-    DELETE FROM school_tags WHERE school_no = #{value};
-  </delete>
 
 </mapper>
