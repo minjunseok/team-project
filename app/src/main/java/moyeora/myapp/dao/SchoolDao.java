@@ -41,5 +41,7 @@ public interface SchoolDao {
 
   int deleteSchool(int schoolNo);
 
+  School findBySchoolNo(int schoolNo);
+
 
 }

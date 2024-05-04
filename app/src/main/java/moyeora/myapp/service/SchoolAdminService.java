@@ -34,4 +34,6 @@ public interface SchoolAdminService {
 
   int deleteSchool(int schoolNo);
 
+  School getSchoolNo(int schoolNo);
+
 }

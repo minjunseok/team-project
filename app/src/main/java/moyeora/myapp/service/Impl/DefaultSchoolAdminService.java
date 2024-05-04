@@ -113,4 +113,10 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
 
     return rowsAffected;
   }
+
+  //스쿨 이름,넘버 가져오는 메서드
+  @Override
+  public School getSchoolNo(int schoolNo) {
+    return schoolDao.findBySchoolNo(schoolNo);
+  }
 }
