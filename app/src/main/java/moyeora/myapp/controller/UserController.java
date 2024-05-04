@@ -24,12 +24,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/user")
 public class UserController implements InitializingBean {
-  private static final Log log = LogFactory.getLog(UserController.class);
-  private final UserService userService;
-  private final TagService tagService;
-  private final FileUpload fileUpload;
-  private final String uploadDir =  "user/";;
-  @Value("${ncp.storage.bucket}") private String bucket;
+    private static final Log log = LogFactory.getLog(UserController.class);
+    private final UserService userService;
+    private final TagService tagService;
+    private final FileUpload fileUpload;
+    private final String uploadDir = "user/";
+    ;
+    @Value("${ncp.storage.bucket}")
+    private String bucket;
 
 
 
@@ -75,29 +77,29 @@ public class UserController implements InitializingBean {
         }
     }
 
-@PostMapping("update")
-public String update(User user, MultipartFile file) throws Exception {
+    @PostMapping("update")
+    public String update(User user, MultipartFile file) throws Exception {
 
-    User old = userService.get(42);
-    if (old == null) {
-        throw new Exception("회원 번호가 유효하지 않습니다.");
-    }
-    user.setNo(old.getNo());
-    user.setCreatedAt(old.getCreatedAt());
+        User old = userService.get(42);
+        if (old == null) {
+            throw new Exception("회원 번호가 유효하지 않습니다.");
+        }
+        user.setNo(old.getNo());
+        user.setCreatedAt(old.getCreatedAt());
 
 
-    if(file.getSize() > 0){
-        String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
-        user.setPhoto(filename);
-        fileUpload.delete(this.bucket, this.uploadDir, old.getPhoto());
-    } else {
-        user.setPhoto(old.getPhoto());
-    }
+        if (file.getSize() > 0) {
+            String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
+            user.setPhoto(filename);
+            fileUpload.delete(this.bucket, this.uploadDir, old.getPhoto());
+        } else {
+            user.setPhoto(old.getPhoto());
+        }
 
-    userService.update(user);
-    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ user);
+        userService.update(user);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + user);
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ userService);
-    return "redirect:index";
+        return "redirect:index";
     }
 
     @PostMapping("pwdUpdate")
@@ -118,7 +120,4 @@ public String update(User user, MultipartFile file) throws Exception {
         return "header";
 
     }
-
 }
-
-

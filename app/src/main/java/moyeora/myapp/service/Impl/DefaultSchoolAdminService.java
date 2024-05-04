@@ -114,5 +114,3 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
     return rowsAffected;
   }
 }
-
-
