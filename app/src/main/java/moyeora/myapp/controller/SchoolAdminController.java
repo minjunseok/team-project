@@ -23,10 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
-<<<<<<< HEAD
 import java.util.Map;
-=======
->>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
 
 @Controller
 @RequiredArgsConstructor
@@ -198,7 +195,6 @@ public class SchoolAdminController {
     @PostMapping("update")
     public String update(
             School school,
-<<<<<<< HEAD
             @RequestParam(value = "file", required = false) MultipartFile file,
             HttpSession session) throws Exception {
 
@@ -214,22 +210,6 @@ public class SchoolAdminController {
 //        } else if (old.getNo() != loginUser.getNo()) {
 //            throw new Exception("권한이 없습니다.");
 //        }
-=======
-            @RequestParam("file") MultipartFile file,
-            HttpSession session) throws Exception {
-
-        School loginUser = (School) session.getAttribute("loginUser");
-        if (loginUser == null) {
-            throw new Exception("로그인하시기 바랍니다!");
-        }
-
-        School old = schoolService.get(school.getNo());
-        if (old == null) {
-            throw new Exception("번호가 유효하지 않습니다.");
-        } else if (old.getNo() != loginUser.getNo()) {
-            throw new Exception("권한이 없습니다.");
-        }
->>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
 
         // 파일 업로드 및 처리
         if (file != null && !file.isEmpty()) {
@@ -238,20 +218,10 @@ public class SchoolAdminController {
         } else {
             school.setPhoto(old.getPhoto());
         }
-<<<<<<< HEAD
-=======
-        if (file != null && !file.isEmpty()) {
-            String filename = fileUpload.upload(this.bucketName, this.uploadDir, file);
-            school.setPhoto(filename);
-        } else {
-            school.setPhoto(old.getPhoto());
-        }
->>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
 
         // 나머지 로직 실행 및 업데이트
         schoolAdminService.update(school);
         // 업데이트 후 리다이렉트
-<<<<<<< HEAD
         //return "redirect:list";
         return "redirect:/school/admin?schoolNo=" + school.getNo();
     }
@@ -289,10 +259,5 @@ public class SchoolAdminController {
         log.debug("Redirecting to index page");
         return "/index";
     }
-=======
-        return "redirect:list";
-    }
-
->>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
 }
 

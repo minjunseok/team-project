@@ -163,7 +163,6 @@
     WHERE
     user_no=#{userNo}
   </select>
-<<<<<<< HEAD
 
   <select id="userProfile" resultType="int">
     SELECT
@@ -174,8 +173,7 @@
     WHERE
       user_no=#{userNo}
   </select>
-=======
->>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
+
 
 
 </mapper>
