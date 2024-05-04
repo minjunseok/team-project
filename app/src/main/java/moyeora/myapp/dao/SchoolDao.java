@@ -38,8 +38,11 @@ public interface SchoolDao {
   int isNameExists(String name);
 
   School findBySchool(int schoolNo);
+<<<<<<< HEAD
 
   int deleteSchool(int schoolNo);
 
 
+=======
+>>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
 }

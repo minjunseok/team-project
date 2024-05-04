@@ -88,8 +88,11 @@
     name = #{name}
   </select>
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
   <update id="update" parameterType="School">
     update schools set
     name=#{name},
@@ -117,6 +120,7 @@
     WHERE
       s.school_no = #{no}
   </select>
+<<<<<<< HEAD
 
 
 
@@ -125,4 +129,6 @@
   <delete id="deleteSchool" parameterType="int">
     DELETE FROM schools WHERE school_no = #{value};
   </delete>
+=======
+>>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
 </mapper>
