@@ -44,6 +44,7 @@
 
 <div data-th-each="hotSchool : ${hotSchools}" data-th-object="${hotSchool}">
   <input type="hidden" data-th-value="*{no}">
+  <!--  <div data-th-text="*{name}" data-th-onclick="goToSchool(${no})" style="cursor: pointer;"></div>-->
   <div data-th-text="*{name}"></div>
   <div>
     <img data-th-if="*{photo}"
@@ -105,6 +106,12 @@
   });
 
 
+
+  // 학교 클릭 시 해당 학교의 schoolNo를 전달하고 해당 학교 페이지로 이동하는 함수
+  const goToSchool = (schoolNo) => {
+      // schoolNo를 사용하여 해당 학교 페이지로 이동
+      window.location.href = '/school/detail?schoolNo=' + schoolNo; // 적절한 URL로 수정
+  }
 
 
 </script>

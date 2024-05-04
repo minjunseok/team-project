@@ -242,7 +242,11 @@ public class SchoolAdminController {
     public String deleteSchool(int schoolNo) throws Exception {
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@삭제");
 
-        School school = schoolAdminService.getSchool(schoolNo);
+        School school = schoolAdminService.getSchoolNo(schoolNo);
+
+        System.out.print(schoolAdminService.getSchoolNo(schoolNo) + "@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+
         if (school == null) {
             throw new Exception("해당 학교를 찾을 수 없습니다.");
         }
@@ -257,6 +261,6 @@ public class SchoolAdminController {
         int a = schoolAdminService.deleteSchool(schoolNo);
         log.debug("@@@@@@@@@@@@@" + a);
         log.debug("Redirecting to index page");
-        return "/index";
+        return "redirect:index";
     }
 }

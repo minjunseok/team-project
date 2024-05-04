@@ -119,7 +119,16 @@
   </select>
 
 
-
+  <select id="findBySchoolNo" resultMap="SchoolMap">
+    select
+      school_no,
+      name,
+      photo
+    from
+      schools
+    where
+      school_no=#{no}
+  </select>
 
 
   <delete id="deleteSchool" parameterType="int">
