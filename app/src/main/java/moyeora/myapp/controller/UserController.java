@@ -106,6 +106,7 @@ public String update(User user, MultipartFile file) throws Exception {
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ userService);
         return "redirect:index";
     }
+<<<<<<< HEAD
 
 
     @GetMapping("userProfile")
@@ -118,6 +119,8 @@ public String update(User user, MultipartFile file) throws Exception {
         return "header";
 
     }
+=======
+>>>>>>> c34590eb90791cc5691a4f645525ecdcf6e61809
 }
 
 
