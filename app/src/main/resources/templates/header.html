@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -26,12 +26,15 @@
 
       <ul class="header_menu">
         <li><a data-th-href="@{/user/form}">회원가입</a></li>
-        <li sec:authorize="isAnonymous()"><a data-th-href="@{/auth/form}">로그인</a></li>
         <li sec:authorize="isAuthenticated()">
-          <a data-th-href="@{/auth/logout}"><span sec:authentication="name"></span> 로그아웃</a>
+          <a data-th-href="@{auth/logout}" onclick="logout(event)" data-th-data-csrf="${_csrf.token}"
+             data-th-data-csrf-header="${_csrf.headerName}"
+             data-csrf="token" data-csrf-header="headerName">로그아웃</a>
         </li>
-        <li><a href="">Feed</a></li>
-        <li><a data-th-href="@{/chat/gm?schoolNo=1}">gm</a></li>
+        <li sec:authorize="isAnonymous()">
+          <a data-th-href="@{/auth/form}">로그인</a>
+        </li>
+        <li><a data-th-href="@{/chat/gm?schoolNo=1}">gm</a></li> <!-- gm 링크 추가 -->
       </ul>
 
       <ul class="header_icons">
@@ -40,34 +43,41 @@
         </a>
       </ul>
 
-      <!-- 사용자 사진을 표시할 빈 img 태그를 추가합니다. -->
-      <img src="" alt="사용자 사진" id="userPhoto" class="user_photo"/>
+      <!-- 사용자 사진 표시 -->
+      <div data-th-if="${session.loginUser != null}">
+        <img data-th-if="${session.loginUser.photo != null}"
+             data-th-src="@{'https://rljiyddk2675.edge.naverncp.com/68i0l8DhXa/user/' + ${session.loginUser.photo}(type=f,w=20,h=20,ttype=jpg)}"
+             src="/img/default_photo.jpeg">
+        <img data-th-if="${session.loginUser.photo == null}" src="/img/default_photo.jpeg">
 
+        <!-- 사용자 이름 표시 -->
+        <span data-th-text="${session.loginUser.name}">홍길동</span>
+      </div>
     </nav>
-
     <hr/>
   </header>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-  // 사용자의 사진을 가져와서 img 태그의 src 속성으로 설정하는 함수입니다.
-  fetchUserPhoto();
 
-  function fetchUserPhoto() {
-    // 실제 사용자 사진 URL을 가져오는 함수로 대체해야 합니다.
-    // 예를 들어, 서버에서 가져오거나 localStorage에서 가져올 수 있습니다.
-    var userPhotoURL = getUserPhotoURL();
+  function displayUserInfo() {
+    // 서버에서 사용자 정보를 가져오는 API를 호출합니다.
+    axios.get('/user/userProfile')
+      .then(function (response) {
+        var userInfo = response.data;
 
-    // 사용자 사진 URL을 img 태그의 src 속성으로 설정합니다.
-    document.getElementById("userPhoto").src = userPhotoURL;
+        // 사용자의 사진과 이름을 가져와서 표시합니다.
+        document.getElementById("userPhoto").src = userInfo.photo;
+        document.getElementById("name").textContent = userInfo.name;
+      })
+      .catch(function (error) {
+        console.error('Error fetching user info:', error);
+      });
   }
 
-  // 사용자 사진 URL을 가져오는 더미 함수입니다. (실제 구현으로 대체하세요)
-  function getUserPhotoURL() {
-    // 사용자의 사진 URL을 반환합니다.
-    // 예를 들어, 정적 URL을 반환하거나 서버에서 가져올 수 있습니다.
-    return "/static/img/user_photo.jpg";
-  }
+  // 페이지 로드 시 사용자 정보를 가져와서 표시합니다.
+  window.onload = displayUserInfo;
 </script>
 
 </body>

@@ -97,6 +97,23 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
     return schoolDao.isNameExists(name);
   }
 
+
+  @Override
+  public int deleteSchool(int schoolNo) {
+    int rowsAffected = 0;
+    // school_tags 테이블에서 해당 학교의 데이터 삭제
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@tag");
+    rowsAffected += schoolTagDao.deleteSchoolTags(schoolNo);
+    // school_users 테이블에서 해당 학교의 데이터 삭제
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@user");
+    rowsAffected += schoolUserDao.deleteSchoolUsers(schoolNo);
+    // schools 테이블에서 해당 학교의 데이터 삭제
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@sc");
+    rowsAffected += schoolDao.deleteSchool(schoolNo);
+
+    return rowsAffected;
+  }
 }
+
 
 

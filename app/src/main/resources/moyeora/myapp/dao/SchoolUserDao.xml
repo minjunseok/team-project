@@ -201,4 +201,8 @@
     and
       level_no &lt;=4
   </select>
+
+  <delete id="deleteSchoolUsers" parameterType="int">
+    DELETE FROM school_users WHERE school_no = #{value};
+  </delete>
 </mapper>

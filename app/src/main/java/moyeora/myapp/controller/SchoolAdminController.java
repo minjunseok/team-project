@@ -237,4 +237,27 @@ public class SchoolAdminController {
         return response;
     }
 
+    @GetMapping("deleteSchool")
+    @ResponseBody
+    public String deleteSchool(int schoolNo) throws Exception {
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@삭제");
+
+        School school = schoolAdminService.getSchool(schoolNo);
+        if (school == null) {
+            throw new Exception("해당 학교를 찾을 수 없습니다.");
+        }
+
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@tag1");
+        String filename = school.getPhoto();
+        if (filename != null) {
+            fileUpload.delete(this.bucketName, this.uploadDir, school.getPhoto());
+        }
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@tag2");
+
+        int a = schoolAdminService.deleteSchool(schoolNo);
+        log.debug("@@@@@@@@@@@@@" + a);
+        log.debug("Redirecting to index page");
+        return "/index";
+    }
 }
+

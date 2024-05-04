@@ -34,6 +34,7 @@
       <div id="black_setting" onclick="modal3()">가입 승인 관리</div>
       <div id="private_setting" onclick="modal4()">공개여부</div>
       <div id="school_statistics" onclick="modal5()">스쿨 통계</div>
+      <div id="school_delete" onclick="schoolDeleteForm()">스쿨 삭제</div>
       <!-- modal member list -->
       <div class="modal" id="member">
         <div class="modal-dialog">
@@ -130,6 +131,8 @@
       </div>
 
       <div data-th-replace="school/modal/school :: school-modal">스쿨 변경</div>
+
+      <div data-th-replace="school/modal/delete :: school-modal">스쿨 삭제</div>
 
     </div>
 

@@ -42,4 +42,6 @@ public interface UserDao {
 
   public List<User> findAllNoMaster(int limit);
   public int passwordUpdate(User user);
+
+
 }
