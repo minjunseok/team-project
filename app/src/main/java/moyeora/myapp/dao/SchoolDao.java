@@ -43,4 +43,6 @@ public interface SchoolDao {
 
   List<AdminSchoolListResponseDTO> findBySchoolInfo(String schoolInfo);
 
+  void updateLimitedMan(int userNo, int limitedMan);
+
 }

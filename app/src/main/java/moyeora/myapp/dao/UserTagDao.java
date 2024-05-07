@@ -1,6 +1,6 @@
 package moyeora.myapp.dao;
 
-import moyeora.myapp.vo.UserTag;
+import moyeora.myapp.dto.admin.statistics.AdminUserHobbyResponseDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,4 +14,6 @@ public interface UserTagDao {
   int update(@Param("tagNo") int tagNum, @Param("userNo") int userNo);
 
  int  deleteAllUserTagNo(int no);
+
+    List<AdminUserHobbyResponseDTO> findGroupByHobby();
 }

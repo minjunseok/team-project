@@ -24,6 +24,7 @@ public class MainPageController {
   final static Log log = LogFactory.getLog(MainPageController.class);
   @GetMapping("")
   public void index(Model model) {
+
       LocalDateTime currentTime = LocalDateTime.now();
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 날짜 형식 지정
       String date = currentTime.format(formatter);
@@ -33,7 +34,6 @@ public class MainPageController {
     model.addAttribute("weeks", schoolService.findWeek());
     //해당 날짜의 약속 정보를 전부 가져오기 , 지역 정보 추가해야함
     model.addAttribute("schoolClasses", schoolClassService.findByDate(date));
-
     model.addAttribute("hotSchools", schoolService.findHotSchool(1));
   }
 }

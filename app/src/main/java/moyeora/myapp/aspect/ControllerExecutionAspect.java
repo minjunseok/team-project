@@ -1,16 +1,21 @@
 package moyeora.myapp.aspect;
 
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,30 +25,49 @@ import java.util.Map;
 @Aspect
 public class ControllerExecutionAspect {
 
+    @Autowired
+    private KafkaTemplate<String, Object> kafkaTemplate;
+
+    public String className;
+
     private static final Logger logger = LogManager.getLogger(ControllerExecutionAspect.class);
 
     @Pointcut("execution(* moyeora.myapp.controller.*.*(..))")
     public void controllerMethod() {
     }
 
+    @Before("controllerMethod()")
+    public void logControllerBefore(JoinPoint joinPoint) {
+        className = joinPoint.getTarget().getClass().getName();
+    }
+
     @AfterReturning(pointcut = "controllerMethod()", returning = "result")
     public void logControllerMethodCall(JoinPoint joinPoint, Object result) throws Exception {
         String methodName = joinPoint.getSignature().getName();
-        String className = joinPoint.getSignature().getClass().getName();
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        // 요청된 URL 확인
+        String url = request.getRequestURL().toString();
+        System.out.println("Requested URL: " + url);
         Object[] args = joinPoint.getArgs();
         Map<String, Object> map = new HashMap<>();
         ObjectMapper obj = new ObjectMapper();
-        obj.getFactory().configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+        //String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //System.out.println(email);
+        map.put("execute", "controller");
+        map.put("url", url);
+        map.put("email", "email");
         map.put("class", className);
         map.put("method", methodName);
-        List<Object> arr = new ArrayList<>();
-        for (Object arg : args) {
-            arr.add(objectConvert(arg));
-        }
-        map.put("args", arr);
         map.put("result", objectConvert(result));
+        if (request.getParameter("schoolNo") != null) {
+            map.put("schoolno", request.getParameter("schoolNo"));
+        }
+        if (request.getParameter("postNo") != null) {
+            map.put("postno", request.getParameter("postNo"));
+        }
         System.out.println("============>" + obj.writeValueAsString(map));
-        logger.info(map);
+        kafkaTemplate.send("kafka-elk-test-log", map);
     }
 
     public Object objectConvert(Object arg) throws Exception {
@@ -60,7 +84,6 @@ public class ControllerExecutionAspect {
             }
         }
         ObjectMapper obj = new ObjectMapper();
-        obj.getFactory().configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
         return obj.writeValueAsString(arg);
     }
 }

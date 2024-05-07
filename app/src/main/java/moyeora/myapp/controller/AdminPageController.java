@@ -42,4 +42,9 @@ public class AdminPageController {
   @GetMapping("post")
   public void post() {
   }
+
+  @GetMapping("chart")
+  public void chart() {
+
+  }
 }

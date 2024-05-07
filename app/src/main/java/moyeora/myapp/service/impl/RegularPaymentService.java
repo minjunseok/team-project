@@ -1,44 +1,48 @@
 package moyeora.myapp.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 import kr.co.bootpay.Bootpay;
 import kr.co.bootpay.model.request.SubscribePayload;
+import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.BillingKeyDao;
 import moyeora.myapp.dao.PurchaseDao;
+import moyeora.myapp.dao.SchoolDao;
 import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.dto.payment.RegularPaymentRequestDTO;
 import moyeora.myapp.service.PaymentService;
 import moyeora.myapp.vo.BillingKey;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+
 @Service
+@RequiredArgsConstructor
 public class RegularPaymentService implements PaymentService {
 
   private final PurchaseDao purchaseDao;
   private final UserDao userDao;
+  private final SchoolDao schoolDao;
   private final BillingKeyDao billingKeyDao;
   final String restapi_key;
   final String private_key;
 
   public RegularPaymentService(
-    @Value("${bootpay.restapi.key}") String restapi_key,
-    @Value("${bootpay.private.key}") String private_key,
-    PurchaseDao purchaseDao,
-    UserDao userDao,
-    BillingKeyDao billingKeyDao) {
+          @Value("${bootpay.restapi.key}") String restapi_key,
+          @Value("${bootpay.private.key}") String private_key,
+          PurchaseDao purchaseDao,
+          UserDao userDao,
+          SchoolDao schoolDao, BillingKeyDao billingKeyDao) {
     this.restapi_key = restapi_key;
     this.private_key = private_key;
     this.purchaseDao = purchaseDao;
     this.userDao = userDao;
+    this.schoolDao = schoolDao;
     this.billingKeyDao = billingKeyDao;
   }
 
@@ -79,6 +83,12 @@ public class RegularPaymentService implements PaymentService {
         userDao.updateGrade(
           regularPaymentRequestDTO.getUserNo(),
           regularPaymentRequestDTO.getContent().equals("vip") ? 1 : 2);
+        if (regularPaymentRequestDTO.getContent().equals("vip")) {
+          schoolDao.updateLimitedMan(regularPaymentRequestDTO.getUserNo(), 50);
+        }
+        if (regularPaymentRequestDTO.getContent().equals("vvip")) {
+          schoolDao.updateLimitedMan(regularPaymentRequestDTO.getUserNo(), 100);
+        }
       } else {
         billingKeyDao.errorCountAdd(regularPaymentRequestDTO.getUserNo());
       }
@@ -105,6 +115,7 @@ public class RegularPaymentService implements PaymentService {
   }
 
   public void stopSubscribe(int userNo) {
+    schoolDao.updateLimitedMan(userNo, 30);
     billingKeyDao.deleteKey(userNo);
   }
 

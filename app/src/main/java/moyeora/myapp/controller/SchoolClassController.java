@@ -1,11 +1,6 @@
 package moyeora.myapp.controller;
 
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.SchoolClassService;
 import moyeora.myapp.service.SchoolMemberService;
@@ -23,8 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
+
 @Controller
-@RequestMapping("/schoolclass")
+@RequestMapping("schoolclass")
 @RequiredArgsConstructor
 public class SchoolClassController {
 
@@ -35,14 +36,12 @@ public class SchoolClassController {
   private final String uploadDir =  "schoolclass/";
   @Value("${ncp.storage.bucket}") private String bucket;
 
-  @GetMapping("/list")
+  @GetMapping("list")
   @ResponseBody
-  public List<SchoolClass> viewOfDate(String date) {
+  public Object viewOfDate(String date) {
     if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
-      System.out.println("1");
       return schoolClassService.findByDate(date);
     } else {
-      System.out.println("2");
       LocalDateTime currentTime = LocalDateTime.now();
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 날짜 형식 지정
       date = currentTime.format(formatter);

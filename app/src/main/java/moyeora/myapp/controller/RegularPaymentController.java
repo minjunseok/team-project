@@ -2,17 +2,14 @@ package moyeora.myapp.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.dto.payment.RegularPaymentRequestDTO;
 import moyeora.myapp.dto.payment.RegularPaymentResponseDTO;
 import moyeora.myapp.service.PaymentService;
+import moyeora.myapp.vo.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,10 +25,11 @@ public class RegularPaymentController {
   @PostMapping("purchase")
   @ResponseBody
   public ResponseEntity<RegularPaymentResponseDTO> purchase (
-    @RequestBody RegularPaymentRequestDTO regularPaymentRequestDTO) throws Exception {
-    regularPaymentRequestDTO.setUserNo(1);
+          @RequestBody RegularPaymentRequestDTO regularPaymentRequestDTO,
+          @LoginUser User loginUser) throws Exception {
+    regularPaymentRequestDTO.setUserNo(loginUser.getNo());
 
-    if(paymentService.findBillingKeyByUserNo(3) > 0) {
+    if (paymentService.findBillingKeyByUserNo(loginUser.getNo()) > 0) {
       return ResponseEntity.status(400).build();
     }
 
@@ -51,8 +49,8 @@ public class RegularPaymentController {
 
   @PostMapping("stop")
   @ResponseBody
-  public ResponseEntity<RegularPaymentResponseDTO> stop() {
-    paymentService.stopSubscribe(1);
+  public ResponseEntity<RegularPaymentResponseDTO> stop(@LoginUser User user) {
+    paymentService.stopSubscribe(user.getNo());
     RegularPaymentResponseDTO regularPaymentResponseDTO = new RegularPaymentResponseDTO();
     regularPaymentResponseDTO.setMessage("해지가 완료되었습니다");
     return ResponseEntity.status(200).body(regularPaymentResponseDTO);

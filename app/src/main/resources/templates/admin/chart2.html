@@ -10,11 +10,12 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Tables</title>
+    <title>Charts</title>
 
+    <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
-    <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
     <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
     <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
@@ -31,9 +32,10 @@
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
+
 </head>
 
-<body >
+<body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
         <header class="header-mobile d-block d-lg-none">
@@ -73,8 +75,24 @@
                             </ul>
                         </li>
                         <li>
+                            <a href="chart.html">
+                                <i class="fas fa-chart-bar"></i>Charts</a>
+                        </li>
+                        <li>
                             <a href="table.html">
                                 <i class="fas fa-table"></i>Tables</a>
+                        </li>
+                        <li>
+                            <a href="form.html">
+                                <i class="far fa-check-square"></i>Forms</a>
+                        </li>
+                        <li>
+                            <a href="calendar.html">
+                                <i class="fas fa-calendar-alt"></i>Calendar</a>
+                        </li>
+                        <li>
+                            <a href="map.html">
+                                <i class="fas fa-map-marker-alt"></i>Maps</a>
                         </li>
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
@@ -147,24 +165,96 @@
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li class="has-sub">
-                            <a class="statistics" href="chart">
-                                <i class="fas fa-chart-bar"></i>통계</a>
-                        </li>
-                        <li>
-                            <a href="user">
-                                <i class="zmdi zmdi-account-calendar"></i>회원 관리</a>
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li>
+                                    <a href="index.html">Dashboard 1</a>
+                                </li>
+                                <li>
+                                    <a href="index2.html">Dashboard 2</a>
+                                </li>
+                                <li>
+                                    <a href="index3.html">Dashboard 3</a>
+                                </li>
+                                <li>
+                                    <a href="index4.html">Dashboard 4</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="active">
-                            <a href="school">
-                                <i class="fas fa-table"></i>스쿨 관리</a>
+                            <a href="chart.html">
+                                <i class="fas fa-chart-bar"></i>Charts</a>
                         </li>
                         <li>
-                            <a href="post">
-                                <i class="fa fa-copy"></i>게시글 관리</a>
+                            <a href="table.html">
+                                <i class="fas fa-table"></i>Tables</a>
                         </li>
                         <li>
-                            <a href="qa">
-                                <i class="far fa-check-square"></i>문의 관리</a>
+                            <a href="form.html">
+                                <i class="far fa-check-square"></i>Forms</a>
+                        </li>
+                        <li>
+                            <a href="calendar.html">
+                                <i class="fas fa-calendar-alt"></i>Calendar</a>
+                        </li>
+                        <li>
+                            <a href="map.html">
+                                <i class="fas fa-map-marker-alt"></i>Maps</a>
+                        </li>
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-copy"></i>Pages</a>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li>
+                                    <a href="login.html">Login</a>
+                                </li>
+                                <li>
+                                    <a href="register.html">Register</a>
+                                </li>
+                                <li>
+                                    <a href="forget-pass.html">Forget Password</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-desktop"></i>UI Elements</a>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li>
+                                    <a href="button.html">Button</a>
+                                </li>
+                                <li>
+                                    <a href="badge.html">Badges</a>
+                                </li>
+                                <li>
+                                    <a href="tab.html">Tabs</a>
+                                </li>
+                                <li>
+                                    <a href="card.html">Cards</a>
+                                </li>
+                                <li>
+                                    <a href="alert.html">Alerts</a>
+                                </li>
+                                <li>
+                                    <a href="progress-bar.html">Progress Bars</a>
+                                </li>
+                                <li>
+                                    <a href="modal.html">Modals</a>
+                                </li>
+                                <li>
+                                    <a href="switch.html">Switchs</a>
+                                </li>
+                                <li>
+                                    <a href="grid.html">Grids</a>
+                                </li>
+                                <li>
+                                    <a href="fontawesome.html">Fontawesome Icon</a>
+                                </li>
+                                <li>
+                                    <a href="typo.html">Typography</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </nav>
@@ -180,8 +270,12 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
+                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
+                                <button class="au-btn--submit" type="submit">
+                                    <i class="zmdi zmdi-search"></i>
+                                </button>
                             </form>
-                            <div class="header-button" style="text-aliens:right">
+                            <div class="header-button">
                                 <div class="noti-wrap">
                                     <div class="noti__item js-item-menu">
                                         <i class="zmdi zmdi-comment-more"></i>
@@ -212,6 +306,45 @@
                                             </div>
                                             <div class="mess__footer">
                                                 <a href="#">View all messages</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-email"></i>
+                                        <span class="quantity">1</span>
+                                        <div class="email-dropdown js-dropdown">
+                                            <div class="email__title">
+                                                <p>You have 3 New Emails</p>
+                                            </div>
+                                            <div class="email__item">
+                                                <div class="image img-cir img-40">
+                                                    <img src="images/icon/avatar-06.jpg" alt="Cynthia Harvey" />
+                                                </div>
+                                                <div class="content">
+                                                    <p>Meeting about new dashboard...</p>
+                                                    <span>Cynthia Harvey, 3 min ago</span>
+                                                </div>
+                                            </div>
+                                            <div class="email__item">
+                                                <div class="image img-cir img-40">
+                                                    <img src="images/icon/avatar-05.jpg" alt="Cynthia Harvey" />
+                                                </div>
+                                                <div class="content">
+                                                    <p>Meeting about new dashboard...</p>
+                                                    <span>Cynthia Harvey, Yesterday</span>
+                                                </div>
+                                            </div>
+                                            <div class="email__item">
+                                                <div class="image img-cir img-40">
+                                                    <img src="images/icon/avatar-04.jpg" alt="Cynthia Harvey" />
+                                                </div>
+                                                <div class="content">
+                                                    <p>Meeting about new dashboard...</p>
+                                                    <span>Cynthia Harvey, April 12,,2018</span>
+                                                </div>
+                                            </div>
+                                            <div class="email__footer">
+                                                <a href="#">See all emails</a>
                                             </div>
                                         </div>
                                     </div>
@@ -310,59 +443,95 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-lg-12">
-                                <!-- USER DATA-->
-                                <div class="user-data m-b-30">
-                                    <h3 class="title-3 m-b-30">
-                                        <i class="fas fa-table"></i>스쿨 관리</h3>
-                                    <div class="filters m-b-45">
-                                        <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
-                                            <div class="form-header">
-                                                <input class="au-input au-input--xl" type="text" id="school_search" name="search" placeholder="스쿨 이름을 입력해 주세요" />
-                                                <button class="au-btn--submit" id="search_button">
-                                                    <i class="zmdi zmdi-search"></i>
-                                                </button>
-                                            </div>
-                                            <div style="height : 20px;" class="dropDownSelect2"></div>
-                                            <div>
-                                                <button class="btn btn-outline-danger btn-sm" id="stop">정지</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive table-data">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>스쿨 정보</td>
-                                                    <td>인원</td>
-                                                    <td>정지</td>
-                                                    <td>개설일</td>
-                                                    <td>제한일</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="schoolList">
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="user-data__footer" id="moreviewBox">
-                                        <input id="pageSize" type="hidden" value=1>
-                                        <button class="au-btn au-btn-load" id="moreview">더보기</button>
+                            <div class="col-lg-6">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Yearly Sales</h3>
+                                        <canvas id="sales-chart"></canvas>
                                     </div>
                                 </div>
-                                <!-- END USER DATA-->
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Team Commits</h3>
+                                        <canvas id="team-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Bar chart</h3>
+                                        <canvas id="barChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Rader chart</h3>
+                                        <canvas id="radarChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Line Chart</h3>
+                                        <canvas id="lineChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Doughut Chart</h3>
+                                        <canvas id="doughutChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Pie Chart</h3>
+                                        <canvas id="pieChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Polar Chart</h3>
+                                        <canvas id="polarChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Single Bar Chart</h3>
+                                        <canvas id="singelBarChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="copyright">
+                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- END MAIN CONTENT-->
         </div>
+        <!-- END PAGE CONTAINER-->
+
     </div>
+
     <!-- Jquery JS-->
     <script src="vendor/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap JS-->
@@ -383,92 +552,11 @@
     <script src="vendor/chartjs/Chart.bundle.min.js"></script>
     <script src="vendor/select2/select2.min.js">
     </script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <!-- Main JS-->
     <script src="js/main.js"></script>
-    <script src="js/moment.js"></script>
+
 </body>
-<script>
-const schoolList = () => {
-    const psize = $("#pageSize").val()
-    axios.get("school/list?pageSize="+psize)
-    .then(e=> {
-      $("#pageSize").val(Number(psize)+1);
-      console.log($("#pageSize").val());
-      for(d of e.data) {
-        let text;
-        text += '<tr><td><label class="au-checkbox"><input type="checkbox" name="check"><span class="au-checkmark"></span></td>'
-        text += '<input type="hidden" class="schoolNo" value='+d.no+'>'
-        text += '<td><div class="table-data__info"><a href="https://kr.object.ncloudstorage.com/moyeorastorage/school/'+d.photo+'"</a><img src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/'+d.photo+'?type=f&w=40&h=40"><h5>'+d.name+'</h5></div></td>'
-        text += '<td><span class="">'+d.nowMan+'/' + d.limitedMan +'</span></td>'
-        text += '<td><div class="rs-select2--trans rs-select2--sm">'
-        text += '<select class="js-select2 black" name="property">'
-        text += '<option selected="selected" value=0>정지 해제</option>'
-        text += '<option value=1>1 주</option>'
-        text += '<option value=2>1 달</option>'
-        text += '<option value=3>영구 정지</option>'
-        text += '</select><div class="dropDownSelect2"></div></div></td>'
-        text += '<td><div class="table-data__info"><span>'+moment(d.createdAt).format('YYYY-MM-DD')+'</span></div></td>'
-        text += '<td><div class="table-data__info"><span>'+moment(d.limitedAt).format('YYYY-MM-DD')+'</span></div></td></tr>'
-        $("#schoolList").append(text)
-      }
-    })
-  }
 
-const blackCheck = () => {
-        const checkboxes = document.querySelectorAll('input[name="check"]:checked');
-        let schoolNoList = [];
-        let blackValue = [];
-        checkboxes.forEach(checkbox => {
-                schoolNoList.push(checkbox.parentNode.parentNode.parentNode.querySelector(".schoolNo").value)
-                blackValue.push(checkbox.parentNode.parentNode.parentNode.querySelector(".black").value)
-            }
-        )
-        axios.post("school/blackUpdate", {
-            schoolNoList,
-            blackValue
-        })
-        .then(()=> {
-            $("#pageSize").val(1);
-            $("#moreviewBox").show();
-            $("#schoolList").empty();
-            schoolList();
-        })
-
-    }
-const schoolSearch = () => {
-  const schoolInfo = document.getElementById("school_search").value
-  axios.get("school/search?schoolInfo="+schoolInfo)
-  .then(e=> {
-    $("#moreviewBox").hide();
-    $("#schoolList").empty();
-      for(d of e.data) {
-         console.log(d);
-        let text;
-        text += '<tr><td><label class="au-checkbox"><input type="checkbox" name="check"><span class="au-checkmark"></span></td>'
-        text += '<input type="hidden" class="schoolNo" value='+d.no+'>'
-        text += '<td><div class="table-data__info"><a href="https://kr.object.ncloudstorage.com/moyeorastorage/school/'+d.photo+'"</a><img src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/'+d.photo+'?type=f&w=40&h=40"><h5>'+d.name+'</h5></div></td>'
-        text += '<td><span class="">'+d.nowMan+'/' + d.limitedMan +'</span></td>'
-        text += '<td><div class="rs-select2--trans rs-select2--sm">'
-        text += '<select class="js-select2 black" name="property">'
-        text += '<option selected="selected" value=0>정지 해제</option>'
-        text += '<option value=1>1 주</option>'
-        text += '<option value=2>1 달</option>'
-        text += '<option value=3>영구 정지</option>'
-        text += '</select><div class="dropDownSelect2"></div></div></td>'
-        text += '<td><div class="table-data__info"><span>'+moment(d.createdAt).format('YYYY-MM-DD')+'</span></div></td>'
-        text += '<td><div class="table-data__info"><span>'+moment(d.limitedAt).format('YYYY-MM-DD')+'</span></div></td></tr>'
-        $("#schoolList").append(text)
-      }
-    })
-}
-document.getElementById("moreview").addEventListener('click', schoolList)
-document.getElementById("stop").addEventListener('click', blackCheck)
-document.getElementById("search_button").addEventListener('click', schoolSearch)
-    $(document).ready(() => {
-    schoolList();
-
-})
-</script>
 </html>
 <!-- end document-->

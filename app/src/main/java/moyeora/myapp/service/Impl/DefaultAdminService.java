@@ -2,10 +2,14 @@ package moyeora.myapp.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.SchoolDao;
-import moyeora.myapp.dao.SchoolUserDao;
 import moyeora.myapp.dao.UserDao;
+import moyeora.myapp.dao.UserTagDao;
 import moyeora.myapp.dto.admin.school.AdminSchoolBlackUpdateRequestDTO;
 import moyeora.myapp.dto.admin.school.AdminSchoolListResponseDTO;
+import moyeora.myapp.dto.admin.statistics.AdminUserBirthResponseDTO;
+import moyeora.myapp.dto.admin.statistics.AdminUserGenderResponseDTO;
+import moyeora.myapp.dto.admin.statistics.AdminUserHobbyResponseDTO;
+import moyeora.myapp.dto.admin.statistics.AdminUserLocalResponseDTO;
 import moyeora.myapp.dto.admin.user.AdminBlackUpdateRequestDTO;
 import moyeora.myapp.dto.admin.user.AdminRoleUpdateRequestDTO;
 import moyeora.myapp.dto.admin.user.AdminUserListResponseDTO;
@@ -25,7 +29,7 @@ import java.util.List;
 public class DefaultAdminService implements AdminService {
   private final UserDao userDao;
   private final SchoolDao schoolDao;
-  private final SchoolUserDao schoolUserDao;
+  private final UserTagDao userTagDao;
 
   public List<AdminUserListResponseDTO> findUserByPageSize(int pageSize) {
     return userDao.findAllNoMaster((pageSize - 1) * 5, pageSize * 5);
@@ -101,5 +105,21 @@ public class DefaultAdminService implements AdminService {
     Type listType = new TypeToken<List<AdminSchoolListResponseDTO>>() {
     }.getType();
     return new ModelMapper().map(schoolDao.findBySchoolInfo(schoolInfo), listType);
+  }
+
+  public List<AdminUserGenderResponseDTO> statisticsGender() {
+    return userDao.findGroupByGender();
+  }
+
+  public List<AdminUserBirthResponseDTO> statisticsBirth() {
+    return userDao.findGroupByBirth();
+  }
+
+  public List<AdminUserLocalResponseDTO> statisticsLocal() {
+    return userDao.findGroupByLocal();
+  }
+
+  public List<AdminUserHobbyResponseDTO> statisticsHobby() {
+    return userTagDao.findGroupByHobby();
   }
 }

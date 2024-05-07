@@ -55,15 +55,16 @@ let mapOption;
 let mapContainer;
   const dataList = (week) => {
     map = new kakao.maps.Map(mapContainer, mapOption);
-    axios.get("school_class/list?date="+week)
+    axios.get('schoolclass/list?date='+week)
     .then(e => {
        $("#byDate").empty();
       var geocoder = new kakao.maps.services.Geocoder();  
       for(let data of e.data) {
+      alert(data);
         $("#byDate").append("<li>" + data.name +"</li>")
         $("#byDate").append("<li>" + data.photo +"</li>")
         $("#byDate").append("<li>" + data.nowMemberCount + "/" + data.member + "</li>")
-        geocoder.addressSearch(""+data.location+"", function(result,status) {
+        geocoder.addressSearch(""+data.locationDetail+"", function(result,status) {
           console.log("adsasddasasdasd")
           if(status ==kakao.maps.services.Status.OK) {
             var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
