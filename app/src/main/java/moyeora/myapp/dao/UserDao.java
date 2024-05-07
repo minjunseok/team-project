@@ -1,5 +1,6 @@
 package moyeora.myapp.dao;
 
+
 import moyeora.myapp.dto.admin.statistics.AdminUserBirthResponseDTO;
 import moyeora.myapp.dto.admin.statistics.AdminUserGenderResponseDTO;
 import moyeora.myapp.dto.admin.statistics.AdminUserLocalResponseDTO;
@@ -16,40 +17,41 @@ import java.util.List;
 
 @Mapper
 public interface UserDao {
-     public User findBy(int no);
 
-     public int findUserGrade(int grade);
+    public void add(User user);
+
+    public User findBy(int no);
 
 
-     public void updateGrade(int no, int grade);
+    public int findUserGrade(int grade);
 
-     List<String> findEmailByUserList(List<Integer> userList);
 
-     public void downGrade(List<Integer> userList);
+    public void updateGrade(int no, int grade);
 
-     void add(User user);
+    List<String> findEmailByUserList(List<Integer> userList);
 
-     void save(User user);
-   
-     int delete(int no);
-   
-     List<User> findAll();
-   
-     User findByNo(int no);
-   
-     int update(User user);
+    public void downGrade(List<Integer> userList);
 
-  int updatePassword(User user);
+    void save(User user);
 
-  User findByEmail(String email);
+    int delete(int no);
 
-  User findOAuth2User(String email, String provider);
+    List<User> findAll();
 
-  String findByNameAndPhone(
-      @Param("name") String name,
-      @Param("phone") String phone);
+    User findByNo(int no);
 
-  public int passwordUpdate(User user);
+    int update(User user);
+
+    int updatePassword(User user);
+
+    User findByEmail(String email);
+
+    User findOAuth2User(String email, String provider);
+
+    String findByNameAndPhone(
+            @Param("name") String name,
+            @Param("phone") String phone);
+
   public List<AdminUserListResponseDTO> findAllNoMaster(int offset ,int limit);
 
     void updateBlackList(int userNo, LocalDate date);
@@ -64,5 +66,10 @@ public interface UserDao {
 
     List<AdminUserLocalResponseDTO> findGroupByLocal();
 
+
+
+    public List<User> findAllNoMaster(int limit);
+
+    public int passwordUpdate(User user);
 
 }

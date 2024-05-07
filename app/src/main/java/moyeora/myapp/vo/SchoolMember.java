@@ -5,8 +5,8 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
-@Data
 @EqualsAndHashCode(callSuper = true)
+@Data
 public class SchoolMember extends User {
     private Level level;
     private Date joinedDate;

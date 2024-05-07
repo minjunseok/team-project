@@ -92,8 +92,7 @@ public class SchoolClassController {
     System.out.println("=======classcontroller.startdate============>    " + startAtDate);
     System.out.println("=========classcontrollr.endeddate==========>    " + endedAtDate);
 
-
-
+    
     System.out.println("=======classcontroller============>    " + clazz);
 
     JsonResult jsonResult = new JsonResult();
