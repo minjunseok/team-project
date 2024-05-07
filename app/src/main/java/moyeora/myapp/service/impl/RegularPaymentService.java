@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.bootpay.Bootpay;
 import kr.co.bootpay.model.request.SubscribePayload;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.BillingKeyDao;
 import moyeora.myapp.dao.PurchaseDao;
 import moyeora.myapp.dao.SchoolDao;

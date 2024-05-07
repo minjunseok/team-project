@@ -6,7 +6,6 @@ import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.dao.UserTagDao;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.vo.User;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,23 +21,23 @@ public class DefaultUserService implements UserService {
     private final TagDao tagDao;
     private final PasswordEncoder passwordEncoder;
 
-  @Override
-  public void add(User user) {
-    if (user.getPassword() != null) {
-      user.setPassword(passwordEncoder.encode(user.getPassword()));
+    @Override
+    public void add(User user) {
+        if (user.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        userDao.add(user);
     }
-    userDao.add(user);
-  }
 
-  @Override
-  public void save(User user) {
-    userDao.save(user);
-  }
+    @Override
+    public void save(User user) {
+        userDao.save(user);
+    }
 
-      @Override
-      public List<User> list() {
+    @Override
+    public List<User> list() {
         return userDao.findAll();
-      }
+    }
 
     @Override
     public User get(int no) {
@@ -112,10 +111,10 @@ public class DefaultUserService implements UserService {
     }
 
 
-  @Override
-  public int updatePassword(User user) {
-    return userDao.updatePassword(user);
-  }
+    @Override
+    public int updatePassword(User user) {
+        return userDao.updatePassword(user);
+    }
 
     @Override
     public int passwordUpdate(User user) {

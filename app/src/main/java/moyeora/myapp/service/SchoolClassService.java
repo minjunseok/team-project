@@ -1,7 +1,10 @@
 package moyeora.myapp.service;
 
-import java.util.List;
+import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
+import moyeora.myapp.dto.schoolclass.SchoolClassRequestDTO;
 import moyeora.myapp.vo.SchoolClass;
+
+import java.util.List;
 
 public interface SchoolClassService {
 
@@ -12,5 +15,16 @@ public interface SchoolClassService {
 
   void add(SchoolClass clazz);
 
+  SchoolClass get(int no);
+
   public List<SchoolClass> schoolCalendarList(int schoolNo);
+
+  void insert(SchoolClassRequestDTO schoolClassRequestDTO);
+
+  boolean isMember(int classNo, int userNo);
+
+  void memberDelete(SchoolClassRequestDTO schoolClassRequestDTO);
+
+  void classDelete(ClassDeleteDTO classDeleteDTO);
+
 }
