@@ -1,8 +1,6 @@
 package moyeora.myapp.controller;
 
-import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.security.PrincipalDetails;
 import moyeora.myapp.service.StorageService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.service.impl.DefaultChatService;
@@ -14,15 +12,12 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
 
 @RequiredArgsConstructor
 @Controller
@@ -40,6 +35,12 @@ public class ChatController {
     @Value("${ncp.ss.bucketname}")
     private String bucketname;
 
+    @GetMapping("chatTest")
+    public String chatTestForm(Model model, int sender, int receiver) {
+        model.addAttribute("sender",userService.get(sender));
+        model.addAttribute("receiver",userService.get(receiver));
+        return "/chat/test";
+    }
 
     @GetMapping("gm")
     public String gmForm(Model model, int schoolNo, int sender) {
@@ -47,12 +48,6 @@ public class ChatController {
         model.addAttribute("sender",userService.get(sender));
         model.addAttribute("chatList",chatService.getGmList(schoolNo));
         return "/chat/gm";
-    }
-
-    @GetMapping("gmTest")
-    public String gmForm(Model model, int schoolNo, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-
-        return "/chat/test";
     }
 
     @GetMapping("dm")
