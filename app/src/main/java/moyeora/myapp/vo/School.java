@@ -23,4 +23,5 @@ public class School implements Serializable {
   private List<Integer> tagNums;
   private List<SchoolTag> tags;
   private int stop;
+  private List<School> findAll;
 }

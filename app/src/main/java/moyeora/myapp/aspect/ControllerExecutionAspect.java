@@ -67,7 +67,7 @@ public class ControllerExecutionAspect {
             map.put("postno", request.getParameter("postNo"));
         }
         System.out.println("============>" + obj.writeValueAsString(map));
-        kafkaTemplate.send("kafka-elk-test-log", map);
+        //kafkaTemplate.send("kafka-elk-test-log", map);
     }
 
     public Object objectConvert(Object arg) throws Exception {

@@ -19,9 +19,9 @@ public class AdminAccessFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         System.out.println("a");
         User user = (User) httpRequest.getSession().getAttribute("loginUser");
-//        if (user.getAuth() < 3) {
-//            httpServletResponse.sendRedirect(httpRequest.getContextPath() + "/index"); // 메인 페이지 경로로 변경
-//        }
+        if (user.getAuth() < 3 || user==null) {
+           httpServletResponse.sendRedirect(httpRequest.getContextPath() + "/index"); // 메인 페이지 경로로 변경
+      }
         chain.doFilter(request, response);
     }
 }

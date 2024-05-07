@@ -21,6 +21,5 @@ public class ServiceExecutionAspect {
         Map<String, Object> map = new HashMap<>();
         String className = joinPoint.getTarget().getClass().getName();
         Object[] args = joinPoint.getArgs();
-        System.out.println("dao#####################" + args);
     }
 }

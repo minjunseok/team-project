@@ -20,7 +20,6 @@ public interface SchoolService {
 
   School get(int schoolNo);
 
-  int update(School school);
 
   int delete(int postNo);
 
@@ -34,6 +33,9 @@ public interface SchoolService {
   int schoolUserLevelCount(int count);
   public void stopSchool(int no);
   public List<List<Integer>> findSchoolNoByUserNo(List<Integer> userList);
+
+  int isNameExists(String name);
+
 
 
 }

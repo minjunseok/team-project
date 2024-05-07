@@ -12,19 +12,32 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<<<<<<< HEAD
+=======
+  <!-- 공통 헤더 적용 첨부 -->
+  <link rel="stylesheet" href="/static/admin/css/header.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+>>>>>>> 86fab935622028cc4188d3afe88ec937c49c1cbf
 </head>
 <body>
+
+<!--<div data-th-replace="header :: header">머리말</div>-->
+
 <div class="container">
   <div class="row">
     <div class="col-md-2">
     </div>
     <div class="col-md-8" style="text-align:center;" id="">
-      <div>스쿨 정보 수정</div>
+      <div id="school_setting" onclick="schoolForm()">스쿨 정보 수정</div>
       <div id="user_setting" onclick="modal1()">회원 관리</div>
       <div id="submit_setting" onclick="modal2()">블랙리스트 관리</div>
       <div id="black_setting" onclick="modal3()">가입 승인 관리</div>
       <div id="private_setting" onclick="modal4()">공개여부</div>
       <div id="school_statistics" onclick="modal5()">스쿨 통계</div>
+      <div id="school_delete" onclick="schoolDeleteForm()">스쿨 삭제</div>
       <!-- modal member list -->
       <div class="modal" id="member">
         <div class="modal-dialog">
@@ -34,7 +47,7 @@
               <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
-              <table >
+              <table>
                 <thead>
                 <tr>
                   <th>사진</th>
@@ -60,7 +73,7 @@
               <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
-              <table >
+              <table>
                 <thead>
                 <tr>
                   <th>사진</th>
@@ -84,7 +97,7 @@
               <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
-              <table >
+              <table>
                 <thead>
                 <tr>
                   <th>사진</th>
@@ -109,10 +122,10 @@
               <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
-              <table >
+              <table>
                 <tbody id="openClosed-check">
-                  <input class="openClosed" name="openClosed" id = "open" type="radio" value=1>공개
-                  <input class="openClosed" name="openClosed" id = "closed" type="radio" value=0>비공개
+                <input class="openClosed" name="openClosed" id="open" type="radio" value=1>공개
+                <input class="openClosed" name="openClosed" id="closed" type="radio" value=0>비공개
                 </tbody>
               </table>
             </div>
@@ -120,15 +133,21 @@
         </div>
       </div>
 
+      <div data-th-replace="school/modal/school :: school-modal">스쿨 변경</div>
+
+      <div data-th-replace="school/modal/delete :: school-modal">스쿨 삭제</div>
+
     </div>
-    <div class="col-md-2" style="text-align:center;">
-    </div>
+
+
+  </div>
+  <div class="col-md-2" style="text-align:center;">
   </div>
 </div>
-<div>
 </div>
-<script>
 
+
+<script>
   const modal1 = () => {
     userList();
     const myModal = new bootstrap.Modal(document.getElementById('member'), {})
@@ -148,6 +167,7 @@
       const myModal = new bootstrap.Modal(document.getElementById('openClosed'), {})
       myModal.show();
   }
+
   $(document).on('click', '.auth', function() {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
@@ -173,6 +193,7 @@
       }
     })
   })
+
   $(document).on('click', '.black', function() {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
@@ -237,102 +258,104 @@
     })
   })
 
-$(document).on('change', '.openClosed', function() {
+  $(document).on('change', '.openClosed', function() {
+      const queryString = window.location.search;
+      const params = new URLSearchParams(queryString);
+      const schoolNo = params.get('schoolNo');
+      const openRange = $(this).val()
+      axios.post("admin/openClosed", {
+        schoolNo,
+        openRange
+      })
+  })
+
+  function userList() {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
     const schoolNo = params.get('schoolNo');
-    const openRange = $(this).val()
-    axios.post("admin/openClosed", {
-      schoolNo,
-      openRange
-    })
-})
+      axios.get("admin/userList?schoolNo="+schoolNo)
+      .then((e) => {
+        $("#member-list").empty()
+        for(let d of e.data) {
+          let text = ""
+          text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
+          text += "<th>"+d.member.photo+"</th>"
+          text += "<th>"+d.member.nickname+"</th>"
+          text += "<th>"+d.level.name+"</th>"
+          if(d.levelNo===3) {
+            text += "<th><button class='btn btn-outline-danger btn-sm auth'>권한 해지</button></th>"
+          } else if(d.levelNo===2) {
+            text += "<th><button class='btn btn-outline-success btn-sm auth'>부 매니저 임명</button></th>"
+         }
+         text += "<th><button class='btn btn-outline-secondary btn-sm black'>블랙 리스트 추가</th></tr>"
+         $("#member-list").append(text)
+        }
+      })
 
-function userList() {
-  const queryString = window.location.search;
-  const params = new URLSearchParams(queryString);
-  const schoolNo = params.get('schoolNo');
-    axios.get("admin/userList?schoolNo="+schoolNo)
+  }
+
+  function blackList() {
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const schoolNo = params.get('schoolNo');
+    axios.get("admin/sub/blackList?schoolNo="+schoolNo)
+      .then((e) => {
+        $("#black-list").empty()
+        for(let d of e.data) {
+          let text = ""
+          text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
+          text += "<th>"+d.member.photo+"</th>"
+          text += "<th>"+d.member.nickname+"</th>"
+          text += "<th><button class='btn btn-outline-success btn-sm unlock'>블랙리스트 해지</button></th></tr>"
+         $("#black-list").append(text)
+        }
+      })
+
+  }
+
+  function submitList() {
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const schoolNo = params.get('schoolNo');
+    axios.get("admin/sub/submitList?schoolNo="+schoolNo)
+      .then((e) => {
+        $("#submit-list").empty()
+        for(let d of e.data) {
+          let text = ""
+          text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
+          text += "<th>"+d.member.photo+"</th>"
+          text += "<th>"+d.member.nickname+"</th>"
+          text += "<th><button class='btn btn-outline-success btn-sm approve'>승인</button></th>"
+          text += "<th><button class='btn btn-outline-danger btn-sm reject'>거절</button></th></tr>"
+         $("#submit-list").append(text)
+        }
+      })
+
+  }
+
+  function openClosedCheck() {
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const schoolNo = params.get('schoolNo');
+    axios.get("admin/openClosedCheck?schoolNo="+schoolNo)
     .then((e) => {
-      $("#member-list").empty()
-      for(let d of e.data) {
-        let text = ""
-        text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-        text += "<th>"+d.member.photo+"</th>"
-        text += "<th>"+d.member.nickname+"</th>"
-        text += "<th>"+d.level.name+"</th>"
-        if(d.levelNo===3) {
-          text += "<th><button class='btn btn-outline-danger btn-sm auth'>권한 해지</button></th>"
-        } else if(d.levelNo===2) {
-          text += "<th><button class='btn btn-outline-success btn-sm auth'>부 매니저 임명</button></th>"
-       }
-       text += "<th><button class='btn btn-outline-secondary btn-sm black'>블랙 리스트 추가</th></tr>"
-       $("#member-list").append(text)
+      const openRange = e.data.openRange
+      if(openRange===1) {
+        $("#open").prop("checked", true)
+      } else if(openRange===0) {
+        $("#closed").prop("checked", true)
       }
     })
+  }
 
-}
+  $(document).ready(() => {
+          userList();
+          blackList();
+          submitList();
+          openClosedCheck();
+  });
 
-function blackList() {
-  const queryString = window.location.search;
-  const params = new URLSearchParams(queryString);
-  const schoolNo = params.get('schoolNo');
-  axios.get("admin/sub/blackList?schoolNo="+schoolNo)
-    .then((e) => {
-      $("#black-list").empty()
-      for(let d of e.data) {
-        let text = ""
-        text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-        text += "<th>"+d.member.photo+"</th>"
-        text += "<th>"+d.member.nickname+"</th>"
-        text += "<th><button class='btn btn-outline-success btn-sm unlock'>블랙리스트 해지</button></th></tr>"
-       $("#black-list").append(text)
-      }
-    })
 
-}
-
-function submitList() {
-  const queryString = window.location.search;
-  const params = new URLSearchParams(queryString);
-  const schoolNo = params.get('schoolNo');
-  axios.get("admin/sub/submitList?schoolNo="+schoolNo)
-    .then((e) => {
-      $("#submit-list").empty()
-      for(let d of e.data) {
-        let text = ""
-        text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-        text += "<th>"+d.member.photo+"</th>"
-        text += "<th>"+d.member.nickname+"</th>"
-        text += "<th><button class='btn btn-outline-success btn-sm approve'>승인</button></th>"
-        text += "<th><button class='btn btn-outline-danger btn-sm reject'>거절</button></th></tr>"
-       $("#submit-list").append(text)
-      }
-    })
-
-}
-
-function openClosedCheck() {
-  const queryString = window.location.search;
-  const params = new URLSearchParams(queryString);
-  const schoolNo = params.get('schoolNo');
-  axios.get("admin/openClosedCheck?schoolNo="+schoolNo)
-  .then((e) => {
-    const openRange = e.data.openRange
-    if(openRange===1) {
-      $("#open").prop("checked", true)
-    } else if(openRange===0) {
-      $("#closed").prop("checked", true)
-    }
-  })
-}
-
-$(document).ready(() => {
-    userList();
-    blackList();
-    submitList();
-    openClosedCheck();
-    })
 </script>
 </body>
 </html>

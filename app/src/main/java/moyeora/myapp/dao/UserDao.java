@@ -1,6 +1,7 @@
 package moyeora.myapp.dao;
 
 
+
 import moyeora.myapp.dto.admin.statistics.AdminUserBirthResponseDTO;
 import moyeora.myapp.dto.admin.statistics.AdminUserGenderResponseDTO;
 import moyeora.myapp.dto.admin.statistics.AdminUserLocalResponseDTO;
@@ -8,8 +9,6 @@ import moyeora.myapp.dto.admin.user.AdminUserListResponseDTO;
 import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-
 import java.time.LocalDate;
 import java.util.List;
 

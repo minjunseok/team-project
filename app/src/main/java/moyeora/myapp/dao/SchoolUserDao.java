@@ -1,7 +1,6 @@
 package moyeora.myapp.dao;
 
 import java.util.List;
-
 import moyeora.myapp.dto.school.admin.SchoolMemberUpdateRequestDTO;
 import moyeora.myapp.vo.SchoolUser;
 import org.apache.ibatis.annotations.Mapper;
@@ -36,5 +35,8 @@ public interface SchoolUserDao {
   int findAdmin(int userNo, int schoolNo);
   int findSubAdmin(int userNo, int schoolNo);
 
-    public void addSchoolUser(int userNo, int schoolNo, int levelNo);
+  public void addSchoolUser(int userNo, int schoolNo, int levelNo);
+
+  int deleteSchoolUsers(int schoolNo);
+
 }
