@@ -1,8 +1,6 @@
 package moyeora.myapp.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.PrintWriter;
-import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,6 +27,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
 
 @Log4j2
 @Configuration
@@ -59,12 +60,14 @@ public class SecurityConfig {
     httpSecurity
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests((authorize) -> authorize
-            .antMatchers("/role/**").hasRole("USER") // 접근제어 테스트 설정
-                .anyRequest().permitAll()
+                        .antMatchers("/index" , "/auth/**", "/home" , "/test", "/img/**", "/js/**", "/css/**", "/static/**").permitAll()
+                        .anyRequest().hasRole("USER")
+//            .antMatchers("/index").hasRole("USER") // 접근제어 테스트 설정
+//                .anyRequest().permitAll()
         )
         .logout((logout) -> logout
             .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
-            .logoutSuccessUrl("/")
+            .logoutSuccessUrl("/index")
             .invalidateHttpSession(true))
         .formLogin(form -> form
             .loginPage("/auth/form")
