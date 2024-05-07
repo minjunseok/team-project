@@ -4,7 +4,9 @@
 package moyeora.myapp;
 
 
+import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.annotation.LoginUserArgumentResolver;
+import moyeora.myapp.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -36,7 +38,8 @@ public class App implements WebMvcConfigurer {
         SpringApplication.run(App.class, args);
     }
     @GetMapping("/home")
-    public void home() {
+    public void home(@LoginUser User loginUser) {
+        System.out.println(loginUser);
     }
 
     @Override
