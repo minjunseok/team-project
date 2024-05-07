@@ -5,7 +5,7 @@
   <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
   <link href="/css/chat.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@5.0.0/bundles/stomp.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
 </head>
 <body>
@@ -13,7 +13,8 @@
   enabled. Please enable
   Javascript and reload this page!</h2></noscript>
 <div class="container" id="main-content">
-  <div class="row">
+  <div class="chat-title" id="title">[[${sender.nickname}]],[[${receiver.nickname}]]</div>
+  <div class="connect">
     <div class="col-md-6">
       <form id="main-form" class="form-inline">
         <div class="form-group">
@@ -25,18 +26,22 @@
       </form>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-12">
+  <div class="conversation-container">
+    <div class="conversation-group">
       <div id="conversation"></div>
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="form-container">
     <form class="form-inline" enctype="multipart/form-data">
       <div class="form-group">
-        <input class="form-control" id="message" placeholder="message" type="text">
-        <input class="form-control" id="photo" name="photo" type="file">
+        <input class="form-control input-field" id="message" placeholder="message" type="text">
+        <label for="photo" class="custom-file-upload">
+          <i class="fas fa-upload"></i> Choose File
+        </label>
+        <input class="form-control file-input" id="photo" name="photo" type="file" style="display:none;">
+        <span id="file-count">0</span> files attached
+        <button class="btn btn-default send-button" id="send" type="submit">Send</button>
       </div>
-      <button class="btn btn-default" id="send" type="submit">Send</button>
     </form>
   </div>
 </div>
@@ -50,8 +55,12 @@ var room = [[${room}]]
 var photo = "";
 var sendDate = "";
 
+var dmFilePath = "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/dm/";
+var dmFileCdnDomain = "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/";
+
 console.log(room);
 console.log(room.no);
+console.log(chatList)
 
 function connect() {
     stompClient.activate();
@@ -103,8 +112,8 @@ function disconnect() {
 
 function sendMessage() {
     let dm = {
-        sender : sender,
-        receiver : receiver,
+        sender : {no : sender.no, nickname : sender.nickname},
+        receiver : {no : receiver.no, nickname:receiver.nickname},
         message : $("#message").val(),
         photo : "",
         sendDate : moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
@@ -131,8 +140,8 @@ function sendMessage() {
           stompClient.publish({
           destination: "/pub/dm",
           body: JSON.stringify({
-            'sender': result.sender,
-            'receiver': result.receiver,
+            'sender': {no : result.sender.no},
+            'receiver': {no : result.receiver.no},
             'message': result.message,
             'photo': result.photo,
             'sendDate': moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
@@ -147,51 +156,73 @@ function sendMessage() {
 }
 
 function showMessage(dm) {
-    if(dm.sender == sender) {
-      if(dm.message.length > 0) {
-        $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" + dm.message + "</div></div>");
+    if(dm.sender.no == sender.no) {
+      if(dm.message != null && dm.message.length > 0) {
+        $("#conversation").append(
+        "<div class='username sender'>" + sender.nickname + "</div>" +
+        "<div class = 'message-container sent-message'><div class = 'message-text'>" + dm.message +
+        "</div></div>");
       }
-      if(dm.photo.length > 0) {
-        $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" +
-        "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/dm/" + dm.photo + ">" +
-        "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/dm/" + dm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>"
-        + "</div></div>");
+      if(dm.photo != null && dm.photo.length > 0) {
+        $("#conversation").append(
+        "<div class='username sender'>" + sender.nickname + "</div>" +
+        "<div class = 'message-container sent-message'><div class = 'message-text'>" +
+        "<a href=" + dmFilePath + dm.photo + ">" +
+        "<img src=" + dmFileCdnDomain + "dm/" + dm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" +
+        "</div></div>");
       }
     } else {
-      if(dm.message.length > 0) {
-        $("#conversation").append("<div class = 'message-container received-message'><div class = 'message-text'>" + dm.message + "</div></div>");
+      if(dm.message != null && dm.message.length > 0) {
+        $("#conversation").append(
+        "<div class='username receiver'>" + receiver.nickname + "</div>" +
+        "<div class = 'message-container received-message'><div class = 'message-text'>" + dm.message +
+        "</div></div>");
       }
-      if(dm.photo.length > 0) {
-        $("#conversation").append("<div class = 'message-container received-message'><div class = 'message-text'>" +
-        "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/dm/" + dm.photo + ">" +
-        "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/dm/" + dm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
+      if(dm.photo != null && dm.photo.length > 0) {
+        $("#conversation").append(
+        "<div class='username receiver'>" + receiver.nickname + "</div>" +
+        "<div class = 'message-container received-message'><div class = 'message-text'>" +
+        "<a href=" + dmFilePath + dm.photo + ">" +
+        "<img src=" + dmFileCdnDomain + "dm/" + dm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
       }
     }
     $("#message").val("");
     $("#photo").val("");
+    $("#file-count").text(0);
 }
 
 function loadChat(chatList) {
     if(chatList != null) {
       for(chat in chatList) {
-
-        if(chatList[chat].sender == sender) {
+        if(chatList[chat].sender.no == sender.no) {
           if(chatList[chat].message.length > 0) {
-            $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" + chatList[chat].message + "</div></div>");
+            $("#conversation").append(
+            "<div class='username sender'>" + chatList[chat].sender.nickname + "</div>" +
+            "<div class = 'message-container sent-message'><div class = 'message-text'>" + chatList[chat].message +
+            "</div></div>");
           }
           if(chatList[chat].photo.length > 0) {
-            $("#conversation").append("<div class = 'message-container sent-message'><div class = 'message-text'>" +
-            "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/dm/" + chatList[chat].photo + ">" +
-            "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/dm/" + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
+            $("#conversation").append(
+            "<div class='username sender'>" + chatList[chat].sender.nickname + "</div>" +
+            "<div class = 'message-container sent-message'><div class = 'message-text'>" +
+            "<a href=" + dmFilePath + chatList[chat].photo + ">" +
+            "<img src=" + dmFileCdnDomain + "dm/" + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" +
+            "</div></div>");
           }
         } else {
           if(chatList[chat].message.length > 0) {
-            $("#conversation").append("<div class = 'message-container received-message'><div class = 'message-text'>" + chatList[chat].message + "</div></div>");
+            $("#conversation").append(
+            "<div class='username receiver'>" + chatList[chat].sender.nickname + "</div>" +
+            "<div class = 'message-container received-message'><div class = 'message-text'>" + chatList[chat].message +
+            "</div></div>");
           }
           if(chatList[chat].photo.length > 0) {
-            $("#conversation").append("<div class = 'message-container received-message'><div class = 'message-text'>" +
-            "<a href=" + "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/dm/" + chatList[chat].photo + ">" +
-            "<img src=" + "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/dm/" + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
+            $("#conversation").append(
+            "<div class='username receiver'>" + chatList[chat].sender.nickname + "</div>" +
+            "<div class = 'message-container received-message'><div class = 'message-text'>" +
+            "<a href=" + dmFilePath + chatList[chat].photo + ">" +
+            "<img src=" + dmFileCdnDomain + "dm/" + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" +
+            "</div></div>");
           }
         }
       }
@@ -202,7 +233,13 @@ function loadChat(chatList) {
 function setFiles() {
   photo = $("#photo")[0].files;
   $("#message").val("");
-  console.log(photo);
+  $("#file-count").text(photo.length);
+}
+
+function setMessage() {
+  $("#photo").val('');
+  photo = $("#photo")[0].files;
+  $("#file-count").text(0);
 }
 
 $(function () {
@@ -211,6 +248,7 @@ $(function () {
     $( "#disconnect" ).click(() => disconnect());
     $( "#send" ).click(() => sendMessage());
     $( "#photo" ).change(() => setFiles());
+    $( "#message" ).change(() => setMessage());
 });
 </script>
 

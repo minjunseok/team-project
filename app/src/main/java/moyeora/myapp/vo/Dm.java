@@ -12,8 +12,8 @@ public class Dm implements Serializable {
     private static final long serialVersionUID = 100L;
 
     private int no;
-    private int sender;
-    private int receiver;
+    private User sender;
+    private User receiver;
     private String message;
     private String photo;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -25,7 +25,7 @@ public class Dm implements Serializable {
     }
 
     @Builder
-    public Dm(int no, int sender, int receiver, String message, String photo, @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")Timestamp sendDate, int roomNo) {
+    public Dm(int no, User sender, User receiver, String message, String photo, @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")Timestamp sendDate, int roomNo) {
         this.no = no;
         this.sender = sender;
         this.receiver = receiver;
@@ -36,7 +36,7 @@ public class Dm implements Serializable {
     }
 
     @Builder
-    public Dm(int sender, int receiver, String message, String photo, @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")Timestamp sendDate, int roomNo) {
+    public Dm(User sender, User receiver, String message, String photo, @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")Timestamp sendDate, int roomNo) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
