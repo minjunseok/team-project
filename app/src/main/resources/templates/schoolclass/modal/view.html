@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'/>
+
+
+
+</head>
+<body>
+
+
+
+<div class="modal" data-th-fragment="viewModal" id="viewModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">일정 상세보기</h5>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+      </div>
+      
+      <div class="modal-body">
+              
+      
+                제목: <span data-th-text="${name}" id="name"></span>
+                nickname: <span data-th-text="${nickname}" id="nickname"></span>
+                levelName: <span data-th-text="${levelName}" id="levelName"></span>
+          <div>
+              <form id="attendClass" style="display: inline-block;">
+                  <button class="btn btn-success item-hidden" id="submitButton" type="button">참가하기</button>
+                  <button class="btn btn-secondary item-hidden" id="cancelButton" type="button">참가 취소하기</button>
+              </form>
+          </div>
+         
+           <div>
+                member: <span data-th-text="${member}" id="member"></span>
+          </div>
+          <div>
+                nowMemberCount: <span data-th-text="${nowMemberCount}" id="nowMemberCount"></span>
+          </div>
+          <div>
+                startAt: <span data-th-format="YYYY-MM-DD" data-th-text="${startAt}" id="startAt"></span>
+          </div>
+          <div>
+                photo: <img id="photo">
+          </div>
+          <div> content: <span data-th-text="${content}" id="content"></span> </div>
+          <div>
+                locationDetail: <span data-th-text="${locationDetail}" id="locationDetail2"></span>
+          </div>
+        
+          
+          <div class="map_wrap">
+                    <div id="map2" style="width:100%;height:100%;"></div>
+                    <div class="bg_white" id="menu_wrap">
+                        <div class="option">
+                            <div>
+                                <form onsubmit="searchPlaces2(); return false;">
+                                    키워드 : <input data-th-text="${location}" id="keyword2" size="15" type="text">
+                                    <button type="submit">검색하기</button>
+                                </form>
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="list-test">test</div>
+                        <ul id="placesList">44444</ul>
+                        <div id="pagination"></div>
+                    </div>
+          </div>
+          <button class="btn btn-danger" id="deleteEvent">삭제하기</button>
+      </div>
+    </div>
+  </div>
+  
+
+
+<script>
+    var submitButton = document.getElementById('submitButton');
+    var attendClass = document.getElementById('attendClass');
+
+    // 클릭 이벤트에 대한 핸들러를 추가합니다.
+
+    $("#submitButton").click(function() {
+    
+      axios({
+        method: 'POST',
+        url: '/schoolclass/insert',
+        data: {
+            classNo: classNo,
+            schoolNo: schoolNo
+        },
+        responseType:'json'
+      })
+        .then(function (response) {
+            let count = document.getElementById('nowMemberCount').innerText
+            count = Number(count) + 1
+            document.getElementById('nowMemberCount').innerText = count
+            var responseData = response.data;
+            console.log(responseData);
+            $('#cancelButton').removeClass("item-hidden");
+            $('#submitButton').addClass("item-hidden");
+        })
+        .catch(function (error) {
+            console.error('에러 발생:', error);
+        });
+      console.log(classNo);
+      console.log(schoolNo);
+        // 폼을 제출하지 않도록 합니다.
+        event.preventDefault();
+    });
+ 
+ </script>
+
+
+ <script>
+    
+    $("#cancelButton").click(function() {
+    
+      axios({
+        method: 'POST',
+        url: '/schoolclass/memberDelete',
+        data: {
+            classNo: classNo,
+            schoolNo: schoolNo
+        },
+        responseType:'json'
+      })
+        .then(function (response) {
+            let count = document.getElementById('nowMemberCount').innerText
+            count = Number(count) - 1
+            document.getElementById('nowMemberCount').innerText = count
+            var responseData = response.data;
+            console.log(responseData);
+            $('#cancelButton').addClass("item-hidden");
+            $('#submitButton').removeClass("item-hidden");
+        })
+        .catch(function (error) {
+            console.error('에러 발생:', error);
+        });
+      console.log(classNo);
+      console.log(schoolNo);
+        // 폼을 제출하지 않도록 합니다.
+        event.preventDefault();
+    });
+    
+</script>
+    
+    <script>
+    let viewModal;
+    
+    
+    function viewModal1() {
+        viewModal = new bootstrap.Modal(document.getElementById('viewModal'), {})
+        console.log('모달을 표시합니다.');
+        viewModal.show();
+    };
+    
+    document.querySelector("#viewModal").addEventListener('shown.bs.modal', function() {
+        var modalmapContainer = document.querySelector('.map_wrap');
+        var width = modalmapContainer.clientWidth;
+        var height = modalmapContainer.clientHeight;
+        console.log(modalmapContainer);
+        // Kakao Maps API의 resize 함수를 사용하여 지도의 크기를 조정합니다.
+ 
+        map2.relayout();
+        // 키워드로 장소를 검색합니다
+        console.log("maprelayout");
+        
+    });
+    
+    function closeModal() {
+         viewModal.hide();
+         console.log('모달을 닫습니다.');
+    };
+    
+    document.querySelector("#viewModal").addEventListener('hidden.bs.modal', function() {
+        $('#cancelButton').addClass("item-hidden");
+        $('#submitButton').addClass("item-hidden");
+    });
+</script>
+
+
+</div>
+</body>
+
+</html>
