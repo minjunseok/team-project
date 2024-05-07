@@ -53,7 +53,7 @@ public class SchoolClassController {
   }
 
   @GetMapping("realCalendar")
-  public void form(Model model, int schoolNo) throws Exception{
+  public void form(Model model, int schoolNo, int classNo) throws Exception {
     model.addAttribute("schoolMembers",schoolMemberService.list(schoolNo));
     System.out.println("=====classcontorller.schoolMember==============>    " + schoolMemberService);
 
@@ -176,9 +176,14 @@ public class SchoolClassController {
   }
 
 
-  @GetMapping("test")
-  public void test1() throws Exception {
+  @GetMapping("viewModalTest2")
+  public Object test1(int classNo) throws Exception {
 
+    JsonResult jsonResult = new JsonResult();
+
+    jsonResult.setStatus("success");
+
+    return jsonResult;
 
   }
 }
