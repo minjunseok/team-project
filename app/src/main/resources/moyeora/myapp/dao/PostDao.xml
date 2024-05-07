@@ -65,6 +65,7 @@
     where post_no = #{no} and school_no = #{schoolNo}
 </delete>
 
+
     <update id="update" parameterType="Post">
       update posts set
         content=#{content}
@@ -168,6 +169,8 @@
     from
       posts
   </select>
+
+
   <select id="findAll" resultMap="PostMap">
     SELECT distinct
       u.name,
@@ -306,8 +309,8 @@
 
     p.post_no=#{no}
 
-    and p.school_no=#{schoolNo}
-<!--    and p.school_no=1-->
+<!--    and p.school_no=#{schoolNo}-->
+    and p.school_no=1
 
   </select>
   <select id="findBySchoolPostList" resultMap="PostMap">

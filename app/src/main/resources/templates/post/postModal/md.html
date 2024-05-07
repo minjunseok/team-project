@@ -17,26 +17,27 @@
 </head>
 <body>
 
-
-<div class="modal" id="post_add_modal" data-th-fragment="postAdd-modal">
+<div class="modal" id="post_md_modal" data-th-fragment="postMd-modal">
 		<div class="modal-dialog">
 				<div class="modal-content">
-						<form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
-								<!-- userNo, schoolNo의 값을 넘기기 위해 히든으로 설정 -->
-								<input type="hidden" name="schoolNo" value="1"> <!-- 로그인 구현이 안되어있어서 임의로 적용 -->
-								<input type="hidden" name="userNo" data-th-value="1"> <!-- 로그인 구현이 안되어있어서 임의로 적용 -->
+						<form action="update" data-th-action="@{update}" data-th-object="${post}"
+						      enctype='multipart/form-data' method='post'>
+								<!-- postNo, schoolNo의 값을 넘기기 위해 히든으로 설정 -->
+								<input type="hidden" name="schoolNo" data-th-value="*{schoolNo}">
+								<input type="hidden" name="no" data-th-value="*{no}">
 								<div>
 										<!-- Summernote 에디터 -->
-										<textarea id="summernote" name='content'></textarea>
+										<textarea data-th-text="${content}" id="summernoteContent"
+										          name='content' style="display: none"></textarea>
 								</div>
 
 								<div>
 										<!-- 공지로 등록하는 체크박스 -->
 										<!-- gradeMd = 체크박스는 관리자만 보이게 설정 -->
 										<!-- gradeMdLabel = 공지로등록이라는 텍스트는 관리자만 보이게 설정 -->
-										<label for="grade" id="gradeLabel" style="display: none;">공지로 등록</label>
-										<input type="checkbox" id="grade" name="post" value="1" style="display: none;">
-										<button>등록</button>
+										<label for="gradeMd" id="gradeMdLabel" style="display: none;">공지로 등록</label>
+										<input type="checkbox" id="gradeMd" name="post" value="1" style="display: none;">
+										<button>변경</button>
 								</div>
 						</form>
 				</div>
@@ -44,14 +45,16 @@
 
 
 		<script>
-				const addFormModal = new bootstrap.Modal(document.getElementById('post_add_modal'), {});
+				const MdModal = new bootstrap.Modal(document.getElementById('post_md_modal'), {});
 
-				function postForm() {
-						console.log("@@@@@==> form 실행완료!")
-						addFormModal.show();
+				function postMd() {
+
+						console.log("@@@@@@==>> Md 실행완료!");
+
+						MdModal.show();
 
 						// Summernote 에디터를 초기화합니다.
-						$('#summernote').summernote({
+						$('#summernoteContent').summernote({
 								height: 300,
 								width: 500,
 								callbacks: {
@@ -77,7 +80,7 @@
 														}
 														// 서버에서 받은 업로드 파일 이름을 가지고 <img> 태그를 설정합니다.
 														for (const attachedFile of result) {
-																$('#summernote').summernote('insertImage',
+																$('#summernoteContent').summernote('insertImage',
 																		'https://kr.object.ncloudstorage.com/moyeorastorage/post/'
 																		+ attachedFile.filePath);
 														}
@@ -88,9 +91,23 @@
 				}
 		</script>
 
+		<script>
+
+				// 서버에서 사용자의 등급 정보를 전달합니다.
+				var userGrade = '${userGrade}'; // "매니저" 또는 "부매니저"를 나타내는 값
+
+				// "매니저" 또는 "부매니저"인 경우 체크박스를 보이도록 설정
+				if (userGrade === 'admin' || userGrade === 'sub-admin') {
+						$('#gradeMd').show();
+						$('#gradeMdLabel').show();
+				}
+				});
+				});
+		</script>
 </div>
 
 
 </body>
 </html>
+
 
