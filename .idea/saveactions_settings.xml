@@ -11,13 +11,19 @@
       </set>
     </option>
     <option name="configurationPath" value="" />
+<<<<<<< HEAD
 =======
     <option name="configurationPath" value="" />
+=======
+>>>>>>> 86fab935622028cc4188d3afe88ec937c49c1cbf
     <option name="exclusions">
       <set>
         <option value=".*\.xml" />
       </set>
     </option>
+<<<<<<< HEAD
 >>>>>>> f56fde460f2c26d35e34e730cfb61a44131f7632
+=======
+>>>>>>> 86fab935622028cc4188d3afe88ec937c49c1cbf
   </component>
 </project>

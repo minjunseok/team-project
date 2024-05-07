@@ -1,8 +1,11 @@
 package moyeora.myapp.vo;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class UserTag {
 
     private int userNo;

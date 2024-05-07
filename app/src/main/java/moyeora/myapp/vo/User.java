@@ -4,9 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
-
 @Data
 @NoArgsConstructor
 public class User implements Serializable {
@@ -34,6 +33,8 @@ public class User implements Serializable {
   private String provider;
   private String providerId;
   private String role;
+  private String addressDetail;
+  private Date stopDate;
   private int auth;
 
 

@@ -1,4 +1,4 @@
-package moyeora.myapp.security.config;
+package moyeora.myapp.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

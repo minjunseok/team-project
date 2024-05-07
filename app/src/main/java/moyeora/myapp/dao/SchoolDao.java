@@ -1,12 +1,12 @@
 package moyeora.myapp.dao;
 
 
+
 import moyeora.myapp.dto.admin.school.AdminSchoolListResponseDTO;
 import moyeora.myapp.dto.school.admin.SchoolOpenRangeUpdateRequestDTO;
 import moyeora.myapp.vo.School;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,9 +20,9 @@ public interface SchoolDao {
   int delete(int schoolNo);
 
   List<School> findAll(
-      @Param("category_no") int categoryNo,
-      @Param("offset") int offset,
-      @Param("rowCount") int rowCount);
+          @Param("category_no") int categoryNo,
+          @Param("offset") int offset,
+          @Param("rowCount") int rowCount);
 
   School findBy(int postNo);
 
@@ -45,4 +45,14 @@ public interface SchoolDao {
 
   void updateLimitedMan(int userNo, int limitedMan);
 
+  int isNameExists(String name);
+
+  School findBySchool(int schoolNo);
+
+  int deleteSchool(int schoolNo);
+
+  School findBySchoolNo(int schoolNo);
+
+
 }
+
