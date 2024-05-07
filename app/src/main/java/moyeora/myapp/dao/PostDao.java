@@ -8,6 +8,22 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface PostDao {
 
+
+  //스쿨 공지 관련
+
+  void addNotice(Post post);
+
+  List<Post> findByNotice(int schoolNo);
+
+
+  Post findByFixList(int schoolNo);
+
+  int fixedPost(Post post);
+
+  int fixedCancel(Post post);
+
+  int get(Post post);
+
   void add(Post post);
 
   List<Post> findAll(@Param("categoryNo") int categoryNo);
@@ -47,4 +63,9 @@ public interface PostDao {
 
 
   List<Post> findBySchoolPostList(int schoolNo);
+
+  int findByPostSchoolNo(int no);
+
+
+
 }

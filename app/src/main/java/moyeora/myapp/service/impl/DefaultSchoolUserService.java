@@ -17,7 +17,10 @@ public class DefaultSchoolUserService implements SchoolUserService {
 
   private final SchoolUserDao schoolUserDao;
 
-
+  @Override
+  public int findByUserLevelNo(int schoolNo, int userNo) {
+    return schoolUserDao.findByUserLevelNo(schoolNo, userNo);
+  }
 
   @Override
   public List<SchoolUser> findBySchoolUserList(int schoolNo) {

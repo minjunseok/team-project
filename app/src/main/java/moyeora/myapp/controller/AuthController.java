@@ -1,25 +1,22 @@
 package moyeora.myapp.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
+import moyeora.myapp.security.config.PasswordEncoderConfig;
+import moyeora.myapp.security.util.RedisUtil;
+import moyeora.myapp.service.UserService;
+import moyeora.myapp.service.impl.DefaultMailService;
+import moyeora.myapp.vo.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Random;
-import javax.mail.MessagingException;
-import lombok.RequiredArgsConstructor;
-import moyeora.myapp.security.config.PasswordEncoderConfig;
-import moyeora.myapp.service.impl.DefaultMailService;
-import moyeora.myapp.service.UserService;
-import moyeora.myapp.security.util.RedisUtil;
-import moyeora.myapp.vo.User;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @Controller
@@ -38,10 +35,10 @@ public class AuthController {
     Random random = new Random();
 
     return random.ints(leftLimit, rightLimit + 1)
-        .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-        .limit(targetStringLength)
-        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-        .toString();
+            .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+            .limit(targetStringLength)
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+            .toString();
   }
 
   @GetMapping("signUp")
@@ -64,9 +61,9 @@ public class AuthController {
 
   @GetMapping("form")
   public void getLoginForm(@CookieValue(required = false) String email,
-      @RequestParam(value = "error", required = false) String error,
-      @RequestParam(value = "exception", required = false) String exception,
-      Model model) {
+                           @RequestParam(value = "error", required = false) String error,
+                           @RequestParam(value = "exception", required = false) String exception,
+                           Model model) {
     model.addAttribute("email", email);
     model.addAttribute("error", error);
     model.addAttribute("exception", exception);
@@ -97,7 +94,7 @@ public class AuthController {
       model.addAttribute("status","password null");
     } else {
       String authId = doSend(email, "[moyeora] authentication code", createCode(),
-          createAuthId(email), "form");
+              createAuthId(email), "form");
       model.addAttribute("authId", authId);
       model.addAttribute("status","sent");
       redisUtil.setDataExpire(authId+"_e", email,60 * 5L);
@@ -106,7 +103,7 @@ public class AuthController {
   }
 
   private String doSend(String email, String subject, String code, String authId, String template)
-      throws MessagingException {
+          throws MessagingException {
     mailService.sendEmail(email, subject, code, authId, template);
     redisUtil.setDataExpire(authId, code,60 * 5L);
     return authId;
@@ -114,7 +111,7 @@ public class AuthController {
 
   @PostMapping("verifyCode")
   public String verifyCode(String email, String code, String authId, Model model)
-      throws Exception {
+          throws Exception {
     String savedCode = (String) redisUtil.getData(authId);
     if (savedCode == null) {
       model.addAttribute("status","savedCode == null");

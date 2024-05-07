@@ -28,7 +28,20 @@ public class DefaultPostService implements PostService {
     private List<Post> noticePosts = new ArrayList<>();
     private List<Post> normalPosts = new ArrayList<>();
 
+  @Override
+  public int get(Post post) {
+    return postDao.get(post);
+  }
 
+  //  @Override
+  public void addSchoolPostList(Post post) {
+
+  }
+
+  @Override
+  public int findByPostSchoolNo(int no) {
+    return postDao.findByPostSchoolNo(no);
+  }
 
   @Override
   public List<Post> findBySchoolPost() {
@@ -140,6 +153,36 @@ public class DefaultPostService implements PostService {
   public List<Post> findBySchoolPostList(int schoolNo) {
    return postDao.findBySchoolPostList(schoolNo);
   }
+
+  @Override
+  public Post findByFixList(int schoolNo) {
+    return postDao.findByFixList(schoolNo);
+  }
+
+  @Transactional
+  @Override
+  public void addNotice(Post post) {
+    postDao.addNotice(post);
+  }
+
+
+  @Override
+  public List<Post> findByNotice(int schoolNo) {
+    return postDao.findByNotice(schoolNo);
+  }
+
+
+  @Override
+  public int fixedCancel(Post post) {
+    return postDao.fixedCancel(post);
+  }
+
+  @Override
+  public int fixedPost(Post post) {
+
+    return postDao.fixedPost(post);
+    }
+
 
   @Override
   public Post get(int no , int schoolNo) {

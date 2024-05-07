@@ -201,4 +201,30 @@
     and
       level_no &lt;=4
   </select>
+
+
+  <select id="findyBySchoolLevelNo" resultType="int">
+
+    <!--  세션유저의 user_no를 받아 권한이 매니저인가 부매니저인가 묻는 쿼리문-->
+    SELECT DISTINCT
+
+    su.level_no level_no
+
+    FROM
+
+    school_users as su
+
+    INNER JOIN
+
+    schools s ON s.school_no = su.school_no
+
+    WHERE
+
+    s.school_no =#{schoolNo}
+
+    AND su.level_no IN (3, 4)
+    AND user_no =#{userNo};
+  </select>
+
+
 </mapper>
