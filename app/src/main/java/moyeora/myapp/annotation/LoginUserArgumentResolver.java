@@ -1,5 +1,9 @@
 package moyeora.myapp.annotation;
 
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,26 +14,24 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Component
 public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private static final Log log = LogFactory.getLog(LoginUserArgumentResolver.class);
+  private static final Log log = LogFactory.getLog(LoginUserArgumentResolver.class);
 
-    @Override
-    public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(LoginUser.class) &&
-                parameter.getParameterType().isAssignableFrom(User.class);
-    }
+  @Override
+  public boolean supportsParameter(MethodParameter parameter) {
+    return parameter.hasParameterAnnotation(LoginUser.class) &&
+        parameter.getParameterType().isAssignableFrom(User.class);
+  }
 
-    @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        HttpSession session = ((HttpServletRequest) webRequest.getNativeRequest()).getSession();
-        log.debug(parameter.getParameterName());
-        System.out.println("@@@@@@LoginUserArg@@@@@@@@@");
-        return session.getAttribute((parameter.getParameterName()));
-    }
+  @Override
+  public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+      NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    HttpSession session = ((HttpServletRequest) webRequest.getNativeRequest()).getSession();
+    log.debug(parameter.getParameterName());
+    return session.getAttribute((parameter.getParameterName()));
+  }
 }
+

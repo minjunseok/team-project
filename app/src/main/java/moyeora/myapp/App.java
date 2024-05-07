@@ -1,6 +1,6 @@
 package moyeora.myapp;
 
-import lombok.extern.log4j.Log4j2;
+
 import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.annotation.LoginUserArgumentResolver;
 import moyeora.myapp.vo.User;
@@ -14,11 +14,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import java.util.List;
 
 
-@Log4j2
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableScheduling
@@ -33,6 +31,10 @@ import java.util.List;
         "classpath:ncp-secret.properties",
         "classpath:bootpay.properties",
         "classpath:config/email.properties"
+        // "file:${user.home}/config/oauth.properties",
+    // "file:${user.home}/config/email.properties",
+    // "file:${user.home}/config/ncp.properties",
+    // "file:${user.home}/config/ncp-secret.properties"
 })
 public class App implements WebMvcConfigurer {
   @Autowired
@@ -57,4 +59,6 @@ public class App implements WebMvcConfigurer {
   public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
     resolvers.add(loginUserArgumentResolver);
   }
+
+
 }

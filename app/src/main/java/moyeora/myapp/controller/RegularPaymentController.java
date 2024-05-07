@@ -7,6 +7,7 @@ import moyeora.myapp.dto.payment.RegularPaymentRequestDTO;
 import moyeora.myapp.dto.payment.RegularPaymentResponseDTO;
 import moyeora.myapp.service.PaymentService;
 import moyeora.myapp.vo.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("payment")
 public class RegularPaymentController {
   private final PaymentService paymentService;
-
   @GetMapping("form")
   public void form() {
 
   }
+
 
   @PostMapping("purchase")
   @ResponseBody

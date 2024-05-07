@@ -30,7 +30,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     PrincipalDetails principal = (PrincipalDetails) principalDetailService.loadUserByUsername(email);
 
-    if (!passwordEncoder.matches(password, principal.getPassword())) {
+    if(!passwordEncoder.matches(password, principal.getPassword())) {
+
       throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
     }
 
@@ -38,7 +39,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     authorities.add(new SimpleGrantedAuthority(Role.USER.getKey()));
 
     return new UsernamePasswordAuthenticationToken(principal, password, authorities);
-
   }
 
   @Override

@@ -91,10 +91,9 @@ public class AuthController {
   @PostMapping ("sendEmail")
   public String sendEmail(String email, Model model) throws Exception {
     User user = userService.get(email);
-    if(user == null) {
+
+    if(user == null || user.getPassword() == null) {
       model.addAttribute("status","email not found");
-    } else if (user.getPassword() == null) {
-      model.addAttribute("status","password null");
     } else {
       String authId = doSend(email, "[moyeora] authentication code", createCode(),
           createAuthId(email), "form");
@@ -159,3 +158,4 @@ public class AuthController {
     return builder.toString();
   }
 }
+
