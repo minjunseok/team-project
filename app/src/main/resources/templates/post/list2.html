@@ -126,43 +126,11 @@
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="display: block;width: 100px;">
 										<div class="container">
 												<div class="row" style="width: 100px;">
-
-														<div class="modal" id="post_md_modal" data-th-fragment="postMd-modal">
-																<div class="modal-dialog">
-																		<div class="modal-content">
-																				<form action="update" data-th-action="@{update}" data-th-object="${post}"
-																				      enctype='multipart/form-data' method='post'>
-																						<!-- postNo, schoolNo의 값을 넘기기 위해 히든으로 설정 -->
-																						<input type="hidden" name="schoolNo" data-th-value="*{schoolNo}">
-																						<input type="hidden" name="no" data-th-value="*{no}">
-																						<div>
-																								<!-- Summernote 에디터 -->
-																								<textarea data-th-text="${content}" id="summernoteContent"
-																								          name='content' style="display: none"></textarea>
-																						</div>
-
-																						<div>
-																								<!-- 공지로 등록하는 체크박스 -->
-																								<!-- gradeMd = 체크박스는 관리자만 보이게 설정 -->
-																								<!-- gradeMdLabel = 공지로등록이라는 텍스트는 관리자만 보이게 설정 -->
-																								<label for="gradeMd" id="grade_MdLabel" style="display: none;">공지로
-																										등록</label>
-																								<input type="checkbox" id="grade_Md" name="post" value="1"
-																								       style="display: none;">
-																								<button>변경</button>
-																						</div>
-																				</form>
-																		</div>
-																</div>
+														<div id="post_md" onclick="postMd()" style="width: 110px;">글 수정
 														</div>
-
-														<div id="post_md" style="width: 110px;">글 수정
-														</div>
-
 												</div>
 
-
-												<!--												<div data-th-replace="post/postModal/md :: postMd-modal">글 수정</div>-->
+												<div data-th-replace="post/postModal/md :: postMd-modal">글 수정</div>
 										</div>
 
 										<div>
@@ -319,38 +287,6 @@
 								}
 						});
 				});
-		});
-</script>
-
-
-<script>
-		$(document).ready(function() {
-				// 모달은 처음에 숨김 처리합니다.
-				$('#post_md_modal').modal('hide');
-
-				// 각 게시글의 "글 수정" 버튼 클릭 이벤트 핸들러 등록
-				$(".post_md").click(function() {
-						// 해당 게시글의 정보 가져오기
-						var postNo = $(this).closest(".postItem").find(".postNo").text();
-						var postContent = $(this).closest(".postItem").find("a").data("th-utext");
-
-						// 모달을 보여줍니다.
-						$('#post_md_modal').modal('show');
-
-						// Summernote를 초기화합니다.
-						$('#summernoteContent').summernote({
-								height: 300,
-								width: 500,
-								callbacks: {
-										onInit: function() {
-												// Summernote 초기화 시 게시글 내용을 채웁니다.
-												$('#summernoteContent').summernote('code', postContent);
-										}
-								}
-						});
-				});
-
-				// ...
 		});
 </script>
 </body>

@@ -1,4 +1,4 @@
-package moyeora.myapp.config;
+package moyeora.myapp.security.config;
 
 
 import lombok.RequiredArgsConstructor;
