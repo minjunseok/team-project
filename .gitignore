@@ -3,12 +3,11 @@
 
 # Ignore Gradle build output directory
 build
-<<<<<<< HEAD
-bin
-coolsms.properties
-=======
 
-<<<<<<< HEAD
+bin
+
+coolsms.properties
+
 ncp-secret.properties
 
 ncp-secret.storage.properties
@@ -17,6 +16,13 @@ ncp-secret.storage.properties
 
 
 application.properties
+
+bootpay.properties
+
+email.properties
+
+
+oauth.properties
 
 *.exe
 temp/
