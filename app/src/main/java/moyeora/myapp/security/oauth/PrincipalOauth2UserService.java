@@ -16,6 +16,7 @@ import moyeora.myapp.vo.role.Role;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     } else if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
       oAuth2UserInfo = new GoogleOAuth2UserInfo(oAuth2User.getAttributes());
     } else {
-      throw new OAuth2AuthenticationException("[로그인 에러] 요청하신 로그인 서비스는 지원되지 않습니다.");
+      throw new OAuth2AuthenticationException(new OAuth2Error("[로그인 에러] 요청하신 로그인 서비스는 지원되지 않습니다."),"This address is already being used.");
     }
 
     String email = oAuth2UserInfo.getEmail();
@@ -49,16 +50,21 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     String providerId = oAuth2UserInfo.getProviderId();
     String provider = oAuth2UserInfo.getProvider();
     String role = Role.USER.getKey();
-    User user = userService.findOAuth2User(email, provider);
 
+    User user = userService.findOAuth2User(email, provider);
     if (user == null) {
-      user = User.builder()
-          .email(email)
-          .name(name)
-          .providerId(providerId)
-          .provider(provider)
-          .role(role)
-          .build();
+      if (userService.findByEmail(email) == null) {
+        user = User.builder()
+            .email(email)
+            .name(name)
+            .providerId(providerId)
+            .provider(provider)
+            .role(role)
+            .build();
+      } else {
+        throw new OAuth2AuthenticationException(new OAuth2Error("이미 가입된 이메일입니다."),"This address is already being used.");
+      }
+
       try {
         String key = user.getEmail() + "_" + provider + "_" + providerId;
         redisUtil.setDataExpire(key,user);
