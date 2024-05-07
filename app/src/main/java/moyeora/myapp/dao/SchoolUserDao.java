@@ -10,6 +10,9 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface SchoolUserDao {
+
+  int findByUserLevelNo(int schoolNo, int userNo);
+
   public SchoolUser findByUserNo(int no);
 
   public void insert(SchoolUser user);

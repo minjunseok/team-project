@@ -14,11 +14,31 @@ public interface PostService {
 
   int update(Post post);
 
+
+
+  Post findByFixList(int schoolNo);
+
+
+  int findByPostSchoolNo(int no);
+
+  int fixedCancel(Post post);
+
+  int fixedPost(Post post);
+
+  void addNotice(Post post);
+
+  List<Post> findByNotice(int schoolNo);
+
+
   void add(Post post);
 
   List<Post> findAll(int categoryNo);
 
   Post get(int no);
+
+  int get(Post post);
+
+//  int test(int no,int schoolNo);
 
   List<AttachedFile> getAttachedFiles(int no);
 
@@ -35,6 +55,7 @@ public interface PostService {
   public String findByPost(int schoolNo, String content);
   public Post findByPost(@Param("no") int no, @Param("schoolNo") int schoolNo);
 
+    void addSchoolPostList(Post post);
 
 
  List<Post> findBySchoolPostList(int schoolNo);

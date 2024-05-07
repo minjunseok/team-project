@@ -8,6 +8,8 @@ public interface SchoolUserService {
 
   List<SchoolUser> findBySchoolUserList(int schoolNo);
 
+  int findByUserLevelNo(int schoolNo, int userNo);
+
   }
 
 

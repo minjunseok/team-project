@@ -9,4 +9,6 @@ public interface CommentDao {
 
 List<Comment> findByComment(int no);
 
+void addComment (Comment comment);
+
 }

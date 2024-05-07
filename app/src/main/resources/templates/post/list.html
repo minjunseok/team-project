@@ -11,6 +11,8 @@
 
 <h1>스쿨 회원 리스트</h1>
 
+
+
 <table border='1'>
     <thread>
         <tr>
@@ -35,6 +37,10 @@
 <br>
 
 <h1>스쿨 게시글 리스트</h1>
+
+<a data-th-href="@{form(schoolNo=*{schoolNo})}" href="form.html">새 글</a>
+
+
 <!-- 검색창-->
 <form action='/post/search' method="post">
     <div>
@@ -91,26 +97,13 @@
     </thread>
     <tbody>
     <tr data-th-each="post : ${postlists}" data-th-object="${post}">
-
         <td data-th-text="*{writer.nickname}">작성자</td>
         <td data-th-text="*{writer.photo}">사진</td>
-        <td>
-            <a data-th-href="@{'view/' + *{schoolNo}(no=*{no})}" data-th-text="*{content}">내용</a>
-        </td>
+<!--        <td><a href="#" class="view-post" data-no="${post.no}">${post.content}</a></td>-->
+        <td><a data-th-href="@{'view/' + *{schoolNo}(no=*{no})}" th:utext="*{content}"></a></td>
         <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
-
-       <td>
-<!--           data-th-text="*{comments}">-->
-    <tr th:each="comment : ${comments}" th:object="${comment}">
-        <td><span th:text="*{writer.photo}"></span></td>
-        <td><span th:text="*{writer.nickname}"></span></td>
-        <td><span th:text="*{content}"></span></td>
-        <td><span th:text="${#dates.format(comment.createdAt,'yyyy-MM-dd')}"></span>댓글목록</td>
-        </tr></td>
-        <td><a data-th-href="@{md(no=*{no})}" href="md.html?no=*{no}">...(설정)</a>
-        <td>
-            <a data-th-href="@{md(no=*{no}, schoolNo=*{schoolNo})}" href="md.html?(no=*{no}, schoolNo=*{schoolNo})">설정</a>
-        </td>
+<!--<td><a data-th-href="@{md(no=*{no})}" href="md.html?no=*{no}">...(설정)</a></td>&ndash;&gt;-->
+        <td><a data-th-href="@{md(no=*{no}, schoolNo=*{schoolNo})}" href="md.html?(no=*{no}, schoolNo=*{schoolNo})">설정</a></td>
     </tr>
     <!--    현준 리스트 작업 (검색창 오류 발생하면 보려고 놓아둔 것-->
     <!--    <tr data-th-each="post : ${postList}" data-th-object="${post}">-->

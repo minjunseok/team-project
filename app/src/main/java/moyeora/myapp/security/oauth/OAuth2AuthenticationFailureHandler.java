@@ -9,7 +9,6 @@ import moyeora.myapp.security.util.RedisUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +23,11 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
   public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
       AuthenticationException exception) throws IOException, ServletException {
     log.debug("OAuth2 login Failed" );
-    response.sendRedirect("/");
+    String errorMessage = exception.getMessage();
+    log.debug("exception.getMessage() : " + errorMessage);
+//    errorMessage = URLEncoder.encode(errorMessage, StandardCharsets.UTF_8);
+    setDefaultFailureUrl("/auth/form?error=true&exception="+errorMessage);
+    super.onAuthenticationFailure(request,response,exception);
   }
 }
 

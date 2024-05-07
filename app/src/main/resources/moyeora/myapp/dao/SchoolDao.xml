@@ -63,6 +63,8 @@
       school_no=#{no}
   </select>
 
+
+
   <update id="stopSchool">
     update schools
       set stop=1
@@ -79,6 +81,8 @@
       school_no=#{schoolNo}
 
   </update>
+
+
 
 
 </mapper>
