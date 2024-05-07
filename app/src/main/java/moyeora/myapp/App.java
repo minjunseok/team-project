@@ -1,9 +1,7 @@
 package moyeora.myapp;
 
 
-import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.annotation.LoginUserArgumentResolver;
-import moyeora.myapp.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +14,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
+
+import javax.servlet.http.HttpSession;
 
 @SpringBootApplication
 @EnableTransactionManagement
@@ -36,9 +36,11 @@ import java.util.List;
     // "file:${user.home}/config/ncp.properties",
     // "file:${user.home}/config/ncp-secret.properties"
 })
+
 public class App implements WebMvcConfigurer {
   @Autowired
   LoginUserArgumentResolver loginUserArgumentResolver;
+
 
 
   public static void main(String[] args) throws Exception {
@@ -48,7 +50,7 @@ public class App implements WebMvcConfigurer {
   }
 
   @GetMapping("/home")
-  public void home(@LoginUser User loginUser) {
+  public void home() {
   }
 
   @GetMapping("/about")

@@ -1,9 +1,10 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
-    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+    <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
           <list size="2">
@@ -19,6 +20,16 @@
             <item index="1" class="java.lang.String" itemvalue="sec:authentication" />
             <item index="2" class="java.lang.String" itemvalue="th:inline" />
 >>>>>>> f56fde460f2c26d35e34e730cfb61a44131f7632
+=======
+          <list size="7">
+            <item index="0" class="java.lang.String" itemvalue="nobr" />
+            <item index="1" class="java.lang.String" itemvalue="noembed" />
+            <item index="2" class="java.lang.String" itemvalue="comment" />
+            <item index="3" class="java.lang.String" itemvalue="noscript" />
+            <item index="4" class="java.lang.String" itemvalue="embed" />
+            <item index="5" class="java.lang.String" itemvalue="script" />
+            <item index="6" class="java.lang.String" itemvalue="thread" />
+>>>>>>> 3e551484b0790405288806525e30074b145ce11d
           </list>
         </value>
       </option>

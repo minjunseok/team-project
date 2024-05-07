@@ -4,7 +4,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.SchoolUserDao;
 import moyeora.myapp.service.SchoolUserService;
+import moyeora.myapp.vo.Level;
 import moyeora.myapp.vo.SchoolUser;
+import moyeora.myapp.vo.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,4 +25,20 @@ public class DefaultSchoolUserService implements SchoolUserService {
   public List<SchoolUser> findBySchoolUserList(int schoolNo) {
     return schoolUserDao.findBySchoolUserList(schoolNo);
   }
+
+//  @Override
+//  public void addSchoolUser(SchoolUser schoolUser) {
+//    schoolUserDao.addSchoolUser(schoolUser);
+//  }
+
+  @Override
+  public void addSchoolUser(int userNo, int schoolNo, int levelNo) {
+    schoolUserDao.addSchoolUser(userNo, schoolNo, levelNo);
+  }
+
+
+//  @Override
+//  public void addSchoolUser(SchoolUser schoolUser) {
+//    schoolUserDao.addSchoolUser(schoolUser);
+//  }
 }

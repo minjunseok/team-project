@@ -5,6 +5,7 @@ import moyeora.myapp.dao.TagDao;
 import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.dao.UserTagDao;
 import moyeora.myapp.service.UserService;
+import moyeora.myapp.vo.Level;
 import moyeora.myapp.vo.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,9 +41,7 @@ import java.util.List;
         }
 
         @Override
-        public User get(int no) {
-            return userDao.findBy(no);
-        }
+        public User get(int no) { return userDao.findByNo(no); }
 
         @Override
         public User get(String email) {
@@ -120,4 +119,6 @@ import java.util.List;
         public User findByEmail(String email) {
             return userDao.findByEmail(email);
         }
+
+
     }

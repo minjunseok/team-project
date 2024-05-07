@@ -14,7 +14,7 @@ public class Post {
   private int no;
   private String type;
   private String fileName;
-  private String nickname;
+  private User nickname;
   private String photo;
   private int schoolNo;
   private int userNo;
@@ -24,11 +24,13 @@ public class Post {
   private int likeCount;
   private int commentCount;
   private User writer;
-  private List<AttachedFile> files;
+  private List<AttachedFile> fileList;
+  private int fileCount;
   private List<Comment> comments;
   private List<SchoolUser> schoolUsers;
   private List<Post> posts;
   private School school;
   private SchoolUser schoolUser;
   private String lNo;
+
 }
