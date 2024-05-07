@@ -5,26 +5,164 @@
 
 <mapper namespace="moyeora.myapp.dao.ChatDao">
 
-  <insert id="addChatMessage" parameterType="ChatMessage">
-    insert into users(school_no,user_no,message,created_at,photo)
-    values( #{schoolNo} ,#{sender} ,#{message} ,'' ,'')
-  </insert>
+    <!--resultMap-->
+    <resultMap id="gmMap" type="Gm">
+        <id column="gm_no" property="no"/>
+        <result column="school_no" property="schoolNo"/>
+        <result column="message" property="message"/>
+        <result column="photo" property="photo"/>
+        <result column="created_at" property="sendDate"/>
+        <association property="sender" javaType="User">
+            <id column="user_no" property="no"/>
+            <result column="name" property="name"/>
+            <result column="nickname" property="nickname"/>
+            <result column="photo" property="photo"/>
+        </association>
+    </resultMap>
 
-  <select id="findChatMessageByChatRoomNo" parameterType="int" resultType="ChatMessage">
-    select
-      gm_no
-      school_no,
-      user_no,
-      message,
-      created_at,
-      photo
-    from
-      gm
-    where
-      school_no=#{school_no}
-  </select>
+    <resultMap id="dmMap" type="Dm">
+        <id column="dm_no" property="no"/>
+        <result column="message" property="message"/>
+        <result column="photo" property="photo"/>
+        <result column="created_at" property="sendDate"/>
+        <result column="room_no" property="roomNo"/>
+        <association property="sender" javaType="User">
+            <id column="user_no" property="no"/>
+            <result column="name" property="name"/>
+            <result column="nickname" property="nickname"/>
+            <result column="photo" property="photo"/>
+        </association>
+        <association property="receiver" javaType="User">
+            <id column="user_no" property="no"/>
+            <result column="name" property="name"/>
+            <result column="nickname" property="nickname"/>
+            <result column="photo" property="photo"/>
+        </association>
+    </resultMap>
 
+    <resultMap id="dmRoomMap" type="DmRoom">
+        <id column="room_no" property="no"/>
+        <result column="user_no" property="user1"/>
+        <result column="user_no2" property="user2"/>
+        <result column="created_date" property="createdDate"/>
+    </resultMap>
 
+    <!--Gm-->
+    <insert id="saveGm" parameterType="Gm">
+        insert into gm(school_no, user_no, message, photo, created_at)
+        values(#{schoolNo}, #{sender.no} ,#{message} ,#{photo} ,#{sendDate})
+    </insert>
+
+    <select id="findGmListBySchoolNo" resultMap="gmMap" parameterType="int">
+        select
+            g.gm_no,
+            g.school_no,
+            g.message,
+            g.photo,
+            g.created_at,
+            u.user_no,
+            u.name,
+            u.nickname,
+            u.photo
+        from
+            gm g inner join users u on g.user_no=u.user_no
+        where
+            g.school_no = #{value}
+    </select>
+
+    <!--Dm-->
+    <insert id="saveDm" parameterType="Dm">
+        insert into dm(user_no2, user_no, message, photo, created_at, room_no)
+        values(#{sender.no}, #{receiver.no} ,#{message} ,#{photo} ,#{sendDate}, #{roomNo})
+    </insert>
+
+    <select id="findDmListBySenderAndReceiver" resultMap="dmMap" parameterType="int">
+        select
+            d.dm_no,
+            d.message,
+            d.created_at,
+            d.photo,
+            d.room_no,
+            u.user_no,
+            u.name,
+            u.nickname,
+            u.photo
+        from
+            dm d inner join users u on d.user_no=u.user_no
+        where
+            (user_no2 = #{sender} and user_no = #{receiver}) or (user_no2 = #{receiver} and user_no = #{sender})
+        union
+        select
+            d.dm_no,
+            d.message,
+            d.created_at,
+            d.photo,
+            d.room_no,
+            u.user_no,
+            u.name,
+            u.nickname,
+            u.photo
+        from
+            dm d inner join users u on d.user_no2=u.user_no
+        where
+            (user_no2 = #{sender} and user_no = #{receiver}) or (user_no2 = #{receiver} and user_no = #{sender})
+    </select>
+
+    <select id="findDmListByRoomNo" resultMap="dmMap" parameterType="int">
+        select
+            d.dm_no,
+            d.message,
+            d.created_at,
+            d.photo,
+            d.room_no,
+            u.user_no,
+            u.name,
+            u.nickname,
+            u.photo
+        from
+            dm d inner join users u on d.user_no=u.user_no
+        where
+            room_no = #{value}
+        union
+        select
+            d.dm_no,
+            d.message,
+            d.created_at,
+            d.photo,
+            d.room_no,
+            u.user_no,
+            u.name,
+            u.nickname,
+            u.photo
+        from
+            dm d inner join users u on d.user_no2=u.user_no
+        where
+            room_no = #{value}
+    </select>
+
+    <!--DmRoom-->
+    <insert id="addDmRoom" parameterType="DmRoom" useGeneratedKeys="true" keyColumn="room_no" keyProperty="no">
+        insert into dm_room(user_no, user_no2)
+        values(#{user1}, #{user2})
+    </insert>
+
+    <select id="findDmRoomByNo" resultMap="dmRoomMap" parameterType="int">
+        select
+            *
+        from
+            dm_room
+        where
+            room_no = #{value}
+    </select>
+
+    <select id="findDmRoomByUserNo" resultMap="dmRoomMap" parameterType="int">
+        select
+            *
+        from
+            dm_room
+        where
+            (user_no = #{user1} and user_no2 = #{user2}) or (user_no = #{user2} and user_no2 = #{user1})
+    </select>
 
 
 </mapper>

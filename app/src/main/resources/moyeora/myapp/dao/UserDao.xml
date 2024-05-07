@@ -20,16 +20,18 @@
     <result column="photo" property="photo"/>
     <result column="address_detail" property="addressDetail"/>
     <result column="stop_date" property="stopDate"/>
-    <result column="tag_no" property="no"/>
+    <result column="tag_no" property="tagNo"/>
     <result column="login_type" property="loginType"/>
     <result column="provider" property="provider"/>
     <result column="provider_id" property="providerId"/>
     <result column="role" property="role"/>
+
     <result column="auth" property="auth"/>
     <collection property="tags" ofType="UserTag">
       <result column="user_no" property="userNo"/>
       <result column="tag_no" property="tagNo"/>
     </collection>
+
   </resultMap>
 
   <insert id="add" parameterType="User">
@@ -91,7 +93,9 @@
       user_no,
       email,
       name,
-    created_at
+      nickname,
+      photo,
+      created_at
     from
     users
     where
@@ -100,14 +104,11 @@
 
   <select id="findByEmail" resultMap="UserMap" parameterType="string">
     select
-    user_no,
-    email,
-    password,
-    name
+        *
     from
     users
     where
-        email=#{email}
+        email=#{value}
   </select>
 
   <update id="update" parameterType="User">
@@ -144,15 +145,15 @@
 
   <select id="findOAuth2User" resultMap="UserMap">
     select
-    user_no,
-    email,
-    name,
-    role
+      user_no,
+      email,
+      name,
+      role
     from
-    users
+      users
     where
-    email=#{email}
-    and provider=#{provider}
+      email=#{email}
+      and provider=#{provider}
   </select>
 
   <select id="findAllNoMaster" resultMap="UserMap">
@@ -214,7 +215,6 @@
       (name like '%${userInfo}%' or nickname like '%${userInfo}%' or email like '%${userInfo}%')
     order by
     auth desc, created_at desc
-
   </select>
 
   <select id="findGroupByGender" resultType="moyeora.myapp.dto.admin.statistics.AdminUserGenderResponseDTO">

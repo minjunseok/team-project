@@ -143,7 +143,7 @@
 <br>
 <br>
 
-<p align="center"><img src="./user 1_1 chat.png" width="600"><br>1:1 채팅</p>
+<p align="center"><img src="./user 1_1 gm.png" width="600"><br>1:1 채팅</p>
 
 <br>
 <br>
@@ -185,7 +185,7 @@
 <br>
  <br>
 
-<p align="center"><img src="./school chat.png" width="600"><br>스쿨 채팅</p>
+<p align="center"><img src="./school gm.png" width="600"><br>스쿨 채팅</p>
 
 <br>
 <br>

@@ -5,7 +5,7 @@ import moyeora.myapp.vo.User;
 import java.util.List;
 public interface UserService {
 
-    void add(User user);
+  void add(User user);
 
   void save(User user);
 

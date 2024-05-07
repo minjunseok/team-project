@@ -8,13 +8,14 @@ import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+
 import java.time.LocalDate;
 import java.util.List;
 
+
+
 @Mapper
 public interface UserDao {
-     public void add(User user);
-
      public User findBy(int no);
 
      public int findUserGrade(int grade);
@@ -26,15 +27,17 @@ public interface UserDao {
 
      public void downGrade(List<Integer> userList);
 
-  void save(User user);
+     void add(User user);
 
-  int delete(int no);
-
-  List<User> findAll();
-
-  User findByNo(int no);
-
-  int update(User user);
+     void save(User user);
+   
+     int delete(int no);
+   
+     List<User> findAll();
+   
+     User findByNo(int no);
+   
+     int update(User user);
 
   int updatePassword(User user);
 
@@ -60,4 +63,6 @@ public interface UserDao {
     List<AdminUserBirthResponseDTO> findGroupByBirth();
 
     List<AdminUserLocalResponseDTO> findGroupByLocal();
+
+
 }

@@ -3,6 +3,7 @@ package moyeora.myapp.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.bootpay.Bootpay;
 import kr.co.bootpay.model.request.SubscribePayload;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.BillingKeyDao;
 import moyeora.myapp.dao.PurchaseDao;
@@ -22,15 +23,15 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class RegularPaymentService implements PaymentService {
 
-  private final PurchaseDao purchaseDao;
-  private final UserDao userDao;
-  private final SchoolDao schoolDao;
-  private final BillingKeyDao billingKeyDao;
-  final String restapi_key;
-  final String private_key;
+  private PurchaseDao purchaseDao;
+  private UserDao userDao;
+  private SchoolDao schoolDao;
+  private BillingKeyDao billingKeyDao;
+  String restapi_key;
+  String private_key;
 
   public RegularPaymentService(
           @Value("${bootpay.restapi.key}") String restapi_key,
@@ -38,6 +39,7 @@ public class RegularPaymentService implements PaymentService {
           PurchaseDao purchaseDao,
           UserDao userDao,
           SchoolDao schoolDao, BillingKeyDao billingKeyDao) {
+    System.out.println(restapi_key + "@@@@@@@@");
     this.restapi_key = restapi_key;
     this.private_key = private_key;
     this.purchaseDao = purchaseDao;

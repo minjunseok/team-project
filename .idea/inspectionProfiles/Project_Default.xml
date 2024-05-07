@@ -5,6 +5,7 @@
       <option name="myValues">
         <value>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <list size="2">
             <item index="0" class="java.lang.String" itemvalue="sec:authorize" />
             <item index="1" class="java.lang.String" itemvalue="sec:authentication" />
@@ -12,6 +13,12 @@
           <list size="1">
             <item index="0" class="java.lang.String" itemvalue="th:object" />
 >>>>>>> 0878dd73705bf6680a0ac6d43a1e2698838943da
+=======
+          <list size="3">
+            <item index="0" class="java.lang.String" itemvalue="sec:authorize" />
+            <item index="1" class="java.lang.String" itemvalue="sec:authentication" />
+            <item index="2" class="java.lang.String" itemvalue="th:inline" />
+>>>>>>> f56fde460f2c26d35e34e730cfb61a44131f7632
           </list>
         </value>
       </option>

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import moyeora.myapp.service.TagService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.util.FileUpload;
-import moyeora.myapp.util.FileUploadHelper;
 import moyeora.myapp.vo.Tag;
 import moyeora.myapp.vo.User;
 import moyeora.myapp.vo.UserTag;
@@ -32,8 +31,6 @@ public class UserController implements InitializingBean {
   private final FileUpload fileUpload;
   private final String uploadDir =  "user/";;
   @Value("${ncp.storage.bucket}") private String bucket;
-
-
 
     @Override
     public void afterPropertiesSet() throws Exception {

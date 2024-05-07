@@ -22,6 +22,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     CustomWebAuthenticationDetails customWebAuthenticationDetails = (CustomWebAuthenticationDetails) authentication.getDetails();
     String isSaveEmail = customWebAuthenticationDetails.getIsSaveEmail();
+
     request.getSession().setAttribute("loginUser", ((PrincipalDetails) authentication.getPrincipal()).getUser());
 
     Cookie cookie;
@@ -34,6 +35,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
       cookie.setMaxAge(0);
     }
     response.addCookie(cookie);
-    response.sendRedirect("/");
+    response.sendRedirect("/index");
   }
 }
