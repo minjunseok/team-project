@@ -1,14 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-
+<html lang="en">
 <head>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
+		<!--새 글쓰기 모달 참조-->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+		      integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg=="
+		      crossorigin="anonymous" referrerpolicy="no-referrer"/>
+		<script type="text/javascript"
+		        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
+		        integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="
+		        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
 		<!-- include libraries(jQuery, bootstrap) -->
 		<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 		<!-- include summernote css/js -->
 		<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
@@ -62,7 +72,7 @@
 						<option value="1">작성자</option>
 				</select>
 				<input name="keyword" type="text" placeholder="검색어를 입력하세요."/>
-				<input name="schoolNo" type="hidden" value="1"/><!-- schoolNo를 Integer로 선언 -->
+				<input id="schoolNo" name="schoolNo" type="hidden" value="1"/><!-- schoolNo를 Integer로 선언 -->
 				<button id="postSearchForm">검색</button>
 		</div>
 </form>
@@ -72,127 +82,21 @@
 </div>
 
 
-<!-- 모달 버튼 -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newPostModal">
-		새 글 작성
-</button>
-
-<!-- 새 글 모달 -->
-<div class="modal fade" id="newPostModal" tabindex="-1" role="dialog" aria-labelledby="newPostModalLabel"
-     aria-hidden="true">
-		<div class="modal-dialog" role="document">
-				<div class="modal-content">
-						<div class="modal-header">
-								<h5 class="modal-title" id="newPostModalLabel">새 글 작성</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-								</button>
-						</div>
-						<div class="modal-body">
-								<!-- form.html의 내용 -->
-								<form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
-										<!-- schoolNo의 값을 넘기기 위해 히든으로 설정 -->
-										<input type="hidden" name="schoolNo" value="1"> <!-- 로그인 구현이 안되어있어서 임의로 적용 -->
-										<input type="hidden" name="no" value="1"> <!-- 로그인 구현이 안되어있어서 임의로 적용 -->
-										<div>
-												<!-- Summernote 에디터 -->
-												<textarea id="summernote" name='content'></textarea>
-										</div>
-
-										<div>
-												<!-- 공지로 등록하는 체크박스 -->
-												<!-- gradeMd = 체크박스는 관리자만 보이게 설정 -->
-												<!-- gradeMdLabel = 공지로등록이라는 텍스트는 관리자만 보이게 설정 -->
-												<label for="gradeMd" id="add_gradeMdLabel" style="display: none;">공지로 등록</label>
-												<input type="checkbox" id="add_gradeMd" name="post" value="1" style="display: none;">
-												<button type="button" id="btn_submit">등록</button>
-										</div>
-								</form>
+<div class="container">
+		<div class="row" style="width: 100px">
+				<div class="col-md-2">
+				</div>
+				<div class="col-md-8" style="text-align:center;" id="">
+						<div id="post_setting" onclick="postForm()" style="width: 120px">
+								<button>새 글 작성</button>
 						</div>
 				</div>
 		</div>
 </div>
 
+<div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>
 
-<script>
-		$(document).ready(function () {
-				$('#summernote').summernote({
-						height: 300,
-						width: 500,
-						callbacks: {
-								onInit: function() {
-										console.log('Summernote 생성됨!');
-								},
-								onImageUpload: function(files) {
-
-										let data = new FormData();
-										for (const file of files) {
-												data.append("files", file);
-										}
-										$.ajax({
-												url: 'file/upload', // 절대경로: http://localhost:8888/board2/file/upload
-												type: 'POST',
-												dataType: 'json',
-												contentType: false,
-												processData: false,
-												data: data
-										})
-												.done(function(result) {
-												if (result.length == 0) {
-														alert('로그인 하세요!');
-														return;
-												}
-
-												// 서버에서 받은 업로드 파일 이름을 가지고 <img> 태그를 설정한다.
-												for (const attachedFile of result) {
-														$('#summernote').summernote('insertImage',
-																'https://kr.object.ncloudstorage.com/moyeorastorage/post/'
-																+ attachedFile.filePath);
-												}
-										});
-
-								}
-						}
-				});
-
-
-		});
-
-</script>
-<script>
-		$(document).ready(function() {
-				// "등록" 버튼 클릭 시 폼 제출 처리
-				$("#btn_submit").click(function() {
-						// 모달 내의 폼 데이터를 가져옵니다.
-						var formData = new FormData($("#newPostModal form")[0]);
-
-						// AJAX를 사용하여 폼 데이터를 서버로 제출합니다.
-						$.ajax({
-								type: "POST", // POST 요청
-								url: "add",   // 데이터를 제출할 URL
-								data: formData, // 폼 데이터
-								contentType: false, // 컨텐츠 타입을 false로 설정하여 기본값을 사용합니다.
-								processData: false, // processData를 false로 설정하여 데이터를 자동 처리하지 않도록 합니다.
-
-								// 요청이 성공하면 수행할 작업을 정의합니다.
-								success: function(response) {
-										// 필요한 경우 성공 메시지를 표시합니다.
-										alert('게시글이 등록되었습니다.');
-										// 모달을 닫습니다.
-										$("#newPostModal").modal("hide");
-								},
-								// 요청이 실패하면 수행할 작업을 정의합니다.
-								error: function(xhr, status, error) {
-										// 필요한 경우 실패 메시지를 표시합니다.
-										alert('게시글 등록에 실패했습니다.');
-								}
-						});
-				});
-		});
-</script>
-
-
-<table class="table table-bordered">
+<table class="table table-bordered" style="width: 555px">
 		<thread>
 				<tr>
 						<th>닉네임</th>
@@ -203,11 +107,13 @@
 				</tr>
 		</thread>
 		<tbody>
-		<tr data-th-each="post : ${postList}" data-th-object="${post}">
+		<tr class="postItem" data-th-each="post : ${postList}" data-th-object="${post}">
+				<!--				해당 게시글의 no를 가져오는지 확인하기위해 히든으로 처리-->
+				<td class="postNo" data-th-text="*{no}" hidden></td>
 				<td data-th-text="*{writer.nickname}">닉네임</td>
 				<td data-th-text="*{writer.photo}">사진</td>
 				<td>
-						<a data-th-href="@{'view/' + *{schoolNo}(no=*{no})}" th:utext="*{content}">내용</a>
+						<a data-th-href="@{'view/' + *{schoolNo}(no=*{no})}" data-th-utext="*{content}">내용</a>
 				</td>
 				<td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
 
@@ -217,9 +123,14 @@
 								        aria-expanded="false">...
 								</button>
 
-								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-										<div>
-												<a id="md" class="dropdown-item">글 수정</a>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="display: block;width: 100px;">
+										<div class="container">
+												<div class="row" style="width: 100px;">
+														<div id="post_md" onclick="postMd()" style="width: 110px;">글 수정
+														</div>
+												</div>
+
+												<div data-th-replace="post/postModal/md :: postMd-modal">글 수정</div>
 										</div>
 
 										<div>
@@ -243,6 +154,7 @@
 		</tr>
 		</tbody>
 </table>
+
 
 <!-- 설정을 눌렀을 때 드롭다운이 나타나도록 -->
 <script>
@@ -377,7 +289,6 @@
 				});
 		});
 </script>
-
 </body>
 
 </html>

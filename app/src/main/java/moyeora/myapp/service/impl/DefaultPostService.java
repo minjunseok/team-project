@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.AttachedFileDao;
 import moyeora.myapp.dao.CommentDao;
 import moyeora.myapp.dao.PostDao;
+import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.service.PostService;
 import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Comment;
@@ -21,6 +22,7 @@ public class DefaultPostService implements PostService {
     private final PostDao postDao;
     private final AttachedFileDao attachedFileDao;
     private final CommentDao commentDao;
+    private final UserDao userDao;
 
     // 공지글과 일반글을 구분하기 위한 리스트
     private List<Post> noticePosts = new ArrayList<>();

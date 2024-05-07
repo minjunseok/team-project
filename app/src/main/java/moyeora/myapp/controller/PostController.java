@@ -92,6 +92,7 @@ public class PostController {
         post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
 
         // 나머지 처리 코드
+        log.debug("@@@@@@@===>>" + post);
         postService.add(post);
 
         return "redirect:list?schoolNo=" + post.getSchoolNo();
