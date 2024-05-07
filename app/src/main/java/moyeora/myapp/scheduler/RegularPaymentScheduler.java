@@ -1,14 +1,7 @@
 package moyeora.myapp.scheduler;
 
 
-import java.awt.desktop.SystemEventListener;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.sql.Date;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.dao.BillingKeyDao;
 import moyeora.myapp.dto.payment.RegularPaymentRequestDTO;
 import moyeora.myapp.service.PaymentService;
 import moyeora.myapp.vo.BillingKey;
@@ -16,12 +9,17 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.List;
+
 @Component
 @Transactional
 @RequiredArgsConstructor
 public class RegularPaymentScheduler {
   private final PaymentService paymentService;
-  @Scheduled(cron = ("0 31 14 * * *"))
+
+  @Scheduled(cron = ("0 0 6 * * *"))
   public void regularPaymentCron() throws Exception {
     //해당 날짜의 빌링키를 가져오고
     Calendar c = Calendar.getInstance();

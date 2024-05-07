@@ -217,5 +217,33 @@
 
   </select>
 
+  <select id="findGroupByGender" resultType="moyeora.myapp.dto.admin.statistics.AdminUserGenderResponseDTO">
+    select
+    gender,
+    count(gender) ctn
+    from
+    users
+    group by gender
+    order by ctn desc
+  </select>
 
+  <select id="findGroupByBirth" resultType="moyeora.myapp.dto.admin.statistics.AdminUserBirthResponseDTO">
+    select
+    substring(birth,1,4) as birthyear,
+    count(*) as ctn
+    from
+    users
+    group by birthyear
+    order by ctn desc
+  </select>
+
+  <select id="findGroupByLocal" resultType="moyeora.myapp.dto.admin.statistics.AdminUserLocalResponseDTO">
+    select
+    substring_index(address, ' ', 1) as local,
+    count(*) ctn
+    from
+    users
+    group by local
+    order by ctn desc
+  </select>
 </mapper>

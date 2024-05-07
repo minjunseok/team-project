@@ -1,23 +1,16 @@
 package moyeora.myapp.security;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.security.web.savedrequest.RequestCache;
-import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 @RequiredArgsConstructor
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -29,11 +22,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     CustomWebAuthenticationDetails customWebAuthenticationDetails = (CustomWebAuthenticationDetails) authentication.getDetails();
     String isSaveEmail = customWebAuthenticationDetails.getIsSaveEmail();
+    request.getSession().setAttribute("loginUser", ((PrincipalDetails) authentication.getPrincipal()).getUser());
 
     Cookie cookie;
     if (isSaveEmail != null && isSaveEmail.equals("on")) {
       cookie = new Cookie("email",
-          authentication.getName());
+              authentication.getName());
       cookie.setMaxAge(60 * 60 * 24 * 7);
     } else {
       cookie = new Cookie("email", "");
@@ -43,5 +37,3 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     response.sendRedirect("/");
   }
 }
-
-

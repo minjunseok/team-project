@@ -1,5 +1,8 @@
 package moyeora.myapp.dao;
 
+import moyeora.myapp.dto.admin.statistics.AdminUserBirthResponseDTO;
+import moyeora.myapp.dto.admin.statistics.AdminUserGenderResponseDTO;
+import moyeora.myapp.dto.admin.statistics.AdminUserLocalResponseDTO;
 import moyeora.myapp.dto.admin.user.AdminUserListResponseDTO;
 import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
@@ -51,4 +54,10 @@ public interface UserDao {
     void updateRole(int userNo, int auth);
 
     List<AdminUserListResponseDTO> findByUserInfo(String userInfo);
+
+    List<AdminUserGenderResponseDTO> findGroupByGender();
+
+    List<AdminUserBirthResponseDTO> findGroupByBirth();
+
+    List<AdminUserLocalResponseDTO> findGroupByLocal();
 }

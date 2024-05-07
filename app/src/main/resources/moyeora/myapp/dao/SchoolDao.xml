@@ -136,5 +136,10 @@
     school_no desc
   </select>
 
+  <update id="updateLimitedMan">
+    update schools set
+    limited_man = #{limitedMan}
+    where school_no in (select school_no from school_users where level_no=4 and user_no=#{userNo})
+  </update>
 
 </mapper>

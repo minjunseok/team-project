@@ -4,6 +4,7 @@ package moyeora.myapp.controller;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dto.admin.school.AdminSchoolBlackUpdateRequestDTO;
 import moyeora.myapp.dto.admin.school.AdminSchoolListResponseDTO;
+import moyeora.myapp.dto.admin.statistics.AdminUserGenderResponseDTO;
 import moyeora.myapp.dto.admin.user.AdminBlackUpdateRequestDTO;
 import moyeora.myapp.dto.admin.user.AdminRoleUpdateRequestDTO;
 import moyeora.myapp.dto.admin.user.AdminUserListResponseDTO;
@@ -69,5 +70,29 @@ public class AdminRestApiController {
   @ResponseBody
   public ResponseEntity<List<AdminSchoolListResponseDTO>> schoolSearch(String schoolInfo) {
     return ResponseEntity.status(200).body(adminService.schoolSearch(schoolInfo));
+  }
+
+  @GetMapping("statistics/gender")
+  @ResponseBody
+  public ResponseEntity<List<AdminUserGenderResponseDTO>> statisticsGender() {
+    return ResponseEntity.status(200).body(adminService.statisticsGender());
+  }
+
+  @GetMapping("statistics/age")
+  @ResponseBody
+  public ResponseEntity<List<?>> statisticsAge() {
+    return ResponseEntity.status(200).body(adminService.statisticsBirth());
+  }
+
+  @GetMapping("statistics/hobby")
+  @ResponseBody
+  public ResponseEntity<List<?>> statisticsHobby() {
+    return ResponseEntity.status(200).body(adminService.statisticsHobby());
+  }
+
+  @GetMapping("statistics/local")
+  @ResponseBody
+  public ResponseEntity<List<?>> statisticsLocal() {
+    return ResponseEntity.status(200).body(adminService.statisticsLocal());
   }
 }

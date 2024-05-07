@@ -1,21 +1,19 @@
 package moyeora.myapp.controller;
 
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.dto.school.admin.SchoolMemberUpdateRequestDTO;
 import moyeora.myapp.dto.school.admin.SchoolOpenRangeUpdateRequestDTO;
 import moyeora.myapp.service.SchoolAdminService;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
+import moyeora.myapp.vo.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,9 +23,9 @@ public class SchoolAdminController {
 
 
   @GetMapping("")
-  public String setting(int schoolNo) {
+  public String setting(int schoolNo, @LoginUser User loginUser) {
 
-    if (schoolAdminService.authSubAdmin(1, schoolNo) < 1) {
+    if (schoolAdminService.authSubAdmin(loginUser.getNo(), schoolNo) < 1) {
       return "redirect:/index";
     }
     return "school/admin";
@@ -35,32 +33,32 @@ public class SchoolAdminController {
 
   @GetMapping("userList")
   @ResponseBody
-  public ResponseEntity<List<SchoolUser>> userList(int schoolNo) {
-    if (schoolAdminService.authAdmin(1, schoolNo) < 1) {
+  public ResponseEntity<List<SchoolUser>> userList(int schoolNo, @LoginUser User loginUser) {
+    if (schoolAdminService.authAdmin(loginUser.getNo(), schoolNo) < 1) {
       return ResponseEntity.status(401).build();
     }
     return ResponseEntity.status(200).body(schoolAdminService.findUserBySchoolNo(schoolNo, 2));
   }
 
   @GetMapping("sub/blackList")
-  public ResponseEntity<List<SchoolUser>> blackList(int schoolNo) {
-    if (schoolAdminService.authSubAdmin(1, schoolNo) < 1) {
+  public ResponseEntity<List<SchoolUser>> blackList(int schoolNo, @LoginUser User loginUser) {
+    if (schoolAdminService.authSubAdmin(loginUser.getNo(), schoolNo) < 1) {
       return ResponseEntity.status(401).build();
     }
     return ResponseEntity.status(200).body(schoolAdminService.findUserBySchoolNo(schoolNo, 1));
   }
 
   @GetMapping("sub/submitList")
-  public ResponseEntity<List<SchoolUser>> submitList(int schoolNo) {
-    if (schoolAdminService.authSubAdmin(1, schoolNo) < 1) {
+  public ResponseEntity<List<SchoolUser>> submitList(int schoolNo, @LoginUser User loginUser) {
+    if (schoolAdminService.authSubAdmin(loginUser.getNo(), schoolNo) < 1) {
       return ResponseEntity.status(401).build();
     }
     return ResponseEntity.status(200).body(schoolAdminService.findUserBySchoolNo(schoolNo, 5));
   }
 
   @PostMapping("sub/approve")
-  public ResponseEntity<?> memberApprove(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
-    if (schoolAdminService.authSubAdmin(1, memberUpdateRequestDTO.getSchoolNo()) < 1) {
+  public ResponseEntity<?> memberApprove(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO, @LoginUser User loginUser) {
+    if (schoolAdminService.authSubAdmin(loginUser.getNo(), memberUpdateRequestDTO.getSchoolNo()) < 1) {
       return ResponseEntity.status(401).build();
     }
     return ResponseEntity.status(200).build();

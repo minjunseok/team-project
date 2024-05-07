@@ -28,13 +28,14 @@
         name,
         content,
         location,
+        location_detail,
         start_at,
         member,
         photo
         from
         school_classes as c
         where
-        start_at = '${date}'
+        date_format(start_at, '%Y-%m-%d') = '${date}'
     </select>
 
   <select id="findByUserAddress" resultMap="ClassMap" parameterType="String">
