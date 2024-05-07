@@ -4,17 +4,17 @@
 package moyeora.myapp;
 
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import org.apache.ibatis.javassist.Loader.Simple;
+import java.util.List;
+import moyeora.myapp.annotation.LoginUserArgumentResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @EnableTransactionManagement
@@ -25,12 +25,21 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
     "file:${user.home}/config/ncp-secret.properties"
 })
 @Controller
-public class App {
+public class App implements WebMvcConfigurer {
+
+    @Autowired
+    LoginUserArgumentResolver loginUserArgumentResolver;
+
     public static void main(String[] args) throws Exception {
         System.out.println("##moyora test main() exec##");
         SpringApplication.run(App.class, args);
     }
     @GetMapping("/home")
     public void home() {
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(loginUserArgumentResolver);
     }
 }

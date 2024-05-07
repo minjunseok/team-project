@@ -13,8 +13,8 @@
 
 <form data-th-action="@{join}" data-th-if="${status == null}" id="joinForm" method="post">
   <div>
-    <input data-th-value="${user.provider}" id="provider" name="provider" readonly type="hidden">
-    <input data-th-value="${user.providerId}" id="providerId" name="providerId" readonly type="hidden">
+    <input data-th-value="${user?.provider}" id="provider" name="provider" readonly type="hidden">
+    <input data-th-value="${user?.providerId}" id="providerId" name="providerId" readonly type="hidden">
     <input data-th-value="${user.role}" id="role" name="role" readonly type="hidden">
   </div>
   <div>

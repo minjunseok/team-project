@@ -1,41 +1,51 @@
 <!DOCTYPE html>
 <html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>moyeora login</title>
+  <link href="/css/auth.css" rel="stylesheet"/>
+</head>
 <body>
 
-<div data-th-replace="header :: header">머리말</div>
-
-<h1>templates/auth/form.html</h1>
+<div class="logo-container">
+  <a href="/home"><img class="logo" src="/img/moyeora-logo.png"></a>
+</div>
 
 <form id="loginForm" data-th-action="@{login}" method="post">
   <div>
     <label>
-      이메일: <input id="email" data-th-value="${email}" name="email" type="text">
+      <input id="email" data-th-value="${email}" name="email" type="text" placeholder="email">
     </label>
   </div>
   <div>
     <label>
-      암호: <input id="password" name="password" type="password">
+      <input id="password" name="password" type="password" placeholder="password">
     </label>
   </div>
   <button type="submit" onclick="return checkForm()">로그인</button>
   <label>
     <input name="saveEmail" type="checkbox">이메일 저장
   </label>
+  <div style="color:red;" data-th-if="${error}" data-th-text="${exception}"></div>
+  <div class="login-menu">
+    <a data-th-href="@{findEmail}">이메일 찾기</a>
+    <a data-th-href="@{findPassword}">비밀번호 찾기</a>
+    <a data-th-href="@{/user/agreement}">회원가입</a>
+  </div>
 </form>
-<div style="color:red;" data-th-if="${error}" data-th-text="${exception}"></div>
 
 
-<a data-th-href="@{findEmail}">이메일 찾기</a>
-<a data-th-href="@{findPassword}">비밀번호 찾기</a>
-<a data-th-href="@{/user/agreement}">회원가입</a>
-<div style="board:1px; font-size:15px; color:gray;">
-  <span>간편 로그인 : </span>
-  <a data-th-href="@{/oauth2/authorization/naver}">네이버 로그인</a>
-  <a data-th-href="@{/oauth2/authorization/google}">구글 로그인</a>
-  <a data-th-href="@{/oauth2/authorization/kakao}">카카오 로그인</a>
+<div class="social-login-icons">
+  <div >
+    <a data-th-href="@{/oauth2/authorization/naver}"><img class="oauth-icon" src="/img/btnG_official.png"></a>
+  </div>
+  <div>
+    <a data-th-href="@{/oauth2/authorization/google}"><img class="oauth-icon" src="/img/web_neutral_sq_ctn@1x.png"></a>
+  </div>
+  <div>
+    <a data-th-href="@{/oauth2/authorization/kakao}"><img class="oauth-icon" src="/img/kakao_login_medium_narrow.png"></a>
+  </div>
 </div>
-
-<div data-th-replace="footer :: footer">꼬리말</div>
 
 <script>
   function checkForm() {
@@ -53,8 +63,4 @@
 </script>
 
 </body>
-<head>
-  <meta charset='UTF-8'>
-  <title>moyeora</title>
-</head>
 </html>

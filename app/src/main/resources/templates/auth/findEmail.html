@@ -3,40 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <title>moyeora</title>
+  <link href="/css/auth.css" rel="stylesheet"/>
 </head>
 <body>
 
-<div data-th-replace="header :: header">머리말</div>
-
-<h1>templates/auth/findEmail.html</h1>
+<div class="title">이메일 찾기</div>
 
 <form data-th-if="${email == null}" data-th-action="@{getEmail}" method="post">
   <div>
     <label>
-      이름:
-      <input id="name" name="name" type="text">
+      <input id="name" name="name" type="text" placeholder="name">
     </label>
   </div>
   <div>
     <label>
-      휴대전화('-'생략):
-      <input id="phone" name="phone" type="text">
+      <input id="phone" name="phone" type="text" placeholder="phone number : ex) 01012345678">
     </label>
   </div>
   <button type="submit" onclick="return checkForm()">submit</button>
 </form>
 
-<div data-th-if="${email != null && email != 'none'}">
+<div class="result" data-th-if="${email != null && email != 'none'}">
   <p>가입한 이메일 : [[${email}]]</p>
   <a data-th-href="@{form}">로그인</a>
   <a data-th-href="@{findPassword}">비밀번호 찾기</a>
 </div>
-<div data-th-if="${email == 'none'}">
+<div class="result" data-th-if="${email == 'none'}">
   <span>가입정보가 없습니다.</span>
   <a data-th-href="@{signIn}">회원가입</a>
 </div>
-
-<div data-th-replace="footer :: footer">꼬리말</div>
 
 <script>
   function checkForm() {

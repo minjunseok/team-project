@@ -13,7 +13,7 @@ public class Gm implements Serializable {
 
     private int no;
     private int schoolNo;
-    private int sender;
+    private User sender;
     private String message;
     private String photo;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -24,7 +24,7 @@ public class Gm implements Serializable {
     }
 
     @Builder
-    public Gm(int no, int schoolNo, int sender, String message, String photo, @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")Timestamp sendDate) {
+    public Gm(int no, int schoolNo, User sender, String message, String photo, @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")Timestamp sendDate) {
         this.no = no;
         this.schoolNo = schoolNo;
         this.sender = sender;
@@ -34,7 +34,7 @@ public class Gm implements Serializable {
     }
 
     @Builder
-    public Gm(int schoolNo, int sender, String message, String photo, @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")Timestamp sendDate) {
+    public Gm(int schoolNo, User sender, String message, String photo, @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")Timestamp sendDate) {
         this.schoolNo = schoolNo;
         this.sender = sender;
         this.message = message;

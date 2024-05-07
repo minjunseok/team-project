@@ -1,5 +1,10 @@
 body {
     background-color: #f5f5f5;
+    margin: 0 auto;
+}
+
+.connect {
+    display: none;
 }
 
 #main-content {
@@ -11,6 +16,33 @@ body {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+}
+
+.chat-title {
+    background-color: #4CAF50;
+    width: 55%;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin: 0 auto;
+}
+
+/* Center-align conversation-container */
+.conversation-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto;
+  width: 70%; /* Adjust width as needed */
+
+}
+
+/* Adjust width if needed */
+.conversation-group {
+  width: 80%; /* or any other width you prefer */
 }
 
 #conversation {
@@ -25,38 +57,120 @@ body {
     overflow: auto;
 }
 
+/* Center-align form-container */
+.form-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Add some margin for spacing */
+}
+
+/* Adjust width if needed */
+.form-inline {
+}
+
 .message-container {
     border-radius: 10px;
     padding: 10px;
+    /*display: inline-block;*/
+    /*min-width: 70%;*/
     max-width: 100%;
     margin-bottom: 10px;
+    max-width: 100%;
 }
 
 .received-message {
     background-color: #fff;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-    text-align: left;
+    text-align: justify;
+    text-align-last: left;
 }
 
 .sent-message {
     background-color: #DCF8C6;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
-    text-align: right;
-    right: 0;
+    text-align: justify;
+    text-align-last: right;
 }
 
 .message-text {
+    display: inline-block;
     font-size: 14px;
     line-height: 1.5;
     color: #333;
 }
 
-.sender-name {
-    font-weight: bold;
-    margin-bottom: 5px;
+.username {
+  margin-bottom: 5px;
+}
+
+.sender {
+  top: 0;
+  right: 0;
+  text-align-last: right;
+}
+
+.receiver {
 }
 
 .time-stamp {
-    font-size: 12px;
-    color: #999;
+  display: inline-block;
+  font-size: 12px;
+  color: #999;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* 입력 필드 스타일 */
+.input-field {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+/* 입력 필드에 포커스가 됐을 때 테두리 색상 변경 */
+.input-field:focus {
+  border-color: #4CAF50;
+}
+
+/* Style the custom file input */
+.custom-file-upload {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+.custom-file-upload:hover {
+  background-color: #e0e0e0;
+}
+
+/* Optionally, style the icon */
+.custom-file-upload i {
+  margin-right: 5px;
+}
+
+/* 전송 버튼 스타일 */
+.send-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  /*transition: background-color 0.1s ease;*/
+}
+
+/* 전송 버튼 호버 효과 */
+.send-button:hover {
+  background-color: #45a049;
 }

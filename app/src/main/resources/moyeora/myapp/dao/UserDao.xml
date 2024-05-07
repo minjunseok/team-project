@@ -61,6 +61,8 @@
       user_no,
       email,
       name,
+      nickname,
+      photo,
       created_at
     from
       users
@@ -70,10 +72,7 @@
 
   <select id="findByEmail" resultMap="UserMap" parameterType="string">
     select
-        user_no,
-        email,
-        pwd,
-        name
+        *
     from
         users
     where
