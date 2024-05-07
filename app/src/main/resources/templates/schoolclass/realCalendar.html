@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang='en'>
+
 <head>
-    <meta charset='utf-8'/>
+    <meta charset='utf-8' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     <!-- FullCalendar 라이브러리의 6.1.11 버전을 가져옵니다.   -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css" rel="stylesheet">
@@ -13,60 +14,62 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
     <!--FullCalendar 라이브러리의 5.10.1 버전의 로케일 파일을 가져옵니다.-->
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
-    <script crossorigin="anonymous"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
+    <script crossorigin="anonymous" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          var calendarEl = document.getElementById('calendar');
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth'
-          });
-          calendar.render();
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth'
+            });
+            calendar.render();
         });
-<!--캘린더를 초기화하고 뷰를 랜더링하는 역할을 한다.    -->
+        <!--캘린더를 초기화하고 뷰를 랜더링하는 역할을 한다.    -->
     </script>
 
-<!--    <style>-->
-<!--        .modal {-->
-<!--            position: fixed;-->
-<!--            top: 0;-->
-<!--            left: 0;-->
-<!--            width: 100%;-->
-<!--            height: 100%;-->
-<!--            background-color: rgba(0, 0, 0, 0.4);-->
-<!--            display: none;-->
-<!--            justify-content: center;-->
-<!--            align-items: center;-->
-<!--        }-->
+    <!--    <style>-->
+    <!--        .modal {-->
+    <!--            position: fixed;-->
+    <!--            top: 0;-->
+    <!--            left: 0;-->
+    <!--            width: 100%;-->
+    <!--            height: 100%;-->
+    <!--            background-color: rgba(0, 0, 0, 0.4);-->
+    <!--            display: none;-->
+    <!--            justify-content: center;-->
+    <!--            align-items: center;-->
+    <!--        }-->
 
-<!--        .modal_body {-->
-<!--            background-color: white;-->
-<!--            padding: 20px;-->
-<!--            border-radius: 10px;-->
-<!--            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);-->
-<!--        }-->
+    <!--        .modal_body {-->
+    <!--            background-color: white;-->
+    <!--            padding: 20px;-->
+    <!--            border-radius: 10px;-->
+    <!--            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);-->
+    <!--        }-->
 
-<!--        .modal_close_btn {-->
-<!--            position: absolute;-->
-<!--            top: 10px;-->
-<!--            right: 10px;-->
-<!--            cursor: pointer;-->
-<!--        }-->
-<!--    </style>-->
+    <!--        .modal_close_btn {-->
+    <!--            position: absolute;-->
+    <!--            top: 10px;-->
+    <!--            right: 10px;-->
+    <!--            cursor: pointer;-->
+    <!--        }-->
+    <!--    </style>-->
 
     <style>
         table {
             border-collapse: collapse;
             width: 100%;
         }
-        th, td {
+
+        th,
+        td {
             padding: 8px;
             text-align: left;
         }
+
         th {
             background-color: #f2f2f2;
         }
@@ -75,271 +78,278 @@
 
 
 </head>
+
 <body>
 
 
-<div id='calendar'></div>
+    <div id='calendar'></div>
 
-<script>
+    <script>
 
-    let calendar;
-    
-    window.onload = function() {
-        // 페이지가 완전히 출력된 후 수행할 작업을 둔다.
-        // 서버에서 일정 정보를 가져오는 작업
-        
-        // 1. AJAX로 서버에서 해당 월의 일정 정보를 가져온다.
-        // 2. 서버에서 받은 JSON 데이터를 자바 객체로 바꾼 후
-        //    그 일정을 캘린더에 등록한다.
-        console.log("test....ok!");
-        
-        $.ajax({
-            url: 'calendar?schoolNo=1',
-            type: 'GET',
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            
-        }).done(function(result) {
-            for (let classEvent of result) {
-                calendar.addEvent({
-                title: classEvent.name,
-                start: classEvent.startAt,
-                end : classEvent.endedAt,
-                allDay: true
-             });
-            }
-        });
-    };
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView : 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
-            headerToolbar : { // 헤더에 표시할 툴 바
-                start : 'prev next today add',
-                center : 'title',
-                end : 'dayGridMonth,dayGridWeek,dayGridDay'
-            },
-            customButtons: {
-                add: {
-                    text: '일정등록',
-                    click: function() {
-                        myModal1();
-                    }
+        let calendar;
+
+        window.onload = function () {
+            // 페이지가 완전히 출력된 후 수행할 작업을 둔다.
+            // 서버에서 일정 정보를 가져오는 작업
+
+            // 1. AJAX로 서버에서 해당 월의 일정 정보를 가져온다.
+            // 2. 서버에서 받은 JSON 데이터를 자바 객체로 바꾼 후
+            //    그 일정을 캘린더에 등록한다.
+            console.log("test....ok!");
+
+            $.ajax({
+                url: 'calendar?schoolNo=${no}',
+                type: 'GET',
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+
+            }).done(function (result) {
+                for (let classEvent of result) {
+                    calendar.addEvent({
+                        title: classEvent.name,
+                        start: classEvent.startAt,
+                        end: classEvent.endedAt,
+                        allDay: true
+                    });
                 }
-            },
+            });
+        };
 
-            titleFormat : function(date) {
-                return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
-            },
-            //initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
-            selectable : true, // 달력 일자 드래그 설정가능
-            droppable : true,
-            editable : true,
-            nowIndicator: true, // 현재 시간 마크
-            locale: 'ko' , // 한국어 설정
-            dateClick: function(info) {
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
+                headerToolbar: { // 헤더에 표시할 툴 바
+                    start: 'prev next today add',
+                    center: 'title',
+                    end: 'dayGridMonth,dayGridWeek,dayGridDay'
+                },
+                customButtons: {
+                    add: {
+                        text: '일정등록',
+                        click: function () {
+                            myModal1();
+                        }
+                    }
+                },
+
+                titleFormat: function (date) {
+                    return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
+                },
+                //initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
+                selectable: true, // 달력 일자 드래그 설정가능
+                droppable: true,
+                editable: true,
+                nowIndicator: true, // 현재 시간 마크
+                locale: 'ko', // 한국어 설정
+                dateClick: function (info) {
 <!--            var startAt = info.dateStr; // 클릭한 날짜 정보-->
-<!--            document.getElementById('startAt2').value = startAt;-->
-                myModal1();
-              
-            },
-<!--    select: function(info) {-->
-<!--      alert('selected ' + info.startStr + ' to ' + info.endStr);-->
-<!--    }-->
-<!--        일정 상세보기 할때 사용-->
+< !--document.getElementById('startAt2').value = startAt; -->
+                        myModal1();
+
+                },
+< !--select: function (info) {
+                -->
+< !--alert('selected ' + info.startStr + ' to ' + info.endStr); -->
+< !--    }-- >
+< !--일정 상세보기 할때 사용-- >
         
         });
         calendar.render();
     });
 
-</script>
+    </script>
 
-<div class="modal" id="myModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">일정등록</h5>
-        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-      </div>
-      <div class="modal-body">
-      
-      
-<form  id="classInfo">
-    <input name="schoolNo" type="hidden" value="1">
+    <div class="modal" id="myModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">일정등록</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
 
-    <div>
-        제목: <input name='name' type='text'>
-    </div>
 
-      <div>
-        설명: <label><textarea name='content'></textarea></label>
+                    <form id="classInfo">
+                        <input name="schoolNo" type="hidden" value="1">
 
-    </div>
-        사진: <input name='file' type='file'>
-    
-    <div>
-        모임일 <br>
-        날짜 시간 설정: <input name="startAt2" type="datetime-local">
-    </div>
+                        <div>
+                            제목: <input name='name' type='text'>
+                        </div>
 
-    <div>
-        종료 시간 <br>
-        날짜 시간 설정: <input name="endedAt2" type="datetime-local">
+                        <div>
+                            설명: <label><textarea name='content'></textarea></label>
 
-    </div>
+                        </div>
+                        사진: <input name='file' type='file'>
 
-    <div>
-        위치: <input name='location' type='text'><br>
-        상세주소: <input id="locationDetail" name="locationDetail" placeholder="상세주소" type="text">
-    </div>
+                        <div>
+                            모임일 <br>
+                            날짜 시간 설정: <input name="startAt2" type="datetime-local">
+                        </div>
 
-    <div>
-        인원: <input name='member' type='text'>
-    </div>
+                        <div>
+                            종료 시간 <br>
+                            날짜 시간 설정: <input name="endedAt2" type="datetime-local">
 
-<button id="btn1" type="button">초대하기</button>
-    <div class="modal" id="myModal2" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">멤버 초대</h5>
-        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-      </div>
-      <div class="modal-body">
-            <table>
-                <thead>
-                <tr>
-                    <th>사진</th>
-                    <th>닉네임</th>
-                    <th>등급</th>
-                    <th>초대하기</th>
-                </tr>
-                </thead>
-                <tbody>
+                        </div>
 
-                <tr data-th-each="schoolMember : ${schoolMembers}" data-th-object="${schoolMember}">
-                    <td data-th-text="*{photo}">사진</td>
-                    <td data-th-text="*{nickname}">가나다</td>
-                    <td data-th-text="*{level.levelName}">블랙</td>
-                </tr>
+                        <div>
+                            위치: <input name='location' type='text'><br>
+                            상세주소: <input id="locationDetail" name="locationDetail" placeholder="상세주소" type="text">
+                        </div>
 
-            </table>
-        
+                        <div>
+                            인원: <input name='member' type='text'>
+                        </div>
+
+                        <button id="btn1" type="button">초대하기</button>
+                        <div class="modal" id="myModal2" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">멤버 초대</h5>
+                                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                            type="button"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>사진</th>
+                                                    <th>닉네임</th>
+                                                    <th>등급</th>
+                                                    <th>초대하기</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr data-th-each="schoolMember : ${schoolMembers}"
+                                                    data-th-object="${schoolMember}">
+                                                    <td data-th-text="*{photo}">사진</td>
+                                                    <td data-th-text="*{nickname}">가나다</td>
+                                                    <td data-th-text="*{level.levelName}">블랙</td>
+                                                </tr>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            정기여부:<input name="repeatSet" type="radio" value="0"> 정기
+                            <input name="repeatSet" type="radio" value="1"> 번개
+
+                        </div>
+                        <br>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">닫기</button>
+                            <button class="btn btn-primary" type="button"
+                                onclick="addEvent(); closeModal();">등록</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
         </div>
-         </div>
-        </div>
     </div>
-    <div>
-        정기여부:<input name="repeatSet" type="radio" value="0"> 정기
-        <input name="repeatSet" type="radio" value="1"> 번개
-
-    </div>
-    <br>
-    
-<div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">닫기</button>
-        <button class="btn btn-primary" type="button" onclick="addEvent(); closeModal();">등록</button>
-      </div>
-    
-</form>
-      
-      </div>
-      
-    </div>
-  </div>
-</div>
 
 
-<script>
+    <script>
 <!--    function myModal1() {-->
-<!--        const myModalEl = document.getElementById('myModal')-->
-<!--        myModalEl.addEventListener('hidden.bs.modal', function(event){-->
-<!--            // 모달 창을 닫을 때 수행할 작업을 여기에 둔다.-->
-<!--            console.log('모달 닫기');-->
-<!--        });-->
-<!--   참고용    -->
+    < !--        const myModalEl = document.getElementById('myModal')-- >
+    < !--myModalEl.addEventListener('hidden.bs.modal', function (event) {
+        -->
+    < !--            // 모달 창을 닫을 때 수행할 작업을 여기에 둔다.-->
+    < !--console.log('모달 닫기'); -->
+    < !--        }); -->
+    < !--참고용    -->
 
-let myModal;
+            let myModal;
         function myModal1() {
-             myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
+            myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
             console.log('모달을 표시합니다.');
             myModal.show();
         };
-        
-         function closeModal() {
+
+        function closeModal() {
             myModal.hide();
         };
-    
-    function addEvent() {
-    
-        var name = new String (document.querySelector("input[name='name']").value);
-        var startDate = new Date(document.querySelector("input[name='startAt2']").value);
-        var endDate = new Date(document.querySelector("input[name='endedAt2']").value);
-        
-        if (isNaN(endDate.valueOf())) {
-            return;
-        }
-        
-        var form = $('#classInfo')[0];
-        var formData = new FormData(form);
-    
-        $.ajax({
-            type : "POST",
-            url : 'add',
-            data : formData,
-            dataType: 'json',
-            processData:false,
-            contentType:false
-        }).done(function(result) {
-            if (result.status != "success") {
-                alert("서버에 이벤트를 등록할 수 없습니다.!");
+
+        function addEvent() {
+
+            var name = new String(document.querySelector("input[name='name']").value);
+            var startDate = new Date(document.querySelector("input[name='startAt2']").value);
+            var endDate = new Date(document.querySelector("input[name='endedAt2']").value);
+
+            if (isNaN(endDate.valueOf())) {
                 return;
             }
-            calendar.addEvent({
-                title: name,
-                start: startDate,
-                end : endDate,
-                allDay: true
+
+            var form = $('#classInfo')[0];
+            var formData = new FormData(form);
+
+            $.ajax({
+                type: "POST",
+                url: 'add',
+                data: formData,
+                dataType: 'json',
+                processData: false,
+                contentType: false
+            }).done(function (result) {
+                if (result.status != "success") {
+                    alert("서버에 이벤트를 등록할 수 없습니다.!");
+                    return;
+                }
+                calendar.addEvent({
+                    title: name,
+                    start: startDate,
+                    end: endDate,
+                    allDay: true
+                });
+                console.log("서버에 이벤트를 성공적으로 추가했습니다.");
             });
-            console.log("서버에 이벤트를 성공적으로 추가했습니다.");
-        });
-    }
-    
-</script>
-<script>
-    document.querySelector("#btn1").onclick = function() {
-        const myModal = new bootstrap.Modal(document.getElementById('myModal2'), {})
-         myModal.show();
-    };
-    
-</script>
+        }
+
+    </script>
+    <script>
+        document.querySelector("#btn1").onclick = function () {
+            const myModal = new bootstrap.Modal(document.getElementById('myModal2'), {})
+            myModal.show();
+        };
+
+    </script>
 
 
 
 
-<!--<script>-->
-<!--    const modal = document.querySelector('.modal');-->
-<!--    const btnOpenModal=document.querySelector('.btn-open-modal');-->
-<!--    const btnCloseModal = document.querySelector('.modal_close_btn');-->
-<!--    -->
-<!--    function showModal() {-->
-<!--        //modal.style.display="flex";-->
-<!--        const myModal = new bootstrap.Modal('#myModal')-->
-<!--        myModal.show();-->
-<!--    }-->
-<!--    -->
-<!--    btnOpenModal.addEventListener("click", ()=>{-->
-<!--        //modal.style.display="flex";-->
-<!--        const myModal = new bootstrap.Modal('#myModal', {})-->
-<!--    });-->
-<!--    -->
-<!--    btnCloseModal.addEventListener('click', () => {-->
-<!--        modal.style.display = 'none';-->
-<!--    });-->
+    <!--<script>-->
+    <!--    const modal = document.querySelector('.modal');-->
+    <!--    const btnOpenModal=document.querySelector('.btn-open-modal');-->
+    <!--    const btnCloseModal = document.querySelector('.modal_close_btn');-->
+    <!--    -->
+    <!--    function showModal() {-->
+    <!--        //modal.style.display="flex";-->
+    <!--        const myModal = new bootstrap.Modal('#myModal')-->
+    <!--        myModal.show();-->
+    <!--    }-->
+    <!--    -->
+    <!--    btnOpenModal.addEventListener("click", ()=>{-->
+    <!--        //modal.style.display="flex";-->
+    <!--        const myModal = new bootstrap.Modal('#myModal', {})-->
+    <!--    });-->
+    <!--    -->
+    <!--    btnCloseModal.addEventListener('click', () => {-->
+    <!--        modal.style.display = 'none';-->
+    <!--    });-->
 
-<!--</script>-->
+    <!--</script>-->
 
 </body>
+
 </html>
