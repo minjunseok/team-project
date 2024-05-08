@@ -11,6 +11,8 @@ import lombok.Data;
 
 @Data
 public class Post {
+
+  private Post post;
   private int no;
   private String type;
   private String fileName;

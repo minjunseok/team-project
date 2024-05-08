@@ -94,7 +94,6 @@ public class UserController implements InitializingBean {
 
   @PostMapping("update")
   public String update(User user, MultipartFile file, @LoginUser User loginUser) throws Exception {
-
     User old = userService.get(loginUser.getNo());
     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + old);
     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + old.getNo());

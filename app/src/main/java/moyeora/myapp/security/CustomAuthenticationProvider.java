@@ -1,5 +1,7 @@
 package moyeora.myapp.security;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.vo.role.Role;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -11,9 +13,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -37,6 +36,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     List<GrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority(Role.USER.getKey()));
+
 
     return new UsernamePasswordAuthenticationToken(principal, password, authorities);
   }

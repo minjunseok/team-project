@@ -2,6 +2,7 @@ package moyeora.myapp.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
 import moyeora.myapp.dto.schoolclass.SchoolClassRequestDTO;
 import moyeora.myapp.service.SchoolClassService;
@@ -9,6 +10,7 @@ import moyeora.myapp.service.SchoolMemberService;
 import moyeora.myapp.util.FileUpload;
 import moyeora.myapp.vo.JsonResult;
 import moyeora.myapp.vo.SchoolClass;
+import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +53,7 @@ public class SchoolClassController {
   }
 
   @GetMapping("realCalendar")
-  public void form(Model model, int schoolNo, int classNo) throws Exception {
+  public void form(Model model, int schoolNo) throws Exception {
     model.addAttribute("schoolMembers",schoolMemberService.list(schoolNo));
     System.out.println("=====classcontorller.schoolMember==============>    " + schoolMemberService);
 
@@ -106,17 +108,17 @@ public class SchoolClassController {
 
   @GetMapping("findByNo")
   @ResponseBody
-  public Object findByNo(int classNo) throws Exception {
+  public Object findByNo(int classNo, @LoginUser User loginUser) throws Exception {
     HashMap<String, Object> result = new HashMap<>();
     result.put("schoolClass", schoolClassService.get(classNo));
-    result.put("isMember", schoolClassService.isMember(classNo, 4));
+    result.put("isMember", schoolClassService.isMember(classNo, loginUser.getNo()));
     return result;
   }
 
   @PostMapping("insert")
   @ResponseBody
-  public Object attend(@RequestBody SchoolClassRequestDTO schoolClassRequestDTO) throws Exception {
-    schoolClassRequestDTO.setUserNo(4);
+  public Object attend(@RequestBody SchoolClassRequestDTO schoolClassRequestDTO, @LoginUser User loginUser) throws Exception {
+    schoolClassRequestDTO.setUserNo(loginUser.getNo());
     schoolClassService.insert(schoolClassRequestDTO);
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
     System.out.println(schoolClassRequestDTO);
@@ -127,8 +129,8 @@ public class SchoolClassController {
 
   @PostMapping("memberDelete")
   @ResponseBody
-  public Object MemberDelete(@RequestBody SchoolClassRequestDTO schoolClassRequestDTO) throws Exception {
-    schoolClassRequestDTO.setUserNo(4);
+  public Object MemberDelete(@RequestBody SchoolClassRequestDTO schoolClassRequestDTO, @LoginUser User loginUser) throws Exception {
+    schoolClassRequestDTO.setUserNo(loginUser.getNo());
     schoolClassService.memberDelete(schoolClassRequestDTO);
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
     System.out.println(schoolClassRequestDTO);
@@ -138,13 +140,13 @@ public class SchoolClassController {
 
   @PostMapping("classDelete")
   @ResponseBody
-  public void classDelete(@RequestBody SchoolClass clazz) throws Exception {
+  public void classDelete(@RequestBody SchoolClass clazz, @LoginUser User loginUser) throws Exception {
 
     ClassDeleteDTO classDeleteDTO = new ClassDeleteDTO();
     classDeleteDTO.setClassNo(clazz.getNo());
     System.out.println("@@@@@@@@@@@@@" + clazz.getNo());
 
-    classDeleteDTO.setUserNo(2);
+    classDeleteDTO.setUserNo(loginUser.getNo());
 
     SchoolClassRequestDTO schoolClassRequestDTO = new SchoolClassRequestDTO();
     schoolClassRequestDTO.setSchoolNo(clazz.getSchoolNo());

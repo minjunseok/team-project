@@ -9,7 +9,22 @@ import java.util.List;
 @Mapper
 public interface PostDao {
 
-    void add(Post post);
+  //스쿨 공지 관련
+
+  void addNotice(Post post);
+
+  List<Post> findByNotice(int schoolNo);
+
+
+  Post findByFixList(int schoolNo);
+
+  int fixedPost(Post post);
+
+  int fixedCancel(Post post);
+
+  int get(Post post);
+
+  void add(Post post);
 
     List<Post> findAll(@Param("categoryNo") int categoryNo);
 
@@ -43,11 +58,14 @@ public interface PostDao {
     List<Post> findBySchool(int schoolNo);
 
     List<Post> findBySchoolUserName(@Param("keyword") String keyword);
-//  Post findBy(int no);
 
     Post findByPost(int no, int schoolNo);
 
 
-    List<Post> findBySchoolPostList(int schoolNo);
+  List<Post> findBySchoolPostList(int schoolNo);
+
+  int findByPostSchoolNo(int no);
+
+
 
 }

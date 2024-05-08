@@ -31,6 +31,8 @@ public class DefaultSchoolService implements SchoolService {
   private UserService userService;
 
 
+
+
   public SchoolUser findByUserNo(int no) {
     return schoolUserDao.findByUserNo(no);
 

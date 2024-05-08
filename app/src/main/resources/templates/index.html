@@ -21,8 +21,9 @@
 
 <div data-th-each="school : ${schools}" data-th-object="${school}">
   <input type="hidden" data-th-value="*{no}">
-  <div data-th-text="*{name}"></div>
-  <div data-th-text="*{photo}"></div>
+  <a style="height:30px;" data-th-href="@{post/list(schoolNo=*{no})}" data-th-text="*{name}"></a>
+  <div><a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/school/' + ${school.photo}}"></a><img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/' + ${school.photo}(type=f,w=40,h=40)}"></div>
+
 
 
 </div>
@@ -48,7 +49,7 @@
   <li data-th-text="*{photo}"></li>
   <li data-th-text="*{nowMemberCount} +  '/'  + *{member}"></li>
 </ol>
-<ol id="byDate" data-th-if="${schoolClasses.isEmpty()}">
+<!--<ol id="byDate" data-th-if="${schoolClasses.isEmpty()}">-->
 </ol>
 <div id="map" style="width:500px;height:400px;">맵</div>
 

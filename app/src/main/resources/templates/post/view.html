@@ -1,82 +1,119 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang='en' xmlns="" xmlns:th="http://www.w3.org/1999/xhtml">-->
-<!--<head>-->
-<!--  <meta charset='UTF-8'>-->
-<!--  <title>비트캠프 데브옵스 5기</title>-->
-<!--  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>-->
-<!--  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>-->
-<!--</head>-->
-<!--<body>-->
+<!DOCTYPE html>
+<base href="/bootstrap/">
+<meta charset="UTF-8">
+<meta name="view" content="width=device-width, initial-scale=1.0">
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
+<head>
+    <title>비트캠프 데브옵스 5기</title>
+</head>
+<body>
 
-<!--<h1>스쿨 게시글 상세 조회</h1>-->
+<div data-th-fragment="modal" class="modal fade" id="postModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">댓글</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="post-form" action="view.html" data-th-object="${post}" enctype='multipart/form-data' method='get'>
+                    <input type="hidden" name='no'>
+                    <input type="hidden" name='schoolNo'>
+                    <h3>댓글 목록</h3>
+                    <table id="commentsTable" class="table">
+                        <thead>
+                        <tr>
+                            <th>사진</th>
+                            <th>닉네임</th>
+                            <th>내용</th>
+                            <th>작성일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- 댓글 목록이 동적으로 추가될 부분 -->
+                        </tbody>
+                    </table>
+                    <input multiple name='comment' type='text'>
+                    <button type="button" id="addComment" class="btn btn-primary">댓글 등록</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="update">글 수정하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 추가된 모달 -->
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">댓글 등록 확인</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                댓글을 등록하시겠습니까?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="commentNo" data-dismiss="modal">아니오</button>
+                <button type="button" class="btn btn-primary" id="commentYes">예</button>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script>
 
+    // 댓글 등록 버튼 클릭 이벤트 핸들러
+    $(document).on("click", "#addComment", function() {
+        // 댓글 등록 확인 모달 띄우기
+        $("#commentModal").modal("show");
+    });
 
-<!--<input type="hidden" data-th-value="*{no}" name='no'>-->
-<!--<input type="hidden" data-th-value="*{schoolNo}" name='schoolNo'>-->
+    // 댓글 등록 확인 버튼 클릭 이벤트 핸들러
+    $(document).on("click", "#commentYes", function() {
+        var comment = $("input[name='comment']").val(); // 입력된 댓글 가져오기
 
+        // 댓글이 비어있는지 확인
+        if (comment.trim() === '') {
+            alert("댓글을 입력하세요.");
+            return;
+        }
 
-<!--<a data-th-text="*{content}">내용</a>-->
+        // 댓글 등록 확인 다이얼로그
+        $.ajax({
+            type: 'POST', // 데이터를 전송할 HTTP 메서드를 선택
+            url: 'commentAdd', // 백엔드 URL (본 예제에서는 임의의 URL로 설정되어 있음)
+            data: {
+                content: comment // 댓글 내용을 백엔드로 전송
+            },
+            success: function(response) {
+                alert("댓글이 성공적으로 등록되었습니다!");
+                // 여기에 추가로 필요한 작업을 수행할 수 있음
+            },
+            error: function(xhr, status, error) {
+                alert("댓글 등록에 실패했습니다. 오류 메시지: " + error);
+            }
+        });
 
-<!--<form action="view.html" data-th-object="${post}" enctype='multipart/form-data' method='get'>-->
+        // 모달 닫기
+        $("#commentModal").modal("hide");
+    });
 
+    // 댓글 등록 취소 버튼 클릭 이벤트 핸들러
+    $(document).on("click", "#commentNo", function() {
+        // 모달 닫기
+        $("#commentModal").modal("hide");
+    });
+</script>
 
-
-<!--<div>-->
-<!--   이름 : <input data-th-value="*{writer.nickname}" name='writer.nickname' readonly type='text' value="100">-->
-<!--</div>-->
-<!--<div>-->
-<!--  번호 : <input data-th-value="*{no}" name='no' readonly type='text' value="100">-->
-<!--</div>-->
-<!--<div>-->
-<!--  사진 : <input data-th-value="*{writer.photo}" name='writer.photo' readonly type='text' value="사진입니다">-->
-<!--</div>-->
-<!--<div>-->
-<!--  내용 : <input data-th-value="*{content}" name='content' readonly type='text' value="내용입니다">-->
-<!--</div>-->
-<!--<div>-->
-<!--  작성일 <input data-th-value="${#dates.format(post.createdAt,'yyyy-MM-dd')}" name='createdAt' readonly type='text' value="날짜">-->
-<!--</div>-->
-<!--</form>-->
-
-<!--<h3>댓글 목록</h3>-->
-
-<!--<table>-->
-<!--  <tbody>-->
-<!--<tr th:each="comment : ${comments}" th:object="${comment}">-->
-<!--  <td><span th:text="*{writer.photo}"></span></td>-->
-<!--  <td><span th:text="*{writer.nickname}"></span></td>-->
-<!--  <td><span th:text="*{content}"></span></td>-->
-<!--  <td><span th:text="${#dates.format(comment.createdAt,'yyyy-MM-dd')}"></span></td>-->
-
-
-<!--</tr>-->
-<!--</tbody>-->
-<!--</table>-->
-<!--<br>-->
-
-<!--<input multiple name='comment' type='text'>-->
-
-<!--<br>-->
-<!--<button>댓글 등록</button>-->
-<!--<br>-->
-
-<!--<h3>파일 첨부 목록</h3>-->
-
-<!--<table>-->
-<!--  <tbody>-->
-
-<!--  <tr th:each="file : ${files}" th:object="${file}">-->
-<!--    <td><span th:text="*{fileName}"></span></td>-->
-<!--    <td><span th:text="*{type}"></span></td>-->
-<!--  </tr>-->
-<!--  </tbody>-->
-<!--</table>-->
-<!--<br>-->
-<!--<input multiple name='attachedFiles' type='file'>-->
-<!--<br>-->
-<!--<br>-->
-
-
-<!--</body>-->
-<!--</html>-->
+</body>
+</html>

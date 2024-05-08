@@ -44,6 +44,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
       oAuth2UserInfo = new GoogleOAuth2UserInfo(oAuth2User.getAttributes());
     } else {
       throw new OAuth2AuthenticationException(new OAuth2Error("OAuth2Error"),"요청하신 로그인 서비스는 지원되지 않습니다.");
+
+
     }
 
     String email = oAuth2UserInfo.getEmail();

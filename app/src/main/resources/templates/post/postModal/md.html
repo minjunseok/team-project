@@ -92,6 +92,35 @@
 		</script>
 
 		<script>
+				//				$(document).ready(function() {
+				//						// "변경" 버튼 클릭 시 폼 제출 처리
+				//						$("#btn_md_submit").click(function() {
+				//								// 모달 내의 폼 데이터를 가져옵니다.
+				//								var formData = new FormData($("#mdPostModal form")[0]);
+				//
+				//								console.log("@@@@@@등록 누름!", btn_md_submit);
+				//
+				//								// AJAX를 사용하여 폼 데이터를 서버로 제출합니다.
+				//								$.ajax({
+				//										type: "POST", // POST 요청
+				//										url: "update",   // 데이터를 제출할 URL
+				//										data: formData, // 폼 데이터
+				//										contentType: false, // 컨텐츠 타입을 false로 설정하여 기본값을 사용합니다.
+				//										processData: false, // processData를 false로 설정하여 데이터를 자동 처리하지 않도록 합니다.
+				//
+				//										// 요청이 성공하면 수행할 작업을 정의합니다.
+				//										success: function(response) {
+				//												// 필요한 경우 성공 메시지를 표시합니다.
+				//												alert('게시글이 변경되었습니다.');
+				//												// 모달을 닫습니다.
+				//												$("#mdPostModal").modal("hide");
+				//										},
+				//										// 요청이 실패하면 수행할 작업을 정의합니다.
+				//										error: function(xhr, status, error) {
+				//												// 필요한 경우 실패 메시지를 표시합니다.
+				//												alert('게시글 변경에 실패했습니다.');
+				//										}
+				//								});
 
 				// 서버에서 사용자의 등급 정보를 전달합니다.
 				var userGrade = '${userGrade}'; // "매니저" 또는 "부매니저"를 나타내는 값
@@ -101,8 +130,8 @@
 						$('#gradeMd').show();
 						$('#gradeMdLabel').show();
 				}
-				});
-				});
+				//						});
+				//				});
 		</script>
 </div>
 

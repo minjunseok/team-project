@@ -66,13 +66,7 @@
     where
     school_no=#{no}
   </select>
-
-  <update id="stopSchool">
-    update schools
-    set stop=1
-    where
-    school_no = #{no}
-  </update>
+  
   <select id="isNameExists" resultType="int" parameterType="String">
     SELECT COUNT(*)
     FROM
@@ -120,6 +114,13 @@
     where
       school_no=#{no}
   </select>
+
+  <update id="stopSchool">
+    update schools
+      set stop=1
+    where
+      school_no = #{no}
+  </update>
 
   <update id="updateSchoolOpenRange">
     update
@@ -195,4 +196,5 @@
   <delete id="deleteSchool" parameterType="int">
     DELETE FROM schools WHERE school_no = #{value};
   </delete>
+
 </mapper>
