@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="view" content="width=device-width, initial-scale=1.0">
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<head>
+
+  <title>비트캠프 데브옵스 5기</title>
+
+</head>
+<body>
+
+<div data-th-fragment="modal" class="modal fade" id="noticeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">스쿨 게시글 상세 조회</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <form id="post-form" action="noticeview.html" data-th-object="${post}" enctype='multipart/form-data' method='get'>
+
+          <input type="hidden" name='no'>
+          <input type="hidden" name='schoolNo'>
+
+
+          <table id="noticeList" class="table">
+            <tbody>
+            <tr>
+              <th style="width: 20%;">이름</th>
+              <td><input id="nickname" name='writer.nickname' readonly type='text' class="form-control"></td>
+            </tr>
+            <tr>
+              <th style="width: 20%;">번호</th>
+              <td><input id="no" name='no' readonly type='text' value="100" class="form-control"></td>
+            </tr>
+            <tr>
+              <th style="width: 20%;">사진</th>
+              <td><input id="photo" name='writer.photo' readonly type='text' value="사진입니다" class="form-control"></td>
+            </tr>
+            <tr>
+              <th style="width: 20%;">내용</th>
+              <td><input id="content" name='content' readonly type='text' value="내용입니다" class="form-control"></td>
+            </tr>
+            <tr>
+              <th style="width: 20%;">작성일</th>
+              <td><input id="createdat" name='createdAt' readonly type='text' value="날짜" class="form-control"></td>
+            </tr>
+            </tbody>
+          </table>
+
+
+        <h3>댓글 목록</h3>
+          <table id="commentsTable" class="table">
+            <thead>
+            <tr>
+              <th>사진</th>
+              <th>닉네임</th>
+              <th>내용</th>
+              <th>작성일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- 댓글 목록이 동적으로 추가될 부분 -->
+            </tbody>
+          </table>
+
+        <input multiple name='comment' type='text'>
+
+        <br>
+        <button>댓글 등록</button>
+        <br>
+
+
+        <h3>첨부 파일 목록</h3>
+          <table id="filesTable" class="table">
+            <thead>
+            <tr>
+              <th>파일명</th>
+              <th>확장자</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- 파일 목록이 동적으로 추가될 부분 -->
+            </tbody>
+          </table>
+
+        <br>
+        <input multiple name='attachedFiles' type='file'>
+        <br>
+        <br>
+
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="update">글 수정하기</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+</body>
+</html>
