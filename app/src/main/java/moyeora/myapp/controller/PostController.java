@@ -101,8 +101,7 @@ public class PostController {
 
     @GetMapping("list")
     public void list(Model model, int schoolNo) {
-        System
-                .out.println(postService.findBySchoolPostList(schoolNo));
+        System.out.println(postService.findBySchoolPostList(schoolNo));
         log.debug(postService.findBySchoolPostList(schoolNo));
 
         log.debug(schoolUserService.findBySchoolUserList(schoolNo));

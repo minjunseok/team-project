@@ -53,8 +53,8 @@
 <insert id="add" parameterType="Post"
     useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
     insert into posts(content, school_no, user_no, created_at)
-<!--    values(#{content}, #{schoolNo}, #{userNo}, NOW())-->
-    values(#{content}, 1, 1, NOW())
+    values(#{content}, #{schoolNo}, #{userNo}, NOW())
+<!--    values(#{content}, 1, 1, NOW())-->
 </insert>
 
 
