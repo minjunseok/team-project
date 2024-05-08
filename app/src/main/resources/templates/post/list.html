@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -15,6 +15,8 @@
 		        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@5.0.0/bundles/stomp.umd.min.js"></script>
 
 
 		<!-- include libraries(jQuery, bootstrap) -->
@@ -186,7 +188,9 @@
 		</tr>
 		</tbody>
 </table>
+<div id="chat-container">
 
+</div>
 
 <!-- 설정을 눌렀을 때 드롭다운이 나타나도록 -->
 <script>
@@ -353,6 +357,30 @@
 				// ...
 		});
 </script>
+<script th:inline="javascript">
+      let schoolNo = 1;
+      alert(schoolNo);
+      let sender = [[${sender}]];
+      alert(sender.no);
+
+
+      function gm() {
+        $.ajax({
+          type: "GET",
+          url: "/gm?schoolNo=" + schoolNo  + "&" + "sender=" + sender.no,
+          dataType: "html",
+          processData: false,
+          success: function (result) {
+            $("#chat-container").html(result);
+          }
+        });
+      }
+
+      $(function () {
+        gm();
+      });
+</script>
+
 </body>
 
 </html>

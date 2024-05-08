@@ -69,11 +69,19 @@ public class ChatController {
         return "/chat/dm";
     }
 
-    @ResponseBody
+    @MessageMapping("/gm")
+    public Gm publishGm(Gm gm) {
+        operations.convertAndSend
+                ("/sub/gm/" + gm.getSchoolNo(), gm);
+        log.info("메세지 전송 성공");
+        return gm;
+    }
+
     @PostMapping("addGm")
+    @ResponseBody
     public Gm addGm(
-        @RequestPart(value = "gm") Gm gm,
-        @RequestParam(value = "photo",required = false) MultipartFile[] photos) throws Exception {
+            @RequestPart(value = "gm") Gm gm,
+            @RequestParam(value = "photo",required = false) MultipartFile[] photos) throws Exception {
 
         if (photos != null) {
             ArrayList<String> files = new ArrayList<>();
@@ -89,14 +97,6 @@ public class ChatController {
 
         log.info("gm(+photo) : " + gm);
         chatService.saveGm(gm);
-        return gm;
-    }
-
-    @MessageMapping("/gm")
-    public Gm publishGm(Gm gm) {
-        operations.convertAndSend
-                ("/sub/gm/" + gm.getSchoolNo(), gm);
-        log.info("메세지 전송 성공");
         return gm;
     }
 

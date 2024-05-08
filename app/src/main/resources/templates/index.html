@@ -23,7 +23,10 @@
   <input type="hidden" data-th-value="*{no}">
   <div data-th-text="*{name}"></div>
   <div data-th-text="*{photo}"></div>
+
+
 </div>
+<div ><a style="text-alien : right " data-th-href="@{school/form}">스쿨개설</a></div>
 
 <form th:action="@{/school/search}" method="get">
   <input type="text" name="name">

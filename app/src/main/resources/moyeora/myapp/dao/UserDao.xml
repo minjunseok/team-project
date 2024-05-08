@@ -37,9 +37,12 @@
 
   </resultMap>
 
-  <insert id="add" parameterType="User">
-    insert into users(name,password,address,phone,email,nickname,birth,gender,profile,photo,manner_point)
-    values(#{name},#{password},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{profile},#{photo},36)
+  <insert id="add" parameterType="User"
+          useGeneratedKeys="true" keyColumn="user_no" keyProperty="no">
+    insert into
+    users(name,password,address,phone,email,nickname,birth,gender,grade,created_at,profile,manner_point,photo,address_detail,provider,provider_id,role)
+    values(#{name},#{password},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{grade},
+    current_timestamp,#{profile},#{mannerPoint},#{photo},#{addressDetail},#{provider},#{providerId},#{role})
   </insert>
 
   <select id="findBy" resultMap="UserMap" parameterType="int">

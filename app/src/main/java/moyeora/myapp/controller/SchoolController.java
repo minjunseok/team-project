@@ -2,10 +2,12 @@ package moyeora.myapp.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.service.*;
 import moyeora.myapp.util.FileUpload;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolTag;
+import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -43,16 +45,16 @@ public class SchoolController implements InitializingBean {
   }
 
   @PostMapping("add")
-  public String add(School school, MultipartFile file) throws Exception{
+  public String add(School school, MultipartFile file, @LoginUser User loginUser) throws Exception{
     log.debug("============sdfsdsdf");
     if(file.getSize() > 0) {
       String filename = fileUpload.upload(this.bucketName, this.uploadDir,file);
       school.setPhoto(filename);
     }
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ school.getTags());
-    schoolService.add(school, 65, 65);
+    schoolService.add(school, loginUser.getNo(), loginUser.getNo());
 
-    return "redirect:list";
+    return "redirect:/post/list?schoolNo="+school.getNo();
   }
 
 

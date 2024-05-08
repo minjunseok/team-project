@@ -15,23 +15,24 @@ import java.util.List;
 @Service
 public class DefaultUserService implements UserService {
 
-
     private final UserDao userDao;
     private final UserTagDao userTagDao;
-    private final TagDao tagDao;
     private final PasswordEncoder passwordEncoder;
+    private final TagDao tagDao;
 
     @Override
     public void add(User user) {
+
         if (user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         userDao.add(user);
-    }
+        if (user.getTagNums() != null && user.getTagNums().size() >= 3) {
+            for (int tagNum : user.getTagNums()) {
 
-    @Override
-    public void save(User user) {
-        userDao.save(user);
+                userTagDao.add(tagNum, user.getNo());
+            }
+        }
     }
 
     @Override
@@ -49,10 +50,10 @@ public class DefaultUserService implements UserService {
         return userDao.findByEmail(email);
     }
 
-    //  @Override
-    //  public User get(String email, String password) {
-    //    return userDao.findByEmailAndPassword(email, password);
-    //  }
+//  @Override
+//  public User get(String email, String password) {
+//    return userDao.findByEmailAndPassword(email, password);
+//  }
 
     @Override
     public String getEmail(String name, String phone) {
@@ -75,7 +76,8 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public int pwdUpdate(User user) {
+    public int passwordUpdate(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userDao.passwordUpdate(user);
     }
 
@@ -99,6 +101,16 @@ public class DefaultUserService implements UserService {
         return userDao.update(user);
     }
 
+    @Override
+    public void save(User user) {
+        userDao.save(user);
+    }
+
+    @Override
+    public int updatePassword(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userDao.updatePassword(user);
+    }
 
     @Override
     public User findOAuth2User(String email, String provider) {
@@ -108,22 +120,5 @@ public class DefaultUserService implements UserService {
     @Override
     public User findByEmail(String email) {
         return userDao.findByEmail(email);
-    }
-
-
-    @Override
-    public int updatePassword(User user) {
-        return userDao.updatePassword(user);
-    }
-
-    @Override
-    public int passwordUpdate(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userDao.passwordUpdate(user);
-    }
-
-    @Override
-    public int findUserGrade(int grade) {
-        return userDao.findUserGrade(grade);
     }
 }
