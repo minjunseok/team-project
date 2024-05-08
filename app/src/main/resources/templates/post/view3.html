@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="view" content="width=device-width, initial-scale=1.0">
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<head>
+
+  <title>비트캠프 데브옵스 5기</title>
+
+</head>
+<body>
+
+
+
+<h1>스쿨 게시글 상세 조회</h1>
+
+
+<input type="hidden" data-th-value="*{no}" name='no'>
+<input type="hidden" data-th-value="*{schoolNo}" name='schoolNo'>
+
+
+<a data-th-text="*{content}">내용</a>
+
+<form action="view.html" data-th-object="${post}" enctype='multipart/form-data' method='get'>
+
+
+
+<div>
+   이름 : <input data-th-value="*{writer.nickname}" name='writer.nickname' readonly type='text' value="100">
+</div>
+<div>
+  번호 : <input data-th-value="*{no}" name='no' readonly type='text' value="100">
+</div>
+<div>
+  사진 : <input data-th-value="*{writer.photo}" name='writer.photo' readonly type='text' value="사진입니다">
+</div>
+<div>
+  내용 : <input data-th-value="*{content}" name='content' readonly type='text' value="내용입니다">
+</div>
+<div>
+  작성일 <input data-th-value="${#dates.format(post.createdAt,'yyyy-MM-dd')}" name='createdAt' readonly type='text' value="날짜">
+</div>
+</form>
+
+<h3>댓글 목록</h3>
+
+<table>
+  <tbody>
+<tr th:each="comment : ${comments}" th:object="${comment}">
+  <td><span th:text="*{writer.photo}"></span></td>
+  <td><span th:text="*{writer.nickname}"></span></td>
+  <td><span th:text="*{content}"></span></td>
+  <td><span th:text="${#dates.format(comment.createdAt,'yyyy-MM-dd')}"></span></td>
+
+
+</tr>
+</tbody>
+</table>
+<br>
+
+<input multiple name='comment' type='text'>
+
+<br>
+<button>댓글 등록</button>
+<br>
+
+<h3>파일 첨부 목록</h3>
+
+<table>
+  <tbody>
+
+  <tr th:each="file : ${files}" th:object="${file}">
+    <td><span th:text="*{fileName}"></span></td>
+    <td><span th:text="*{type}"></span></td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<input multiple name='attachedFiles' type='file'>
+<br>
+<br>
+
+
+</body>
+</html>
