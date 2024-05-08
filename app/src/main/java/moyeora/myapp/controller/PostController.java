@@ -331,7 +331,7 @@ public class PostController {
   }
 
 
-    @GetMapping("view2/{lNo}")
+    @GetMapping("view/{lNo}")
     @ResponseBody
     public Object findByPost(int no, @PathVariable String lNo) throws Exception {
 
