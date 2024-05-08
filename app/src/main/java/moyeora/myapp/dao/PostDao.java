@@ -43,7 +43,6 @@ public interface PostDao {
     List<Post> findBySchool(int schoolNo);
 
     List<Post> findBySchoolUserName(@Param("keyword") String keyword);
-//  Post findBy(int no);
 
     Post findByPost(int no, int schoolNo);
 

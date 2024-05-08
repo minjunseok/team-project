@@ -12,7 +12,6 @@ import moyeora.myapp.vo.Post;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,10 +22,6 @@ public class DefaultPostService implements PostService {
     private final AttachedFileDao attachedFileDao;
     private final CommentDao commentDao;
     private final UserDao userDao;
-
-    // 공지글과 일반글을 구분하기 위한 리스트
-    private List<Post> noticePosts = new ArrayList<>();
-    private List<Post> normalPosts = new ArrayList<>();
 
 
     @Override

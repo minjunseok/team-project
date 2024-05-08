@@ -10,15 +10,21 @@
 		      crossorigin="anonymous" referrerpolicy="no-referrer"/>
 		<script type="text/javascript"
 		        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
-		        integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="
-		        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<!--		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"-->
+		<!--		        integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="-->
+		<!--		        crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
 		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
 		<!-- include libraries(jQuery, bootstrap) -->
 		<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		        crossorigin="anonymous"></script>
+
 
 		<!-- include summernote css/js -->
 		<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
@@ -82,6 +88,7 @@
 </div>
 
 
+<!--<th:block th:if="${schoolUser}">-->
 <div class="container">
 		<div class="row" style="width: 100px">
 				<div class="col-md-2">
@@ -95,6 +102,11 @@
 </div>
 
 <div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>
+<!--</th:block>-->
+<!--<th:block th:unless="${schoolUser}">-->
+<!--		<button id="joinButton">가입하기</button>-->
+<!--</th:block>-->
+
 
 <table class="table table-bordered" style="width: 555px">
 		<thread>
@@ -113,7 +125,7 @@
 				<td data-th-text="*{writer.nickname}">닉네임</td>
 				<td data-th-text="*{writer.photo}">사진</td>
 				<td>
-						<a data-th-href="@{'view/' + *{schoolNo}(no=*{no})}" data-th-utext="*{content}">내용</a>
+						<a data-th-href="@{'view/' + *{schoolNo}(no=*{no})} " data-th-utext="*{content}">내용</a>
 				</td>
 				<td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
 
@@ -123,45 +135,43 @@
 								        aria-expanded="false">...
 								</button>
 
+								<!-- 글 수정 모달 -->
+								<div class="modal" id="post_md_modal" data-th-fragment="postMd-modal">
+										<div class="modal-dialog">
+												<div class="modal-content">
+														<form action="update" data-th-action="@{update}" data-th-object="${post}"
+														      enctype='multipart/form-data' method='post'>
+																<!-- postNo, schoolNo의 값을 넘기기 위해 히든으로 설정 -->
+																<input type="hidden" name="schoolNo" data-th-value="*{schoolNo}">
+																<input type="hidden" name="no" data-th-value="*{no}">
+																<div>
+																		<!-- Summernote 에디터 -->
+																		<textarea id="summernoteContent" data-th-text="${content}"
+																		          name='content' style="display: none"></textarea>
+
+																</div>
+
+																<div>
+																		<!-- 공지로 등록하는 체크박스 -->
+																		<!-- gradeMd = 체크박스는 관리자만 보이게 설정 -->
+																		<!-- gradeMdLabel = 공지로등록이라는 텍스트는 관리자만 보이게 설정 -->
+																		<label for="gradeMd" id="grade_MdLabel" style="display: none;">공지로
+																				등록</label>
+																		<input type="checkbox" id="grade_Md" name="post" value="1"
+																		       style="display: none;">
+																		<button>변경</button>
+																</div>
+														</form>
+												</div>
+										</div>
+								</div>
+
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="display: block;width: 100px;">
 										<div class="container">
 												<div class="row" style="width: 100px;">
-
-														<div class="modal" id="post_md_modal" data-th-fragment="postMd-modal">
-																<div class="modal-dialog">
-																		<div class="modal-content">
-																				<form action="update" data-th-action="@{update}" data-th-object="${post}"
-																				      enctype='multipart/form-data' method='post'>
-																						<!-- postNo, schoolNo의 값을 넘기기 위해 히든으로 설정 -->
-																						<input type="hidden" name="schoolNo" data-th-value="*{schoolNo}">
-																						<input type="hidden" name="no" data-th-value="*{no}">
-																						<div>
-																								<!-- Summernote 에디터 -->
-																								<textarea data-th-text="${content}" id="summernoteContent"
-																								          name='content' style="display: none"></textarea>
-																						</div>
-
-																						<div>
-																								<!-- 공지로 등록하는 체크박스 -->
-																								<!-- gradeMd = 체크박스는 관리자만 보이게 설정 -->
-																								<!-- gradeMdLabel = 공지로등록이라는 텍스트는 관리자만 보이게 설정 -->
-																								<label for="gradeMd" id="grade_MdLabel" style="display: none;">공지로
-																										등록</label>
-																								<input type="checkbox" id="grade_Md" name="post" value="1"
-																								       style="display: none;">
-																								<button>변경</button>
-																						</div>
-																				</form>
-																		</div>
-																</div>
+														<div class="post_md" style="width: 110px;">글 수정 <!--  id="post_md"  onclick="postMd()" -->
 														</div>
-
-														<div id="post_md" style="width: 110px;">글 수정
-														</div>
-
 												</div>
-
-
 												<!--												<div data-th-replace="post/postModal/md :: postMd-modal">글 수정</div>-->
 										</div>
 
@@ -186,6 +196,43 @@
 		</tr>
 		</tbody>
 </table>
+
+<script>
+		$(document).ready(function() {
+				// 모달은 처음에 숨김 처리합니다.
+				$('#post_md_modal').modal('hide');
+
+				// 각 게시글의 "글 수정" 버튼 클릭 이벤트 핸들러 등록
+				$(".post_md").click(function() {
+						// 해당 게시글의 정보 가져오기
+						var postNo = $(this).closest(".postItem").find(".postNo").text();
+						var postContentElement = $(this).closest(".postItem").find("a");
+						console.log("data-th-utext element:", postContentElement);
+						var postContent = postContentElement.attr("data-th-utext");
+						console.log("postContent:", postContent);
+
+						// 모달을 보여줍니다.
+						$('#post_md_modal').modal('show');
+
+						// Summernote를 초기화합니다.
+						$('#summernoteContent').summernote({
+								height: 300,
+								width: 500,
+								callbacks: {
+										onInit: function() {
+												// Summernote 초기화 시 게시글 내용을 채웁니다.
+												$('#summernoteContent').summernote('code', postContent);
+										}
+								}
+						});
+				});
+
+				// 모달이 닫힐 때 Summernote의 내용을 초기화합니다.
+				$('#post_md_modal').on('hidden.bs.modal', function () {
+						$('#summernoteContent').summernote('destroy');
+				});
+		});
+</script>
 
 
 <!-- 설정을 눌렀을 때 드롭다운이 나타나도록 -->
@@ -231,9 +278,11 @@
 		// 문서가 로드되면 실행될 함수
 		$(document).ready(function() {
 				$("#joinButton").click(function() {
+						console.log("@@@@@==>>", no);
 						const searchParam = window.location.search.replace("?", "");
 						const { schoolNo } = window.Qs.parse(searchParam);
 						join(schoolNo);
+						console.log("@@@@@==>>", schoolNo);
 				});
 		});
 
@@ -274,6 +323,9 @@
 						error: function(xhr, status, error) {
 								alert("가입에 실패했습니다. 다시 시도해 주세요.");
 								console.error("가입 요청 실패:", error);
+								console.log("@@@@@==>", userNo)
+								console.log("@@@@@==>", schoolNo)
+
 						},
 				});
 		}
@@ -319,38 +371,6 @@
 								}
 						});
 				});
-		});
-</script>
-
-
-<script>
-		$(document).ready(function() {
-				// 모달은 처음에 숨김 처리합니다.
-				$('#post_md_modal').modal('hide');
-
-				// 각 게시글의 "글 수정" 버튼 클릭 이벤트 핸들러 등록
-				$(".post_md").click(function() {
-						// 해당 게시글의 정보 가져오기
-						var postNo = $(this).closest(".postItem").find(".postNo").text();
-						var postContent = $(this).closest(".postItem").find("a").data("th-utext");
-
-						// 모달을 보여줍니다.
-						$('#post_md_modal').modal('show');
-
-						// Summernote를 초기화합니다.
-						$('#summernoteContent').summernote({
-								height: 300,
-								width: 500,
-								callbacks: {
-										onInit: function() {
-												// Summernote 초기화 시 게시글 내용을 채웁니다.
-												$('#summernoteContent').summernote('code', postContent);
-										}
-								}
-						});
-				});
-
-				// ...
 		});
 </script>
 </body>
