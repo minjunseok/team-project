@@ -5,7 +5,9 @@ import moyeora.myapp.dao.TagDao;
 import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.dao.UserTagDao;
 import moyeora.myapp.service.UserService;
+import moyeora.myapp.vo.Level;
 import moyeora.myapp.vo.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +18,22 @@ import java.util.List;
 
         private final UserDao userDao;
         private final UserTagDao userTagDao;
+        private final PasswordEncoder passwordEncoder;
         private final TagDao tagDao;
 
         @Override
         public void add(User user) {
-            //user.setPwd(passwordEncoder.encode(user.getPwd()));
+
+            if (user.getPassword() != null) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
             userDao.add(user);
+            if (user.getTagNums() != null && user.getTagNums().size() >= 3) {
+                for (int tagNum : user.getTagNums()) {
+
+                    userTagDao.add(tagNum, user.getNo());
+                }
+            }
         }
 
         @Override
@@ -30,9 +42,7 @@ import java.util.List;
         }
 
         @Override
-        public User get(int no) {
-            return userDao.findBy(no);
-        }
+        public User get(int no) { return userDao.findByNo(no); }
 
         @Override
         public User get(String email) {
@@ -65,7 +75,8 @@ import java.util.List;
         }
 
         @Override
-        public int pwdUpdate(User user) {
+        public int passwordUpdate(User user) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userDao.passwordUpdate(user);
         }
 
@@ -96,6 +107,7 @@ import java.util.List;
 
         @Override
         public int updatePassword(User user) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userDao.updatePassword(user);
         }
 
@@ -108,4 +120,6 @@ import java.util.List;
         public User findByEmail(String email) {
             return userDao.findByEmail(email);
         }
+
+
     }

@@ -3,17 +3,22 @@
 
 # Ignore Gradle build output directory
 build
-<<<<<<< HEAD
-bin
-coolsms.properties
-=======
 
-<<<<<<< HEAD
+bin
+
+coolsms.properties
+
 ncp-secret.properties
 
 ncp-secret.storage.properties
 
 application.properties
+
+oauth.properties
+
+email.properties
+
+bootpay.properties
 
 *.exe
 temp/
@@ -576,8 +581,8 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,linux,visualstudiocode,eclipse,intellij,java,c,c++,node,gradle,maven
->>>>>>> a8c5d95e2bdc075e5c5e8b0981e40e7520479ca7
+
 =======
 .properties
 
->>>>>>> 4c92d30e43737d69bd343ac12ce2f1c7a7fe5374
+

@@ -1,11 +1,11 @@
-package moyeora.myapp.security.oauth.userInfo;
+package moyeora.myapp.security.OAuth.userInfo;
 
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class KakaoOAuth2UserInfo implements moyeora.myapp.security.oauth.userInfo.OAuth2UserInfo {
+public class KakaoOAuth2UserInfo implements moyeora.myapp.security.OAuth.userInfo.OAuth2UserInfo {
   private Map<String, Object> attributes;
   private Map<String, Object> kakaoAccountAttributes;
   private Map<String, Object> profileAttributes;

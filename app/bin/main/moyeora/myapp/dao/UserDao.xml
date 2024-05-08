@@ -20,24 +20,27 @@
     <result column="photo" property="photo"/>
     <result column="address_detail" property="addressDetail"/>
     <result column="stop_date" property="stopDate"/>
-    <result column="tag_no" property="no"/>
-    <result column="login_type" property="loginType"/>
     <result column="provider" property="provider"/>
     <result column="provider_id" property="providerId"/>
     <result column="role" property="role"/>
+
     <collection property="tags" ofType="UserTag">
       <result column="user_no" property="userNo"/>
       <result column="tag_no" property="tagNo"/>
     </collection>
   </resultMap>
 
-  <insert id="add" parameterType="User">
-    insert into users(name,password,address,phone,email,nickname,birth,gender,profile,photo,manner_point)
-    values(#{name},#{password},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{profile},#{photo},36)
-  </insert>
+  <insert id="add" parameterType="User"
+     useGeneratedKeys="true" keyColumn="user_no" keyProperty="no">
+      insert into
+      users(name,password,address,phone,email,nickname,birth,gender,grade,created_at,profile,manner_point,photo,address_detail,provider,provider_id,role)
+      values(#{name},#{password},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{grade},
+      current_timestamp,#{profile},#{mannerPoint},#{photo},#{addressDetail},#{provider},#{providerId},#{role})
+    </insert>
 
 <select id="findBy" resultMap="UserMap" parameterType="int">
     select
+        u.user_no,
         u.name,
         u.address,
         u.phone,
@@ -51,7 +54,6 @@
         u.manner_point,
         u.photo,
         u.address_detail,
-        ut.user_no,
         ut.tag_no
     from
         users as u
@@ -67,8 +69,9 @@
   </insert>
 
   <insert id="save" parameterType="User" useGeneratedKeys="true" keyColumn="user_no" keyProperty="no">
-    insert into users(name,email,phone,provider,provider_id,role,created_at)
-    values(#{name},#{email},#{phone},#{provider},#{providerId},#{role},NOW())
+    insert into
+    users(name,address,phone,email,nickname,birth,gender,created_at,profile,photo,address_detail,provider,provider_id,role)
+    values(#{name},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},NOW(),#{profile},#{photo},#{addressDetail},#{provider},#{providerId},#{role})
   </insert>
 
   <delete id="delete" parameterType="int">
@@ -109,20 +112,21 @@
         email=#{email}
   </select>
 
-  <update id="update" parameterType="User">
-  update users set
-  email=#{email},
-  nickname=#{nickname},
-  phone=#{phone},
-  address=#{address},
-  photo=#{photo}
-  profile=#{profile}
-  <if test="password != ''">
-    , password=#{password}
-  </if>
-  where
-  user_no=#{no}
-  </update>
+
+ <update id="update" parameterType="User">
+ update users set
+     address=#{address},
+     phone=#{phone},
+     nickname=#{nickname},
+     birth=#{birth},
+     photo=#{photo},
+     profile=#{profile},
+     address_detail=#{addressDetail}
+ where
+     user_no=#{no};
+    </update>
+
+
 
   <update id="updatePassword" parameterType="User">
     update users set
@@ -155,6 +159,12 @@
   </select>
 
 
+<update id="passwordUpdate" parameterType="User">
+update users set
+    password = #{password}
+where
+    user_no=#{no}
+</update>
 
 
 

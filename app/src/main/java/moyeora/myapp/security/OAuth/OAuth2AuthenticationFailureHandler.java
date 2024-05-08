@@ -1,4 +1,4 @@
-package moyeora.myapp.security.oauth;
+package moyeora.myapp.security.OAuth;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
