@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface SchoolService {
 
+
+
   public SchoolUser findByUserNo(int no);
 
   public List<String> findWeek();

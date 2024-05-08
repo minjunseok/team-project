@@ -45,6 +45,10 @@ public class DefaultUserService implements UserService {
         return userDao.findBy(no);
     }
 
+    public User getUserInfo(int no) {
+        return userDao.findByNo(no);
+    }
+
     @Override
     public User get(String email) {
         return userDao.findByEmail(email);

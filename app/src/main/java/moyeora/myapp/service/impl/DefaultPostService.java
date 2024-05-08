@@ -12,7 +12,6 @@ import moyeora.myapp.vo.Post;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,11 +23,16 @@ public class DefaultPostService implements PostService {
     private final CommentDao commentDao;
     private final UserDao userDao;
 
-    // 공지글과 일반글을 구분하기 위한 리스트
-    private List<Post> noticePosts = new ArrayList<>();
-    private List<Post> normalPosts = new ArrayList<>();
+  @Override
+  public int get(Post post) {
+    return postDao.get(post);
+  }
 
 
+  @Override
+  public int findByPostSchoolNo(int no) {
+    return postDao.findByPostSchoolNo(no);
+  }
     @Override
     public List<Post> findBySchoolPost() {
         return postDao.findBySchoolPost();
@@ -141,6 +145,39 @@ public class DefaultPostService implements PostService {
     public Post get(int no, int schoolNo) {
         return postDao.findByPost(no, schoolNo);
     }
+
+
+  @Override
+  public Post findByFixList(int schoolNo) {
+    return postDao.findByFixList(schoolNo);
+  }
+
+  @Transactional
+  @Override
+  public void addNotice(Post post) {
+    postDao.addNotice(post);
+  }
+
+
+  @Override
+  public List<Post> findByNotice(int schoolNo) {
+    return postDao.findByNotice(schoolNo);
+  }
+
+
+  @Override
+  public int fixedCancel(Post post) {
+    return postDao.fixedCancel(post);
+  }
+
+  @Override
+  public int fixedPost(Post post) {
+
+    return postDao.fixedPost(post);
+    }
+
+
+
 
     // 필터를  내용으로 검색했을 때
     @Override

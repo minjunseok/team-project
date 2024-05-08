@@ -11,7 +11,7 @@
     <a href="/home"><img class="logo" src="/img/moyeora-logo.png"></a>
 </div>
 
-<form id="loginForm" data-th-action="@{login}" method="post">
+<form id="loginForm" data-th-action="@{/auth/login}" method="post">
     <div>
         <label>
             <input id="email" data-th-value="${email}" name="email" type="text" placeholder="email">
@@ -30,7 +30,7 @@
     <div class="login-menu">
         <a data-th-href="@{findEmail}">이메일 찾기</a>
         <a data-th-href="@{findPassword}">비밀번호 찾기</a>
-        <a data-th-href="@{/user/agreement}">회원가입</a>
+        <a data-th-href="@{/user/form}">회원가입</a>
     </div>
 </form>
 

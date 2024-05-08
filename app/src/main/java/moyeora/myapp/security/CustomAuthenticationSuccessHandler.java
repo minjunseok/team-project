@@ -1,5 +1,10 @@
 package moyeora.myapp.security;
 
+
+import java.io.IOException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,6 +27,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     CustomWebAuthenticationDetails customWebAuthenticationDetails = (CustomWebAuthenticationDetails) authentication.getDetails();
     String isSaveEmail = customWebAuthenticationDetails.getIsSaveEmail();
+    request.getSession().setAttribute("loginUser",((PrincipalDetails) authentication.getPrincipal()).getUser());
 
     request.getSession().setAttribute("loginUser", ((PrincipalDetails) authentication.getPrincipal()).getUser());
 

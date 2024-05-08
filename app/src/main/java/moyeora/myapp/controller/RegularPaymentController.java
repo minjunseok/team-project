@@ -33,6 +33,7 @@ public class RegularPaymentController {
     if (paymentService.findBillingKeyByUserNo(loginUser.getNo()) > 0) {
       return ResponseEntity.status(400).build();
     }
+    regularPaymentRequestDTO.setUserNo(loginUser.getNo());
 
     paymentService.purchase(regularPaymentRequestDTO);
     RegularPaymentResponseDTO regularPaymentResponseDTO = new RegularPaymentResponseDTO();
@@ -55,5 +56,10 @@ public class RegularPaymentController {
     RegularPaymentResponseDTO regularPaymentResponseDTO = new RegularPaymentResponseDTO();
     regularPaymentResponseDTO.setMessage("해지가 완료되었습니다");
     return ResponseEntity.status(200).body(regularPaymentResponseDTO);
+  }
+
+  @GetMapping("success")
+  public void success() {
+
   }
 }

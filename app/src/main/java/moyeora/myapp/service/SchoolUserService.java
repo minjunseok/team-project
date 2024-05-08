@@ -11,6 +11,8 @@ public interface SchoolUserService {
 
   List<SchoolUser> findBySchoolUserList(int schoolNo);
 
+  int findByUserLevelNo(int schoolNo, int userNo);
+
 //  void addSchoolUser (SchoolUser schoolUser);
   void addSchoolUser (int userNo, int schoolNo, int levelNo);
   }

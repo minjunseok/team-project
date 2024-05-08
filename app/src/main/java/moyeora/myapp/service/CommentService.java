@@ -7,4 +7,6 @@ public interface CommentService {
 
   List<Comment> get(int no);
 
+  void add(Comment comment);
+
 }

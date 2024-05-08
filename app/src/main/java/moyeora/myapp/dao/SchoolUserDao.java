@@ -9,6 +9,9 @@ import java.util.List;
 
 @Mapper
 public interface SchoolUserDao {
+
+  int findByUserLevelNo(int schoolNo, int userNo);
+
   public SchoolUser findByUserNo(int no);
 
   public void insert(SchoolUser user);

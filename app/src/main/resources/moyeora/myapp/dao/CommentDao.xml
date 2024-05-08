@@ -29,6 +29,12 @@
     </association>
   </resultMap>
 
+  <insert id="add" parameterType="Comment"
+          useGeneratedKeys="true" keyColumn="comment_no" keyProperty="no">
+    insert into comments(content, created_at, user_no, post_no)
+    values(#{content}, NOW() , #{userNo}, #{postNo})
+  </insert>
+
 
   <select id="findByComment" resultMap="CommentMap">
     SELECT distinct

@@ -46,9 +46,10 @@ public class ChatController {
     @GetMapping("gm")
     public String gmForm(Model model, int schoolNo, int sender) {
         model.addAttribute("schoolNo",schoolNo);
-        model.addAttribute("sender",userService.get(sender));
+        model.addAttribute("sender",userService.getUserInfo(sender));
+        System.out.println("****************"+userService.getUserInfo(sender) + schoolNo +sender);
         model.addAttribute("chatList",chatService.getGmList(schoolNo));
-        return "/chat/gm";
+        return "chat/gm";
     }
 
     @GetMapping("dm")
@@ -97,6 +98,7 @@ public class ChatController {
 
         log.info("gm(+photo) : " + gm);
         chatService.saveGm(gm);
+        System.out.println("@@@@@@@@@GM"+gm);
         return gm;
     }
 
