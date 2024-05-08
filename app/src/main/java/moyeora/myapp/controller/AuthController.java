@@ -9,10 +9,13 @@ import java.util.Random;
 import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.security.config.PasswordEncoderConfig;
+import moyeora.myapp.service.TagService;
 import moyeora.myapp.service.impl.DefaultMailService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.security.util.RedisUtil;
+import moyeora.myapp.util.FileUpload;
 import moyeora.myapp.vo.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Controller
@@ -30,6 +34,12 @@ public class AuthController {
   private final DefaultMailService mailService;
   private final RedisUtil redisUtil;
   private final PasswordEncoderConfig passwordEncoderConfig;
+  private final TagService tagService;
+  private final FileUpload fileUpload;
+  private final String uploadDir = "user/";
+
+  @Value("${ncp.storage.bucket}")
+  private String bucket;
 
   private String createCode() {
     int leftLimit = 48;
@@ -48,13 +58,22 @@ public class AuthController {
   public String getSignUpForm(String key, Model model) throws JsonProcessingException {
     User user = redisUtil.getData(key, User.class);
     model.addAttribute("user", user);
-    return "/auth/test";
+    model.addAttribute("tags", tagService.findAllTag());
+    return "/user/socialForm";
   }
 
   @PostMapping("join")
-  public String joinTest(User user, Model model) {
+  public String joinTest(User user, Model model, MultipartFile file) throws Exception {
     System.out.println(user.toString());
-    userService.save(user);
+
+    if (file.getSize() > 0) {
+      String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
+      user.setPhoto(filename);
+    }
+
+    System.out.println("@@@@@@@@@@@@@@@@" + user.getPhoto());
+    userService.add(user);
+    System.out.println("@@@@@@@@@@@@@@@@@@@" + userService);
     String key = user.getEmail() + "_" + user.getProvider() + "_" + user.getProviderId();
     if(redisUtil.existData(key)) {
       redisUtil.deleteData(key);
@@ -114,6 +133,7 @@ public class AuthController {
   @PostMapping("verifyCode")
   public String verifyCode(String email, String code, String authId, Model model)
       throws Exception {
+    System.out.println(email+code+authId+model);
     String savedCode = (String) redisUtil.getData(authId);
     if (savedCode == null) {
       model.addAttribute("status","savedCode == null");

@@ -57,15 +57,18 @@
 
 					<ul class="header_menu">
 						<!--각 태크에 맞게 기능 연결 하면 됨.-->
-						<li><a data-th-href="@{/index}">회원가입</a></li>
+						<li><a data-th-href="@{/user/form}">회원가입</a></li>
 						<li sec:authorize="isAnonymous()">
 							<a data-th-href="@{/auth/form}">로그인</a>
 						</li>
 						<li sec:authorize="isAuthenticated()">
 							<a data-th-href="@{/auth/logout}"> <span sec:authentication="name"></span> 로그아웃</a>
 						</li>
-						<li><a href="">Feed</a></li>
-						<li><a data-th-href="@{/chat/gm?schoolNo=1}">gm</a></li>
+						<li>
+							<a data-th-href="@{admin/chart}">관리자페이지</a>
+						</li>
+<!--						<li><a data-thhref="@{/mypage/mypost}">Feed</a></li>-->
+<!--						<li><a data-th-href="@{/chat/gm?schoolNo=1}">gm</a></li>-->
 					</ul>
 
 					<ul class="header_icons">

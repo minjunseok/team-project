@@ -36,7 +36,6 @@ import javax.servlet.http.HttpSession;
     // "file:${user.home}/config/ncp.properties",
     // "file:${user.home}/config/ncp-secret.properties"
 })
-
 public class App implements WebMvcConfigurer {
   @Autowired
   LoginUserArgumentResolver loginUserArgumentResolver;

@@ -1,12 +1,14 @@
 package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.service.PostService;
 import moyeora.myapp.service.SchoolUserService;
 import moyeora.myapp.util.FileUpload;
 import moyeora.myapp.vo.AttachedFile;
 import moyeora.myapp.vo.Comment;
 import moyeora.myapp.vo.Post;
+import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -100,7 +102,7 @@ public class PostController {
 
 
     @GetMapping("list")
-    public void list(Model model, int schoolNo) {
+    public void list(Model model, int schoolNo, @LoginUser User loginUser) {
         System
                 .out.println(postService.findBySchoolPostList(schoolNo));
         log.debug(postService.findBySchoolPostList(schoolNo));
@@ -112,6 +114,7 @@ public class PostController {
         model.addAttribute("postList", posts);
         model.addAttribute("schoolNo", schoolNo);
         model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
+        model.addAttribute("sender",loginUser);
     }
 
 

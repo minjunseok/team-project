@@ -35,9 +35,4 @@ public interface UserService {
 
   int passwordUpdate(User user);
 
-
-    int pwdUpdate(User user);
-
-  int findUserGrade(int grade);
-
 }
