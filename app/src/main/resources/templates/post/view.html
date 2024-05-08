@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <base href="/bootstrap/">
 <meta charset="UTF-8">
-<meta name="view2" content="width=device-width, initial-scale=1.0">
+<meta name="view" content="width=device-width, initial-scale=1.0">
 <html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="post-form" action="view2.html" data-th-object="${post}" enctype='multipart/form-data' method='get'>
+                <form id="post-form" action="view.html" data-th-object="${post}" enctype='multipart/form-data' method='get'>
                     <input type="hidden" name='no'>
                     <input type="hidden" name='schoolNo'>
                     <h3>댓글 목록</h3>
