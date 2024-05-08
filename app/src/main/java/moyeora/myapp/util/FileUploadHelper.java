@@ -8,16 +8,15 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-
-import java.io.InputStream;
-import java.util.UUID;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.InputStream;
+import java.util.UUID;
 
 @Service
 public class FileUploadHelper implements InitializingBean, FileUpload {
@@ -34,7 +33,6 @@ public class FileUploadHelper implements InitializingBean, FileUpload {
   public FileUploadHelper(
     @Value("${ncp.storage.endpoint}") String endPoint,
     @Value("${ncp.storage.region}") String regionName,
-    @Value("${ncp.storage.bucket}") String bucketName,
     @Value("${ncp.accesskey}") String accessKey,
     @Value("${ncp.secretkey}") String secretKey) {
     this.endPoint = endPoint;
@@ -59,6 +57,11 @@ public class FileUploadHelper implements InitializingBean, FileUpload {
   }
 
 
+  public String generateFileName(MultipartFile file) {
+    return file.getOriginalFilename();
+  }
+
+
   public String upload(String bucketName, String path, MultipartFile multipartFile)
     throws Exception {
     try (InputStream fileIn = multipartFile.getInputStream()) {
@@ -80,7 +83,6 @@ public class FileUploadHelper implements InitializingBean, FileUpload {
       //서버에 업로드 실행
       s3.putObject(putObjectRequest);
       log.debug(String.format("Object %s has been created.\n", objectName));
-      System.out.println("헬퍼실행@@@@@@@@@@@");
       return filename;
     }
   }

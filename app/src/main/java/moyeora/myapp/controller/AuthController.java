@@ -10,6 +10,10 @@ import moyeora.myapp.vo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import moyeora.myapp.service.TagService;
+import moyeora.myapp.util.FileUpload;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.security.MessageDigest;
@@ -27,6 +31,12 @@ public class AuthController {
   private final DefaultMailService mailService;
   private final RedisUtil redisUtil;
   private final PasswordEncoderConfig passwordEncoderConfig;
+  private final TagService tagService;
+  private final FileUpload fileUpload;
+  private final String uploadDir = "user/";
+
+  @Value("${ncp.storage.bucket}")
+  private String bucket;
 
   private String createCode() {
     int leftLimit = 48;
@@ -45,13 +55,22 @@ public class AuthController {
   public String getSignUpForm(String key, Model model) throws JsonProcessingException {
     User user = redisUtil.getData(key, User.class);
     model.addAttribute("user", user);
-    return "/auth/test";
+    model.addAttribute("tags", tagService.findAllTag());
+    return "/user/socialForm";
   }
 
   @PostMapping("join")
-  public String joinTest(User user, Model model) {
+  public String joinTest(User user, Model model, MultipartFile file) throws Exception {
     System.out.println(user.toString());
-    userService.save(user);
+
+    if (file.getSize() > 0) {
+      String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
+      user.setPhoto(filename);
+    }
+
+    System.out.println("@@@@@@@@@@@@@@@@" + user.getPhoto());
+    userService.add(user);
+    System.out.println("@@@@@@@@@@@@@@@@@@@" + userService);
     String key = user.getEmail() + "_" + user.getProvider() + "_" + user.getProviderId();
     if(redisUtil.existData(key)) {
       redisUtil.deleteData(key);
@@ -112,7 +131,7 @@ public class AuthController {
   @PostMapping("verifyCode")
   public String verifyCode(String email, String code, String authId, Model model)
           throws Exception {
-    String savedCode = (String) redisUtil.getData(authId);
+    String savedCode = (String) redisUtil.getData(authId + "_e");
     if (savedCode == null) {
       model.addAttribute("status","savedCode == null");
     } else if (!savedCode.equals(code)) {
