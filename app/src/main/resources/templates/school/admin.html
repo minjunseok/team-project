@@ -36,9 +36,8 @@
       <div id="school_statistics" onclick="modal5()">스쿨 통계</div>
       <div id="school_delete" onclick="schoolDeleteForm()">스쿨 삭제</div>
       <!-- modal member list -->
-      <div class="modal" id="member">
-        <div class="modal-dialog">
-          <div class="modal-content">
+       <div class="modal" id="user">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-header">
               <h5 class="modal-title">회원 관리</h5>
               <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
@@ -54,16 +53,16 @@
                   <th>블랙리스트 추가</th>
                 </tr>
                 </thead>
-                <tbody id="member-list">
+                <tbody id="user-list">
 
                 </tbody>
               </table>
             </div>
           </div>
         </div>
-      </div>
+      </div> 
       <div class="modal" id="submit">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">회원 관리</h5>
@@ -87,7 +86,7 @@
         </div>
       </div>
       <div class="modal" id="black">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">회원 관리</h5>
@@ -131,7 +130,7 @@
       </div>
 
       <div data-th-replace="school/modal/school :: school-modal">스쿨 변경</div>
-
+<!--      <div data-th-replace="school/modal/userManagement :: school-modal">스쿨 회원 관리</div>-->
       <div data-th-replace="school/modal/delete :: school-modal">스쿨 삭제</div>
 
     </div>
@@ -147,23 +146,24 @@
 <script>
   const modal1 = () => {
     userList();
-    const myModal = new bootstrap.Modal(document.getElementById('member'), {})
+    const myModal = new bootstrap.Modal(document.getElementById('user'), {})
     myModal.show();
+    console.log("모달창 생성")
   }
-  const modal2 = () => {
-    blackList();
-      const myModal = new bootstrap.Modal(document.getElementById('black'), {})
-      myModal.show();
-  }
-  const modal3 = () => {
-    submitList();
-      const myModal = new bootstrap.Modal(document.getElementById('submit'), {})
-      myModal.show();
-  }
-   const modal4 = () => {
-      const myModal = new bootstrap.Modal(document.getElementById('openClosed'), {})
-      myModal.show();
-  }
+  // const modal2 = () => {
+  //   blackList();
+  //     const myModal = new bootstrap.Modal(document.getElementById('black'), {})
+  //     myModal.show();
+  // }
+  // const modal3 = () => {
+  //   submitList();
+  //     const myModal = new bootstrap.Modal(document.getElementById('submit'), {})
+  //     myModal.show();
+  // }
+  //  const modal4 = () => {
+  //     const myModal = new bootstrap.Modal(document.getElementById('openClosed'), {})
+  //     myModal.show();
+  // }
 
   $(document).on('click', '.auth', function() {
     const queryString = window.location.search;
@@ -179,6 +179,7 @@
     .then((e) => {
       if(e.status===200) {
         console.log(userNo)
+        console.log("click")
         if(e.data===2) {
            $(button).text("부 매니저 임명")
         } else if(e.data===3) {
@@ -191,93 +192,95 @@
     })
   })
 
-  $(document).on('click', '.black', function() {
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const schoolNo = params.get('schoolNo');
-    const userNo = $(this).parent().parent().find(".userNo").val()
-    axios.post("admin/sub/blackAdd", {
-      userNo,
-      schoolNo
-    })
-    .then((e)=> {
-      if(e.status===200) {
-        $(this).parent().parent().empty();
-      }
-    })
-  })
 
-  $(document).on('click', '.unlock', function() {
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const schoolNo = params.get('schoolNo');
-    const userNo = $(this).parent().parent().find(".userNo").val()
-    axios.post("admin/sub/blackDelete", {
-      userNo,
-      schoolNo
-    })
-    .then((e)=> {
-      if(e.status===200) {
-        $(this).parent().parent().empty();
-      }
-    })
-  })
+  // $(document).on('click', '.black', function() {
+  //   const queryString = window.location.search;
+  //   const params = new URLSearchParams(queryString);
+  //   const schoolNo = params.get('schoolNo');
+  //   const userNo = $(this).parent().parent().find(".userNo").val()
+  //   axios.post("admin/sub/blackAdd", {
+  //     userNo,
+  //     schoolNo
+  //   })
+  //   .then((e)=> {
+  //     if(e.status===200) {
+  //       $(this).parent().parent().empty();
+  //     }
+  //   })
+  // })
 
-  $(document).on('click', '.approve', function() {
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const schoolNo = params.get('schoolNo');
-    const userNo = $(this).parent().parent().find(".userNo").val()
-    axios.post("admin/sub/approve", {
-      userNo,
-      schoolNo
-    })
-    .then((e)=> {
-      if(e.status===200) {
-        $(this).parent().parent().empty();
-      }
-    })
-  })
+  // $(document).on('click', '.unlock', function() {
+  //   const queryString = window.location.search;
+  //   const params = new URLSearchParams(queryString);
+  //   const schoolNo = params.get('schoolNo');
+  //   const userNo = $(this).parent().parent().find(".userNo").val()
+  //   axios.post("admin/sub/blackDelete", {
+  //     userNo,
+  //     schoolNo
+  //   })
+  //   .then((e)=> {
+  //     if(e.status===200) {
+  //       $(this).parent().parent().empty();
+  //     }
+  //   })
+  // })
 
-  $(document).on('click', '.reject', function() {
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const schoolNo = params.get('schoolNo');
-    const userNo = $(this).parent().parent().find(".userNo").val()
-    axios.post("admin/sub/reject", {
-      userNo,
-      schoolNo
-    })
-    .then((e)=> {
-      if(e.status===200) {
-        $(this).parent().parent().empty();
-      }
-    })
-  })
+  // $(document).on('click', '.approve', function() {
+  //   const queryString = window.location.search;
+  //   const params = new URLSearchParams(queryString);
+  //   const schoolNo = params.get('schoolNo');
+  //   const userNo = $(this).parent().parent().find(".userNo").val()
+  //   axios.post("admin/sub/approve", {
+  //     userNo,
+  //     schoolNo
+  //   })
+  //   .then((e)=> {
+  //     if(e.status===200) {
+  //       $(this).parent().parent().empty();
+  //     }
+  //   })
+  // })
 
-  $(document).on('change', '.openClosed', function() {
-      const queryString = window.location.search;
-      const params = new URLSearchParams(queryString);
-      const schoolNo = params.get('schoolNo');
-      const openRange = $(this).val()
-      axios.post("admin/openClosed", {
-        schoolNo,
-        openRange
-      })
-  })
+  // $(document).on('click', '.reject', function() {
+  //   const queryString = window.location.search;
+  //   const params = new URLSearchParams(queryString);
+  //   const schoolNo = params.get('schoolNo');
+  //   const userNo = $(this).parent().parent().find(".userNo").val()
+  //   axios.post("admin/sub/reject", {
+  //     userNo,
+  //     schoolNo
+  //   })
+  //   .then((e)=> {
+  //     if(e.status===200) {
+  //       $(this).parent().parent().empty();
+  //     }
+  //   })
+  // })
+
+  // $(document).on('change', '.openClosed', function() {
+  //     const queryString = window.location.search;
+  //     const params = new URLSearchParams(queryString);
+  //     const schoolNo = params.get('schoolNo');
+  //     const openRange = $(this).val()
+  //     axios.post("admin/openClosed", {
+  //       schoolNo,
+  //       openRange
+  //     })
+  // })
 
   function userList() {
+    console.log("userList()")
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
     const schoolNo = params.get('schoolNo');
       axios.get("admin/userList?schoolNo="+schoolNo)
       .then((e) => {
-        $("#member-list").empty()
+        $("#user-list").empty()
         for(let d of e.data) {
           let text = ""
           text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-          text += "<th>"+d.member.photo+"</th>"
-          text += "<th>"+d.member.nickname+"</th>"
+          text += "<td><img src='https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/" + d.users.photo + "?type=f&w=80&h=80' alt='사진'></td>";
+          text += "<th>"+d.user.nickname+"</th>"
           text += "<th>"+d.level.name+"</th>"
           if(d.levelNo===3) {
             text += "<th><button class='btn btn-outline-danger btn-sm auth'>권한 해지</button></th>"
@@ -285,72 +288,72 @@
             text += "<th><button class='btn btn-outline-success btn-sm auth'>부 매니저 임명</button></th>"
          }
          text += "<th><button class='btn btn-outline-secondary btn-sm black'>블랙 리스트 추가</th></tr>"
-         $("#member-list").append(text)
+         $("#user-list").append(text)
         }
       })
+    }
 
-  }
 
-  function blackList() {
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const schoolNo = params.get('schoolNo');
-    axios.get("admin/sub/blackList?schoolNo="+schoolNo)
-      .then((e) => {
-        $("#black-list").empty()
-        for(let d of e.data) {
-          let text = ""
-          text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-          text += "<th>"+d.member.photo+"</th>"
-          text += "<th>"+d.member.nickname+"</th>"
-          text += "<th><button class='btn btn-outline-success btn-sm unlock'>블랙리스트 해지</button></th></tr>"
-         $("#black-list").append(text)
-        }
-      })
+  // function blackList() {
+  //   const queryString = window.location.search;
+  //   const params = new URLSearchParams(queryString);
+  //   const schoolNo = params.get('schoolNo');
+  //   axios.get("admin/sub/blackList?schoolNo="+schoolNo)
+  //     .then((e) => {
+  //       $("#black-list").empty()
+  //       for(let d of e.data) {
+  //         let text = ""
+  //         text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
+  //         text += "<td><img src='https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/" 
+  //           + d.users.photo + "?type=f&w=40&h=40' alt='사진'></td>";
+  //         text += "<th><button class='btn btn-outline-success btn-sm unlock'>블랙리스트 해지</button></th></tr>"
+  //        $("#black-list").append(text)
+  //       }
+  //     })
 
-  }
+  // }
 
-  function submitList() {
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const schoolNo = params.get('schoolNo');
-    axios.get("admin/sub/submitList?schoolNo="+schoolNo)
-      .then((e) => {
-        $("#submit-list").empty()
-        for(let d of e.data) {
-          let text = ""
-          text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-          text += "<th>"+d.member.photo+"</th>"
-          text += "<th>"+d.member.nickname+"</th>"
-          text += "<th><button class='btn btn-outline-success btn-sm approve'>승인</button></th>"
-          text += "<th><button class='btn btn-outline-danger btn-sm reject'>거절</button></th></tr>"
-         $("#submit-list").append(text)
-        }
-      })
+  // function submitList() {
+  //   const queryString = window.location.search;
+  //   const params = new URLSearchParams(queryString);
+  //   const schoolNo = params.get('schoolNo');
+  //   axios.get("admin/sub/submitList?schoolNo="+schoolNo)
+  //     .then((e) => {
+  //       $("#submit-list").empty()
+  //       for(let d of e.data) {
+  //         let text = ""
+  //         text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
+  //         text += "<th>"+d.member.photo+"</th>"
+  //         text += "<th>"+d.member.nickname+"</th>"
+  //         text += "<th><button class='btn btn-outline-success btn-sm approve'>승인</button></th>"
+  //         text += "<th><button class='btn btn-outline-danger btn-sm reject'>거절</button></th></tr>"
+  //        $("#submit-list").append(text)
+  //       }
+  //     })
 
-  }
+  // }
 
-  function openClosedCheck() {
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const schoolNo = params.get('schoolNo');
-    axios.get("admin/openClosedCheck?schoolNo="+schoolNo)
-    .then((e) => {
-      const openRange = e.data.openRange
-      if(openRange===1) {
-        $("#open").prop("checked", true)
-      } else if(openRange===0) {
-        $("#closed").prop("checked", true)
-      }
-    })
-  }
+  // function openClosedCheck() {
+  //   const queryString = window.location.search;
+  //   const params = new URLSearchParams(queryString);
+  //   const schoolNo = params.get('schoolNo');
+  //   axios.get("admin/openClosedCheck?schoolNo="+schoolNo)
+  //   .then((e) => {
+  //     const openRange = e.data.openRange
+  //     if(openRange===1) {
+  //       $("#open").prop("checked", true)
+  //     } else if(openRange===0) {
+  //       $("#closed").prop("checked", true)
+  //     }
+  //   })
+  // }
 
-  $(document).ready(() => {
-          userList();
-          blackList();
-          submitList();
-          openClosedCheck();
-  });
+  // $(document).ready(() => {
+  //         userList();
+  //         blackList();
+  //         submitList();
+  //         openClosedCheck();
+  // });
 
 
 </script>
