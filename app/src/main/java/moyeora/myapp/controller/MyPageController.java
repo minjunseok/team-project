@@ -23,9 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MyPageController {
   private final SchoolService schoolService;
   private final MyPageService myPageService;
-
   final static Log log = LogFactory.getLog(MyPageController.class);
-
 
   @GetMapping("newpost")
   @ResponseBody
