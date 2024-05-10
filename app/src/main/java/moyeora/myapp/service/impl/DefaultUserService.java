@@ -45,6 +45,7 @@ public class DefaultUserService implements UserService {
         return userDao.findBy(no);
     }
 
+
     public User getUserInfo(int no) {
         return userDao.findByNo(no);
     }
@@ -61,7 +62,7 @@ public class DefaultUserService implements UserService {
 
     @Override
     public String getEmail(String name, String phone) {
-        return userDao.findByNameAndPhone(name,phone);
+        return userDao.findByNameAndPhone(name, phone);
     }
 
     @Override
@@ -89,15 +90,14 @@ public class DefaultUserService implements UserService {
     public int update(User user) {
 
         userTagDao.deleteAllUserTagNo(user.getNo());
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+user.getNo());
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@" + user.getNo());
 
 
-
-        if(user.getTagNums() != null && user.getTagNums().size() >=3) {
-            for(int tagNum : user.getTagNums()) {
+        if (user.getTagNums() != null && user.getTagNums().size() >= 3) {
+            for (int tagNum : user.getTagNums()) {
                 userTagDao.add(tagNum, user.getNo());
-                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+tagNum);
-                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+user.getNo());
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@" + tagNum);
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@" + user.getNo());
 
             }
         }
@@ -124,5 +124,10 @@ public class DefaultUserService implements UserService {
     @Override
     public User findByEmail(String email) {
         return userDao.findByEmail(email);
+    }
+
+    @Override
+    public User get(User loginUser) {
+        return userDao.findByNo(loginUser.getNo());
     }
 }

@@ -1,15 +1,14 @@
 package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.util.FileUploadHelper;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.service.impl.DefaultChatService;
+import moyeora.myapp.util.FileUploadHelper;
 import moyeora.myapp.vo.Dm;
 import moyeora.myapp.vo.DmRoom;
 import moyeora.myapp.vo.Gm;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -38,35 +37,35 @@ public class ChatController {
 
     @GetMapping("chatTest")
     public String chatTestForm(Model model, int sender, int receiver) {
-        model.addAttribute("sender",userService.get(sender));
-        model.addAttribute("receiver",userService.get(receiver));
+        model.addAttribute("sender", userService.get(sender));
+        model.addAttribute("receiver", userService.get(receiver));
         return "/chat/test";
     }
 
     @GetMapping("gm")
     public String gmForm(Model model, int schoolNo, int sender) {
-        model.addAttribute("schoolNo",schoolNo);
-        model.addAttribute("sender",userService.getUserInfo(sender));
-        System.out.println("****************"+userService.getUserInfo(sender) + schoolNo +sender);
-        model.addAttribute("chatList",chatService.getGmList(schoolNo));
+        model.addAttribute("schoolNo", schoolNo);
+        model.addAttribute("sender", userService.getUserInfo(sender));
+        System.out.println("****************" + userService.getUserInfo(sender) + schoolNo + sender);
+        model.addAttribute("chatList", chatService.getGmList(schoolNo));
         return "chat/gm";
     }
 
     @GetMapping("dm")
     public String dmForm(Model model, int sender, int receiver) {
-        DmRoom room = chatService.getDmRoom(sender,receiver);
+        DmRoom room = chatService.getDmRoom(sender, receiver);
 
         if (room == null) {
-            room = new DmRoom(sender,receiver);
+            room = new DmRoom(sender, receiver);
             chatService.addDmRoom(room);
             room = chatService.getDmRoom(room.getNo());
         }
         log.info("room : " + room.toString());
 
-        model.addAttribute("sender",userService.get(sender));
-        model.addAttribute("receiver",userService.get(receiver));
-        model.addAttribute("room",room);
-        model.addAttribute("chatList",chatService.getDmList(room.getNo()));
+        model.addAttribute("sender", userService.get(sender));
+        model.addAttribute("receiver", userService.get(receiver));
+        model.addAttribute("room", room);
+        model.addAttribute("chatList", chatService.getDmList(room.getNo()));
         return "/chat/dm";
     }
 
@@ -82,7 +81,7 @@ public class ChatController {
     @ResponseBody
     public Gm addGm(
             @RequestPart(value = "gm") Gm gm,
-            @RequestParam(value = "photo",required = false) MultipartFile[] photos) throws Exception {
+            @RequestParam(value = "photo", required = false) MultipartFile[] photos) throws Exception {
 
         if (photos != null) {
             ArrayList<String> files = new ArrayList<>();
@@ -98,15 +97,15 @@ public class ChatController {
 
         log.info("gm(+photo) : " + gm);
         chatService.saveGm(gm);
-        System.out.println("@@@@@@@@@GM"+gm);
+        System.out.println("@@@@@@@@@GM" + gm);
         return gm;
     }
 
     @ResponseBody
     @PostMapping("addDm")
     public Dm addDm(
-        @RequestPart(value = "dm") Dm dm,
-        @RequestParam(value = "photo",required = false) MultipartFile[] photos) throws Exception {
+            @RequestPart(value = "dm") Dm dm,
+            @RequestParam(value = "photo", required = false) MultipartFile[] photos) throws Exception {
 
         if (photos != null) {
             ArrayList<String> files = new ArrayList<>();
