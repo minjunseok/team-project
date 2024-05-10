@@ -16,13 +16,13 @@
 <div id="chat-container"></div>
 
 <script th:inline="javascript">
-  var sender = [[${sender.no}]] > 0 ? [[${sender.no}]] : 4;
-  var receiver = [[${receiver.no}]] > 0 ? [[${receiver.no}]] : 5;
+  var schoolNo = [[${schoolNo}]];
+  var sender = [[${sender}]];
 
-  function dm() {
+ function gm() {
     $.ajax({
       type: "GET",
-      url: "/dm?sender=" + sender  + "&" + "receiver=" + receiver,
+      url: "/gm?schoolNo=" + schoolNo  + "&" + "sender=" + sender.no,
       dataType: "html",
       processData: false,
       success: function (result) {
@@ -32,7 +32,7 @@
   }
 
   $(function () {
-    dm();
+    gm();
   });
 </script>
 

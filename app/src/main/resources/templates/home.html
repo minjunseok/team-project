@@ -17,26 +17,24 @@
 <div id="chat-container"></div>
 
 <script th:inline="javascript">
-var sender = [[${sender}]] > 0 ? [[${sender}]] : 4;
-var receiver = [[${receiver}]] > 0 ? [[${receiver}]] : 5;
+  var schoolNo = [[${schoolNo}]];
+  var sender = [[${sender}]];
 
-function dm() {
-  $.ajax({
-    type: "GET",
-    url: "/dm?sender=" + sender  + "&" + "receiver=" + receiver,
-    dataType: "html",
-    processData: false,
-    success: function (result) {
+ function gm() {
+    $.ajax({
+      type: "GET",
+      url: "/gm?schoolNo=" + schoolNo  + "&" + "sender=" + sender.no,
+      dataType: "html",
+      processData: false,
+      success: function (result) {
+        $("#chat-container").html(result);
+      }
+    });
+  }
 
-      $("#chat-container").html(result);
-    }
+  $(function () {
+    gm();
   });
-}
-
-$(function () {
-  dm();
-});
-
-</script>
+</script>git a
 </body>
 </html>

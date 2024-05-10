@@ -1,12 +1,14 @@
 package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.service.StorageService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.service.impl.DefaultChatService;
 import moyeora.myapp.vo.Dm;
 import moyeora.myapp.vo.DmRoom;
 import moyeora.myapp.vo.Gm;
+import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,9 +38,9 @@ public class ChatController {
     private String bucketname;
 
     @GetMapping("chatTest")
-    public String chatTestForm(Model model, int sender, int receiver) {
-        model.addAttribute("sender",userService.get(sender));
-        model.addAttribute("receiver",userService.get(receiver));
+    public String chatTestForm(Model model, @LoginUser User loginUser) {
+        model.addAttribute("sender",userService.get(loginUser.getNo()));
+        model.addAttribute("schoolNo",3);
         return "/chat/test";
     }
 
