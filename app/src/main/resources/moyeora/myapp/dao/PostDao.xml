@@ -62,7 +62,7 @@
     <insert id="addNotice" parameterType="Post"
         useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
         insert into posts(content, school_no, user_no, created_at, category_no)
-        values(#{content}, 1, #{userNo}, NOW(), 1)
+        values(#{content}, #{schoolNo}, #{userNo}, NOW(), 1)
     </insert>
 
 
