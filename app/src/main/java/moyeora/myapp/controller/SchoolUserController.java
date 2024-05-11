@@ -38,22 +38,6 @@ public class SchoolUserController {
     @Value("${ncp.storage.bucket}")
     private String bucketName;
 
-//  @GetMapping("form")
-//  public void form(int category, Model model) throws Exception {
-//   model.addAttribute("postNo", category == 1 ? "일반" : "공지");
-//    model.addAttribute("category", category);
-//  }
-
-
-//  @GetMapping("list")
-//  public void list(Model model, int schoolNo) {
-//    System
-//        .out.println(schoolUserService.findBySchoolUserList(schoolNo));
-//    log.debug(schoolUserService.findBySchoolUserList(schoolNo));
-//
-//    model.addAttribute("schoolusers", schoolUserService.findBySchoolUserList(schoolNo));
-//  }
-
 
     // 사용자 가입 처리를 담당하는 메서드
     @PostMapping("/addSchoolUser")
@@ -64,7 +48,7 @@ public class SchoolUserController {
 
         try {
             // 로그인한 사용자 정보를 사용하여 실제 사용자 정보를 가져옵니다.
-            User user = userService.get(loginUser.getNo());
+            User user = userService.getUserInfo(loginUser.getNo());
             log.debug(user + "@@@@@@@@@");
             if (user == null) {
                 return "error: 유저를 찾을 수 없습니다.";
@@ -72,11 +56,11 @@ public class SchoolUserController {
 
             // 스쿨 유저 추가
             SchoolUser schoolUser = new SchoolUser();
-            schoolUser.setUserNo(loginUser.getNo()); // 로그인한 사용자의 번호를 사용
+            schoolUser.setUserNo(user.getNo()); // 로그인한 사용자의 번호를 사용
             schoolUser.setSchoolNo(schoolNo);
-            schoolUser.setLevelNo(5); // 유저의 스쿨 레벨을 1로 설정
+            schoolUser.setLevelNo(5); // 유저의 스쿨 레벨을 설정
 
-            schoolUserService.addSchoolUser(loginUser.getNo(), schoolNo, schoolUser.getLevelNo());
+            schoolUserService.addSchoolUser(user.getNo(), schoolNo, schoolUser.getLevelNo());
 
             return "success: 스쿨 가입이 완료되었습니다.";
         } catch (Exception e) {
