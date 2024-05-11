@@ -38,6 +38,4 @@ public interface UserService {
 
     User getUserInfo(int no);
 
-    //    스쿨 미가입 회원
-    User get(User loginUser);
 }

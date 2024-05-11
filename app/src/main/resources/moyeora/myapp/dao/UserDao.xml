@@ -105,7 +105,7 @@
     from
     users
     where
-    user_no=#{value}
+    user_no=#{no}
   </select>
 
   <select id="findByEmail" resultMap="UserMap" parameterType="string">

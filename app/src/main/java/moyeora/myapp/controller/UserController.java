@@ -232,9 +232,4 @@ public class UserController implements InitializingBean {
                 .toString();
     }
 
-    @PostMapping("/userNo")
-    @ResponseBody
-    public User getUserNo(@LoginUser User loginUser) {
-        return userService.get(loginUser);
-    }
 }

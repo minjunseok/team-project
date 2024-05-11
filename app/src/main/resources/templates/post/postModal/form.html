@@ -23,9 +23,9 @@
 				<div class="modal-content">
 						<form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
 								<!-- userNo, schoolNo의 값을 넘기기 위해 히든으로 설정 -->
-								<input type="hidden" name="schoolNo" data-th-value="1">
+								<input type="hidden" name="schoolNo" data-th-value="${schoolNo}">
 								<!-- 로그인 구현이 안되어있어서 임의로 적용 -->
-								<input type="hidden" name="userNo" data-th-value="1"> <!-- 로그인 구현이 안되어있어서 임의로 적용 -->
+								<input type="hidden" name="userNo" value="${userNo}"> <!-- 로그인 구현이 안되어있어서 임의로 적용 -->
 								<div>
 										<!-- Summernote 에디터 -->
 										<textarea id="summernote" name='content'></textarea>

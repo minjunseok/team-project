@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang='en'>
 
 <head>
 		<meta charset='UTF-8'>
@@ -106,30 +106,30 @@
 						<option value="1">작성자</option>
 				</select>
 				<input name="keyword" type="text" placeholder="검색어를 입력하세요."/>
-				<input id="schoolNo" name="schoolNo" type="hidden" value="1"/><!-- schoolNo를 Integer로 선언 -->
+				<input id="schoolNo" name="schoolNo" type="hidden" data-th-value="${schoolNo}"/><!-- schoolNo를 Integer로 선언 -->
 				<button id="postSearchForm">검색</button>
 		</div>
 </form>
 
-<th:block th:if="${schoolUser}">
-		<div class="container">
-				<div class="row" style="width: 100px">
-						<div class="col-md-2">
-						</div>
-						<div class="col-md-8" style="text-align:center;" id="">
-								<div id="post_setting" onclick="postForm()" style="width: 120px">
-										<button>새 글 작성</button>
-								</div>
+
+<div class="container" data-th-if="${joined}">
+		<div class="row" style="width: 100px">
+				<div class="col-md-2">
+				</div>
+				<div class="col-md-8" style="text-align:center;" id="">
+						<div id="post_setting" onclick="postForm()" style="width: 120px">
+								<button>새 글 작성</button>
 						</div>
 				</div>
 		</div>
+</div>
 
-		<div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>
-</th:block>
-<th:block th:unless="${schoolUser}">
+<div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>
+
+<!-- 스쿨에 가입하지 않은 경우에만 가입하기 버튼을 보여줌 -->
+<div data-th-unless="${joined}">
 		<button id="joinButton">가입하기</button>
-
-</th:block>
+</div>
 
 
 <!-- 관리자 공지 -->
@@ -627,7 +627,7 @@
 </script>
 
 
-스쿨에 가입하지 않은 유저 가입하기 처리
+<!--스쿨에 가입하지 않은 유저 가입하기 처리-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js"
         integrity="sha512-vuLOE4Fh9lfxaN9n81Vl1HwrqMYz9WKoNmsHNC7Hz7OWX4k4O7FjCyQ1tQ82RJExao+Fas40RLiS5PCfVRGgnQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -639,6 +639,7 @@
 				$("#joinButton").click(function() {
 						const searchParam = window.location.search.replace("?", "");
 						const { schoolNo } = window.Qs.parse(searchParam);
+						console.log(schoolNo);
 						join(schoolNo);
 				});
 		});
@@ -646,38 +647,13 @@
 		function join(schoolNo) {
 				$.ajax({
 						type: "POST",
-						url: "/user/userNo",
-						success: function(response) {
-								const loginUser = response;
-								if (!loginUser) {
-										console.error("로그인한 사용자 정보가 없습니다.");
-										console.log(loginUser);
-										return;
-								}
-								const userNo = loginUser.no;
-								console.log("@@@@@@@==>" + userNo);
-								addSchoolUser(userNo, schoolNo); // AJAX 요청 완료 후에 addSchoolUser 호출
-						},
-						error: function(xhr, status, error) {
-								console.error("사용자 정보 요청 실패:", error);
-								alert("사용자 정보를 가져오지 못했습니다. 다시 시도해주세요.");
-						},
-				});
-		}
-		// 가입하기 버튼을 눌렀을 때 호출되는 함수
-		function addSchoolUser(userNo, schoolNo) {
-				// AJAX 요청을 통해 스쿨 가입 처리를 서버에 요청
-				console.log(schoolNo);
-				console.log(userNo);
-				$.ajax({
-						type: "POST",
 						url: "/schoolUser/addSchoolUser",
 						data: { schoolNo: schoolNo },
 						success: function(response) {
-								console.log(userNo);
 								// 성공 시 알림 표시 및 버튼 갱신
 								alert("가입이 완료되었습니다.");
 								console.log("가입 성공");
+								location.reload(); // 페이지 리로드
 						},
 						error: function(xhr, status, error) {
 								// 실패 시 에러 메시지 표시
