@@ -40,7 +40,7 @@
   <insert id="addSchoolUser" parameterType="SchoolUser">
   INSERT INTO
     school_users (user_no, school_no, level_no, created_at)
-    values (#{userNo}, #{schoolNo}, #{levelNo}, NOW())
+    values (#{userNo}, #{schoolNo}, 5, NOW())
   </insert>
 
 
@@ -210,7 +210,11 @@
 
 
   <delete id="deleteSchoolUsers" parameterType="int">
-    DELETE FROM school_users WHERE school_no = #{value};
+    DELETE FROM school_users
+    WHERE
+      user_no = #{userNo}
+    AND
+      school_no = #{schoolNo};
   </delete>
 
 

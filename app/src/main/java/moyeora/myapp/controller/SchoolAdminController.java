@@ -59,7 +59,6 @@ public class SchoolAdminController {
         model.addAttribute("schoolTagMap", schoolTagMap);
         model.addAttribute("tags", tagService.findAllTag());
         return "school/admin";
-
     }
 
   @GetMapping("userList")
@@ -102,8 +101,8 @@ public class SchoolAdminController {
     }
 
     @PostMapping("sub/reject")
-    public ResponseEntity<?> memberReject(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
-        if (schoolAdminService.authSubAdmin(1, memberUpdateRequestDTO.getSchoolNo()) < 1) {
+    public ResponseEntity<?> memberReject(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO, @LoginUser User loginUser) {
+        if (schoolAdminService.authSubAdmin(loginUser.getNo(), memberUpdateRequestDTO.getSchoolNo()) < 1) {
             return ResponseEntity.status(401).build();
         }
         schoolAdminService.deleteMember(memberUpdateRequestDTO);
@@ -111,8 +110,8 @@ public class SchoolAdminController {
     }
 
     @PostMapping("sub/blackAdd")
-    public ResponseEntity<?> blackAdd(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
-        if (schoolAdminService.authSubAdmin(1, memberUpdateRequestDTO.getSchoolNo()) < 1) {
+    public ResponseEntity<?> blackAdd(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO, @LoginUser User loginUser) {
+        if (schoolAdminService.authSubAdmin(loginUser.getNo(), memberUpdateRequestDTO.getSchoolNo()) < 1) {
             return ResponseEntity.status(401).build();
         }
         memberUpdateRequestDTO.setLevelNo(1);
@@ -121,8 +120,8 @@ public class SchoolAdminController {
     }
 
     @PostMapping("sub/blackDelete")
-    public ResponseEntity<?> blackDelete(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
-        if (schoolAdminService.authSubAdmin(1, memberUpdateRequestDTO.getSchoolNo()) < 1) {
+    public ResponseEntity<?> blackDelete(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO, @LoginUser User loginUser) {
+        if (schoolAdminService.authSubAdmin(loginUser.getNo(), memberUpdateRequestDTO.getSchoolNo()) < 1) {
             return ResponseEntity.status(401).build();
         }
         memberUpdateRequestDTO.setLevelNo(2);
@@ -131,16 +130,16 @@ public class SchoolAdminController {
     }
 
     @PostMapping("levelUpdate")
-    public ResponseEntity<Integer> memberLevelUpdate(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
-        if (schoolAdminService.authAdmin(1, memberUpdateRequestDTO.getSchoolNo()) < 1) {
+    public ResponseEntity<Integer> memberLevelUpdate(@RequestBody SchoolMemberUpdateRequestDTO memberUpdateRequestDTO, @LoginUser User loginUser) {
+        if (schoolAdminService.authAdmin(loginUser.getNo(), memberUpdateRequestDTO.getSchoolNo()) < 1) {
             return ResponseEntity.status(401).build();
         }
         return ResponseEntity.status(200).body(schoolAdminService.levelUpdate(memberUpdateRequestDTO));
     }
 
     @PostMapping("openClosed")
-    public ResponseEntity<?> openClosed(@RequestBody SchoolOpenRangeUpdateRequestDTO schoolOpenRangeUpdateRequestDTO) {
-        if (schoolAdminService.authAdmin(1, schoolOpenRangeUpdateRequestDTO.getSchoolNo()) < 1) {
+    public ResponseEntity<?> openClosed(@RequestBody SchoolOpenRangeUpdateRequestDTO schoolOpenRangeUpdateRequestDTO, @LoginUser User loginUser) {
+        if (schoolAdminService.authAdmin(loginUser.getNo(), schoolOpenRangeUpdateRequestDTO.getSchoolNo()) < 1) {
             return ResponseEntity.status(401).build();
         }
         schoolAdminService.updateSchoolOpenRange(schoolOpenRangeUpdateRequestDTO);
@@ -149,8 +148,8 @@ public class SchoolAdminController {
 
     @GetMapping("openClosedCheck")
     @ResponseBody
-    public ResponseEntity<School> openClosedCheck(int schoolNo) {
-        if (schoolAdminService.authAdmin(1, schoolNo) < 1) {
+    public ResponseEntity<School> openClosedCheck(int schoolNo, @LoginUser User loginUser) {
+        if (schoolAdminService.authAdmin(loginUser.getNo(), schoolNo) < 1) {
             return ResponseEntity.status(401).build();
         }
         return ResponseEntity.status(200).body(schoolAdminService.findBySchoolNo(schoolNo));
