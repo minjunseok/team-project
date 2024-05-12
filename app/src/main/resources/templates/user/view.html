@@ -125,10 +125,6 @@
   </div>
 
   <div>
-    매너온도: <input data-th-value='*{mannerPoint}' disabled name='mannerPoint' type='text' value="50">
-  </div>
-
-  <div>
     이메일: <input data-th-value='*{email}' disabled name='email' type='text' value="hong@test.com">
   </div>
 
@@ -136,31 +132,7 @@
     비밀번호:
     <input disabled name='pwd' placeholder="비밀번호" size="20" type='password'>
     <button id="btn1" type="button">변경하기</button>
-    <div class="modal" id="myModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">비밀번호 변경</h5>
-            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-          </div>
-          <div class="modal-body">
-            <form action="pwdUpdate" data-th-action="@{pwdUpdate}" data-th-object="${user}" enctype='multipart/form-data' method='post'>
-              <div>
-                비밀번호: <input id="pwd" name='pwd' onchange="check_pwd()" placeholder="비밀번호" required size="20" type='password'>
-              </div>
-              <small> *대소문자 특수기호 가능</small>
-              <div>
-                비밀번호 확인: <input id="pwd2" name="pwd2" onchange="check_pwd()" placeholder="비밀번호 확인"  type="password">&nbsp;<span id="check"></span>
-              </div>
-            </form>
-            <div class="modal-footer">
-              <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">닫기</button>
-              <button class="btn btn-primary" type="submit">변경하기</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
   </div>
 
   <div>
@@ -226,9 +198,37 @@
   </tbody>
 
   <div>
-    <button>변경</button>
+    <button type="submit">변경</button>
   </div>
 </form>
+
+
+
+<div class="modal" id="myModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">비밀번호 변경</h5>
+            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+          </div>
+          <div class="modal-body">
+            <form action="pwdUpdate" data-th-action="@{pwdUpdate}" data-th-object="${user}" enctype='multipart/form-data' method='post'>
+              <div>
+                비밀번호: <input id="pwd" name='pwd' onchange="check_pwd()" placeholder="비밀번호" required size="20" type='password'>
+              </div>
+              <small> *대소문자 특수기호 가능</small>
+              <div>
+                비밀번호 확인: <input id="pwd2" name="pwd2" onchange="check_pwd()" placeholder="비밀번호 확인"  type="password">&nbsp;<span id="check"></span>
+              </div>
+            </form>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">닫기</button>
+              <button class="btn btn-primary" type="submit">변경하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 

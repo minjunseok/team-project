@@ -131,4 +131,24 @@ where
 </delete>
 
 
+<update id="classUpdate">
+update school_classes set
+    school_no=#{schoolNo},
+    name=#{name},
+    start_at=#{startAt},
+    ended_at=#{endedAt},
+    content=#{content},
+    photo=#{photo},
+    location=#{location},
+    location_detail=#{locationDetail}
+where
+    user_no = #{userNo}
+    and
+    class_no = #{no}
+  </update>
+
+
+
+
+
 </mapper>

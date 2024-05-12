@@ -3,6 +3,7 @@ package moyeora.myapp.dao;
 
 import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
 import moyeora.myapp.vo.SchoolClass;
+import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,4 +24,7 @@ public interface SchoolClassDao {
   SchoolClass findByNo(int classNo);
 
   void classDelete(ClassDeleteDTO classDeleteDTO);
+
+  int classUpdate(SchoolClass clazz);
+
 }

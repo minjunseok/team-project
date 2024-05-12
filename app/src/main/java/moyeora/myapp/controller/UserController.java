@@ -104,6 +104,7 @@ public class UserController implements InitializingBean {
 
     user.setCreatedAt(old.getCreatedAt());
 
+    System.out.println("$$$$$$$$$$$$$file.getSize()$$$$$$$$$$$$$$" + file.getSize());
 
     if(file.getSize() > 0){
       String filename = fileUpload.upload(this.bucket, this.uploadDir, file);

@@ -3,6 +3,7 @@ package moyeora.myapp.service;
 import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
 import moyeora.myapp.dto.schoolclass.SchoolClassRequestDTO;
 import moyeora.myapp.vo.SchoolClass;
+import moyeora.myapp.vo.User;
 
 import java.util.List;
 
@@ -26,5 +27,7 @@ public interface SchoolClassService {
   void memberDelete(SchoolClassRequestDTO schoolClassRequestDTO);
 
   void classDelete(ClassDeleteDTO classDeleteDTO);
+
+  int classUpdate(SchoolClass clazz);
 
 }
