@@ -11,8 +11,8 @@
 <body>
 
 <div class="modal" id="userManagementModal" data-th-fragment="school-modal">
-    <div class="modal" id="user">
-        <div class="modal-dialog">
+    <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">회원 관리</h5>
@@ -57,8 +57,10 @@
         console.log(userNo)
         if(e.data===2) {
            $(button).text("부 매니저 임명")
+           consol.log("임명")
         } else if(e.data===3) {
            $(button).text("권한 해지")
+           consol.log("해지")
         }
         setTimeout(() => {
           $(".auth").prop('disabled', false)
@@ -67,29 +69,52 @@
     })
   })
 
-
-    function userList() {
+  $(document).on('click', '.black', function() {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
     const schoolNo = params.get('schoolNo');
-        axios.get("admin/userList?schoolNo="+schoolNo)
-        .then((e) => {
-        $("#user-list").empty()
-        for(let d of e.data) {
-            let text = ""
-            text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-            text += "<td><img src='https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/"
-                 + d.users.photo + "?type=f&w=80&h=80' alt='사진'></td>";
-            text += "<th>"+d.level.name+"</th>"
-            if(d.levelNo===3) {
-            text += "<th><button class='btn btn-outline-danger btn-sm auth'>권한 해지</button></th>"
-            } else if(d.levelNo===2) {
-            text += "<th><button class='btn btn-outline-success btn-sm auth'>부 매니저 임명</button></th>"
+    const userNo = $(this).parent().parent().find(".userNo").val()
+    axios.post("admin/sub/blackAdd", {
+      userNo,
+      schoolNo
+    })
+    .then((e)=> {
+      if(e.status===200) {
+        $(this).parent().parent().empty();
+        console.log("클릭")
+      }
+    })
+  })
+
+
+    function userManagementForm() {
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const schoolNo = params.get('schoolNo');
+
+    userManagementModal.show();
+
+    axios.get("admin/userList?schoolNo="+schoolNo)
+    .then((response) => {
+        $("#user-list").empty();
+        for(let user of response.data) {
+            let text = "";
+            text += "<tr>";
+            text += "<td><img src='https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/" + user.users.photo + "?type=f&w=80&h=80' alt='사진'></td>";
+            text += "<td>" + user.level.name + "</td>";
+            if(user.levelNo === 3) {
+                text += "<td><button class='btn btn-outline-danger btn-sm auth'>권한 해지</button></td>";
+            } else if(user.levelNo === 2) {
+                text += "<td><button class='btn btn-outline-success btn-sm auth'>부 매니저 임명</button></td>";
             }
-            text += "<th><button class='btn btn-outline-secondary btn-sm black'>블랙 리스트 추가</th></tr>"
-            $("#user-list").append(text)
-            }
-        })
+            text += "<td><button class='btn btn-outline-secondary btn-sm black'>블랙 리스트 추가</button></td>";
+            text += "</tr>";
+            $("#user-list").append(text);
+        }
+    })
+    .catch((error) => {
+        console.error('Error fetching user list:', error);
+    });
     }
 
 
