@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset='utf-8'/>
 
@@ -7,7 +7,6 @@
 
 </head>
 <body>
-
 
 
 <div class="modal" data-th-fragment="viewModal" id="viewModal" tabindex="-1">
@@ -18,17 +17,18 @@
                 <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
 
+            
             <div class="modal-body">
 
-
-                제목: <span data-th-text="${name}" id="name"></span>
+            
+                <div>
+                제목: <input data-th-value="${name}" id="name">
+                </div>
                 nickname: <span data-th-text="${nickname}" id="nickname"></span>
                 levelName: <span data-th-text="${levelName}" id="levelName"></span>
                 <div>
-                    <form id="attendClass" style="display: inline-block;">
                         <button class="btn btn-success item-hidden" id="submitButton" type="button">참가하기</button>
                         <button class="btn btn-secondary item-hidden" id="cancelButton" type="button">참가 취소하기</button>
-                    </form>
                 </div>
 
                 <div>
@@ -38,14 +38,22 @@
                     nowMemberCount: <span data-th-text="${nowMemberCount}" id="nowMemberCount"></span>
                 </div>
                 <div>
-                    startAt: <span data-th-format="YYYY-MM-DD" data-th-text="${startAt}" id="startAt"></span>
+                    startAt: <input th:value="${startAt}"  id="startAt3"
+                                    type="datetime-local"></input>
+                </div>
+                <div>
+                    endedAt: <input th:value="${endedAt}"  id="endedAt3" type="datetime-local">
                 </div>
                 <div>
                     photo: <img id="photo">
+                            <input name='file' type='file' id="updateFile">
                 </div>
-                <div> content: <span data-th-text="${content}" id="content"></span> </div>
+                
                 <div>
-                    locationDetail: <span data-th-text="${locationDetail}" id="locationDetail2"></span>
+                    content: <input data-th-text="${content}" id="content">
+                </div>
+                <div>
+                    locationDetail: <input data-th-text="${locationDetail}" id="locationDetail2">
                 </div>
 
 
@@ -55,7 +63,7 @@
                         <div class="option">
                             <div>
                                 <form onsubmit="searchPlaces2(); return false;">
-                                    키워드 : <input  id="keyword2" size="15" type="text">
+                                    키워드 : <input  id="keyword2" size="15" type="text" >
                                     <button type="submit">검색하기</button>
                                 </form>
                             </div>
@@ -66,16 +74,19 @@
                         <div id="pagination2"></div>
                     </div>
                 </div>
-                <button class="btn btn-danger" id="deleteEvent">삭제하기</button>
+                <button class="btn btn-danger item-hidden" id="deleteEvent">삭제하기</button>
+                <button class="btn btn-primary item-hidden" id="classUpdateBtn">수정하기</button>
+           
+            
             </div>
         </div>
     </div>
-
+ 
 
 
     <script>
         var submitButton = document.getElementById('submitButton');
-        var attendClass = document.getElementById('attendClass');
+        
 
         // 클릭 이벤트에 대한 핸들러를 추가합니다.
 
@@ -160,8 +171,9 @@
             var height = modalmapContainer2.clientHeight;
             console.log(modalmapContainer2);
             // Kakao Maps API의 resize 함수를 사용하여 지도의 크기를 조정합니다.
-
+            
             map2.relayout();
+            
             // 키워드로 장소를 검색합니다
             console.log("maprelayout");
 
@@ -176,6 +188,26 @@
             $('#cancelButton').addClass("item-hidden");
             $('#submitButton').addClass("item-hidden");
         });
+        
+        function toggleInputReadonly(isReadonly) {
+            var inputElements = document.querySelectorAll('#modal-body2 input');
+            inputElements.forEach(function(inputElement) {
+                inputElement.readOnly = isReadonly;
+                // 읽기 전용이 아닐 때 스타일 변경
+                if (isReadonly) {
+                    inputElement.style.backgroundColor = '#fff'; // 배경색 변경
+                    inputElement.style.border = 'none'; // 테두리 추가
+                    inputElement.disabled = isReadonly;
+                } else {
+                    inputElement.style.backgroundColor = ''; // 배경색 초기화
+                    inputElement.style.border = ''; // 테두리 초기화
+                }
+                
+            });
+       }
+       
+       
+       
     </script>
 
 

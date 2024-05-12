@@ -129,12 +129,20 @@
     let classNo;
     let eventObj;
     let deleteId;
+    let loginUser = [[${loginUser}]];
+    let isReadonly;
+    let classUserNo;
 
     window.onload = function() {
+    
         console.log("test....ok!");
-
+      const queryString = window.location.search;
+      const params = new URLSearchParams(queryString);
+      const sNo = params.get('schoolNo');
+      document.getElementById('schoolNoInput').value = sNo;
+        
         $.ajax({
-            url: 'calendar?schoolNo=1',
+            url: 'calendar?schoolNo='+ sNo,
             type: 'GET',
             dataType: 'json',
             contentType: false,
@@ -148,11 +156,11 @@
                     allDay: true,
                     extendedProps: {
                         classNo: classEvent.no,
+                        
                     }
                 });
             }
             console.log(result);
-            console.log("@@@@@@@@@@@@@@@@@@");
         });
     };
 
@@ -184,18 +192,30 @@
             locale: 'ko',
             dateClick: function(info) {
                 myModal1();
+                var clickedDate = info.date;
+                var localDate = new Date(clickedDate.getTime() + clickedDate.getTimezoneOffset() * 60000); // 로컬 시간대로 변환
+                
+                // 현재 시간 가져오기
+                var now = new Date();
+                var currentHours = now.getHours();
+                var currentMinutes = now.getMinutes();
+                
+                // 로컬 시간대의 시간과 분 추가
+                localDate.setHours(localDate.getHours() + currentHours);
+                localDate.setMinutes(localDate.getMinutes() + currentMinutes);
+                
+                document.getElementById('start').value = localDate.toISOString().slice(0, 16);
+                console.log(info);
             },
             eventClick: function(info) {
                 viewModal1();
 
 
                 eventObj = info.event;
-                console.log("=========================");
-                console.log(eventObj);
                 console.log(eventObj._def.defId);
-                console.log("=========================");
                 classNo = eventObj.extendedProps.classNo;
-                console.log(classNo);
+                
+                console.log("@@@@@@@"+eventObj);
 
                 axios({
                     method: 'GET',
@@ -208,45 +228,68 @@
                     console.log(response.data);
                     var responseData = response.data.schoolClass;
 
-                    document.getElementById('name').textContent = responseData.name;
-                    document.getElementById('content').textContent = responseData.content;
+                    document.getElementById('name').value = responseData.name;
+                    document.getElementById('content').value = responseData.content;
                     document.getElementById('levelName').textContent = responseData.level.levelName;
                     document.getElementById('nickname').textContent = responseData.user.nickname;
                     document.getElementById('keyword2').value = responseData.location;
-                    document.getElementById('locationDetail2').textContent = responseData.locationDetail;
+                    document.getElementById('locationDetail2').value = responseData.locationDetail;
                     document.getElementById('member').textContent = responseData.member;
                     document.getElementById('nowMemberCount').textContent = responseData.nowMemberCount;
-                    document.getElementById('startAt').textContent = responseData.startAt;
+                    document.getElementById('startAt3').value = new Date(responseData.startAt).toISOString().slice(0,
+                    16);
+                    document.getElementById('endedAt3').value = new Date(responseData.endedAt).toISOString().slice(0,
+                    16);
                     schoolNo = responseData.schoolNo;
-
-                    console.log(response.data.isMember);
+                    classUserNo =  response.data.schoolClass.userNo;
+                   
                     if (response.data.isMember == true) {
                         $('#cancelButton').removeClass("item-hidden");
                     } else {
                         $('#submitButton').removeClass("item-hidden");
                     }
-
-                    console.log("===============================================");
+                    
+                    if (response.data.schoolClass.userNo == loginUser) {
+                        $('#deleteEvent').removeClass("item-hidden");
+                         $('#classUpdateBtn').removeClass("item-hidden");
+                         isReadonly = false;
+                         console.log(isReadonly);
+                         console.log("false input 보인다");
+                    } else {
+                        $('#deleteEvent').addClass("item-hidden");
+                         $('#classUpdateBtn').addClass("item-hidden");
+                        isReadonly = true;
+                        console.log(isReadonly);
+                        console.log("true input 안보인다");
+                    }
+                    
+                     console.log(response.data.schoolClass.userNo);
+                     console.log(loginUser);
 
                     var photoElement = document.getElementById('photo');
                     if (responseData.photo) {
                         photoElement.src = 'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/schoolclass/' + responseData.photo + '?type=f&w=300&h=300';
-                        console.log("=======================사진========================");
+                        console.log(responseData.photo);
+                        console.log(photoElement.src);
+                       
                     } else {
-                        photoElement.src = '/img/default-photo.jpeg';
-                        console.log("=====================기본 사진==========================");
+                        photoElement.src = '';
+                          console.log(responseData.photo);
                     }
-                    console.log(responseData.photo);
+                    
+                    toggleInputReadonly(isReadonly);
+                    console.log(isReadonly);
+                    console.log("vieModal1111111111");
                     searchPlaces2();
                     map2.relayout();
                     console.log("searchPlaces");
+                    
+                    
+                    
                 }).catch(function(error) {
                     console.error('에러 발생:', error);
                 });
 
-                console.log("%%%%%%%%%%%%%%%%%%%");
-                console.log(eventObj);
-                console.log("%%%%%%%%%%%%%%%%%");
             }
          });
 
@@ -254,30 +297,40 @@
 
 
                 $('#deleteEvent').on('click', function() {
+                    console.log("삭제이벤트삭제1");
                     removeEvent(eventObj);
-                    console.log("222222222222222");
-                    console.log(eventObj);
+                    console.log("@@@@@@"+eventObj);
+                    console.log("=============1=========");
                 });
 
         function removeEvent() {
+                    console.log(eventObj);
+                    console.log(classUserNo);
+                    var userNo = classUserNo;
+                    
                     var eventId = eventObj.id; // 이벤트 객체의 id 속성 값 가져오기
                     console.log(eventObj.id);
                     console.log(eventId);
+                    console.log("=============2=========");
+                    
                     var calendarEvent = calendar.getEventById(eventId);
-                    console.log("3333333333333");
+                    console.log("삭제이벤트삭제2");
                     console.log(calendarEvent);
+                    console.log("=============3=========");
 
                     if (calendarEvent) {
+                    console.log(classUserNo);
                         axios({
                             method: 'POST',
                             url: '/schoolclass/classDelete',
                             data: {
                                 no: classNo,
-                                schoolNo: schoolNo
+                                schoolNo : schoolNo,
+                                userNo : userNo
                             }
                         }).then(function(response) {
                             calendarEvent.remove();
-                            console.log("4444444444444");
+                            console.log("삭제이벤트삭제3");
                             console.log(calendarEvent);
                             console.log("삭제하기 실행");
                             closeViewModal();
@@ -286,8 +339,108 @@
                             console.error('에러 발생:', error);
                         });
                         console.log(classNo);
+                        console.log(schoolNo);
+                        console.log(userNo);
                     }
         }
+        
+        
+        $('#classUpdateBtn').on('click', function() {
+            console.log("업데이트 이벤트1");
+            updateEvent(eventObj);
+            console.log(eventObj);
+            console.log("=============1=========");
+        });
+    
+    function updateEvent() {
+        var eventId = eventObj.id; // 이벤트 객체의 id 속성 값 가져오기
+        console.log(eventObj.id);
+        console.log(eventId);
+        console.log("==========2============");
+        var calendarEvent = calendar.getEventById(eventId);
+        console.log("업데이트 이벤트2");
+        console.log(calendarEvent);
+        console.log("==========3============");
+        
+        
+        if (calendarEvent) {
+        var userNo = loginUser;
+        var formData = new FormData();
+       
+            
+      
+            
+            formData.append('schoolNo', schoolNo);
+             console.log(schoolNo);
+             
+            formData.append('no',  classNo);
+             console.log(classNo);
+              
+              formData.append('userNo',  userNo);
+             console.log(userNo);
+             
+            formData.append('name', $('#name').val());
+            console.log($('#name').val());
+            
+            formData.append('content', $('#content').val());
+             console.log( $('#content').val());
+             
+            formData.append('location', $('#keyword2').val());
+             console.log($('#keyword2').val());
+             
+            var fileInput = document.getElementById('updateFile');
+            var file = fileInput.files[0]; // 파일 가져오기
+            var photoElement = document.getElementById('photo');
+            console.log(file);
+            console.log(photoElement);
+            
+            if(file) {
+                formData.append('file', file);
+            } else {
+                formData.append('file', null);
+            }
+            
+             
+            
+            formData.append('locationDetail', $('#locationDetail2').val());
+             console.log($('#locationDetail2').val());
+             
+            
+            formData.append('startAt3', $('#startAt3').val());
+             console.log(startAt3);
+             
+            formData.append('endedAt3', $('#endedAt3').val());
+             console.log(endedAt3);
+           
+           
+            console.log(formData);
+            
+
+            console.log(calendarEvent);
+            
+            axios({
+                method: 'POST',
+                url: '/schoolclass/classUpdate',
+                data: formData,
+                dataType: 'json'
+                
+            }).then(function(response) {
+                    console.log("업데이트 이벤트3");
+                    console.log(formData);
+                    console.log("업데이트 실행4");
+                    closeViewModal();
+                    location.reload();
+            
+            }).catch(function(error) {
+                        console.error('에러 발생:', error);
+            });
+        }
+    }
+        
+        
+        
+        
+        
 
     });
 
@@ -304,8 +457,8 @@
 
 
                 <form id="classInfo">
-                    <input name="schoolNo" type="hidden" value="1">
-
+                    <input name="schoolNo" type="hidden" id="schoolNoInput">
+    
                     <div>
                         제목: <input name='name' type='text'>
                     </div>
@@ -318,7 +471,7 @@
 
                     <div>
                         모임일 <br>
-                        날짜 시간 설정: <input name="startAt2" type="datetime-local">
+                        날짜 시간 설정: <input id="start" name="startAt2" type="datetime-local">
                     </div>
 
                     <div>
@@ -454,15 +607,19 @@
             var name = new String (document.querySelector("input[name='name']").value);
             var startDate = new Date(document.querySelector("input[name='startAt2']").value);
             var endDate = new Date(document.querySelector("input[name='endedAt2']").value);
-
+            console.log(startDate);
+            console.log(endDate);
 
             if (isNaN(endDate.valueOf())) {
                 return;
             }
 
             var form = $('#classInfo')[0];
+            console.log(classInfo);
+            console.log(classInfo.file);
+            console.log(form);
             var formData = new FormData(form);
-
+            console.log(formData);
             $.ajax({
                 type : "POST",
                 url : 'add',
@@ -484,7 +641,8 @@
                 console.log("서버에 이벤트를 성공적으로 추가했습니다.");
 
                form.reset();
-               console.log("리셋되었습니다");
+               location.reload();
+               console.log("모달이 리셋되었습니다!!");
             });
         }
 
@@ -625,6 +783,7 @@
         fragment = document.createDocumentFragment(),
         bounds = new kakao.maps.LatLngBounds(),
         listStr = '';
+        console.log(placesList2);
         console.log('displayPlaces2');
         console.log(fragment);
         console.log(listEl);
@@ -652,26 +811,53 @@
             // 마커와 검색결과 항목에 mouseover 했을때
             // 해당 장소에 인포윈도우에 장소명을 표시합니다
             // mouseout 했을 때는 인포윈도우를 닫습니다
-            (function(marker, title,place) {
+            (function(marker, title, place) {
                 kakao.maps.event.addListener(marker, 'mouseover', function() {
-                    displayInfowindow(marker, title);
+                    displayInfowindow2(marker, title);
                 });
 
                 kakao.maps.event.addListener(marker, 'mouseout', function() {
                     infowindow.close();
                 });
 
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    document.getElementById("keyword2").value = place.place_name;
+                    document.getElementById("locationDetail2").value = place.address_name ;
+                    console.log("실행");
+                    var mapModal2 = document.querySelector("#mapModal2");
+                    var mapModalInstance = bootstrap.Modal.getInstance(mapModal2);
+<!--                    mapModalInstance.hide();-->
+
+
+                    console.log( "@@@@@@@@" + JSON.stringify(place));
+                    console.log(JSON.stringify(place.road_address_name));
+                    console.log(JSON.stringify(place.address_name));
+                });
+
+                itemEl.onclick =  function () {
+                    document.getElementById("keyword2").value = place.place_name;
+                    document.getElementById("locationDetail2").value = place.address_name;
+                    console.log("실행");
+                    var mapModal2 = document.querySelector("#mapModal2");
+                    var mapModalInstance = bootstrap.Modal.getInstance(mapModal2);
+<!--                    mapModalInstance.hide();-->
+                };
+
+
                 itemEl.onmouseover =  function () {
-                    displayInfowindow(marker, title);
+                    displayInfowindow2(marker, title);
+                    
                 };
 
                 itemEl.onmouseout =  function () {
                     infowindow.close();
                 };
-            })(marker, places[i].place_name);
+            })(marker, places[i].place_name, places[i]);
+                console.log("==================");
                 console.log(places[i].place_name);
                 console.log(places[i].road_address_name);
                 console.log(places[i]);
+                console.log("==================");
 
             fragment.appendChild(itemEl);
             console.log(fragment);
@@ -732,7 +918,8 @@
                 kakao.maps.event.addListener(marker, 'click', function() {
                     document.getElementById("location").value = place.place_name;
                     document.getElementById("locationDetail").value = place.address_name ;
-
+                    
+                    
                     var mapModal = document.querySelector("#mapModal");
                     var mapModalInstance = bootstrap.Modal.getInstance(mapModal);
                     mapModalInstance.hide();
@@ -746,7 +933,7 @@
                 itemEl.onclick =  function () {
                     document.getElementById("location").value = place.place_name;
                     document.getElementById("locationDetail").value = place.address_name;
-
+                    
                     var mapModal = document.querySelector("#mapModal");
                     var mapModalInstance = bootstrap.Modal.getInstance(mapModal);
                     mapModalInstance.hide();
@@ -782,7 +969,7 @@
 
     // 검색결과 항목을 Element로 반환하는 함수입니다
     function getListItem(index, places) {
-    console.log('getListItem');
+    console.log('11111111111111111111111111111111111111 ');
         var el = document.createElement('li'),
         itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
                     '<div class="info">' +
@@ -805,6 +992,7 @@
         return el;
     }
 
+    
 
 
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
@@ -930,6 +1118,14 @@
         var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
         infowindow.setContent(content);
         infowindow.open(map, marker);
+    }
+    
+    // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+    // 인포윈도우에 장소명을 표시합니다
+    function displayInfowindow2(marker, title) {
+        var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+        infowindow.setContent(content);
+        infowindow.open(map2, marker);
     }
 
      // 검색결과 목록의 자식 Element를 제거하는 함수입니다

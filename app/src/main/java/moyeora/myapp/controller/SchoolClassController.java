@@ -53,9 +53,11 @@ public class SchoolClassController {
   }
 
   @GetMapping("realCalendar")
-  public void form(Model model, int schoolNo) throws Exception {
+  public void form(Model model, int schoolNo,@LoginUser User loginUser) throws Exception {
     model.addAttribute("schoolMembers",schoolMemberService.list(schoolNo));
+    model.addAttribute("loginUser",loginUser.getNo());
     System.out.println("=====classcontorller.schoolMember==============>    " + schoolMemberService);
+    System.out.println("realCalendar@@@@@@@@" + schoolNo);
 
   }
 
@@ -63,6 +65,7 @@ public class SchoolClassController {
   @ResponseBody
   public List<SchoolClass> Calendar(int schoolNo) throws Exception {
     System.out.println("=====classcontorller.schoolClass==============>    " + schoolClassService);
+    System.out.println("calendar@@@@@@@@" + schoolNo);
     return schoolClassService.schoolCalendarList(schoolNo);
   }
 
@@ -74,9 +77,18 @@ public class SchoolClassController {
   public Object add(SchoolClass clazz, MultipartFile file,
                   LocalDateTime startAt2,
                   LocalDateTime endedAt2,
-                  ZoneId zoneId
+                  ZoneId zoneId,
+                  @LoginUser User loginUser,
+                  int schoolNo
   ) throws Exception{
-    clazz.setUserNo(2);
+
+    System.out.println("1111111111111111111111111111111111");
+    clazz.setUserNo(loginUser.getNo());
+    clazz.setSchoolNo(schoolNo);
+    System.out.println("@@@@@@@@@@(add)loginUser@@@@@@@@@"+loginUser);
+    System.out.println("@@@@@@@@@@(add)schoolNo@@@@@@@@@"+schoolNo);
+    System.out.println("@@@@@@@@@@(add)loginUser.getNo()@@@@@@@@@"+loginUser.getNo());
+    System.out.println("@@@@@@@@@@(add)file.getSize()@@@@@@@@@"+file.getSize());
     if(file.getSize() > 0){
       String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
       clazz.setPhoto(filename);
@@ -119,6 +131,7 @@ public class SchoolClassController {
   @ResponseBody
   public Object attend(@RequestBody SchoolClassRequestDTO schoolClassRequestDTO, @LoginUser User loginUser) throws Exception {
     schoolClassRequestDTO.setUserNo(loginUser.getNo());
+    System.out.println("@@@@@@@@@@(insert)loginUser.getNo()@@@@@@@@@"+loginUser.getNo());
     schoolClassService.insert(schoolClassRequestDTO);
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
     System.out.println(schoolClassRequestDTO);
@@ -131,6 +144,7 @@ public class SchoolClassController {
   @ResponseBody
   public Object MemberDelete(@RequestBody SchoolClassRequestDTO schoolClassRequestDTO, @LoginUser User loginUser) throws Exception {
     schoolClassRequestDTO.setUserNo(loginUser.getNo());
+    System.out.println("@@@@@@@@@@(memberDelete)loginUser.getNo()@@@@@@@@@"+loginUser.getNo());
     schoolClassService.memberDelete(schoolClassRequestDTO);
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
     System.out.println(schoolClassRequestDTO);
@@ -142,28 +156,89 @@ public class SchoolClassController {
   @ResponseBody
   public void classDelete(@RequestBody SchoolClass clazz, @LoginUser User loginUser) throws Exception {
 
+    System.out.println("@@@@@@classDelete clazz.getUserNo()@@@@@@@" + clazz.getUserNo());
+    System.out.println("@@@@@@classDelete loginUser.getNo()@@@@@@@" + loginUser.getNo());
+
+  if (clazz.getUserNo() == loginUser.getNo()) {
+
+
     ClassDeleteDTO classDeleteDTO = new ClassDeleteDTO();
     classDeleteDTO.setClassNo(clazz.getNo());
-    System.out.println("@@@@@@@@@@@@@" + clazz.getNo());
+    System.out.println("@@@@@@classDelete@@@@@@@" + clazz.getNo());
 
     classDeleteDTO.setUserNo(loginUser.getNo());
+    System.out.println("@@@@classDelete@@@@@@(classDelete)loginUser.getNo()@@@@@@@@@" + loginUser.getNo());
 
     SchoolClassRequestDTO schoolClassRequestDTO = new SchoolClassRequestDTO();
     schoolClassRequestDTO.setSchoolNo(clazz.getSchoolNo());
     schoolClassRequestDTO.setClassNo(classDeleteDTO.getClassNo());
-    System.out.println("@@@@@@@@@@@@@");
+    System.out.println("@@@@@@classDelete@@@@@@@");
     System.out.println(schoolClassRequestDTO);
-    System.out.println("@@@@@@@@@@@@@");
+    System.out.println("@@@@@@@classDelete@@@@@@");
 
     schoolClassService.memberDelete(schoolClassRequestDTO);
     schoolClassService.classDelete(classDeleteDTO);
-
+  } else {
+    throw new Exception("권한이 없습니다.");
+  }
 
   }
 
 
-  @GetMapping("viewTest")
-  public Object test3(int classNo) throws Exception {
+    @PostMapping("classUpdate")
+    @ResponseBody
+    public void update(SchoolClass clazz,
+                       MultipartFile file,
+                       @LoginUser User loginUser,
+                       LocalDateTime startAt3,
+                       LocalDateTime endedAt3,
+                       ZoneId zoneId) throws Exception {
+
+      System.out.println("$$$$$$$$$$$$$classUpdate clazz.getNo$$$$$$$$$$$$$$" + clazz.getNo());
+      System.out.println("=======classcontroller.startdate============>    " + startAt3);
+      System.out.println("=========classcontrollr.endeddate==========>    " + endedAt3);
+
+
+      SchoolClass old = schoolClassService.get(clazz.getNo());
+      System.out.println("$$$$$$$$$$$$$classUpdate$ old$$$$$$$$$$$$$" + old);
+      System.out.println("$$$$$$$$$$$$$$classUpdate old.getNo$$$$$$$$$$$$$" + old.getNo());
+      if (old == null) {
+        throw new Exception("회원 번호가 유효하지 않습니다.");
+      }
+      clazz.setNo(old.getNo());
+
+      clazz.setCreatedAt(old.getCreatedAt());
+
+      if (file != null) {
+        String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
+        clazz.setPhoto(filename);
+        fileUpload.delete(this.bucket, this.uploadDir, old.getPhoto());
+      } else {
+        clazz.setPhoto(old.getPhoto());
+      }
+
+      Date startAtDate = Date.from(startAt3.atZone(zoneId).toInstant());
+      Date endedAtDate = Date.from(endedAt3.atZone(zoneId).toInstant());
+
+      clazz.setStartAt(startAtDate);
+      clazz.setEndedAt(endedAtDate);
+
+      System.out.println("=======classcontroller.startdate============>    " + startAtDate);
+      System.out.println("=========classcontrollr.endeddate==========>    " + endedAtDate);
+
+      System.out.println("$$$$$$$$$$$$$classUpdate clazz$$$$$$$$$$$$$$" + clazz);
+
+      schoolClassService.classUpdate(clazz);
+      System.out.println("@@@@업데이트 업데이트 업데이트@@@@@");
+      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ clazz);
+      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ schoolClassService);
+
+    }
+
+
+
+  @GetMapping("test")
+  public Object test3() throws Exception {
 
 
     JsonResult jsonResult = new JsonResult();

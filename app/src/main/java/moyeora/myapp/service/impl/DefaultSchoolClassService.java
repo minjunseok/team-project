@@ -21,7 +21,7 @@ public class DefaultSchoolClassService implements SchoolClassService {
   private final SchoolClassDao schoolClassDao;
   private final ClassUserDao classUserDao;
   private final SchoolMemberDao schoolMemberDao;
-  private final AlertDao alertDao;
+
 
   @Override
   public List<SchoolClass> findByDate(String date) {
@@ -98,10 +98,7 @@ public class DefaultSchoolClassService implements SchoolClassService {
   @Override
   public void classDelete(ClassDeleteDTO classDeleteDTO) {
     SchoolClassRequestDTO schoolClassRequestDTO = new SchoolClassRequestDTO();
-//    System.out.println("===========================");
-//    System.out.println(schoolClassRequestDTO);
-//    System.out.println("===========================");
-//    classUserDao.memberDelete(schoolClassRequestDTO);
+
 
     System.out.println("@@@@@@@@@@@@");
     System.out.println(classDeleteDTO);
@@ -110,6 +107,11 @@ public class DefaultSchoolClassService implements SchoolClassService {
 
     schoolClassDao.classDelete(classDeleteDTO);
 
+  }
+
+  @Override
+  public int classUpdate(SchoolClass clazz) {
+    return schoolClassDao.classUpdate(clazz);
   }
 
   @Override
