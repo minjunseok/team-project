@@ -176,7 +176,6 @@
 
         // 스쿨명이 사용 가능한지 확인 (signupBtn이 1인 경우 사용 가능함을 의미)
         if (signupBtn !== 1) {
-            alert('스쿨명을 확인하세요.');
             Swal.fire({
               icon: 'warning',
               title: '앗!....',
@@ -203,6 +202,21 @@
           // true를 리턴하거나 아무것도 리턴하지 않으면 원래대로
           // 입력 폼의 값을 서버에 제출한다. 즉 HTTP 요청을 수행한다.
         };
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "success",
+          title: "스쿨개설 완료!"
+        });
         return true;
     }
 
@@ -231,7 +245,6 @@
             dataType: "json",
             success : function(data) {
                 if (data.cnt > 0) {
-                    alert("");
                     Swal.fire({
                       icon: 'warning',
                       title: '앗!....',
@@ -243,7 +256,6 @@
                     $("#name").focus();
                     signupBtn = 0; // 중복되는 스쿨명이므로 signupBtn을 0으로 설정
                 } else {
-                    alert("사용가능한 스쿨명입니다.");
                     Swal.fire({
                       icon: 'success',
                       title: '사용 가능한 스쿨명입니다.',

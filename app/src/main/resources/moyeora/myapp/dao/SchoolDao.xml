@@ -133,7 +133,6 @@
   </update>
 
 
-
   <select id="findAllByPageSize" resultMap="SchoolMap">
     select
     s.school_no,
@@ -196,7 +195,7 @@
 
 
   <delete id="deleteSchool" parameterType="int">
-    DELETE FROM schools WHERE school_no = #{value};
+    DELETE FROM schools WHERE school_no = #{value}
   </delete>
 
 </mapper>

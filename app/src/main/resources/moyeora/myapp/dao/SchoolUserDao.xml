@@ -166,35 +166,19 @@
   </update>
 
 
+  <update id="disableForeignKeyChecks">
+    SET FOREIGN_KEY_CHECKS=0;
+  </update>
 
   <delete id="deleteMember">
-    <!-- <![CDATA[
-      SET FOREIGN_KEY_CHECKS=0;
-    ]]>
-    delete
-    from
-    school_users
-    where
-    user_no = #{userNo}
-    and
-    school_no = #{schoolNo}
-    <![CDATA[
-      SET FOREIGN_KEY_CHECKS=1;
-    ]]> -->
-
-    <![CDATA[
-    SET FOREIGN_KEY_CHECKS=0;
-    ]]>
-    delete from
-        school_users
-      where
-        user_no = #{userNo}
-      and
-      school_no = #{schoolNo};
-    <![CDATA[
-      SET FOREIGN_KEY_CHECKS=1;
-    ]]>
+    delete from school_users where user_no = #{userNo} and school_no = #{schoolNo}
   </delete>
+
+  <update id="enableForeignKeyChecks">
+    SET FOREIGN_KEY_CHECKS=1;
+  </update>
+
+
 
   <select id="findAdmin" resultType="int">
     select
