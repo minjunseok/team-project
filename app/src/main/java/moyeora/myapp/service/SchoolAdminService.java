@@ -13,6 +13,7 @@ public interface SchoolAdminService {
 
   int levelUpdate(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
 
+
   void blackUpdate(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
 
   void deleteMember(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
