@@ -94,7 +94,7 @@ public class UserController implements InitializingBean {
 
   @PostMapping("update")
   public String update(User user, MultipartFile file, @LoginUser User loginUser) throws Exception {
-    User old = userService.get(loginUser.getNo());
+    User old = userService.get(user.getNo());
     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + old);
     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + old.getNo());
     if (old == null) {
@@ -179,7 +179,6 @@ public class UserController implements InitializingBean {
           String authId,
           Model model)
           throws Exception {
-
 
     String savedCode = (String) redisUtil.getData(authId);
 
