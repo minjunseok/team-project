@@ -6,6 +6,8 @@
     <title>모여라</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <style>
         body {
             display: flex;
@@ -147,7 +149,11 @@
     function validateForm() {
         var fileInput = document.getElementById('image');
         if (fileInput.files.length === 0) {
-            alert('스쿨 사진을 선택하세요.');
+            Swal.fire({
+              icon: 'warning',
+              title: '앗!....',
+              text: '스쿨 사진을 선택하세요!'
+            });
             return false;
         }
 
@@ -160,13 +166,22 @@
             }
         }
         if (!isChecked) {
-            alert('관심사를 하나 이상 선택하세요.');
+            Swal.fire({
+              icon: 'warning',
+              title: '앗!....',
+              text: '관심사를 하나 이상 선택하세요.'
+            });
             return false;
         }
 
         // 스쿨명이 사용 가능한지 확인 (signupBtn이 1인 경우 사용 가능함을 의미)
         if (signupBtn !== 1) {
             alert('스쿨명을 확인하세요.');
+            Swal.fire({
+              icon: 'warning',
+              title: '앗!....',
+              text: '스쿨명을 확인하세요.'
+            });
             return false;
         }
 
@@ -176,7 +191,11 @@
           //
           var name = document.querySelector("#name");
           if (name.value == "" || name.value.length < 2 ) {
-            alert("스쿨이름을 2자 이상을 입력하세요.");
+            Swal.fire({
+              icon: 'warning',
+              title: '앗!....',
+              text: '스쿨이름을 2자 이상 입력하세요.'
+            });
             return false; // false를 리턴하면 입력 폼의 값을 서버에 제출하지 않는다.
                           // 즉 HTTP 요청을 수행하지 않는다.
           }
@@ -197,7 +216,11 @@
         console.log("Sending schoolName: " + schoolName);
 
         if (schoolName.length < 2) {
-            alert("스쿨이름을 2자 이상 입력하세요.");
+            Swal.fire({
+              icon: 'warning',
+              title: '앗!....',
+              text: '스쿨이름을 2자 이상 입력하세요.'
+            });
             return; // 길이가 충족되지 않으면 함수 종료
         }
 
@@ -208,7 +231,12 @@
             dataType: "json",
             success : function(data) {
                 if (data.cnt > 0) {
-                    alert("스쿨명이 존재합니다. 다른 스쿨명을 입력해주세요.");
+                    alert("");
+                    Swal.fire({
+                      icon: 'warning',
+                      title: '앗!....',
+                      text: '스쿨명이 존재합니다. 다른 스쿨명을 입력해주세요.'
+                    });
                     // 아이디가 존재할 경우 빨깡으로 , 아니면 파랑으로 처리하는 디자인
                     $("#div1").addClass("has-error")
                     $("#div1").removeClass("has-success")
@@ -216,6 +244,11 @@
                     signupBtn = 0; // 중복되는 스쿨명이므로 signupBtn을 0으로 설정
                 } else {
                     alert("사용가능한 스쿨명입니다.");
+                    Swal.fire({
+                      icon: 'success',
+                      title: '사용 가능한 스쿨명입니다.',
+                      text: ''
+                    });
                     // 아이디가 존재할 경우 빨깡으로 , 아니면 파랑으로 처리하는 디자인
                     $("#div1").addClass("has-success")
                     $("#div1").removeClass("has-error")
