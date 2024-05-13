@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.w3.org/1999/xhtml"
+>
+<head>
+    <meta charset="UTF-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+    />
+    <link
+            rel="stylesheet"
+            href="/static/admin/css/header.css"
+            type="text/css"
+    />
+    <link
+            rel="preconnect"
+            href="https://fonts.googleapis.com"
+    />
+    <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+            rel="stylesheet"
+    />
+
+    <title>moyeora - 모여라에서 취미가 맞는 친구를 사귀어 보세요!</title>
+    <script
+            src="https://kit.fontawesome.com/ee5cb5f44c.js"
+            crossorigin="anonymous"
+    ></script>
+    <script
+            src="/static/admin/js/header.js"
+            defer
+    ></script>
+</head>
+
+<body>
+<div th:fragment="header">
+    <header>
+        <nav class="header">
+            <div class="navbar_logo">
+                <a href="">
+                    <!-- 이미지를 눌렀을 때 메인홈으로 이동하는 주소 넣으면 됨. -->
+                    <img
+                            src="/static/img/moyeoraL.jpeg"
+                            alt="moyeora로고"
+                            class="logo"
+                    />
+                </a>
+            </div>
+
+            <ul class="header_menu">
+                <!--각 태크에 맞게 기능 연결 하면 됨.-->
+                <li><a data-th-href="@{/index}">회원가입</a></li>
+                <li sec:authorize="isAnonymous()">
+                    <a data-th-href="@{/auth/form}">로그인</a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a data-th-href="@{/auth/logout}"> <span sec:authentication="name"></span> 로그아웃</a>
+                </li>
+                <li><a href="">Feed</a></li>
+                <li><a data-th-href="@{/chat/gm?schoolNo=1}">gm</a></li>
+            </ul>
+
+            <ul class="header_icons">
+                <a href="">
+                    <!-- 아이콘 클릭했을 때 사용자 설정으로 이동하는 기능 추가하면 됨. -->
+                    <i class="fa-solid fa-user"></i>
+                </a>
+            </ul>
+        </nav>
+
+        <hr/>
+    </header>
+</div>
+</body>
+</html>
