@@ -32,6 +32,7 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
     schoolUserDao.updateLevel(memberUpdateRequestDTO);
     return level;
   }
+  //
 
   public void blackUpdate(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
     schoolUserDao.updateLevel(memberUpdateRequestDTO);
@@ -42,7 +43,7 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
   }
 
   public void approveUpdate(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO) {
-    memberUpdateRequestDTO.setLevelNo(2);
+    //memberUpdateRequestDTO.setLevelNo(2);
     schoolUserDao.updateLevel(memberUpdateRequestDTO);
   }
 

@@ -41,7 +41,9 @@
             console.log('schoolDeleteForm()');
 
             // 삭제 버튼 클릭 시 모달에 스쿨명 표시
-            const schoolNo = $('#schoolNo').val();
+               const queryString = window.location.search;
+               const params = new URLSearchParams(queryString);
+               const schoolNo = params.get('schoolNo');
             // 모달 열기
             deleteSchoolModal.show();
 

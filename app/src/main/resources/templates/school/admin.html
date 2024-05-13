@@ -13,11 +13,11 @@
   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <!-- 공통 헤더 적용 첨부 -->
-  <link rel="stylesheet" href="/static/admin/css/header.css"/>
+  <!-- <link rel="stylesheet" href="/static/admin/css/header.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
-        rel="stylesheet">
+        rel="stylesheet"> -->
 </head>
 <body>
 
@@ -30,6 +30,7 @@
     <div class="col-md-8" style="text-align:center;" id="">
       <div id="school_setting" onclick="schoolForm()">스쿨 정보 수정</div>
       <div id="user_setting" onclick="modal1()">회원 관리</div>
+      <div id="user_setting2" onclick="userManagementForm()">회원 관리2</div>
       <div id="submit_setting" onclick="modal2()">블랙리스트 관리</div>
       <div id="black_setting" onclick="modal3()">가입 승인 관리</div>
       <div id="private_setting" onclick="modal4()">공개여부</div>
@@ -37,7 +38,7 @@
       <div id="school_delete" onclick="schoolDeleteForm()">스쿨 삭제</div>
       <!-- modal member list -->
       <div class="modal" id="member">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">회원 관리</h5>
@@ -63,7 +64,7 @@
         </div>
       </div>
       <div class="modal" id="submit">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">회원 관리</h5>
@@ -131,7 +132,6 @@
       </div>
 
       <div data-th-replace="school/modal/school :: school-modal">스쿨 변경</div>
-
       <div data-th-replace="school/modal/delete :: school-modal">스쿨 삭제</div>
 
     </div>
@@ -166,30 +166,42 @@
   }
 
   $(document).on('click', '.auth', function() {
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const schoolNo = params.get('schoolNo');
-    const userNo = $(this).parent().parent().find(".userNo").val()
-    const button = this;
-    $(".auth").prop('disabled', true)
-    axios.post("admin/levelUpdate", {
-      userNo,
-      schoolNo
-    })
-    .then((e) => {
-      if(e.status===200) {
-        console.log(userNo)
-        if(e.data===2) {
-           $(button).text("부 매니저 임명")
-        } else if(e.data===3) {
-           $(button).text("권한 해지")
+      const queryString = window.location.search;
+      const params = new URLSearchParams(queryString);
+      const schoolNo = params.get('schoolNo');
+      const userNo = $(this).parent().parent().find(".userNo").val();
+      const button = this;
+      $(".auth").prop('disabled', true);
+
+      const level = 3;
+
+      // 요청 헤더에 인증 정보를 포함하여 POST 요청을 보냅니다.
+      axios.post("http://localhost:8080/school/admin/levelUpdate", {
+        userNo,
+        schoolNo,
+        level
+      }, {
+        withCredentials: true // 인증 정보를 포함하여 요청을 보냅니다.
+      })
+      .then((response) => {
+        if(response.status === 200) {
+          console.log(userNo);
+          if(response.data === 2) {
+             $(button).text("부 매니저 임명");
+          } else if(response.data === 3) {
+             $(button).text("권한 해지");
+          }
+          setTimeout(() => {
+            $(".auth").prop('disabled', false);
+          });
         }
-        setTimeout(() => {
-          $(".auth").prop('disabled', false)
-      }, 2000);
-      }
-    })
-  })
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
+
+
 
   $(document).on('click', '.black', function() {
     const queryString = window.location.search;
@@ -223,21 +235,36 @@
     })
   })
 
+
+
   $(document).on('click', '.approve', function() {
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const schoolNo = params.get('schoolNo');
-    const userNo = $(this).parent().parent().find(".userNo").val()
-    axios.post("admin/sub/approve", {
-      userNo,
-      schoolNo
-    })
-    .then((e)=> {
-      if(e.status===200) {
-        $(this).parent().parent().empty();
-      }
-    })
-  })
+      const queryString = window.location.search;
+      const params = new URLSearchParams(queryString);
+      const schoolNo = params.get('schoolNo');
+      const userNo = $(this).parent().parent().find(".userNo").val();
+      const levelNo = 2; // level을 정의합니다.
+
+      axios.post("admin/sub/approve", {
+          userNo,
+          schoolNo,
+          level_no: levelNo // level을 level_no로 변경하여 POST 요청에 포함합니다.
+      })
+      .then((response) => {
+          if(response.status === 200) {
+              $(this).parent().parent().empty();
+              console.log('사용자가 성공적으로 승인되었습니다.');
+              console.log(userNo);
+              console.log(schoolNo);
+              console.log(levelNo);
+          }
+      })
+      .catch((error) => {
+          console.error('사용자 승인 중 오류 발생:', error);
+          console.log(levelNo);
+      });
+  });
+
+
 
   $(document).on('click', '.reject', function() {
     const queryString = window.location.search;
@@ -246,7 +273,7 @@
     const userNo = $(this).parent().parent().find(".userNo").val()
     axios.post("admin/sub/reject", {
       userNo,
-      schoolNo
+      schoolNo,
     })
     .then((e)=> {
       if(e.status===200) {
@@ -272,13 +299,14 @@
     const schoolNo = params.get('schoolNo');
       axios.get("admin/userList?schoolNo="+schoolNo)
       .then((e) => {
+        console.log(e.data);
         $("#member-list").empty()
         for(let d of e.data) {
           let text = ""
           text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-          text += "<th>"+d.member.photo+"</th>"
+          text += "<td><img src='https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/" + d.member.photo + "?type=f&w=80&h=80' alt='사진'></td>";
           text += "<th>"+d.member.nickname+"</th>"
-          text += "<th>"+d.level.name+"</th>"
+          text += "<th>"+d.level.levelName+"</th>"
           if(d.levelNo===3) {
             text += "<th><button class='btn btn-outline-danger btn-sm auth'>권한 해지</button></th>"
           } else if(d.levelNo===2) {
@@ -288,8 +316,7 @@
          $("#member-list").append(text)
         }
       })
-
-  }
+    }
 
   function blackList() {
     const queryString = window.location.search;
@@ -301,14 +328,13 @@
         for(let d of e.data) {
           let text = ""
           text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-          text += "<th>"+d.member.photo+"</th>"
+          text += "<td><img src='https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/" + d.member.photo + "?type=f&w=80&h=80' alt='사진'></td>";
           text += "<th>"+d.member.nickname+"</th>"
           text += "<th><button class='btn btn-outline-success btn-sm unlock'>블랙리스트 해지</button></th></tr>"
          $("#black-list").append(text)
         }
       })
-
-  }
+    }
 
   function submitList() {
     const queryString = window.location.search;
@@ -320,14 +346,13 @@
         for(let d of e.data) {
           let text = ""
           text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-          text += "<th>"+d.member.photo+"</th>"
+          text += "<td><img src='https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/" + d.member.photo + "?type=f&w=80&h=80' alt='사진'></td>";
           text += "<th>"+d.member.nickname+"</th>"
           text += "<th><button class='btn btn-outline-success btn-sm approve'>승인</button></th>"
           text += "<th><button class='btn btn-outline-danger btn-sm reject'>거절</button></th></tr>"
          $("#submit-list").append(text)
         }
       })
-
   }
 
   function openClosedCheck() {
