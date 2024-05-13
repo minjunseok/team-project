@@ -122,14 +122,22 @@
             });
 
             if (tagNums.length === 0) {
-                alert("스쿨관심사를 적어도 하나 이상 선택하세요.");
+                Swal.fire({
+                  icon: 'warning',
+                  title: '앗!....',
+                  text: '스쿨관심사를 적어도 하나 이상 선택하세요.'
+                });
                 return;
             }
 
             // 스쿨 이름이 변경되었는지 확인
             var currentSchoolName = document.getElementById('school_name').value;
             if (currentSchoolName !== initialSchoolName && signupBtn === 0) {
-                alert("스쿨이름 중복 확인을 해주세요.");
+                Swal.fire({
+                  icon: 'warning',
+                  title: '앗!....',
+                  text: '스쿨이름 중복 확인을 해주세요.'
+                });
                 return;
             }
 
@@ -160,8 +168,26 @@
                     // 응답을 확인하여 성공적으로 처리되었을 때만 알림 창을 띄움
                     if (response) {
                         console.log('School information updated successfully:', response.data);
-                        alert('스쿨 수정이 완료되었습니다.');
-                        window.location.reload();
+                        const Toast = Swal.mixin({
+                          toast: true,
+                          position: "top-end",
+                          showConfirmButton: false,
+                          timer: 2000,
+                          timerProgressBar: true,
+                          didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                          }
+                        });
+                        Toast.fire({
+                          icon: "success",
+                          title: "스쿨수정 완료!"
+                        });
+                        // 2초 후에 페이지를 다시 로드
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 2000);
+                        //window.location.reload();
                     } else {
                         console.error('Error updating school information:', response.data.error);
                         // 오류 처리 코드 추가
@@ -182,7 +208,11 @@
                 var schoolName = $("#school_name").val(); // 스쿨명 입력값 가져오기
 
                    if (schoolName.length < 2) {
-                       alert("스쿨 이름을 2글자 이상으로 입력하세요.");
+                       Swal.fire({
+                          icon: 'warning',
+                          title: '앗!....',
+                          text: '스쿨 이름을 2글자 이상 입력하세요.'
+                        });
                        return; // 함수 종료
                    }
 
@@ -195,12 +225,19 @@
                     success: function (data) {
                         if (data.cnt > 0) {
                             // 중복된 스쿨명이 있을 경우
-                            alert("스쿨명이 존재합니다. 다른 스쿨명을 입력해주세요.");
+                            Swal.fire({
+                              icon: 'warning',
+                              title: '앗!....',
+                              text: '스쿨명이 존재합니다. 다른 스쿨명을 입력해주세요.'
+                            });
                             signupBtn = 0; // 중복되는 스쿨명이므로 signupBtn을 0으로 설정
                             updateBtn.prop("disabled", true); // 중복이므로 업데이트 버튼 비활성화
                         } else {
                             // 중복된 스쿨명이 없을 경우
-                            alert("사용가능한 스쿨명입니다.");
+                            Swal.fire({
+                              icon: 'success',
+                              title: '사용가능한 스쿨명입니다.'
+                            });
                             signupBtn = 1; // 중복되지 않는 스쿨명이므로 signupBtn을 1로 설정
                             updateBtn.prop("disabled", false); // 중복이 아니므로 업데이트 버튼 활성화
                         }

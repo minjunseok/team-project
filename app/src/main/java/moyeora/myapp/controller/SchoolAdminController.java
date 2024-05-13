@@ -106,6 +106,7 @@ public class SchoolAdminController {
         if (schoolAdminService.authSubAdmin(loginUser.getNo(), memberUpdateRequestDTO.getSchoolNo()) < 1) {
             return ResponseEntity.status(401).build();
         }
+        System.out.println(memberUpdateRequestDTO + "@@@@@@");
         schoolAdminService.deleteMember(memberUpdateRequestDTO);
         return ResponseEntity.status(200).build();
     }

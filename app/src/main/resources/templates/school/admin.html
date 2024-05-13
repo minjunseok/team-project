@@ -12,12 +12,71 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
   <!-- 공통 헤더 적용 첨부 -->
   <!-- <link rel="stylesheet" href="/static/admin/css/header.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
         rel="stylesheet"> -->
+<style>
+  /* black 모달에만 적용되는 스타일 */
+  #black .modal-dialog {
+    max-width: 600px; /* 모달 창의 최대 너비를 지정 */
+  }
+
+  #black .modal-header {
+    padding: 1rem; /* 모달 헤더의 내부 여백을 추가 */
+  }
+
+  #black .modal-body {
+    padding: 1rem; /* 모달 바디의 내부 여백을 추가 */
+  }
+
+  #black .modal-content {
+    border-radius: 10px; /* 모달 컨텐츠의 모서리를 둥글게 만듭니다. */
+  }
+
+  #black table {
+    width: 100%; /* 테이블을 모달 바디의 가로 너비에 맞춥니다. */
+    border-collapse: collapse; /* 테이블 셀의 경계를 병합하여 깔끔하게 만듭니다. */
+  }
+
+  #black th, #black td {
+    padding: 0.5rem; /* 테이블 셀의 내부 여백을 추가합니다. */
+    text-align: center; /* 테이블 내용을 가운데 정렬합니다. */
+  }
+
+  /* submit 모달에만 적용되는 스타일 */
+  #submit .modal-dialog {
+    max-width: 600px; /* 모달 창의 최대 너비를 지정 */
+  }
+
+  #submit .modal-header {
+    padding: 1rem; /* 모달 헤더의 내부 여백을 추가 */
+  }
+
+  #submit .modal-body {
+    padding: 1rem; /* 모달 바디의 내부 여백을 추가 */
+  }
+
+  #submit .modal-content {
+    border-radius: 10px; /* 모달 컨텐츠의 모서리를 둥글게 만듭니다. */
+  }
+
+  #submit table {
+    width: 100%; /* 테이블을 모달 바디의 가로 너비에 맞춥니다. */
+    border-collapse: collapse; /* 테이블 셀의 경계를 병합하여 깔끔하게 만듭니다. */
+  }
+
+  #submit th, #submit td {
+    padding: 0.5rem; /* 테이블 셀의 내부 여백을 추가합니다. */
+    text-align: center; /* 테이블 내용을 가운데 정렬합니다. */
+  }
+</style>
+
+
 </head>
 <body>
 
@@ -30,7 +89,6 @@
     <div class="col-md-8" style="text-align:center;" id="">
       <div id="school_setting" onclick="schoolForm()">스쿨 정보 수정</div>
       <div id="user_setting" onclick="modal1()">회원 관리</div>
-      <div id="user_setting2" onclick="userManagementForm()">회원 관리2</div>
       <div id="submit_setting" onclick="modal2()">블랙리스트 관리</div>
       <div id="black_setting" onclick="modal3()">가입 승인 관리</div>
       <div id="private_setting" onclick="modal4()">공개여부</div>
@@ -67,7 +125,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">회원 관리</h5>
+              <h5 class="modal-title">가입 승인 관리</h5>
               <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
@@ -76,7 +134,7 @@
                 <tr>
                   <th>사진</th>
                   <th>닉네임</th>
-                  <th>버튼</th>
+                  <th>승인/거절</th>
                 </tr>
                 </thead>
                 <tbody id="submit-list">
@@ -91,7 +149,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">회원 관리</h5>
+              <h5 class="modal-title">블랙리스트 관리</h5>
               <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
