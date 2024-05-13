@@ -107,8 +107,6 @@ public class SchoolClassController {
     System.out.println("=======classcontroller.startdate============>    " + startAtDate);
     System.out.println("=========classcontrollr.endeddate==========>    " + endedAtDate);
 
-
-
     System.out.println("=======classcontroller============>    " + clazz);
 
     JsonResult jsonResult = new JsonResult();
@@ -235,30 +233,4 @@ public class SchoolClassController {
 
     }
 
-
-
-  @GetMapping("test")
-  public Object test3() throws Exception {
-
-
-    JsonResult jsonResult = new JsonResult();
-
-    jsonResult.setStatus("success");
-
-    return jsonResult;
-
-
-  }
-
-
-  @GetMapping("viewModalTest2")
-  public Object test1(int classNo) throws Exception {
-
-    JsonResult jsonResult = new JsonResult();
-
-    jsonResult.setStatus("success");
-
-    return jsonResult;
-
-  }
 }
