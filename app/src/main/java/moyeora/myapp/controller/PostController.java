@@ -8,10 +8,7 @@ import moyeora.myapp.service.CommentService;
 import moyeora.myapp.service.PostService;
 import moyeora.myapp.service.SchoolUserService;
 import moyeora.myapp.util.FileUpload;
-import moyeora.myapp.vo.AttachedFile;
-import moyeora.myapp.vo.Comment;
-import moyeora.myapp.vo.Post;
-import moyeora.myapp.vo.User;
+import moyeora.myapp.vo.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,22 +46,6 @@ public class PostController {
 
     }
 
-
-//스쿨 공지를 다루는 메서드
-
-
-//  @PostMapping("fix")
-//  @ResponseBody
-//  public Object fixedPost(
-//         @RequestBody Post post) throws Exception {
-//
-//
-//
-//      postService.fixedPost(post);
-//      log.debug(postService.fixedPost(post) + "@@@@@@@@@@@@@@@@@@");
-//
-//      return AjaxResponse.builder().status("success").build();
-//    }
 
     @PostMapping("commentAdd")
     public AjaxResponse commentAdd(
@@ -232,8 +213,9 @@ public class PostController {
 
     @PostMapping("add")
     public String add(
-            Post post,
             @LoginUser User loginUser,
+            @LoginUser SchoolUser loginSchoolUser,
+            Post post,
             HttpSession session,
             SessionStatus sessionStatus) throws Exception {
 
@@ -264,11 +246,14 @@ public class PostController {
         // 'created_at' 필드에 현재 시간 설정
         post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
 
+        post.setUserNo(loginUser.getNo());
+        post.setSchoolNo(loginSchoolUser.getSchoolNo());
+
         // 나머지 처리 코드
         log.debug("@@@@@@@===>>" + post);
         postService.add(post);
 
-        return "redirect:list?schoolNo=" + post.getSchoolNo();
+        return "redirect:list?schoolNo=" + loginSchoolUser.getSchoolNo();
     }
 
 
@@ -280,7 +265,6 @@ public class PostController {
         List<Post> posts = postService.findBySchoolPostList(schoolNo);
 
         Post post = postService.findByFixList(schoolNo);
-
 
         System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
         model.addAttribute("sender", loginUser);
@@ -328,12 +312,15 @@ public class PostController {
             Model model) {
         if (filter.equals("0")) { // 내용으로 검색
             List<Post> postList = postService.findBySchoolContent(schoolNo, keyword);
-            model.addAttribute("postList", postList);
+            model.addAttribute("postlists", postList);
         } else {                  // 작성자로 검색
             List<Post> postList = postService.findBySchoolUserName(schoolNo, keyword);
-            model.addAttribute("postList", postList);
+            model.addAttribute("postlists", postList);
         }
+
+        log.debug("@@@@@@@" + schoolNo + keyword);
         return "post/list";
+
     }
 
     @PostMapping("update")
