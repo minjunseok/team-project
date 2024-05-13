@@ -96,8 +96,9 @@ public class SchoolAdminController {
     if (schoolAdminService.authSubAdmin(loginUser.getNo(), memberUpdateRequestDTO.getSchoolNo()) < 1) {
       return ResponseEntity.status(401).build();
     }
+      memberUpdateRequestDTO.setLevelNo(2);
+      schoolAdminService.approveUpdate(memberUpdateRequestDTO);
       return ResponseEntity.status(200).build();
-
     }
 
     @PostMapping("sub/reject")
@@ -136,6 +137,11 @@ public class SchoolAdminController {
         }
         return ResponseEntity.status(200).body(schoolAdminService.levelUpdate(memberUpdateRequestDTO));
     }
+
+
+
+
+
 
     @PostMapping("openClosed")
     public ResponseEntity<?> openClosed(@RequestBody SchoolOpenRangeUpdateRequestDTO schoolOpenRangeUpdateRequestDTO, @LoginUser User loginUser) {

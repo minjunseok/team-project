@@ -165,8 +165,10 @@
     school_no = #{schoolNo}
   </update>
 
+
+
   <delete id="deleteMember">
-    <![CDATA[
+    <!-- <![CDATA[
       SET FOREIGN_KEY_CHECKS=0;
     ]]>
     delete
@@ -176,6 +178,19 @@
     user_no = #{userNo}
     and
     school_no = #{schoolNo}
+    <![CDATA[
+      SET FOREIGN_KEY_CHECKS=1;
+    ]]> -->
+
+    <![CDATA[
+    SET FOREIGN_KEY_CHECKS=0;
+    ]]>
+    delete from
+        school_users
+      where
+        user_no = #{userNo}
+      and
+      school_no = #{schoolNo};
     <![CDATA[
       SET FOREIGN_KEY_CHECKS=1;
     ]]>
@@ -193,6 +208,7 @@
     and
     level_no = 4
   </select>
+
   <select id="findSubAdmin" resultType="int">
     select
     count(*)
@@ -211,10 +227,8 @@
 
   <delete id="deleteSchoolUsers" parameterType="int">
     DELETE FROM school_users
-    WHERE
-      user_no = #{userNo}
-    AND
-      school_no = #{schoolNo};
+    WHERE user_no = #{userNo}
+    AND school_no = #{schoolNo}
   </delete>
 
 
