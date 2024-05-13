@@ -1,7 +1,6 @@
 package moyeora.myapp;
 
 
-
 import moyeora.myapp.annotation.LoginUserArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +16,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 
-
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableScheduling
@@ -28,11 +26,11 @@ import java.util.List;
         "file:${user.home}/.config/bootpay.properties",
         "file:${user.home}/.config/email.properties",
         "file:${user.home}/.config/oauth.properties"
-  "file:${user.home}/config/ncp-storage.properties",
-  "file:${user.home}/config/ncp-secret.properties",
-  "file:${user.home}/config/bootpay.properties",
-  "file:${user.home}/config/email.properties",
-  "file:${user.home}/config/oauth.properties"
+//        "file:${user.home}/config/ncp-storage.properties",
+//        "file:${user.home}/config/ncp-secret.properties",
+//        "file:${user.home}/config/bootpay.properties",
+//        "file:${user.home}/config/email.properties",
+//        "file:${user.home}/config/oauth.properties"
 })
 public class App implements WebMvcConfigurer {
 
