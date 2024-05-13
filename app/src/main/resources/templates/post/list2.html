@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+
 <head>
     <meta charset='UTF-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -122,8 +123,7 @@
     </div>
 </form>
 
-<th:block th:if="${schoolUser}">
-<div class="container">
+<div class="container" data-th-if="${joined}">
     <div class="row" style="width: 100px">
         <div class="col-md-2">
         </div>
@@ -135,8 +135,14 @@
     </div>
 </div>
 
-<div data-th-replace="postModal/form :: postAdd-modal">새 글 작성</div>
-</th:block>
+<div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>
+
+<!-- 스쿨에 가입하지 않은 경우에만 가입하기 버튼을 보여줌 -->
+<!--<div data-th-unless="${joined}">-->
+<!--    <button id="joinButton">가입하기</button>-->
+<!--</div>-->
+
+
 <!--<th:block th:unless="${schoolUser}">-->
 <!--		<button id="joinButton">가입하기</button>-->
 <!--</th:block>-->
@@ -161,6 +167,7 @@
             <th>사진</th>
             <th>내용</th>
             <th>작성일</th>
+            <th>작업</th>
             <th>고정해제</th>
                  </tr>
                     </thead>
@@ -170,6 +177,7 @@
                                  <td data-th-text="*{writer.photo}">사진</td>
                                  <td class="school-post" data-th-text="*{content}" data-th-data-no="*{no}" data-no="100">게시글 내용</td>
                                  <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
+                                 <td>작업</td>
                                  <td><input type="checkbox" class="fix-checkbox" data-th-data-no="*{no}" data-no="100"></td>
                             </tr>
                         </tbody>
@@ -185,6 +193,7 @@
                                                 <th>사진</th>
                                                 <th>내용</th>
                                                 <th>작성일</th>
+                                                <th>작업</th>
                                                 <th>고정 핀</th>
 
                                             </tr>
@@ -202,24 +211,25 @@
                                     </table>
                                 </div>
 
-<!--                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="display: block;width: 100px;">-->
-<!--                        <div class="container">-->
-<!--                            <div class="row" style="width: 100px;">-->
-<!--                                <div class="post_md" style="width: 110px;">글 수정 &lt;!&ndash;  id="post_md"  onclick="postMd()" &ndash;&gt;</div>-->
-<!--                                </div>-->
-<!--                            &lt;!&ndash;												<div data-th-replace="post/postModal/md :: postMd-modal">글 수정</div>&ndash;&gt;-->
-<!--                        </div>-->
 
-<!--                        <div>-->
-<!--                            <a id="delete" data-th-href="@{delete(schoolNo=*{schoolNo}, post_no=${post.no})}"-->
-<!--                               class="dropdown-item">삭제</a>-->
-<!--                        </div>-->
+<!--<td>-->
+<!--    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="display: block;width: 100px;">-->
+<!--        <div class="container">-->
+<!--            <div class="row" style="width: 100px;">-->
+<!--                <div class="post_md" style="width: 110px;">글 수정 &lt;!&ndash;  id="post_md"  onclick="postMd()" &ndash;&gt;</div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash;												<div data-th-replace="post/postModal/md :: postMd-modal">글 수정</div>&ndash;&gt;-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <a id="delete" data-th-href="@{delete(schoolNo=*{schoolNo}, post_no=${post.no})}"-->
+<!--               class="dropdown-item">삭제</a>-->
+<!--        </div>-->
 
-<!--                        <div>-->
-<!--                            <a id="copyLinkButton" class="dropdown-item">주소 복사</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
+<!--        <div>-->
+<!--            <a id="copyLinkButton" class="dropdown-item">주소 복사</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</td>-->
 
 
 <!-- 게시글 고정 해제 모달 -->
@@ -364,7 +374,7 @@
 
 <div data-th-replace="post/view :: modal">포스트 상세보기 모달</div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js"-->
@@ -1043,114 +1053,94 @@
 
 
 <!-- 설정을 눌렀을 때 드롭다운이 나타나도록 -->
-<!--<script>-->
-<!--    $(document).ready(function() {-->
-<!--        // ... 버튼을 클릭할 때 드롭다운 메뉴의 가시성을 토글합니다.-->
-<!--        $(".settingBtn").click(function() {-->
-<!--            $(this).next(".dropdown-menu").toggle();-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
+<script>
+    $(document).ready(function() {
+        // ... 버튼을 클릭할 때 드롭다운 메뉴의 가시성을 토글합니다.
+        $(".settingBtn").click(function() {
+            $(this).next(".dropdown-menu").toggle();
+        });
+    });
+</script>
 
-<!--<script>-->
-<!--    $(document).ready(function() {-->
-<!--        // 모든 드롭다운 메뉴를 숨깁니다.-->
-<!--        $(".dropdown-menu").hide();-->
+<script>
+    $(document).ready(function() {
+        // 모든 드롭다운 메뉴를 숨깁니다.
+        $(".dropdown-menu").hide();
 
-<!--        // 클래스를 가진 settingBtn 버튼을 클릭할 때 드롭다운 메뉴의 가시성을 토글합니다.-->
-<!--        $(".settingBtn").click(function() {-->
-<!--            // 모든 드롭다운 메뉴를 숨깁니다.-->
-<!--            $(".dropdown-menu").hide();-->
+        // 클래스를 가진 settingBtn 버튼을 클릭할 때 드롭다운 메뉴의 가시성을 토글합니다.
+        $(".settingBtn").click(function() {
+            // 모든 드롭다운 메뉴를 숨깁니다.
+            $(".dropdown-menu").hide();
 
-<!--            // 클릭된 버튼 다음에 오는 드롭다운 메뉴를 찾아 가시성을 토글합니다.-->
-<!--            $(this).next(".dropdown-menu").toggle();-->
+            // 클릭된 버튼 다음에 오는 드롭다운 메뉴를 찾아 가시성을 토글합니다.
+            $(this).next(".dropdown-menu").toggle();
 
-<!--            // 클릭된 버튼 이외의 부분을 클릭할 때 드롭다운 메뉴를 숨깁니다.-->
-<!--            $(document).on("click", function(event){-->
-<!--                if(!$(event.target).closest(".dropdown").length) {-->
-<!--                    $(".dropdown-menu").hide();-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
+            // 클릭된 버튼 이외의 부분을 클릭할 때 드롭다운 메뉴를 숨깁니다.
+            $(document).on("click", function(event){
+                if(!$(event.target).closest(".dropdown").length) {
+                    $(".dropdown-menu").hide();
+                }
+            });
+        });
+    });
+</script>
 
 <!--스쿨에 가입하지 않은 유저 가입하기 처리-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js"-->
-<!--        integrity="sha512-vuLOE4Fh9lfxaN9n81Vl1HwrqMYz9WKoNmsHNC7Hz7OWX4k4O7FjCyQ1tQ82RJExao+Fas40RLiS5PCfVRGgnQ=="-->
-<!--        crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
 
-<!--<script>-->
-<!--    // 문서가 로드되면 실행될 함수-->
-<!--    $(document).ready(function() {-->
-<!--        $("#joinButton").click(function() {-->
-<!--            console.log("@@@@@==>>", no);-->
-<!--            const searchParam = window.location.search.replace("?", "");-->
-<!--            const { schoolNo } = window.Qs.parse(searchParam);-->
-<!--            join(schoolNo);-->
-<!--            console.log("@@@@@==>>", schoolNo);-->
-<!--        });-->
-<!--    });-->
+<script>
 
-<!--    function join(schoolNo) {-->
-<!--        $.ajax({-->
-<!--            type: "POST",-->
-<!--            url: "/user/userNo",-->
-<!--            success: function(response) {-->
-<!--                const loginUser = response.no;-->
-<!--                if (!loginUser) {-->
-<!--                    console.error("로그인한 사용자 정보가 없습니다.");-->
-<!--                    return;-->
-<!--                }-->
-<!--                const userNo = loginUser.no;-->
-<!--                console.log("@@@@@@@==>" + userNo);-->
-<!--                addSchoolUser(userNo, schoolNo);-->
-<!--            },-->
-<!--            error: function(xhr, status, error) {-->
-<!--                console.error("사용자 정보 요청 실패:", error);-->
-<!--                alert("사용자 정보를 가져오지 못했습니다. 다시 시도해주세요.");-->
-<!--            },-->
-<!--        });-->
-<!--    }-->
+    // 문서가 로드되면 실행될 함수
+    $(document).ready(function() {
+        $("#joinButton").click(function() {
+            const searchParam = window.location.search.replace("?", "");
+            const { schoolNo } = window.Qs.parse(searchParam);
+            console.log(schoolNo);
+            join(schoolNo);
+        });
+    });
 
-<!--    function addSchoolUser(userNo, schoolNo) {-->
-<!--        $.ajax({-->
-<!--            type: "POST",-->
-<!--            url: "/schoolUser/addSchoolUser",-->
-<!--            contentType: "application/json",-->
-<!--            data: JSON.stringify({-->
-<!--                userNo: userNo,-->
-<!--                schoolNo: schoolNo,-->
-<!--            }),-->
-<!--            success: function(response) {-->
-<!--                alert("가입이 완료되었습니다.");-->
-<!--                console.log("사용자 가입 성공");-->
-<!--            },-->
-<!--            error: function(xhr, status, error) {-->
-<!--                alert("가입에 실패했습니다. 다시 시도해 주세요.");-->
-<!--                console.error("가입 요청 실패:", error);-->
-<!--                console.log("@@@@@==>", userNo)-->
-<!--                console.log("@@@@@==>", schoolNo)-->
+    function join(schoolNo) {
+        $.ajax({
+            type: "POST",
+            url: "/schoolUser/addSchoolUser",
+            data: { schoolNo: schoolNo },
+            success: function(response) {
+                // 성공 시 알림 표시 및 버튼 갱신
+                alert("가입이 완료되었습니다.");
+                console.log("가입 성공");
+                location.reload(); // 페이지 리로드
+            },
+            error: function(xhr, status, error) {
+                // 실패 시 에러 메시지 표시
+                alert("가입에 실패했습니다. 다시 시도해 주세요.");
+                console.error("가입 요청 실패:", error);
+            }
+        });
+    }
 
-<!--            },-->
-<!--        });-->
-<!--    }-->
-<!--</script>-->
 
-<!--&lt;!&ndash; 게시글 주소 복사 버튼 &ndash;&gt;-->
-<!--<script>-->
-<!--    $(document).ready(function() {-->
-<!--        $('#copyLinkButton').click(function() {-->
-<!--            var url = window.location.href;-->
-<!--            var tempInput = document.createElement('input');-->
-<!--            tempInput.value = url;-->
-<!--            document.body.appendChild(tempInput);-->
-<!--            tempInput.select();-->
-<!--            document.execCommand('copy');-->
-<!--            document.body.removeChild(tempInput);-->
-<!--            alert('게시글 주소가 복사되었습니다.');-->
-<!--        });-->
-<!--    });-->
+</script>
+
+
+<!-- 게시글 주소 복사 버튼 -->
+<script>
+    $(document).ready(function() {
+        $('#copyLinkButton').click(function() {
+            var url = window.location.href;
+            var tempInput = document.createElement('input');
+            tempInput.value = url;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('게시글 주소가 복사되었습니다.');
+        });
+    });
+
+
+
+</script>
+
 
 
 <!-- 폼 서브밋 -->

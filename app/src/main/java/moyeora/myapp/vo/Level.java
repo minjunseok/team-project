@@ -8,6 +8,6 @@ public class Level {
 
 
   private String levelName;
-  private int no;
+  private int levelNo;
 
 }

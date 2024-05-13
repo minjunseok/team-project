@@ -30,14 +30,14 @@ import java.util.*;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/post")
-@SessionAttributes("attachedFiles")
+//@SessionAttributes("attachedFiles")
 public class PostController {
 
     //  private static final Log log = LogFactory.getLog(PostController.class);
     private final PostService postService;
     private final FileUpload fileUpload;
     private final SchoolUserService schoolUserService;
-    private  final  CommentService commentService;
+    private final CommentService commentService;
     private String uploadDir = "post/";
     private static final Log log = LogFactory.getLog(PostController.class);
 
@@ -53,114 +53,141 @@ public class PostController {
 
 
 //스쿨 공지를 다루는 메서드
+    @PostMapping("fix")
+    @ResponseBody
+    public AjaxResponse fixedPost(Post post,
+                                  HttpSession httpSession,
+                                  @AuthenticationPrincipal PrincipalDetails principalDetails,
+                                  @LoginUser User loginUser) {
 
 
-//  @PostMapping("fix")
-//  @ResponseBody
-//  public Object fixedPost(
-//         @RequestBody Post post) throws Exception {
-//
-//
-//
-//      postService.fixedPost(post);
-//      log.debug(postService.fixedPost(post) + "@@@@@@@@@@@@@@@@@@");
-//
-//      return AjaxResponse.builder().status("success").build();
-//    }
+        int userNo = loginUser.getNo();
+        int schoolNo = postService.findByPostSchoolNo(post.getNo());
 
-  @PostMapping("commentAdd")
-  public AjaxResponse commentAdd(
-          @RequestParam String content,
-          @RequestParam int postNo,
-          Comment comment,
-          HttpSession httpSession,
-          @AuthenticationPrincipal PrincipalDetails principalDetails,
-          @LoginUser User loginUser) throws Exception {
 
-    try {
+        log.debug("schoolNo + @@@@@@@@@@@@@@@@@@@" + schoolNo);
+        log.debug("userNo + @@@@@@@@@@@@@@@@@@@@@" + userNo);
+        log.debug("sessionNo + @@@@@@@@@@@@@@@@@@@@@" + loginUser.getNo());
 
-      comment.setPostNo(postNo);
-      comment.setContent(content);
-      comment.setContent("test");
-      comment.setUserNo(loginUser.getNo());
-      log.debug(httpSession.getAttribute("loginUser") + "@@@@@@@@@@@@@@@@@@");
 
-      commentService.add(comment);
+        int levelNo = schoolUserService.findLevel(schoolNo, userNo);
 
-      // 성공적으로 고정을 등록했을 경우 응답을 생성합니다.
-      return AjaxResponse.builder().status("success").build();
-    } catch (Exception e) {
-      // 글 고정에 실패한 경우 예외를 처리하고 에러 응답을 생성합니다.
-      return AjaxResponse.builder().status("error").message("Failed to add comment").build();
+        log.debug("levelNo + @@@@@@@@@@@@@@@@@@@@@@@@" + levelNo);
+
+
+        if (levelNo == 3 || levelNo == 4) {
+
+
+            try {
+
+
+            // 메서드를 호출하여 글 고정을 하고 결과를 받아옵니다.
+            postService.fixedPost(post);
+
+            // 성공적으로 고정을 등록했을 경우 응답을 생성합니다.
+            return AjaxResponse.builder().status("success").build();
+
+        } catch (Exception e) {
+            // 글 고정에 실패한 경우 예외를 처리하고 에러 응답을 생성합니다.
+
+            return AjaxResponse.builder().status("error").message("게시글 고정에 실패하였습니다.").build();
+        }
+
+    } else
+
+    {
+
+        return AjaxResponse.builder().status("error").message("권한이 없습니다.").build();
+
     }
-  }
+
+}
 
 
-  //  @GetMapping("list4")
-//  public void list4(Model model, int schoolNo,
-//                    HttpSession httpSession,
-//                    @AuthenticationPrincipal PrincipalDetails principalDetails,
-//                    @LoginUser User loginUser) {
-//    httpSession.getAttribute("loginUser");
-//    log.debug("@@@@@@@@@@@@@@@@@" + loginUser.getNo());
-//
-//    log.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + loginUser);
-  @PostMapping("fix")
-  @ResponseBody
-  public AjaxResponse fixedPost(Post post,
-                                HttpSession httpSession,
-                                @AuthenticationPrincipal PrincipalDetails principalDetails,
-                                @LoginUser User loginUser) {
+    @PostMapping("noticeFixedCancel")
+    @ResponseBody
+    public AjaxResponse noticeFixedCancel(Post post,
+                                    @LoginUser User loginUser) {
 
 
-    loginUser.getNo();
-    int userNo = post.getNo();
-    int schoolNo = postService.findByPostSchoolNo(post.getNo());
-
-
-    log.debug("schoolNo + @@@@@@@@@@@@@@@@@@@" + schoolNo);
-    log.debug("postNo + @@@@@@@@@@@@@@@@@@@@@" + userNo);
-    log.debug("sessionNo + @@@@@@@@@@@@@@@@@@@@@" + loginUser.getNo());
-
-
-    int lNo = schoolUserService.findByUserLevelNo(schoolNo, userNo);
-
-    log.debug("levelNo + @@@@@@@@@@@@@@@@@@@@@@@@" + lNo);
-
-
-    try {
-
-      if (lNo == 3 || lNo == 4) {
+        int userNo = loginUser.getNo();
+        int schoolNo = postService.findByPostSchoolNo(post.getNo());
 
 
 
-        // 메서드를 호출하여 글 고정을 하고 결과를 받아옵니다.
-        postService.fixedPost(post);
 
-        // 성공적으로 고정을 등록했을 경우 응답을 생성합니다.
-        return AjaxResponse.builder().status("success").build();
-      }
-    } catch (Exception e) {
-      // 글 고정에 실패한 경우 예외를 처리하고 에러 응답을 생성합니다.
+        log.debug("schoolNo + @@@@@@@@@@@@@@@@@@@" + schoolNo);
+        log.debug("userNo + @@@@@@@@@@@@@@@@@@@@@" + userNo);
+        log.debug("sessionNo + @@@@@@@@@@@@@@@@@@@@@" + loginUser.getNo());
+
+
+        int levelNo = schoolUserService.findLevel(schoolNo, userNo);
+
+        log.debug("levelNo + @@@@@@@@@@@@@@@@@@@@@@@@" + levelNo);
+
+        if (levelNo == 3 || levelNo == 4) {
+
+
+            try {
+
+                //메서드를 호출하여 글 고정 취소를 진행하고 결과를 받아옵니다.
+                postService.noticeFixedCancel(post);
+
+                //
+                return AjaxResponse.builder().status("success").build();
+
+            } catch (Exception e) {
+                // 고정 취소에 실패한 경우 예외를 처리하고 에러 응답을 생성합니다.
+                return AjaxResponse.builder().status("error").message("게시글 고정해제 실패").build();
+            }
+        } else {
+
+            return AjaxResponse.builder().status("error").message("권한이 없습니다.").build();
+        }
     }
-    return AjaxResponse.builder().status("error").message("Failed to fix post").build();
-  }
 
 
 
   @PostMapping("fixCancel")
   @ResponseBody
-  public AjaxResponse fixedCancel(Post post) {
-    try {
-      //메서드를 호출하여 글 고정 취소를 진행하고 결과를 받아옵니다.
-      postService.fixedCancel(post);
+  public AjaxResponse fixedCancel(Post post,
+                                    @LoginUser User loginUser) {
 
-      //
-      return AjaxResponse.builder().status("success").build();
-    } catch (Exception e) {
-      // 고정 취소에 실패한 경우 예외를 처리하고 에러 응답을 생성합니다.
-      return AjaxResponse.builder().status("error").message("Failed to fix cancel post").build();
-    }
+
+      int userNo = loginUser.getNo();
+      int schoolNo = postService.findByPostSchoolNo(post.getNo());
+
+
+
+
+      log.debug("schoolNo + @@@@@@@@@@@@@@@@@@@" + schoolNo);
+      log.debug("userNo + @@@@@@@@@@@@@@@@@@@@@" + userNo);
+      log.debug("sessionNo + @@@@@@@@@@@@@@@@@@@@@" + loginUser.getNo());
+
+
+      int levelNo = schoolUserService.findLevel(schoolNo, userNo);
+
+      log.debug("levelNo + @@@@@@@@@@@@@@@@@@@@@@@@" + levelNo);
+
+      if (levelNo == 3 || levelNo == 4) {
+
+
+          try {
+
+              //메서드를 호출하여 글 고정 취소를 진행하고 결과를 받아옵니다.
+              postService.fixedCancel(post);
+
+              //
+              return AjaxResponse.builder().status("success").build();
+
+          } catch (Exception e) {
+              // 고정 취소에 실패한 경우 예외를 처리하고 에러 응답을 생성합니다.
+              return AjaxResponse.builder().status("error").message("게시글 고정해제 실패").build();
+          }
+      } else {
+
+          return AjaxResponse.builder().status("error").message("권한이 없습니다.").build();
+      }
   }
 
 
@@ -174,15 +201,16 @@ public class PostController {
     System
             .out.println(postService.findByNotice(schoolNo));
     log.debug(postService.findByNotice(schoolNo));
-
     log.debug(schoolUserService.findBySchoolUserList(schoolNo));
     System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
-    List<Post> post = postService.findByNotice(schoolNo);
+    List<Post> posts = postService.findByNotice(schoolNo);
+    Post post = postService.findByFixList(schoolNo);
 
     System.out.print("@@@@@@@@@@@@@@@@@@@" + post);
     model.addAttribute("schoolNo", schoolNo);
-    model.addAttribute("noticelist", post);
+    model.addAttribute("noticelist", posts);
     model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
+      model.addAttribute("fixlist", post);
   }
 
 
@@ -211,39 +239,39 @@ public class PostController {
     return result;
   }
 
-//공지게시판
-  @PostMapping("noticeadd")
-  public String addNotice(
-          Post post,
-          MultipartFile[] files,
-          HttpSession session) throws Exception {
-
-    // 파일 업로드 및 AttachedFile 생성
-    List<AttachedFile> attachedFiles = new ArrayList<>();
-    for (MultipartFile file : files) {
-      if (file.getSize() == 0) {
-        continue;
-      }
-      String filename = fileUpload.upload(this.bucketName, this.uploadDir, file);
-      // AttachedFile 객체 생성 후 파일 이름 설정
-      AttachedFile attachedFile = new AttachedFile();
-      attachedFile.setFileName(filename);
-      attachedFiles.add(attachedFile);
-    }
-
-
-
-
-
-    // 'created_at' 필드에 현재 시간 설정
-    post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
-
-    // 나머지 처리 코드
-    post.setCreatedAt(new Date());
-    postService.addNotice(post);
-
-    return "redirect:noticelist?schoolNo=" + post.getSchoolNo();
-  }
+////공지게시판
+//  @PostMapping("noticeadd")
+//  public String addNotice(
+//          Post post,
+//          MultipartFile[] files,
+//          HttpSession session) throws Exception {
+//
+//    // 파일 업로드 및 AttachedFile 생성
+//    List<AttachedFile> attachedFiles = new ArrayList<>();
+//    for (MultipartFile file : files) {
+//      if (file.getSize() == 0) {
+//        continue;
+//      }
+//      String filename = fileUpload.upload(this.bucketName, this.uploadDir, file);
+//      // AttachedFile 객체 생성 후 파일 이름 설정
+//      AttachedFile attachedFile = new AttachedFile();
+//      attachedFile.setFileName(filename);
+//      attachedFiles.add(attachedFile);
+//    }
+//
+//
+//
+//
+//
+//    // 'created_at' 필드에 현재 시간 설정
+//    post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
+//
+//    // 나머지 처리 코드
+//    post.setCreatedAt(new Date());
+//    postService.addNotice(post);
+//
+//    return "redirect:noticelist?schoolNo=" + post.getSchoolNo();
+//  }
 
 
   //
@@ -305,30 +333,94 @@ public class PostController {
     }
 
 
+    @GetMapping("list")
+    public void list(Model model, int schoolNo,
+                      HttpSession httpSession,
+                      @AuthenticationPrincipal PrincipalDetails principalDetails,
+                      @LoginUser User loginUser
+    ) {
+
+            System.out.println(postService.findBySchoolPostList(schoolNo));
+            log.debug(postService.findBySchoolPostList(schoolNo));
+            log.debug(schoolUserService.findBySchoolUserList(schoolNo));
+            System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
+            List<Post> posts = postService.findBySchoolPostList(schoolNo);
+            Post post = postService.findByFixList(schoolNo);
+
+            System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
+            model.addAttribute("schoolNo", schoolNo);
+            model.addAttribute("postlists", posts);
+            model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
+            model.addAttribute("fixlist", post);
+        }
+
+    @GetMapping("list2")
+    public void list2(Model model, int schoolNo,
+                     @AuthenticationPrincipal PrincipalDetails principalDetails,
+                     @LoginUser User loginUser
+    ) {
+
+        System.out.println(postService.findBySchoolPostList(schoolNo));
+        log.debug(postService.findBySchoolPostList(schoolNo));
+        log.debug(schoolUserService.findBySchoolUserList(schoolNo));
+        System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
+        List<Post> posts = postService.findBySchoolPostList(schoolNo);
+        Post post = postService.findByFixList(schoolNo);
 
 
+        System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
+        model.addAttribute("schoolNo", schoolNo);
+        model.addAttribute("postlists", posts);
+        model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
+        model.addAttribute("fixlist", post);
+      model.addAttribute("joined", schoolUserService.joinedSchoolUser(loginUser.getNo(), schoolNo));
+    }
 
-  @GetMapping("list")
-  public void list(Model model, int schoolNo,
-                    HttpSession httpSession,
-                    @AuthenticationPrincipal PrincipalDetails principalDetails,
-                    @LoginUser User loginUser
-  ) {
+            //삭제예정
+//  @GetMapping("list2")
+//  public void list2(Model model, int schoolNo,
+//                    HttpSession httpSession,
+//                    @AuthenticationPrincipal PrincipalDetails principalDetails,
+//                    @LoginUser User loginUser
+//  ) {
+//
+//    System.out.println(postService.findBySchoolPostList(schoolNo));
+//    log.debug(postService.findBySchoolPostList(schoolNo));
+//
+//    log.debug(schoolUserService.findBySchoolUserList(schoolNo));
+//    System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
+//    List<Post> posts = postService.findBySchoolPostList(schoolNo);
+//    Post post = postService.findByFixList(schoolNo);
+//
+//    System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
+//    model.addAttribute("schoolNo", schoolNo);
+//    model.addAttribute("postlists", posts);
+//    model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
+//    model.addAttribute("fixlist", post);
+//  }
+//
+//    @GetMapping("list")
+//    public void list(Model model, int schoolNo,
+//                     HttpSession httpSession,
+//                     @AuthenticationPrincipal PrincipalDetails principalDetails,
+//                     @LoginUser User loginUser
+//    ) {
+//
+//        System.out.println(postService.findBySchoolPostList(schoolNo));
+//        log.debug(postService.findBySchoolPostList(schoolNo));
+//
+//        log.debug(schoolUserService.findBySchoolUserList(schoolNo));
+//        System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
+//        List<Post> posts = postService.findBySchoolPostList(schoolNo);
+//        Post post = postService.findByFixList(schoolNo);
+//
+//        System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
+//        model.addAttribute("schoolNo", schoolNo);
+//        model.addAttribute("postlists", posts);
+//        model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
+//        model.addAttribute("fixlist", post);
+//    }
 
-    System.out.println(postService.findBySchoolPostList(schoolNo));
-    log.debug(postService.findBySchoolPostList(schoolNo));
-
-    log.debug(schoolUserService.findBySchoolUserList(schoolNo));
-    System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
-    List<Post> posts = postService.findBySchoolPostList(schoolNo);
-    Post post = postService.findByFixList(schoolNo);
-
-    System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
-    model.addAttribute("schoolNo", schoolNo);
-    model.addAttribute("postlists", posts);
-    model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
-    model.addAttribute("fixlist", post);
-  }
 
 
     @GetMapping("view/{lNo}")
@@ -354,6 +446,32 @@ public class PostController {
         result.put("post", post);
         return result;
     }
+
+
+    //삭제 예정
+//    @GetMapping("view/{lNo}")
+//    @ResponseBody
+//    public Object findByPost(int no, @PathVariable String lNo) throws Exception {
+//
+//        int schoolNo = Integer.parseInt(lNo);
+//        log.debug(postService.get(no, schoolNo));
+//        Post post = postService.get(no, schoolNo);
+//        List<AttachedFile> attachedFiles = postService.getAttachedFiles(no);
+//        List<Comment> comments = postService.getComments(no);
+//
+//        if (post == null) {
+//            throw new Exception("게시글 번호가 유효하지 않습니다.");
+//        }
+//        System.out.println(post);
+//        System.out.println(attachedFiles);
+//        System.out.println(comments);
+//
+//        Map<String,Object> result = new HashMap<>();
+//        result.put("comments", comments);
+//        result.put("files", attachedFiles);
+//        result.put("post", post);
+//        return result;
+//    }
 
 
 

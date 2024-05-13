@@ -23,16 +23,17 @@ public class DefaultPostService implements PostService {
     private final CommentDao commentDao;
     private final UserDao userDao;
 
-  @Override
-  public int get(Post post) {
-    return postDao.get(post);
-  }
+    @Override
+    public int get(Post post) {
+        return postDao.get(post);
+    }
 
 
-  @Override
-  public int findByPostSchoolNo(int no) {
-    return postDao.findByPostSchoolNo(no);
-  }
+    @Override
+    public int findByPostSchoolNo(int no) {
+        return postDao.findByPostSchoolNo(no);
+    }
+
     @Override
     public List<Post> findBySchoolPost() {
         return postDao.findBySchoolPost();
@@ -147,25 +148,30 @@ public class DefaultPostService implements PostService {
     }
 
 
-  @Override
-  public Post findByFixList(int schoolNo) {
-    return postDao.findByFixList(schoolNo);
-  }
+    @Override
+    public Post findByFixList(int schoolNo) {
+        return postDao.findByFixList(schoolNo);
+    }
 
-  @Transactional
-  @Override
-  public void addNotice(Post post) {
-    postDao.addNotice(post);
-  }
-
-
-  @Override
-  public List<Post> findByNotice(int schoolNo) {
-    return postDao.findByNotice(schoolNo);
-  }
+    @Transactional
+    @Override
+    public void addNotice(Post post) {
+        postDao.addNotice(post);
+    }
 
 
-  @Override
+    @Override
+    public List<Post> findByNotice(int schoolNo) {
+        return postDao.findByNotice(schoolNo);
+    }
+
+
+    @Override
+    public int noticeFixedCancel(Post post) {
+         return postDao.noticeFixedCancel(post);
+    }
+
+    @Override
   public int fixedCancel(Post post) {
     return postDao.fixedCancel(post);
   }
