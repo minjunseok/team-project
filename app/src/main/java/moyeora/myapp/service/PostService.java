@@ -22,6 +22,9 @@ public interface PostService {
 
   int fixedPost(Post post);
 
+  int noticeFixedCancel(Post post);
+
+
   void addNotice(Post post);
 
   List<Post> findByNotice(int schoolNo);

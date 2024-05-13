@@ -99,6 +99,15 @@
         post_no=#{no}
     </update>
 
+    <update id="noticeFixedCancel" parameterType="Post">
+        UPDATE posts set
+
+        category_no=1
+
+        where
+        post_no=#{no}
+    </update>
+
   <select id="findBy" resultMap="PostMap" parameterType="int">
   select
       p.post_no,
@@ -337,7 +346,7 @@
       p.school_no school_no,
       u.nickname,
       p.post_no post_no,
-      u.photo,
+      u.photo photo,
       p.content,
       p.created_at
 

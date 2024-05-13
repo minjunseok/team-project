@@ -13,7 +13,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface SchoolUserDao {
 
-  int findByUserLevelNo(int schoolNo, int userNo);
+//  int findByUserLevelNo(int schoolNo, int userNo);
 
   public SchoolUser findByUserNo(int no);
 
@@ -31,6 +31,11 @@ public interface SchoolUserDao {
   List<SchoolUser> findSubmitUserBySchoolNo(int no);
 
   List<SchoolUser> findBlackUserBySchoolNo(int no);
+
+  // 스쿨에 가입이 되어있는지 안되어있는지 확인하기 위한 코드
+  int findBySchoolNo(int userNo, int schoolNo);
+
+  int findLevel(int schoolNo, int userNo); //민준 사용
 
   int findLevel(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
 

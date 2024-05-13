@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang='en'>
+
 <head>
     <meta charset='UTF-8'>
-    <title>비트캠프 데브옵스 5기</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"-->
+    <!--          integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg=="-->
+    <!--          crossorigin="anonymous" referrerpolicy="no-referrer" type="text/css/">-->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <style type="text/css">
+
         table {
             border-collapse: collapse;
-            width: 900px;
+            width: 100%; /* 테이블 너비를 100%로 설정하여 부모 요소에 맞게 조절될 수 있도록 합니다. */
         }
 
         td, th {
@@ -16,34 +20,47 @@
             height: 30px;
             padding: 0 10px;
             text-align: center;
+        }
 
+        /* 테이블 내부 요소 호버 효과 */
+        tbody tr:hover {
+            background-color: #f5f5f5;
+            cursor: pointer;
+        }
+
+        /* 드롭다운 요소 스타일 */
+        .dropdown-menu {
+            width: auto !important; /* 내부 내용에 맞게 자동으로 조절 */
+            min-width: 100%; /* 최소 너비를 100%로 설정하여 내용이 적어도 전체 너비를 차지하도록 합니다. */
+            max-width: none !important; /* 최대 너비 설정 제거 */
+
+        }
+
+        .modal-dialog {
+            max-width: 750px; /* 또는 필요한 크기로 지정 */
         }
     </style>
 
 </head>
 <body>
 
-<div class="container">
+<div class="container"></div>
 
-<div data-th-replace="header :: header">머리말</div>
+<div data-th-replace="header :: header"></div>
 
 <h1>스쿨 회원 리스트</h1>
 
-
-
+<!-- 회원 리스트 테이블 -->
 <table border='1'>
-    <thread>
-        <tr>
-            <th>회원명</th>
-            <th>프로필 사진</th>
-            <th>회원 등급</th>
-        </tr>
-    </thread>
-
+    <thead>
+    <tr>
+        <th>회원명</th>
+        <th>프로필 사진</th>
+        <th>회원 등급</th>
+    </tr>
+    </thead>
     <tbody>
-
     <tr data-th-each="schoolUser : ${schoolUsers}" data-th-object="${schoolUser}">
-
         <td data-th-text="*{writer.nickname}">작성자</td>
         <td data-th-text="*{writer.photo}">사진</td>
         <td data-th-text="*{level.levelName}">회원 등급</td>
@@ -54,97 +71,744 @@
 <br>
 <br>
 
-<h1>공지글 리스트</h1>
-
-<a data-th-href="@{form(schoolNo=${schoolNo})}" href="form.html">새 글</a>
+<h1>스쿨 공지글 리스트</h1>
 
 
 <!-- 검색창-->
-<form action='/post/search' method="post">
+<form action="post/search" method="post">
     <div>
         <select name="filter">
             <option value="0">내용</option>
             <option value="1">작성자</option>
         </select>
-        <input name='keyword' type='text' placeholder='검색어 입력'>
-        <button>검색</button>
+        <input name="keyword" type="text" placeholder="검색어를 입력하세요."/>
+        <input id="schoolNo" name="schoolNo" type="hidden" value="1"/><!-- schoolNo를 Integer로 선언 -->
+        <button id="postSearchForm">검색</button>
     </div>
+
+
 </form>
+<!--<th:block th:if="${schoolUser}">-->
+<!--<div class="container">-->
+<!--    <div class="row" style="width: 100px">-->
+<!--        <div class="col-md-2">-->
+<!--        </div>-->
+<!--        <div class="col-md-8" style="text-align:center;" id="">-->
+<!--            <div id="post_setting" onclick="postForm()" style="width: 120px">-->
+<!--                <button>새 글 작성</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
+<!--<div data-th-replace="/post/postModal/form :: postAdd-modal">새 글 작성</div>-->
+<!--</th:block>-->
+<!--<th:block th:unless="${schoolUser}">-->
+<!--		<button id="joinButton">가입하기</button>-->
+<!--</th:block>-->
 
-    <div id="fixed-post">
-        <h1>관리자 공지</h1>
-        <table border='1' data-th-data-schoolno="${schoolNo}" data-schoolno="100">
-            <thead>
-            <tr>
-                <th>작성자</th>
-                <th>사진</th>
-                <th>내용</th>
-                <th>작성일</th>
-                <th></th>
+<a data-th-href="@{list(schoolNo=${schoolNo})}" href="list.html">게시글</a>
 
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-
-            </tr>
-            </tbody>
-        </table>
-    </div><!-- #fixed-post -->
-
-
-<br>
-    <br>
-    <br>
-
-<div id="searchResult">
+<div id="fixed-post">
     <table border='1' data-th-data-schoolno="${schoolNo}" data-schoolno="100">
-        <thread>
-            <tr>
-                <th>작성자</th>
-                <th>사진</th>
-                <th>내용</th>
-                <th>작성일</th>
-                <th>공지 핀</th>
-
-            </tr>
-
-        </thread>
+        <thead>
+        <tr>
+            <th>닉네임</th>
+            <th>사진</th>
+            <th>내용</th>
+            <th>작성일</th>
+            <th>고정해제</th>
+        </tr>
+        </thead>
         <tbody>
-        <tr data-no="1" data-th-each="post : ${noticelist}" data-th-object="${post}">
+        <tr data-th-each="post : ${fixlist}" data-th-object="${post}" data-th-data-no="*{no}" data-no="100">
+            <td data-th-text="*{writer.nickname}">작성자</td>
+            <td data-th-text="*{writer.photo}">사진</td>
+            <td class="school-post" data-th-text="*{content}" data-th-data-no="*{no}" data-no="100">게시글 내용</td>
+            <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
+            <td><input type="checkbox" class="fix-checkbox" data-th-data-no="*{no}" data-no="100"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<div id="noticeResult">
+    <table border='1' data-th-data-schoolno="${schoolNo}">
+        <thead>
+        <tr>
+            <th>닉네임</th>
+            <th>사진</th>
+            <th>내용</th>
+            <th>작성일</th>
+            <th>고정 핀</th>
+        </tr>
+        </thead>
+
+
+        <tbody><tr data-th-each="post : ${noticelist}" data-th-data-no="*{no}" data-th-object="${post}">
 
             <td data-th-text="*{writer.nickname}">작성자</td>
             <td data-th-text="*{writer.photo}">사진</td>
-            <td><a class="school-post" data-th-text="*{content}"
-                   data-th-data-no="*{no}" data-no="100" href="noticeview"></a></td>
+            <td class="school-post" data-th-text="*{content}" data-th-data-no="*{no}" data-no="100">게시글 내용</td>
             <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
-            <td><input type="checkbox" class="post-checkbox"></td>
-<!--         <td><a data-th-href="@{md(no=*{no})}" href="md.html?no=*{no}">...(설정)</a></td>-->
+            <td><input type="checkbox" class="post-checkbox" data-th-data-no="*{no}" data-no="100"></td>
         </tr>
-        <!--    현준 리스트 작업 (검색창 오류 발생하면 보려고 놓아둔 것-->
-        <!--    <tr data-th-each="post : ${postList}" data-th-object="${post}">-->
-        <!--        <td><a data-th-href="@{list(schoolNo=${schoolNo}, no=*{no})}" data-th-text="*{writer.name}"-->
-        <!--               href="list.html">홍길동</a></td>-->
-        <!--        <td><span th:utext="*{content}"></span></td>-->
-        <!--        <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">2024-03-27</td>-->
-        <!--        <td>-->
-        <!--            <a data-th-href="@{md(no=*{no})}" href="md.html?no=*{no}">설정</a>-->
-        <!--        </td>-->
-        <!--    </tr>-->
-        </tbody>
+     </tbody>
     </table>
 </div><!-- #searchResult -->
 
-</div><!-- .container -->
 
+<!-- 게시글 카테고리 바꾸기 모달 -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">게시물 상단 고정</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                선택한 글을 상단에 고정하시겠습니까?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" id="confirmBtn">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="unfixConfirmationModal" tabindex="-1" aria-labelledby="unfixConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unfixConfirmationModalLabel">게시글 고정 해제</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                선택한 글의 고정을 해제하시겠습니까?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-danger" id="confirmUnfixBtn">예</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--댓글 CRUD 관련 모달-->
+<!-- 댓글 등록 모달 1-->
+<div class="modal fade" id="commentModal1" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentModalLabel">댓글 등록</h5>
+                <br>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <br>
+            <div class="modal-body">
+                <textarea id="commentInput" rows="4" cols="50"></textarea>
+                <br>
+                <button class="submit-comment-btn">댓글 작성</button>
+                <button type="button" class="btn btn-secondary" id="commentNo1" data-dismiss="modal">아니오</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 댓글 등록 모달 2-->
+<div class="modal fade" id="commentModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">댓글 등록 확인</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">댓글을 등록하시겠습니까?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="commentNo" data-dismiss="modal">아니오</button>
+                <button type="button" class="btn btn-primary" id="commentYes">예</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--댓글 수정 모달1-->
+<div class="modal fade" id="commentUpdateModal1" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentUpdateModalLabel1">댓글 수정</h5>
+                <br>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <br>
+            <div class="modal-body">
+                <textarea id="commentUpdateInput" rows="4" cols="50"></textarea>
+                <br>
+                <button type="button" class="btn btn-primary" id="commentUpdateSubmit">수정하기</button>
+                <button type="button" class="btn btn-secondary" id="commentUpdateCancel" data-dismiss="modal">취소</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--댓글 수정 모달2-->
+<div class="modal fade" id="commentUpdateModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentUpdateModalLabel2">댓글 수정</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">댓글을 수정하시겠습니까?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="commentUpdateNo" data-dismiss="modal">아니오</button>
+                <button type="button" class="btn btn-primary" id="commentUpdateYes">예</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--댓글 삭제 모달-->
+<div class="modal fade" id="commentDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentDeleteModalLabel">댓글 삭제</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">댓글을 삭제하시겠습니까?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="commentDeleteNo" data-dismiss="modal">아니오</button>
+                <button type="button" class="btn btn-primary" id="commentDeleteYes">예</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div data-th-replace="post/noticeview :: modal">포스트 상세보기 모달</div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 
+<!--댓글 등록 자바스크립트-->
+<script>
+
+    var selectedPost = {
+        no: null
+    };
+
+    var selectedCommentNo = {
+        no: null
+    };
+
+    var selectedCommentContent = {
+        content: null
+    };
+
+    var selectedCommentUserNo = {
+        no: null
+    };
+
+    var schoolNo = getSchoolNoFromUrl();
+
+
+
+    function getCurrentUrl() {
+        return window.location.href;
+    }
+
+    // 현재 페이지의 URL에서 schoolNo를 가져오는 함수
+    function getSchoolNoFromUrl() {
+        // 현재 URL을 가져옵니다.
+        var currentUrl = getCurrentUrl();
+        // URL에서 쿼리 문자열을 추출합니다.
+        var queryString = currentUrl.split('?')[1];
+        // 쿼리 문자열을 & 기준으로 나누어 배열로 만듭니다.
+        var queryParams = queryString.split('&');
+        // schoolNo를 찾기 위한 반복문
+        for (var i = 0; i < queryParams.length; i++) {
+            // 현재 요소를 '='을 기준으로 나누어 key와 value로 분리합니다.
+            var keyValue = queryParams[i].split('=');
+            // key가 'schoolNo'인 경우 해당 value를 반환합니다.
+            if (keyValue[0] === 'schoolNo') {
+                return keyValue[1];
+            }
+        }
+        // schoolNo가 없는 경우 null을 반환합니다.
+        return null;
+    }
+
+
+
+    function setCommentNo(commentNo) {
+        commentNo = commentNo;
+    }
+
+    function setContent(content) {
+        content = content;
+    }
+
+    function setPostNo(no) {
+        no = no;
+    }
+
+    function setUserNo(userNo) {
+        no = no;
+    }
+
+    function setSchoolNo(schoolNo) {
+        schoolNo = schoolNo;
+    }
+
+    function getSchoolNo() {
+        return schoolNo;
+    }
+    // 클릭된 게시글 데이터의 no를 가져오는 함수
+    function getPostNo() {
+        return no;
+    }
+
+
+
+
+
+
+
+
+
+
+    // 댓글 등록 버튼 클릭 이벤트 핸들러
+    $(document).on("click", "#addComment", function() {
+
+        alert("@@@@@@@@@@@@@@@@@ + 댓글 등록 이벤트 핸들러 동작")
+        //             댓글 등록 확인 모달 띄우기
+        //            let selectedPost = {
+        //                no: null,
+        //                schoolNo: null
+        //            };
+        //
+
+        console.log("@@@@@@@@@@@@@@" + schoolNo);
+        console.log("@@@@@@@@@@@@@@" + selectedPost.no);
+
+
+
+
+
+
+        $("#noticeModal").modal("hide");
+
+        $("#commentModal1").modal("show");
+    });
+
+    $(document).on("click", "#commentNo1", function() {
+        // 모달 닫기
+        $("#commentModal1").modal("hide");
+    });
+
+
+
+
+    $('.submit-comment-btn').click(function() {
+
+        $("#commentModal1").modal("hide");
+
+        $("#commentModal2").modal("show");
+    });
+
+
+
+
+    // 댓글 등록 확인 버튼 클릭 이벤트 핸들러
+    $(document).on("click", "#commentYes", function() {
+        $("#commentModal2").modal("hide");
+        //            parseInt(schoolNo);
+
+        console.log("@@@@@@@@@" + schoolNo);
+
+        console.log("@@@@@@@@@@@@@@" + selectedPost.no);
+
+
+
+        var postNo = selectedPost.no;
+
+        var content = $("#commentInput").val(); // 댓글 내용을 가져옴
+
+        console.log("@@@@@@@@@@@@" + content);
+
+
+        setContent(content);
+        setPostNo(postNo);
+        setSchoolNo(schoolNo);
+
+        commentAdd(content,postNo,schoolNo);
+
+    });
+
+
+
+    function commentAdd(content,postNo,schoolNo) {
+
+        var commentData = {
+            content: content,
+            postNo: postNo,
+            schoolNo: schoolNo,
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '../comment/addComment',
+            contentType: 'application/json', // Content-Type 지정
+            data: JSON.stringify(commentData),
+            success: function(response) {
+                alert("댓글이 성공적으로 등록되었습니다!");
+            },
+            error: function(xhr, status, error) {
+                alert("댓글 등록에 실패했습니다. 오류 메시지: " + error);
+            }
+        });
+
+        // 모달 닫기
+        $("#commentModal2").modal("hide");
+    }
+
+
+
+
+
+    // 댓글 등록 취소 버튼 클릭 이벤트 핸들러
+    $(document).on("click", "#commentNo2", function() {
+        // 모달 닫기
+        $("#commentModal2").modal("hide");
+    });
+
+
+</script>
+
+<script>
+
+    function removeComment(commentNo,userNo,schoolNo){
+
+        var commentDeleteData =
+        {commentNo: commentNo,
+            userNo: userNo,
+            schoolNo: schoolNo,
+
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '../comment/deleteComment',
+            contentType: 'application/json', // Content-Type 지정
+            data: JSON.stringify(commentDeleteData), // 변환된 JSON 데이터 전송
+            success: function(response) {
+                if (response.status === "success") {
+                    alert("댓글이 삭제되었습니다!");
+
+                } else {
+                    // 오류가 발생한 경우
+                    alert("댓글 삭제에 실패했습니다. 오류 메시지: " + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("댓글 삭제에 실패했습니다. 오류 메시지: " + error);
+            }
+        });
+        $('#commentDeleteModal').modal("hide");
+    }
+
+
+    //댓글 삭제 부분
+    function deleteComment(commentNo) {
+        alert('댓글삭제입니다 = ' + commentNo);
+        selectedCommentNo.no = commentNo;
+        console.log("댓글유저번호 = " + selectedCommentUserNo.no);
+
+        $('#noticeModal').modal("hide");
+        $('#commentDeleteModal').modal("show");
+
+
+    }
+
+    $(document).on("click", "#commentDeleteYes", function(event) {
+
+        var userNo = selectedCommentUserNo.no;
+        var commentNo = selectedCommentNo.no;
+
+        console.log("댓글 번호가 살아있나? = " + commentNo);
+        console.log("유저 번호가 살아있나? = " + userNo);
+        console.log("스쿨 번호가 살아있나? = " + schoolNo);
+
+        setCommentNo(commentNo);
+        setSchoolNo(schoolNo);
+        setUserNo(userNo);
+
+        removeComment(commentNo,userNo,schoolNo);
+        $('#commentDeleteModal').modal("hide");
+
+    });
+
+    $(document).on("click", "#commentDeleteNo", function(event) {
+        $('#commentDeleteModal').modal("hide");
+    });
+
+
+
+    function updateComment(content , commentNo , schoolNo, userNo) {
+        var commentUpdateData =
+        {content: content,
+            commentNo: commentNo,
+            schoolNo: schoolNo,
+            userNo: userNo};
+
+        $.ajax({
+            type: 'POST',
+            url: '../comment/updateComment',
+            contentType: 'application/json', // Content-Type 지정
+            data: JSON.stringify(commentUpdateData), // 변환된 JSON 데이터 전송
+            success: function(response) {
+                if (response.status === "success") {
+                    alert("댓글 수정이 성공적으로 완료되었습니다!");
+                } else {
+                    // 오류가 발생한 경우
+                    alert("댓글 수정에 실패했습니다. 오류 메시지: " + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("댓글 수정에 실패했습니다. 오류 메시지: " + error);
+            }
+        });
+
+    }
+
+
+
+
+
+    // 수정을 위한 모달창 호출 함수
+    function editComment(commentNo) {
+        alert('댓글수정입니다 = ' + commentNo);
+        selectedCommentNo.no = commentNo;
+        $('#noticeModal').modal("hide");
+        $('#commentUpdateModal1').modal("show");
+    }
+
+    $(document).on("click", "#commentUpdateCancel", function() {
+        // 모달 닫기
+        $('#commentUpdateModal1').modal("hide");
+    });
+
+    //댓글 수정 등록 버튼 클릭시
+    $(document).on("click", "#commentUpdateSubmit", function() {
+
+        selectedCommentContent.content = $("#commentUpdateInput").val(); // 댓글 내용을 가져옴
+
+        console.log("수정할 댓글내용 = " + selectedCommentContent.content);
+
+        $('#commentUpdateModal1').modal("hide");
+        $('#commentUpdateModal2').modal("show");
+    });
+
+
+
+    //댓글 수정 예 를 눌렀을 시
+    $(document).on("click", "#commentUpdateYes", function() {
+        // 모달 닫기
+        $('#commentUpdateModal2').modal("hide");
+
+        var commentNo = selectedCommentNo.no;
+        var content = selectedCommentContent.content;
+        var userNo = selectedCommentUserNo.no;
+
+
+        console.log("스쿨 번호가 살아있나? = " + schoolNo);
+        console.log("댓글 번호가 살아있나? = " + commentNo);
+        console.log("댓글 내용이 살아있나? = " + content);
+        console.log("유저 번호가 살아있나? = " + userNo);
+
+        alert("댓글 등록 ajax요청 시작");
+
+
+        setContent(content);
+        setCommentNo(commentNo);
+        setSchoolNo(schoolNo);
+        setUserNo(userNo);
+        updateComment(content,commentNo,schoolNo,userNo);
+
+    });
+
+
+
+    //댓글 등록 아니오를 눌렀을 시
+    $(document).on("click", "#commentUpdateNo", function() {
+        // 모달 닫기
+        $('#commentUpdateModal2').modal("hide");
+    });
+
+
+
+
+
+    $(document).ready(function() {
+        $('#commentsTable').on('click', '.dropdown-toggle', function(event) {
+            // 클릭된 행의 commentNo를 가져옴
+
+            var clickedRow = $(this).closest('tr');
+
+            // 클릭된 행의 commentNo를 가져옴
+            var commentNo = clickedRow.find('td:eq(4)').text()
+
+            console.log("댓글번호@@@@@@@@" + commentNo);
+
+            selectedCommentUserNo.no = clickedRow.find('td:eq(5)').text();
+
+
+
+            console.log('Clicked userNo = ', selectedCommentUserNo.no);
+            console.log('Clicked commentNo =', commentNo);
+            // 클릭된 드롭다운 항목의 클래스에 따라 작업을 분기하여 처리
+
+
+            if ($(this).hasClass('editComment')) {
+                // 수정 드롭다운 항목을 클릭한 경우
+            } else if ($(this).hasClass('deleteComment')) {
+                // 삭제 드롭다운 항목을 클릭한 경우
+
+                // 클릭된 드롭다운 항목의 기본 동작을 막음
+
+            }
+            event.preventDefault();
+        });
+
+
+    });
+
+
+
+
+</script>
+
+
+<!--게시글 고정 기능-->
+<script>
+    let no = $(this).data('no');
+
+    let fixedPost = $('#fixed-post tbody');
+
+
+
+    $('#confirmBtn').on('click', function() {
+        console.log(no);
+
+        $('#confirmationModal').modal('hide');
+
+        // 해당 테이블에 글이 이미 있는지 확인
+        if ($('#fixed-post tbody tr').length > 0) {
+            // 이미 글이 있는 경우 경고 메시지 표시
+            alert('이미 공지글이 등록되어 있습니다. 공지는 한 개만 등록할 수 있습니다.');
+            return; // 동작 중지
+        }
+
+        $.ajax({
+            url: 'fix',
+            method: 'POST',
+            data: { no: no, categoryNo: 3 },
+            success: function(response) {
+                alert('공지가 성공적으로 등록되었습니다.');
+
+                //                changepostClassName(no);
+
+                refreshPage()
+
+
+            },
+            error: function(xhr, status, error) {
+                alert('공지 등록 실패.');
+
+            }
+        });
+
+    });
+
+    // 체크박스 클릭 이벤트 핸들러
+    $("#noticeResult").on('change', '.post-checkbox', function() {
+        console.log('post-checkbox............');
+        if ($(this).prop('checked')) {
+            no = $(this).data('no');
+
+
+            // 모달 표시
+            $('#confirmationModal').on('hidden.bs.modal', function () {
+                // 모달이 숨겨질 때 체크박스를 해제합니다.
+                $('.post-checkbox').prop('checked', false);
+            });
+            $('#confirmationModal').modal('show');
+        }
+    });
+
+
+
+    // 체크박스 상단 고정 게시물 해제 이벤트 핸들러
+    $("#fixed-post").on('change', '.fix-checkbox', function() {
+        console.log('fix-checkbox............');
+        if ($(this).prop('checked')) {
+            no = $(this).data('no');
+            // 모달 표시
+            $('#unfixConfirmationModal').on('hidden.bs.modal', function () {
+                // 모달이 숨겨질 때 체크박스를 해제합니다.
+                $('.fix-checkbox').prop('checked', false);
+            });
+            $('#unfixConfirmationModal').modal('show');
+        }
+    });
+
+
+    // 게시글 고정 해제 모달에서 '예'를 선택한 경우
+    $('#confirmUnfixBtn').on('click', function() {
+        console.log(no);
+        $('#unfixConfirmationModal').modal('hide');
+
+        // 카테고리 번호를 0으로 변경하여 서버에 전송
+        $.ajax({
+            url: 'noticeFixedCancel',
+            method: 'POST',
+            data: { no: no, categoryNo: 1 },
+            success: function(response) {
+                alert('게시글 고정이 해제되었습니다.');
+
+                refreshPage()
+            },
+            error: function(xhr, status, error) {
+                alert('게시글 고정 해제 실패.');
+
+            }
+        });
+    });
+
+    function refreshPage() {
+        location.reload(); // 현재 페이지를 리로드합니다.
+    }
+
+
+
+
+
+
+
+
+</script>
+
+
+<!--공지 댓글 상세조회 모달소스-->
 <script>
 
 
@@ -152,222 +816,133 @@
     const noticeModal = new bootstrap.Modal('#noticeModal', {
         keyboard: false
     })
-    let schoolNo = document.querySelector('#searchResult > table').getAttribute('data-schoolno');
-    let noticeList = document.querySelectorAll('.school-post');
-    noticeList.forEach(function(el) {
 
-        el.onclick = function(event) {
-            event.preventDefault();
-            let no = event.target.getAttribute("data-no");
-            console.log(no);
-
-            // 1) post 상세 정보 요청
-            $.ajax('noticeview/' + schoolNo, {
-                method: 'GET',
-                data: {no: no},
-                dataType: 'json'
-            }).done(function(result) {
-                console.log(result);
-
-                // 서버에서 가져온 데이터로 모달창의 입력폼을 초기화시키기
-                initModal(result);
-
-                // 모달 창 띄우기
-                noticeModal.show();
-            }).fail(function() {
-                console.log("실패!");
-            });
-            // 2) JSON으로 받은 객체를 가지고 모달 창을 띄워서 입력 폼에 값을 채운다.
+    $('#noticeResult').on('click', 'tr', function(event) {
 
 
-        }
-    });
-
-    function initModal(data) {
-        //주어진 데이터로 모달창의 입력폼을 채운다.
-        $('#post-form #nickname').val(data.post.writer.nickname);
-        $('#post-form #no').val(data.post.no);
-        $('#post-form #photo').val(data.post.writer.photo);
-        $('#post-form #content').val(data.post.content);
-
-        // createdAt 날짜 데이터를 yyyy-MM-dd 형식으로 변환하는 함수
-        function formatDate(date) {
-            // 날짜 객체 생성
-            var newDate = new Date(date);
-            // 년, 월, 일 추출
-            var year = newDate.getFullYear();
-            var month = newDate.getMonth() + 1;
-            var day = newDate.getDate();
-
-            // 월과 일이 한 자리 수인 경우 앞에 0을 추가하여 두 자리로 만듭니다.
-            if (month < 10) {
-                month = '0' + month;
-            }
-            if (day < 10) {
-                day = '0' + day;
-            }
-
-            // yyyy-MM-dd 형식으로 반환
-            return year + '-' + month + '-' + day;
+        if ($(event.target).closest('td').find('input[type="checkbox"]').length > 0) {
+            // 체크박스가 있는 <th>를 클릭한 경우 댓글 상세조회 모달을 출력하지 않음
+            return;
         }
 
-        // createdAt 날짜 데이터를 원하는 형식으로 변환하여 입력 폼에 설정
-        $('#post-form #createdat').val(formatDate(data.post.createdAt));
+        console.log("스쿨 공지글 댓글 상세조회 : schoolNo가 살아있을까?" + schoolNo);
+        let no = $(this).data('no');
+
+        selectedPost.no = no;
 
 
-        var commentsList = $('#commentsTable').find('tbody');
-        commentsList.empty(); // 목록 초기화
-
-        $.each(data.comments, function(index, comment) {
-            var listItem = '<tr>' +
-            '<td><img src="' + comment.writer.photo + '" alt="프로필 사진"></td>' +
-            '<td>' + comment.writer.nickname + '</td>' +
-            '<td>' + comment.content + '</td>' +
-            '<td>' + formatDate(comment.createdAt) + '</td>' +
-            '</tr>';
-            commentsList.append(listItem);
-        });
-
-        // 파일 목록 출력
-        var filesList = $('#filesTable').find('tbody');
-        filesList.empty(); // 목록 초기화
-
-        $.each(data.files, function(index, file) {
-            var listItem = '<tr>' +
-            '<td>' + file.fileName + '</td>' +
-            '<td>' + file.type + '</td>' +
-            '</tr>';
-            filesList.append(listItem);
-        });
-    }
-
-
-
-</script>
-
-<script>
-
-    $(document).ready(function() {
-        // 폼이 제출되었을 때의 동작 설정
-        $("#postSearchForm").submit(function(event) {
-            // 폼의 기본 동작인 페이지 리로드를 막습니다.
-            event.preventDefault();
-
-            // 입력된 content를 가져옵니다.
-            var content = $("#searchContent").val();
-
-            // 서버에 검색 요청을 보냅니다.
-            $.ajax({
-                type: "GET",
-                url: "/post/search", // 검색을 처리할 서버의 엔드포인트
-                data: { content: content }, // 검색어를 전달합니다.
-                success: function(response) {
-                    // 검색 결과를 받아와서 HTML로 표시합니다.
-                    $("#searchResult").html(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error("검색 요청 실패:", error);
-                }
-            });
-        });
-    });
-
-
-    $(document).ready(function() {
-        // 글 수정하기 버튼 클릭 이벤트 핸들러
-
-    });
-
-
-
-    $("#update").on('click',function() {
-
-
-        var no = $("#no").val();
-        var schoolNo = document.querySelector('#searchResult > table').getAttribute('data-schoolno');
         console.log(no);
         console.log(schoolNo);
-        // 새로운 URL 생성
-        var newURL = 'md?no=' + no + '&schoolNo=' + schoolNo;
+        console.log("@@@@@@@@@@@ postNo = " + selectedPost.no);
 
-        // 모달 닫기
-        $("#noticeModal").modal("hide");
 
-        // URL로 이동
-        window.location.href = newURL;
+        setPostNo(no);
+
+        showPostModal(no,schoolNo);
     });
-</script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script>
+    // 클릭된 게시글 데이터를 모달로 표시하는 함수
+    function showPostModal(no , schoolNo) {
+        // AJAX를 통해 게시글 데이터를 가져온 후 모달로 표시
+        // 1) post 상세 정보 요청
+        $.ajax('noticeview/' + schoolNo, {
+            method: 'GET',
+            data: {no: no},
+            dataType: 'json'
+        }).done(function(result) {
+            console.log(result);
 
+            // 서버에서 가져온 데이터로 모달창의 입력폼을 초기화시키기
+            initModal(result);
 
-
-    $(document).ready(function() {
-        // 체크박스 클릭 이벤트 핸들러
-        $("#searchResult").on('change', '.post-checkbox', function() {
-            const isChecked = $(this).prop('checked');
-            const $tableRow = $(this).closest('tr');
-            const postId = $tableRow.data('no');
-            const $fixedPostsTable = $('#fixed-post').find('table');
-
-            // 선택된 게시글을 고정하거나 해제
-            if (isChecked) {
-                // 게시글 테이블에서 선택된 게시글 복제하여 고정 게시글 목록에 추가
-                const $clonedRow = $tableRow.clone(); // 원본 테이블 행 복제
-                $clonedRow.find('.post-checkbox').remove(); // 체크박스 제거
-                $fixedPostsTable.find('tbody').append($clonedRow); // 고정 게시글 테이블에 추가
-
-                // 여기에서 선택된 게시글을 배열에 추가할 수 있습니다.
-                console.log("게시글 고정:", postId);
-            } else {
-                // 고정 게시글 테이블에서 해당 게시글 제거
-                $fixedPostsTable.find(`tr[data-no="${postId}"]`).remove();
-
-                // 여기에서 선택된 게시글을 배열에서 제거할 수 있습니다.
-                console.log("게시글 해제:", postId);
-            }
+            // 모달 창 띄우기
+            noticeModal.show();
+        }).fail(function() {
+            console.log("실패!");
         });
+        // 2) JSON으로 받은 객체를 가지고 모달 창을 띄워서 입력 폼에 값을 채운다.
+
+        function initModal(data) {
+            //주어진 데이터로 모달창의 입력폼을 채운다.
+            $('#post-form #nickname').val(data.post.writer.nickname);
+            $('#post-form #no').val(data.post.no);
+            $('#post-form #photo').val(data.post.writer.photo);
+            $('#post-form #content').val(data.post.content);
+
+            // createdAt 날짜 데이터를 yyyy-MM-dd 형식으로 변환하는 함수
+            function formatDate(date) {
+                // 날짜 객체 생성
+                var newDate = new Date(date);
+                // 년, 월, 일 추출
+                var year = newDate.getFullYear();
+                var month = newDate.getMonth() + 1;
+                var day = newDate.getDate();
+
+                // 월과 일이 한 자리 수인 경우 앞에 0을 추가하여 두 자리로 만듭니다.
+                if (month < 10) {
+                    month = '0' + month;
+                }
+                if (day < 10) {
+                    day = '0' + day;
+                }
+
+                // yyyy-MM-dd 형식으로 반환
+                return year + '-' + month + '-' + day;
+            }
+
+            // createdAt 날짜 데이터를 원하는 형식으로 변환하여 입력 폼에 설정
+            $('#post-form #createdat').val(formatDate(data.post.createdAt));
+
+
+            var commentsList = $('#commentsTable').find('tbody');
+            commentsList.empty(); // 목록 초기화
+
+            $.each(data.comments, function(index, comment) {
+                var listItem = '<tr>' +
+                '<td>'+ comment.writer.photo + '</td>' +
+                '<td>' + comment.writer.nickname + '</td>' +
+                '<td>' + comment.content + '</td>' +
+                '<td>' + formatDate(comment.createdAt) + '</td>' +
+                '<td style="display: none;">' + comment.commentNo + '</td>' +
+                '<td style="display: none;">' + comment.userNo + '</td>' +
+                '<td>' +
+                '<div class="dropdown">' +
+                '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">' +
+                '더보기' +
+                '</button>' +
+                '<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">' +
+                '<li><a class="dropdown-item" href="javascript:void(0);" onclick="editComment(' + comment.commentNo + ')">수정</a></li>' +
+                '<li><a class="dropdown-item" href="javascript:void(0);" onclick="deleteComment(' + comment.commentNo + ')">삭제</a></li>' +
+                '</ul>' +
+                '</div>' +
+                '</td>' +
+                '</tr>';
+                commentsList.append(listItem);
+            });
+
+            // 파일 목록 출력
+            //            var filesList = $('#filesTable').find('tbody');
+            //            filesList.empty(); // 목록 초기화
+            //
+            //            $.each(data.files, function(index, file) {
+            //                var listItem = '<tr>' +
+            //                '<td>' + file.fileName + '</td>' +
+            //                '<td>' + file.type + '</td>' +
+            //                '</tr>';
+            //                filesList.append(listItem);
+            //            });
+        }
+    }
+    $('#noticeModal').on('shown.bs.modal', function () {
+        // 모달창이 열릴 때마다 내부 컨텐츠에 맞게 모달의 너비를 조절합니다.
+        $(this).find('.modal-dialog').removeClass('modal-lg modal-xl').addClass('modal-dialog-centered');
+        $(this).find('.modal-content').css('height', 'auto');
     });
 
-//    $(document).ready(function() {
-//        // 체크박스 클릭 이벤트 핸들러
-//        $("#searchResult").on('change', '.post-checkbox', function() {
-//            const isChecked = $(this).prop('checked');
-//            const $tableRow = $(this).closest('tr');
-//            const postId = $tableRow.data('no');
-//            const $fixedPostsTable = $('#fixed-post').find('table');
-//
-//            // 선택된 게시글을 고정하거나 해제
-//            if (isChecked) {
-//                // 이미 고정된 게시글이 있는지 확인
-//                const $existingFixedPosts = $fixedPostsTable.find('tbody').children();
-//                if ($existingFixedPosts.length > 0) {
-//                    // 이미 고정된 게시글이 있으면 체크박스 해제하고 메시지 표시
-//                    $(this).prop('checked', false);
-//                    alert('한 개의 게시글만 고정할 수 있습니다.');
-//                    return;
-//                }
-//
-//                // 게시글 테이블에서 선택된 게시글 복제하여 고정 게시글 목록에 추가
-//                const $clonedRow = $tableRow.clone(); // 원본 테이블 행 복제
-//                $clonedRow.find('.post-checkbox').remove(); // 체크박스 제거
-//                $fixedPostsTable.find('tbody').append($clonedRow); // 고정 게시글 테이블에 추가
-//
-//                // 여기에서 선택된 게시글을 배열에 추가할 수 있습니다.
-//                console.log("게시글 고정:", postId);
-//            } else {
-//                // 고정 게시글 테이블에서 해당 게시글 제거
-//                $fixedPostsTable.find(`tr[data-no="${postId}"]`).remove();
-//
-//                // 여기에서 선택된 게시글을 배열에서 제거할 수 있습니다.
-//                console.log("게시글 해제:", postId);
-//            }
-//        });
-//    });
-</script>
 
+
+
+</script>
 
 
 </body>

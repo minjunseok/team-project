@@ -209,27 +209,14 @@
   </select>
 
 
-  <select id="findyBySchoolLevelNo" resultType="int">
 
-    <!--  세션유저의 user_no를 받아 권한이 매니저인가 부매니저인가 묻는 쿼리문-->
-    SELECT DISTINCT
+  <select id="findBySchoolNo" resultType="int">
+    <!--count()를 사용하면 school_users 데이터 값이 있으면 1, 없으면 0으로 찾아서 값을 넘겨줌-->
+    SELECT count()
+    FROM school_users
+    WHERE school_no = #{schoolNo}
+    AND user_no = #{userNo};
 
-    su.level_no level_no
-
-    FROM
-
-    school_users as su
-
-    INNER JOIN
-
-    schools s ON s.school_no = su.school_no
-
-    WHERE
-
-    s.school_no =#{schoolNo}
-
-    AND su.level_no IN (3, 4)
-    AND user_no =#{userNo};
   </select>
 
 
