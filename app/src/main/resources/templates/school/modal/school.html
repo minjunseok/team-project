@@ -3,7 +3,9 @@
 <head>
     <meta charset='UTF-8'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <title>비트캠프 데브옵스 5기</title>
+    <title>모여라</title>
+
+
 </head>
 <body>
 
@@ -20,34 +22,39 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div style="display: flex; align-items: center;">
-                            <label for="school_name" class="form-label">스쿨 이름</label>
-                            <input id="school_name" name="name" type="text" class="form-control" value="스쿨 이름">
+                            <h5>스쿨 이름</h5>
+                            <label for="school_name" class="form-label"></label>
+                            <input id="school_name" name="name" type="text" class="form-control">
                             <!-- 중복 확인 버튼 추가 -->
-
-                            <button class="btn btn-primary" type="button" id='signupBtn'>중복 확인</button>
+                            <button class="btn btn-primary btn-warning" type="button" id='signupBtn' >중복 확인</button>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="school_photo" class="form-label">스쿨 사진</label>
+                        <h5>현재 스쿨 사진</h5>
+                        <label for="school_photo" class="form-label"></label>
                         <!-- 스쿨 사진 표시 -->
                         <div>
                             <img id="school_photo1">
                         </div>
                         <!-- 사진 변경을 위한 파일 업로드 -->
-                        <input id="school_photo" name='photo' type='file'>
+                        <!--  <input id="school_photo" name='photo' type='file'>-->
+                        <input type="file" id="school_photo" name="photo" accept="image/*" class="form-control"  required/>
+
                     </div>
                     <div class="mb-3">
-                        <label for="school_content" class="form-label">스쿨 설명</label>
+                        <h5>스쿨 설명</h5>
+                        <label for="school_content" class="form-label"></label>
                         <textarea id="school_content" class="form-control" name="school_content"></textarea>
                     </div>
                     <div id="school_tags" class="mb-3">
-                        <label class="form-label">스쿨 관심사</label>
+                        <h5>스쿨 관심사</h5>
+                        <label class="form-label"></label>
 
                         <div class="tag-checkboxes" id="tag-checkboxes">
                             <tr data-th-each="tag : ${tags}">
                                 <td>
                                     <input data-th-checkbox="true"
-                                           data-th-value="${tag.no}" name="tagNums" type="checkbox">
+                                           data-th-value="${tag.no}" name="tagNums" type="checkbox" disabled >
                                 </td>
                                 <td>
                                     <span data-th-text="${tag.name}">1</span>
@@ -60,7 +67,7 @@
                     </div>
                 </div>
                 <!--                <button class="btn btn-primary">업데이트</button>-->
-                <button class="btn btn-primary" type="button" onclick="update()">업데이트</button>
+                <button class="btn btn-primary btn-warning" type="button" onclick="update()">업데이트</button>
             </form>
         </div>
     </div>
