@@ -209,10 +209,9 @@
   </select>
 
 
-  <delete id="deleteSchoolUsers" parameterType="int">
+  <delete id="deleteSchoolUsers">
     DELETE FROM school_users
-    WHERE user_no = #{userNo}
-    AND school_no = #{schoolNo}
+    WHERE school_no = #{schoolNo}
   </delete>
 
 

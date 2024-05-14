@@ -5,143 +5,147 @@
     <meta charset='UTF-8'>
     <title>모여라</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+
     <style>
-        body {
+        .form-section {
+            margin-bottom: 20px; /* 각 섹션의 아래쪽 간격 조정 */
+        }
+
+        .school-visibility {
+            margin-top: 20px;
+        }
+
+         /* 가운데 정렬 스타일 */
+        .centered {
             display: flex;
             justify-content: center;
             align-items: center;
-            //height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
+            height: 100vh;
         }
 
-        .form-container {
-            width: 400px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+        /* 오른쪽 정렬 스타일 */
+        .right-aligned {
+            display: flex;
+            justify-content: center;
+            margin-right: 20px;
         }
-
-        .form-group {
-            margin-bottom: 20px;
+        
+        .open-container {
             display: flex;
             align-items: center;
         }
 
-        label {
-            width: 150px;
-            margin-right: 10px;
+        .open-container input[type="radio"] {
+            display: none;
         }
 
-        input[type="text"],
-        textarea {
-            flex: 1;
-            padding: 5px;
+       .open-container label {
+        display: inline-block;
+        margin-right: 10px;
+        padding: 8px 16px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 50px;
+        margin-left: 20px;
+        white-space: nowrap; /* 텍스트가 넘칠 경우 줄바꿈 방지 */
         }
 
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        button {
-            padding: 5px 10px;
-            background-color: #007bff;
+        .open-container input[type="radio"]:checked + label {
+            background-color: rgb(158, 137, 106);
             color: #fff;
-            border: none;
-            cursor: pointer;
+            border-color: rgb(158, 137, 106);
         }
 
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        #school_image img {
-            max-width: 200px;
-            max-height: 200px;
-        }
-
-        .flex-center {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .flex-between {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
     </style>
 </head>
 
-<body>
-<form onsubmit="return validateForm()" action="add" data-th-action="@{add}" enctype='multipart/form-data'
-      method='post' id="form1">
-    <div>
-        <div id="div1" style="display: inline-block;">
-            스쿨이름: <input name='name' id="name" type="text">
+<body class="p-3 m-0 border-0 bd-example m-0 border-0">
+<div class="centered">
+    <form onsubmit="return validateForm()" action="add" data-th-action="@{add}" enctype='multipart/form-data'
+          method='post' id="form1"
+          class="was-validated"
+          novalidate="">
+        <div id="div1" style="display: inline-block;" class="form-section">
+            <label class="form-label" for="name">스쿨 이름</label>
+            <input type="text" name="name" id="name" class="form-control" required="">
         </div>
-        <button type='button' id='signupBtn'>중복 확인</button>
-    </div>
+        <button type="button" id="signupBtn" class="btn btn-warning">중복 확인</button>
 
-    <div>
-        사진: <input type="file" id="image" name="file" accept="image/*"
-                   onchange="setThumbnail(event);"/>
-        <div id="school_image"></div>
-        <script>
-            function setThumbnail(event) {
-                var reader = new FileReader();
+        <div style="max-width:300px;" class="form-section">
+            스쿨 사진 <input type="file" id="image" name="file" accept="image/*" class="form-control" onchange="setThumbnail(event);" required/>
+            <div id="school_image"></div>
+            <script>
+                function setThumbnail(event) {
+                    var existingImage = document.querySelector("div#school_image img");
+                    if (existingImage) {
+                        existingImage.remove();
+                    }
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        var img = document.createElement("img");
+                        img.setAttribute("src", event.target.result);
+                        document.querySelector("div#school_image").appendChild(img);
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            </script>
+        </div>
 
-                reader.onload = function (event) {
-                    var img = document.createElement("img");
-                    img.setAttribute("src", event.target.result);
-                    document.querySelector("div#school_image").appendChild(img);
-                };
+        <div style="max-width: 300px;" class="form-section">
+            스쿨 설명 <textarea class="form-control" id="validationTextarea" name='content' placeholder="스쿨 소개"  required></textarea>
+            <div class="invalid-feedback"></div>
+        </div>
 
-                reader.readAsDataURL(event.target.files[0]);
-            }
-        </script>
-    </div>
-    <div>
-        스쿨 설명: <textarea name='content'></textarea>
-    </div>
-    <div>
+        <div class="form-section right-aligned">
+            <h2>관심사 선택</h2>
+        </div>
 
-    </div>
-    <div>
-        <h2>관심사 선택</h2>
-    </div>
+        <tbody>
+            <tr data-th-each="tag : ${tags}">
+                <td>
+                    <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="${tag.no}" class="form-check-input" value="" required="">
+                </td>
+                <td>
+                    <span data-th-text="${tag.name}">1</span>
+                </td>
+                <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+                    <br>
+                </data-th-block>
+            </tr>
+        </tbody>
 
-    <tbody>
-    <tr data-th-each="tag : ${tags}">
-        <td>
-            <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="${tag.no}">
-        </td>
-        <td>
-            <span data-th-text="${tag.name}">1</span>
-        </td>
-        <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
-            <br>
-        </data-th-block>
-    </tr>
-    </tbody>
+        <div class="school-visibility form-section right-aligned">
+            <h2>스쿨 공개 여부</h2>
+        </div>
+
+        <!-- <div class="form-section form-section right-aligned">
+            <input class="form-check-input" type="radio" name="openRange" id="flexRadioDefault1" value="0" checked>
+            <label class="form-check-label" for="flexRadioDefault1">비공개</label>
+            <input class="form-check-input" type="radio" name="openRange" id="flexRadioDefault2" value="1">
+            <label class="form-check-label" for="flexRadioDefault2">공개</label>
+        </div> -->
+
+        <div class="open-container right-aligned">
+            <input id="closed" name="openRange" type="radio" value="0" checked>
+            <label  for="closed">비공개</label>
+            <input id="open" name="openRange" type="radio" value="1">
+            <label  for="open">공개</label>
+        </div>
+
+        <div class="school-visibility form-section right-aligned ">
+        <button type="submit" class="btn btn-warning right-aligned">개설 하기</button>
+        </div>
 
 
-    <h2>스쿨 공개 여부</h2>
-    <div>
-        <input type="radio" name="openRange" value="0" checked> 비공개
-        <input type="radio" name="openRange" value="1"> 공개
-    </div>
-
-    <button type="submit">개설 하기</button>
-    <br>
-
-</form>
+    </form>
+</div>
 
 <script>
     var signupBtn = 0; // 스쿨명 중복 체크 여부를 나타내는 변수
@@ -275,16 +279,16 @@
     });
 
 
-<!--    document.querySelector("#form1").onsubmit = () => {-->
-<!--        var name = document.querySelector("#name");-->
-<!--        if (name.value == "" || name.value.length < 2) {-->
-<!--            alert("스쿨이름을 2자 이상을 입력하세요.");-->
-<!--            return false; // false를 리턴하면 입력 폼의 값을 서버에 제출하지 않는다.-->
-<!--            // 즉 HTTP 요청을 수행하지 않는다.-->
-<!--        }-->
-<!--        // true를 리턴하거나 아무것도 리턴하지 않으면 원래대로-->
-<!--        // 입력 폼의 값을 서버에 제출한다. 즉 HTTP 요청을 수행한다.-->
-<!--    };-->
+    // document.querySelector("#form1").onsubmit = () => {
+    //     var name = document.querySelector("#name");
+    //     if (name.value == "" || name.value.length < 2) {
+    //         alert("스쿨이름을 2자 이상을 입력하세요.");
+    //         return false; // false를 리턴하면 입력 폼의 값을 서버에 제출하지 않는다.-->
+    //         // 즉 HTTP 요청을 수행하지 않는다.-->
+    //    }
+    //     // true를 리턴하거나 아무것도 리턴하지 않으면 원래대로-->
+    //     // 입력 폼의 값을 서버에 제출한다. 즉 HTTP 요청을 수행한다.-->
+    // };
 
 
 </script>
