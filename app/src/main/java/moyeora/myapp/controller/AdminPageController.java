@@ -35,4 +35,16 @@ public class AdminPageController {
   public void calendar() {
 
   }
+
+  @GetMapping("school")
+  public void school() {}
+
+  @GetMapping("post")
+  public void post() {
+  }
+
+  @GetMapping("chart")
+  public void chart() {
+
+  }
 }

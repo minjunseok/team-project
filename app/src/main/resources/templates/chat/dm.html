@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Hello WebSocket</title>
+  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
+  <link href="/css/chat.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@5.0.0/bundles/stomp.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+  enabled. Please enable
+  Javascript and reload this page!</h2></noscript>
+<div class="container" id="main-content" data-th-fragment="dm">
+  <div class="chat-title" id="title">[[${sender.nickname}]],[[${receiver.nickname}]]</div>
+  <div class="connect">
+    <div class="col-md-6">
+      <form id="main-form" class="form-inline">
+        <div class="form-group">
+          <label for="connect">WebSocket connection:</label>
+          <button class="btn btn-default" id="connect" type="submit">Connect</button>
+          <button class="btn btn-default" disabled="disabled" id="disconnect" type="submit">Disconnect
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="conversation-container">
+    <div class="conversation-group">
+      <div id="conversation"></div>
+    </div>
+  </div>
+  <div class="form-container">
+    <form class="form-inline" enctype="multipart/form-data">
+      <div class="form-group">
+        <input class="form-control input-field" id="message" placeholder="message" type="text">
+        <label for="photo" class="custom-file-upload">
+          <i class="fas fa-upload"></i> Choose File
+        </label>
+        <input class="form-control file-input" id="photo" name="photo" type="file" style="display:none;">
+        <span id="file-count">0</span> files attached
+        <button class="btn btn-default send-button" id="send" type="submit">Send</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script th:inline="javascript">
+
+  var sender = [[${sender}]]
+  var receiver = [[${receiver}]]
+  var chatList = [[${chatList}]]
+  var room = [[${room}]]
+  var photo = "";
+  var sendDate = "";
+
+  var dmFilePath = "https://kr.object.ncloudstorage.com/bitcamp-devops5-143/dm/";
+  var dmFileCdnDomain = "https://66owc0gv2691.edge.naverncp.com/f3hnPRlrc7/";
+
+  console.log(room);
+  console.log(room.no);
+  console.log(chatList)
+
+  function connect() {
+      stompClient.activate();
+  }
+
+  const stompClient = new StompJs.Client({
+      brokerURL: 'ws://localhost:8080/ws'
+  });
+
+  stompClient.onConnect = (frame) => {
+      setConnected(true);
+      console.log('Connected: ' + frame);
+      loadChat(chatList);
+
+      stompClient.subscribe('/sub/dm/' + room.no, (dm) => {
+          showMessage(JSON.parse(dm.body));
+      });
+  };
+
+  stompClient.onWebSocketError = (error) => {
+      console.error('Error with websocket', error);
+  };
+
+  stompClient.onStompError = (frame) => {
+      console.error('Broker reported error: ' + frame.headers['message']);
+      console.error('Additional details: ' + frame.body);
+  };
+
+  function setConnected(connected) {
+      $("#connect").prop("disabled", connected);
+      $("#disconnect").prop("disabled", !connected);
+      if (connected) {
+          $("#conversation").show();
+      }
+      else {
+          $("#conversation").hide();
+      }
+  }
+
+  function connect() {
+      stompClient.activate();
+  }
+
+  function disconnect() {
+      stompClient.deactivate();
+      setConnected(false);
+      console.log("Disconnected");
+  }
+
+  function sendMessage() {
+      let dm = {
+          sender : {no : sender.no, nickname : sender.nickname},
+          receiver : {no : receiver.no, nickname:receiver.nickname},
+          message : $("#message").val(),
+          photo : "",
+          sendDate : moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+          roomNo : room.no
+      }
+      console.log(dm);
+
+      let formData = new FormData();
+      if(photo != "") {
+        Array.from(photo).forEach((el) => {
+        formData.append("photo", el);
+        });
+      }
+      formData.append("dm", new Blob([JSON.stringify(dm)], {type: "application/json"}));
+
+      $.ajax({
+        type: "POST",
+        url: "/addDm",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (result) {
+            console.log("success: " + result.message);
+            stompClient.publish({
+            destination: "/pub/dm",
+            body: JSON.stringify({
+              'sender': {no : result.sender.no},
+              'receiver': {no : result.receiver.no},
+              'message': result.message,
+              'photo': result.photo,
+              'sendDate': moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+              'roomNo': room.no,
+            })
+          });
+        },
+        error: function () {
+            console.log("error: ajax 전송 테스트");
+            }
+      });
+  }
+
+  function showMessage(dm) {
+      if(dm.sender.no == sender.no) {
+        if(dm.message != null && dm.message.length > 0) {
+          $("#conversation").append(
+          "<div class='username sender'>" + sender.nickname + "</div>" +
+          "<div class = 'message-container sent-message'><div class = 'message-text'>" + dm.message +
+          "</div></div>");
+        }
+        if(dm.photo != null && dm.photo.length > 0) {
+          $("#conversation").append(
+          "<div class='username sender'>" + sender.nickname + "</div>" +
+          "<div class = 'message-container sent-message'><div class = 'message-text'>" +
+          "<a href=" + dmFilePath + dm.photo + ">" +
+          "<img src=" + dmFileCdnDomain + "dm/" + dm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" +
+          "</div></div>");
+        }
+      } else {
+        if(dm.message != null && dm.message.length > 0) {
+          $("#conversation").append(
+          "<div class='username receiver'>" + receiver.nickname + "</div>" +
+          "<div class = 'message-container received-message'><div class = 'message-text'>" + dm.message +
+          "</div></div>");
+        }
+        if(dm.photo != null && dm.photo.length > 0) {
+          $("#conversation").append(
+          "<div class='username receiver'>" + receiver.nickname + "</div>" +
+          "<div class = 'message-container received-message'><div class = 'message-text'>" +
+          "<a href=" + dmFilePath + dm.photo + ">" +
+          "<img src=" + dmFileCdnDomain + "dm/" + dm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
+        }
+      }
+      $("#message").val("");
+      $("#photo").val("");
+      $("#file-count").text(0);
+  }
+
+  function loadChat(chatList) {
+      if(chatList != null) {
+        for(chat in chatList) {
+          if(chatList[chat].sender.no == sender.no) {
+            if(chatList[chat].message.length > 0) {
+              $("#conversation").append(
+              "<div class='username sender'>" + chatList[chat].sender.nickname + "</div>" +
+              "<div class = 'message-container sent-message'><div class = 'message-text'>" + chatList[chat].message +
+              "</div></div>");
+            }
+            if(chatList[chat].photo.length > 0) {
+              $("#conversation").append(
+              "<div class='username sender'>" + chatList[chat].sender.nickname + "</div>" +
+              "<div class = 'message-container sent-message'><div class = 'message-text'>" +
+              "<a href=" + dmFilePath + chatList[chat].photo + ">" +
+              "<img src=" + dmFileCdnDomain + "dm/" + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" +
+              "</div></div>");
+            }
+          } else {
+            if(chatList[chat].message.length > 0) {
+              $("#conversation").append(
+              "<div class='username receiver'>" + chatList[chat].sender.nickname + "</div>" +
+              "<div class = 'message-container received-message'><div class = 'message-text'>" + chatList[chat].message +
+              "</div></div>");
+            }
+            if(chatList[chat].photo.length > 0) {
+              $("#conversation").append(
+              "<div class='username receiver'>" + chatList[chat].sender.nickname + "</div>" +
+              "<div class = 'message-container received-message'><div class = 'message-text'>" +
+              "<a href=" + dmFilePath + chatList[chat].photo + ">" +
+              "<img src=" + dmFileCdnDomain + "dm/" + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" +
+              "</div></div>");
+            }
+          }
+        }
+      }
+      $('#conversation').scrollTop($('#conversation')[0].scrollHeight);
+  }
+
+  function setFiles() {
+    photo = $("#photo")[0].files;
+    $("#message").val("");
+    $("#file-count").text(photo.length);
+  }
+
+  function setMessage() {
+    $("#photo").val('');
+    photo = $("#photo")[0].files;
+    $("#file-count").text(0);
+  }
+
+  $(function () {
+      connect();
+      $("form").on('submit', (e) => e.preventDefault());
+      $( "#disconnect" ).click(() => disconnect());
+      $( "#send" ).click(() => sendMessage());
+      $( "#photo" ).change(() => setFiles());
+      $( "#message" ).change(() => setMessage());
+  });
+</script>
+
+</body>
+</html>

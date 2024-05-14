@@ -11,7 +11,7 @@
             <item index="3" class="java.lang.String" itemvalue="noscript" />
             <item index="4" class="java.lang.String" itemvalue="embed" />
             <item index="5" class="java.lang.String" itemvalue="script" />
-            <item index="6" class="java.lang.String" itemvalue="thread" />
+            <item index="6" class="java.lang.String" itemvalue="th:block" />
           </list>
         </value>
       </option>

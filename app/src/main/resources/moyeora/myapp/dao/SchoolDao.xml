@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="moyeora.myapp.dao.SchoolDao">
+
 
 <resultMap id="SchoolMap" type="School">
   <id column="school_no" property="no"/>
   <result column="name" property="name"/>
   <result column="content" property="content"/>
   <result column="limited_man" property="limitedMan"/>
+  <result column="now_man" property="nowMan"/>
   <result column="photo" property="photo"/>
   <result column="open_range" property="openRange"/>
   <result column="created_at" property="createdAt"/>
   <result column="now_member_count" property="nowMemberCount"/>
-</resultMap>
+  <result column="limited_at" property="limitedAt"/>
 
-
-
+  <collection property="tags" ofType="SchoolTag">
+    <id column="tag_no" property="tagNo"/>
+  </collection>
+  </resultMap>
 
   <insert id="add" parameterType="School"
-    useGeneratedKeys="true" keyColumn="school_no" keyProperty="no">
+          useGeneratedKeys="true" keyColumn="school_no" keyProperty="no">
     insert into schools(name,content,photo,open_range,created_at)
     values(#{name},#{content},#{photo},#{openRange},now())
   </insert>
@@ -31,39 +35,86 @@
   </delete>
   <select id="findHotSchool" resultMap="SchoolMap" parameterType="int">
     select
-      s.school_no,
-      s.name,
-      s.photo,
-      (select count(*) from school_users u where s.school_no = u.school_no) as now_member_count
+    s.school_no,
+    s.name,
+    s.photo,
+    (select count(*) from school_users u where s.school_no = u.school_no) as now_member_count
     from
-      schools as s
+    schools as s
     order by
-      now_member_count desc
+    now_member_count desc
   </select>
+
 
   <select id="findBySchoolName" resultMap="SchoolMap" parameterType="String">
     select
-      school_no,
-      name,
-      content
+    school_no,
+    name,
+    content
     from
-      schools
+    schools
     where name like #{name}
   </select>
 
   <select id="findByNo" resultMap="SchoolMap">
     select
+    school_no,
+    name,
+    stop,
+    open_range
+    from
+    schools
+    where
+    school_no=#{no}
+  </select>
+  
+  <select id="isNameExists" resultType="int" parameterType="String">
+    SELECT COUNT(*)
+    FROM
+    schools
+    WHERE
+    name = #{name}
+  </select>
+
+  <update id="update" parameterType="School">
+    update schools set
+    name=#{name},
+    photo=#{photo},
+    content=#{content}
+    where
+    school_no=#{no}
+  </update>
+
+
+  <select id="findBySchool" resultMap="SchoolMap" parameterType="int">
+    SELECT
+    s.school_no,
+    s.name,
+    s.content,
+    s.photo,
+    st.tag_no,
+    t.name
+    FROM
+    schools s
+    LEFT JOIN
+    school_tags st ON s.school_no = st.school_no
+    LEFT JOIN
+    tags t ON t.tag_no = st.tag_no
+    WHERE
+    s.school_no = #{no}
+  </select>
+
+
+  <select id="findBySchoolNo" resultMap="SchoolMap">
+    select
       school_no,
       name,
-      stop,
-      open_range
+      photo
     from
       schools
     where
       school_no=#{no}
   </select>
-
-
 
   <update id="stopSchool">
     update schools
@@ -79,10 +130,73 @@
       open_range=#{openRange}
     where
       school_no=#{schoolNo}
-
   </update>
 
 
 
+  <select id="findAllByPageSize" resultMap="SchoolMap">
+    select
+    s.school_no,
+    s.name,
+    s.limited_man,
+    s.photo,
+    s.created_at,
+    s.limited_at,
+    count(u.school_no) as now_man
+    from
+    schools s
+    inner join school_users u
+    on
+    s.school_no = u.school_no
+    group by
+    u.school_no
+    order by
+    school_no desc
+    limit #{limit} offset #{offset}
+  </select>
+
+  <update id="updateBlackList">
+    update
+    schools
+    set
+    limited_at =
+    #{date}
+    where
+    school_no =
+    #{schoolNo}
+  </update>
+
+  <select id="findBySchoolInfo" resultMap="SchoolMap">
+    select
+    s.school_no,
+    s.name,
+    s.limited_man,
+    s.photo,
+    s.created_at,
+    s.limited_at,
+    count(u.school_no) as now_man
+    from
+    schools s
+    inner join school_users u
+    on
+    s.school_no = u.school_no
+    where
+    s.name like '%${schoolInfo}%'
+    group by
+    u.school_no
+    order by
+    school_no desc
+  </select>
+
+  <update id="updateLimitedMan">
+    update schools set
+    limited_man = #{limitedMan}
+    where school_no in (select school_no from school_users where level_no=4 and user_no=#{userNo})
+  </update>
+
+
+  <delete id="deleteSchool" parameterType="int">
+    DELETE FROM schools WHERE school_no = #{value};
+  </delete>
 
 </mapper>

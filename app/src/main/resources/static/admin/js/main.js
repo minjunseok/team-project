@@ -786,17 +786,46 @@
   try {
 
     //Team chart
-    var ctx = document.getElementById("team-chart");
-    if (ctx) {
-      ctx.height = 150;
-      var myChart = new Chart(ctx, {
+    var birth = document.getElementById("birth");
+    let birthChart;
+    if (birth) {
+      axios.get('statistics/age')
+      .then((e) => {
+
+      birth.height = 150;
+      let dt = {
+        '0-19세' : 0,
+        '20-29세' : 0,
+        '30-39세' : 0,
+        '40-49세' : 0,
+        '50-59세' : 0,
+        '60세이상' : 0
+      }
+      for(let d of e.data) {
+        let now = new Date();
+        let year = now.getFullYear();
+        let range = year-d.birthyear
+          if(range < 20) 
+            dt['0-19세'] += d.ctn
+          if(range >= 20)
+            dt['20-29세'] += d.ctn
+          if(range >= 30)
+            dt['30-39세'] += d.ctn
+          if(range >= 40)
+            dt['40-49세'] += d.ctn
+          if(range >= 50)
+            dt['50-59세'] += d.ctn
+          if(range >= 60)
+            dt['60세이상'] += d.ctn
+      }
+      birthChart = new Chart(birth, {
         type: 'line',
         data: {
-          labels: ["2010", "2011", "2012", "2013", "2014", "2015", "2016"],
+          labels: Object.keys(dt),
           type: 'line',
           defaultFontFamily: 'Poppins',
           datasets: [{
-            data: [0, 7, 3, 5, 2, 10, 7],
+            data:  Object.values(dt),
             label: "Expense",
             backgroundColor: 'rgba(0,103,255,.15)',
             borderColor: 'rgba(0,103,255,0.5)',
@@ -865,7 +894,8 @@
             display: false,
           }
         }
-      });
+      })
+      })
     }
 
 
@@ -1057,46 +1087,52 @@
   try {
 
     //doughut chart
-    var ctx = document.getElementById("doughutChart");
-    if (ctx) {
-      ctx.height = 150;
-      var myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          datasets: [{
-            data: [45, 25, 20, 10],
-            backgroundColor: [
-              "rgba(0, 123, 255,0.9)",
-              "rgba(0, 123, 255,0.7)",
-              "rgba(0, 123, 255,0.5)",
-              "rgba(0,0,0,0.07)"
-            ],
-            hoverBackgroundColor: [
-              "rgba(0, 123, 255,0.9)",
-              "rgba(0, 123, 255,0.7)",
-              "rgba(0, 123, 255,0.5)",
-              "rgba(0,0,0,0.07)"
-            ]
-
-          }],
-          labels: [
-            "Green",
-            "Green",
-            "Green",
-            "Green"
-          ]
-        },
-        options: {
-          legend: {
-            position: 'top',
-            labels: {
-              fontFamily: 'Poppins'
-            }
-
-          },
-          responsive: true
+    let hobby = document.getElementById("hobby");
+    let hobbyChart;
+    if (hobby) {
+      hobby.height = 150;
+      axios.get('statistics/hobby')
+      .then((e) => {
+        let name =[];
+        let val = [];
+        for(let d of e.data) {
+          name.push(d.hobby);
+          val.push(d.ctn);
         }
-      });
+        hobbyChart = new Chart(hobby, {
+          type: 'doughnut',
+          data: {
+            datasets: [{
+              data: val,
+              backgroundColor: [
+                "rgba(0, 123, 255,0.9)",
+                "rgba(0, 123, 255,0.7)",
+                "rgba(0, 123, 255,0.5)",
+                "rgba(0,0,0,0.07)"
+              ],
+              hoverBackgroundColor: [
+                "rgba(0, 123, 255,0.9)",
+                "rgba(0, 123, 255,0.7)",
+                "rgba(0, 123, 255,0.5)",
+                "rgba(0,0,0,0.07)"
+              ]
+  
+            }],
+            labels: name
+          },
+          options: {
+            legend: {
+              position: 'top',
+              labels: {
+                fontFamily: 'Poppins'
+              }
+  
+            },
+            responsive: true
+          }
+        });
+      })
+      
     }
 
 
@@ -1106,34 +1142,32 @@
 
 
   try {
-
     //pie chart
-    var ctx = document.getElementById("pieChart");
-    if (ctx) {
-      ctx.height = 200;
-      var myChart = new Chart(ctx, {
+    let gender = document.getElementById("gender");
+    let genderChart
+    if (gender) {
+      gender.height = 200;
+      axios.get('statistics/gender')
+      .then((e)=> {
+      let dt = e.data;
+      genderChart = new Chart(gender, {
         type: 'pie',
         data: {
           datasets: [{
-            data: [45, 25, 20, 10],
+            data: [dt[0].ctn,dt[1].ctn],
             backgroundColor: [
               "rgba(0, 123, 255,0.9)",
-              "rgba(0, 123, 255,0.7)",
               "rgba(0, 123, 255,0.5)",
-              "rgba(0,0,0,0.07)"
             ],
             hoverBackgroundColor: [
               "rgba(0, 123, 255,0.9)",
-              "rgba(0, 123, 255,0.7)",
               "rgba(0, 123, 255,0.5)",
-              "rgba(0,0,0,0.07)"
             ]
 
           }],
           labels: [
-            "Green",
-            "Green",
-            "Green"
+            dt[0].gender == 0 ? '남자' : '여자',
+            dt[1].gender == 1 ? '여자' : '남자',
           ]
         },
         options: {
@@ -1147,6 +1181,9 @@
           responsive: true
         }
       });
+
+
+      })
     }
 
 
@@ -1160,7 +1197,7 @@
     var ctx = document.getElementById("polarChart");
     if (ctx) {
       ctx.height = 200;
-      var myChart = new Chart(ctx, {
+      let genderChart = new Chart(ctx, {
         type: 'polarArea',
         data: {
           datasets: [{
@@ -1201,47 +1238,57 @@
   try {
 
     // single bar chart
-    var ctx = document.getElementById("singelBarChart");
-    if (ctx) {
-      ctx.height = 150;
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ["Sun", "Mon", "Tu", "Wed", "Th", "Fri", "Sat"],
-          datasets: [
-            {
-              label: "My First dataset",
-              data: [40, 55, 75, 81, 56, 55, 40],
-              borderColor: "rgba(0, 123, 255, 0.9)",
-              borderWidth: "0",
-              backgroundColor: "rgba(0, 123, 255, 0.5)"
-            }
-          ]
-        },
-        options: {
-          legend: {
-            position: 'top',
-            labels: {
-              fontFamily: 'Poppins'
-            }
-
-          },
-          scales: {
-            xAxes: [{
-              ticks: {
-                fontFamily: "Poppins"
-
-              }
-            }],
-            yAxes: [{
-              ticks: {
-                beginAtZero: true,
-                fontFamily: "Poppins"
-              }
-            }]
-          }
+    let local = document.getElementById("local");
+    let localChart;
+    if (local) {
+      local.height = 150;
+      axios.get('statistics/local')
+      .then((e)=> {
+        let name =[];
+        let val = [];
+        for(let d of e.data) {
+          name.push(d.local);
+          val.push(d.ctn);
         }
-      });
+        localChart = new Chart(local, {
+          type: 'bar',
+          data: {
+            labels: name,
+            datasets: [
+              {
+                label: "My First dataset",
+                data: val,
+                borderColor: "rgba(0, 123, 255, 0.9)",
+                borderWidth: "0",
+                backgroundColor: "rgba(0, 123, 255, 0.5)"
+              }
+            ]
+          },
+          options: {
+            legend: {
+              position: 'top',
+              labels: {
+                fontFamily: 'Poppins'
+              }
+  
+            },
+            scales: {
+              xAxes: [{
+                ticks: {
+                  fontFamily: "Poppins"
+  
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  fontFamily: "Poppins"
+                }
+              }]
+            }
+          }
+        });
+      })
     }
 
   } catch (error) {
@@ -1279,8 +1326,8 @@
         window.location.href = url;
       }
     });
-  
-  
+
+
   })(jQuery);
 (function ($) {
   // USE STRICT
@@ -1311,7 +1358,7 @@
 
   // Europe Map
   try {
-    
+
     var vmap1 = $('#vmap1');
     if(vmap1[0]) {
       vmap1.vectorMap( {
@@ -1330,7 +1377,7 @@
 
   // USA Map
   try {
-    
+
     var vmap2 = $('#vmap2');
 
     if(vmap2[0]) {
@@ -1360,7 +1407,7 @@
 
   // Germany Map
   try {
-    
+
     var vmap3 = $('#vmap3');
     if(vmap3[0]) {
       vmap3.vectorMap( {
@@ -1375,14 +1422,14 @@
         }
       });
     }
-    
+
   } catch (error) {
     console.log(error);
   }
-  
+
   // France Map
   try {
-    
+
     var vmap4 = $('#vmap4');
     if(vmap4[0]) {
       vmap4.vectorMap( {
@@ -1421,10 +1468,10 @@
   } catch (error) {
     console.log(error);
   }
-  
+
   // Brazil Map
   try {
-    
+
     var vmap6 = $('#vmap6');
     if(vmap6[0]) {
       vmap6.vectorMap( {

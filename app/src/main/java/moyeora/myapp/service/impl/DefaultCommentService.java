@@ -1,16 +1,18 @@
 package moyeora.myapp.service.impl;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.CommentDao;
 import moyeora.myapp.dao.PostDao;
 import moyeora.myapp.dao.UserDao;
+
 import moyeora.myapp.service.CommentService;
 import moyeora.myapp.vo.Comment;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor

@@ -21,7 +21,7 @@ public class SubscriptionScheduler {
   private final UserService userService;
   private final SchoolService schoolService;
 
-  @Scheduled(cron = ("0 53 14 * * *"))
+  @Scheduled(cron = ("0 0 7 * * *"))
   public void regularPaymentFail() {
     System.out.println(paymentService.findBillingKeyByUserNo(3));
     List<Integer> memberLists = new ArrayList<>();
@@ -29,7 +29,6 @@ public class SubscriptionScheduler {
     for(BillingKey bi :paymentService.findErrorCount()) {
       memberLists.add(bi.getUserNo());
       if(bi.getBillingErrorCount()==1) {
-
         stopMemberList.add(bi.getUserNo());
       }
     }

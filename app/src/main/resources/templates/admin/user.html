@@ -12,6 +12,10 @@
     <!-- Title Page-->
     <title>Tables</title>
 
+    <link href="css/font-face.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
     <link href="vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
@@ -30,7 +34,7 @@
 
 </head>
 
-<body class="animsition">
+<body>
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
         <header class="header-mobile d-block d-lg-none">
@@ -144,7 +148,7 @@
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li class="has-sub">
-                            <a class="js-arrow" href="#">
+                            <a class="statistics" href="chart">
                                 <i class="fas fa-chart-bar"></i>통계</a>
                         </li>
                         <li class="active">
@@ -152,15 +156,15 @@
                                 <i class="zmdi zmdi-account-calendar"></i>회원 관리</a>
                         </li>
                         <li>
-                            <a href="form.html">
+                            <a href="school">
                                 <i class="fas fa-table"></i>스쿨 관리</a>
                         </li>
                         <li>
-                            <a href="form.html">
+                            <a href="post">
                                 <i class="fa fa-copy"></i>게시글 관리</a>
                         </li>
                         <li>
-                            <a href="form.html">
+                            <a href="qa">
                                 <i class="far fa-check-square"></i>문의 관리</a>
                         </li>
                     </ul>
@@ -314,16 +318,19 @@
                                         <i class="zmdi zmdi-account-calendar"></i>회원 관리</h3>
                                     <div class="filters m-b-45">
                                         <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
-                                            <form class="form-header" action="" method="POST">
-                                                <input class="au-input au-input--xl" type="text" name="search" placeholder="사용자의 이름/닉네임/이메일을 입력해주세요" />
-                                                <button class="au-btn--submit" type="submit">
+                                            <div class="form-header">
+                                                <input class="au-input au-input--xl" type="text" id="user_search"
+                                                       name="search" placeholder="사용자의 이름/닉네임/이메일을 입력해주세요"/>
+                                                <button class="au-btn--submit" id="search_button">
                                                     <i class="zmdi zmdi-search"></i>
                                                 </button>
-                                            </form>
-                                            <div class="dropDownSelect2"></div>
+                                            </div>
+                                            <div style="height : 20px;" class="dropDownSelect2"></div>
                                             <div>
-                                                <button class="btn btn-outline-danger btn-sm">정지</button>
-                                                <button class="btn btn-outline-danger btn-sm">관리자 부여/강등</button>
+                                                <button class="btn btn-outline-danger btn-sm" id="stop">정지</button>
+                                                <button class="btn btn-outline-danger btn-sm" id="role_update">관리자
+                                                    부여/강등
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -345,58 +352,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="userlist">
-                                                <tr>
-                                                    <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data__info">
-                                                            <h5>lori lynch</h5>
-                                                            <h6>nickname</h6>
-                                                            <span>
-                                                                <a href="#">johndoe@gmail.com</a>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="role admin">admin</span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="rs-select2--trans rs-select2--sm">
-                                                            <select class="js-select2" name="property">
-                                                                <option selected="selected">제한 날짜 설정</option>
-                                                                <option value="">1 주</option>
-                                                                <option value="">1 달</option>
-                                                                <option value="">영구 정지</option>
-                                                            </select>
-                                                            <div class="dropDownSelect2"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data__info">
-                                                            <h6>lori lynch</h6>
-                                                            <span>
-                                                                <a href="#">johndoe@gmail.com</a>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data__info">
-                                                            <h6>lori lynch</h6>
-                                                            <span>
-                                                                <a href="#">johndoe@gmail.com</a>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="user-data__footer">
-                                        <input id="pageSize" type="hidden" value="1">
+                                    <div class="user-data__footer" id="moreviewBox">
+                                        <input id="pageSize" type="hidden" value=1>
                                         <button class="au-btn au-btn-load" id="moreview">더보기</button>
                                     </div>
                                 </div>
@@ -407,9 +367,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-
     <!-- Jquery JS-->
     <script src="vendor/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap JS-->
@@ -430,44 +388,128 @@
     <script src="vendor/chartjs/Chart.bundle.min.js"></script>
     <script src="vendor/select2/select2.min.js">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!-- Main JS-->
     <script src="js/main.js"></script>
+    <script src="js/moment.js"></script>
 </body>
 <script>
-  document.getElementById("moreview").addEventListener('click', function(){
-    const psize = $("#pageSize").val()
-    $("#userlist").empty();
-    axios.get("user/list?pageSize="+psize)
-    .then(e=> {
-      console.log(e)
-      $("#pageSize").val(psize+1);
-      for(d of e.data) {
-        let text;
-        text += '<tr><td><label class="au-checkbox"><input type="checkbox"><span class="au-checkmark"></span></td>'
-        text += '<td><div class="table-data__info"><h5>'+d.name+'</h5><h6>'+d.nickname+'</h6><span><a href="#">'+d.email+'</a></span></div></td>'
-        if(d.grade===3) {
-          text += '<td><span class="role admin">admin</span></td>'
-        }
-        if(d.grade>=2) {
-          text += '<td><span class="role user">user</span></td>'
-        }
-        text += '<td><div class="rs-select2--trans rs-select2--sm"><select class="js-select2" name="property">'
-        text += '<option selected="selected">제한 날짜 설정</option>'
-        text += '<option value="">1 주</option>'
-        text += '<option value="">1 달</option>'
-        text += '<option value="">영구 정지</option>'
-        text += '</select><div class="dropDownSelect2"></div></div></td>'
-        text += '<td><div class="table-data__info"><h6>lori lynch</h6><span><a href="#">'+d.createdAt+'</a></span></div></td>'
-        text += '<td><div class="table-data__info"><h6>lori lynch</h6><span><a href="#">'+d.stopDate+'</a></span></div></td></tr>'
-        $("#userlist").append(text)
+    const userList = () => {
+        const psize = $("#pageSize").val()
+        axios.get("user/list?pageSize="+psize)
+        .then(e=> {
+          console.log(e)
+          $("#pageSize").val(Number(psize)+1);
+          console.log($("#pageSize").val());
+          for(d of e.data) {
+            let text;
+            text += '<tr><td><label class="au-checkbox"><input type="checkbox" name="check"><span class="au-checkmark"></span></td>'
+            text += '<input type="hidden" class="userNo" value='+d.no+'>'
+            text += '<td><div class="table-data__info"><h5>'+d.name+'</h5><h6>'+d.nickname+'</h6><span><a href="#">'+d.email+'</a></span></div></td>'
+
+            if(d.auth===1) {
+              text += '<td><span class="role admin">admin</span></td>'
+            }
+            if(d.auth===0) {
+              text += '<td><span class="role user">user</span></td>'
+            }
+            text += '<td><div class="rs-select2--trans rs-select2--sm">'
+            text += '<select class="js-select2 black" name="property">'
+            text += '<option selected="selected" value=0>정지 해제</option>'
+            text += '<option value=1>1 주</option>'
+            text += '<option value=2>1 달</option>'
+            text += '<option value=3>영구 정지</option>'
+            text += '</select><div class="dropDownSelect2"></div></div></td>'
+            text += '<td><div class="table-data__info"><span>'+moment(d.createdAt).format('YYYY-MM-DD')+'</span></div></td>'
+            text += '<td><div class="table-data__info"><span>'+moment(d.stopDate).format('YYYY-MM-DD')+'</span></div></td></tr>'
+            $("#userlist").append(text)
+          }
+        })
       }
+
+    const blackCheck = () => {
+            const checkboxes = document.querySelectorAll('input[name="check"]:checked');
+            let userNoList = [];
+            let blackValue = [];
+            checkboxes.forEach(checkbox => {
+                    userNoList.push(checkbox.parentNode.parentNode.parentNode.querySelector(".userNo").value)
+                    blackValue.push(checkbox.parentNode.parentNode.parentNode.querySelector(".black").value)
+                }
+            )
+            axios.post("user/blackUpdate", {
+                userNoList,
+                blackValue
+            })
+            .then(()=> {
+                $("#pageSize").val(1);
+                $("#moreviewBox").show();
+                $("#userlist").empty();
+                userList();
+            })
+
+        }
+
+
+    const adminCheck = () => {
+            const checkboxes = document.querySelectorAll('input[name="check"]:checked');
+            let userNoList = [];
+            let roleValue = [];
+            checkboxes.forEach(checkbox => {
+                    userNoList.push(checkbox.parentNode.parentNode.parentNode.querySelector(".userNo").value)
+                    roleValue.push(checkbox.parentNode.parentNode.parentNode.parentNode.querySelector(".role").innerText)
+                }
+            )
+            console.log(roleValue)
+            axios.post("user/roleUpdate", {
+                userNoList,
+                roleValue
+            })
+            .then(() => {
+                $("#pageSize").val(1);
+                $("#moreviewBox").show();
+                $("#userlist").empty();
+                userList();
+            })
+
+        }
+    const userSearch = () => {
+      const userInfo = document.getElementById("user_search").value
+      axios.get("user/search?userInfo="+userInfo)
+      .then(e=> {
+        $("#moreviewBox").hide();
+        $("#userlist").empty();
+          for(d of e.data) {
+            let text;
+            text += '<tr><td><label class="au-checkbox"><input type="checkbox" name="check"><span class="au-checkmark"></span></td>'
+            text += '<input type="hidden" class="userNo" value='+d.no+'>'
+            text += '<td><div class="table-data__info"><h5>'+d.name+'</h5><h6>'+d.nickname+'</h6><span><a href="#">'+d.email+'</a></span></div></td>'
+            if(d.auth===1) {
+              text += '<td><span class="role admin">admin</span></td>'
+            }
+            if(d.auth===0) {
+              text += '<td><span class="role user">user</span></td>'
+            }
+            text += '<td><div class="rs-select2--trans rs-select2--sm">'
+            text += '<select class="js-select2 black" name="property">'
+            text += '<option selected="selected" value=0>정지 해제</option>'
+            text += '<option value=1>1 주</option>'
+            text += '<option value=2>1 달</option>'
+            text += '<option value=3>영구 정지</option>'
+            text += '</select><div class="dropDownSelect2"></div></div></td>'
+            text += '<td><div class="table-data__info"><span>'+moment(d.createdAt).format('YYYY-MM-DD')+'</span></div></td>'
+            text += '<td><div class="table-data__info"><span>'+moment(d.stopDate).format('YYYY-MM-DD')+'</span></div></td></tr>'
+            $("#userlist").append(text)
+          }
+        })
+    }
+    $(document).ready(() => {
+        userList();
+
     })
-
-
-  })
-
-
+    document.getElementById("moreview").addEventListener('click', userList)
+    document.getElementById("stop").addEventListener('click', blackCheck)
+    document.getElementById("role_update").addEventListener('click', adminCheck)
+    document.getElementById("search_button").addEventListener('click', userSearch)
 </script>
 </html>
 <!-- end document-->

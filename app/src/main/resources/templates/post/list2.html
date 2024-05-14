@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<html lang='en' xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset='UTF-8'>
@@ -44,13 +44,13 @@
 
     <!--새 글쓰기 모달 참조-->
 
-    <script type="text/javascript"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services"></script>
-    <!--		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"-->
-    <!--		        integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="-->
-    <!--		        crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!--    <script type="text/javascript"-->
+<!--            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services"></script>-->
+<!--    &lt;!&ndash;		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"&ndash;&gt;-->
+<!--    &lt;!&ndash;		        integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="&ndash;&gt;-->
+<!--    &lt;!&ndash;		        crossorigin="anonymous" referrerpolicy="no-referrer"></script>&ndash;&gt;-->
+<!--    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>-->
+<!--    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
 
 
     <!-- include libraries(jQuery, bootstrap) -->
@@ -63,8 +63,8 @@
 
 
 <!--     include summernote css/js-->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<!--    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>-->
 
     <!-- 공통 헤더 적용 첨부 -->
     <link rel="stylesheet" href="/static/admin/css/header.css"/>
@@ -75,7 +75,7 @@
 
     <title>스쿨 메인페이지</title>
 
-    <script src="https://kit.fontawesome.com/ee5cb5f44c.js" crossorigin="anonymous"></script>
+<!--    <script src="https://kit.fontawesome.com/ee5cb5f44c.js" crossorigin="anonymous"></script>-->
 
 
 </head>
@@ -111,31 +111,31 @@
 <h1>스쿨 게시글 리스트</h1>
 
 <!-- 검색창 -->
-<form action="/post/search" method="post">
-    <div>
-        <select name="filter">
-            <option value="0">내용</option>
-            <option value="1">작성자</option>
-        </select>
-        <input name="keyword" type="text" placeholder="검색어를 입력하세요."/>
-        <input id="schoolNo" name="schoolNo" type="hidden" value="1"/><!-- schoolNo를 Integer로 선언 -->
-        <button id="postSearchForm">검색</button>
-    </div>
-</form>
+<!--<form action="/post/search" method="post">-->
+<!--    <div>-->
+<!--        <select name="filter">-->
+<!--            <option value="0">내용</option>-->
+<!--            <option value="1">작성자</option>-->
+<!--        </select>-->
+<!--        <input name="keyword" type="text" placeholder="검색어를 입력하세요."/>-->
+<!--        <input id="schoolNo" name="schoolNo" type="hidden" value="1"/>&lt;!&ndash; schoolNo를 Integer로 선언 &ndash;&gt;-->
+<!--        <button id="postSearchForm">검색</button>-->
+<!--    </div>-->
+<!--</form>-->
 
-<div class="container" data-th-if="${joined}">
-    <div class="row" style="width: 100px">
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-8" style="text-align:center;" id="">
-            <div id="post_setting" onclick="postForm()" style="width: 120px">
-                <button>새 글 작성</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div class="container" data-th-if="${joined}">-->
+<!--    <div class="row" style="width: 100px">-->
+<!--        <div class="col-md-2">-->
+<!--        </div>-->
+<!--        <div class="col-md-8" style="text-align:center;" id="">-->
+<!--            <div id="post_setting" onclick="postForm()" style="width: 120px">-->
+<!--                <button>새 글 작성</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
-<div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>
+<!--<div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>-->
 
 <!-- 스쿨에 가입하지 않은 경우에만 가입하기 버튼을 보여줌 -->
 <!--<div data-th-unless="${joined}">-->
@@ -199,12 +199,15 @@
                                             </tr>
                                         </thead>
 
-                                        <tbody><tr data-th-each="post : ${postlists}" data-th-object="${post}" data-th-data-no="*{no}" data-no="100">
+                                        <tbody><tr data-th-each="post : ${postlist}" data-th-object="${post}" data-th-data-no="*{no}" data-no="100">
+
+
 
                                                 <td data-th-text="*{writer.nickname}">작성자</td>
                                                 <td data-th-text="*{writer.photo}">사진</td>
                                                 <td class="school-post" data-th-text="*{content}" data-th-data-no="*{no}" data-no="100">게시글 내용</td>
                                                 <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
+                                                <td>작업</td>
                                                 <td><input type="checkbox" class="post-checkbox" data-th-data-no="*{no}" data-no="100"></td>
                                             </tr>
                                          </tbody>
@@ -374,7 +377,7 @@
 
 <div data-th-replace="post/view :: modal">포스트 상세보기 모달</div>
 
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js"-->
@@ -1005,8 +1008,58 @@
             commentsList.empty(); // 목록 초기화
 
             $.each(data.comments, function(index, comment) {
+//                var listItem = '<tr>' +
+////                '<td>'+ comment.writer.photo + '</td>' +
+//                        '<td>' + '</td>' +
+//
+//
+//
+//
+//                '<td>' + comment.writer.nickname + '</td>' +
+//                '<td>' + comment.content + '</td>' +
+//                '<td>' + formatDate(comment.createdAt) + '</td>' +
+//                '<td style="display: none;">' + comment.commentNo + '</td>' +
+//                '<td style="display: none;">' + comment.userNo + '</td>' +
+//                '<td>' +
+//                '<div class="dropdown">' +
+//                '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">' +
+//                '더보기' +
+//                '</button>' +
+//                '<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">' +
+//                '<li><a class="dropdown-item" href="javascript:void(0);" onclick="editComment(' + comment.commentNo + ')">수정</a></li>' +
+//                '<li><a class="dropdown-item" href="javascript:void(0);" onclick="deleteComment(' + comment.commentNo + ')">삭제</a></li>' +
+//                '</ul>' +
+//                '</div>' +
+//                '</td>' +
+//                '</tr>';
+//                commentsList.append(listItem);
+//            });
+
+            // 파일 목록 출력
+//            var filesList = $('#filesTable').find('tbody');
+//            filesList.empty(); // 목록 초기화
+//
+//            $.each(data.files, function(index, file) {
+//                var listItem = '<tr>' +
+//                '<td>' + file.fileName + '</td>' +
+//                '<td>' + file.type + '</td>' +
+//                '</tr>';
+//                filesList.append(listItem);
+//            });
+                // 이미지 URL 생성
+        <div><a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/school/' + ${school.photo}}"></a>
+                var linkUrl = 'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + comment.writer.photo;
+
+                // 댓글 항목 생성
                 var listItem = '<tr>' +
-                '<td>'+ comment.writer.photo + '</td>' +
+                '<td>' +
+                '<div>' +
+
+
+
+
+                '</div>' +
+                '</td>' +
                 '<td>' + comment.writer.nickname + '</td>' +
                 '<td>' + comment.content + '</td>' +
                 '<td>' + formatDate(comment.createdAt) + '</td>' +
@@ -1024,20 +1077,10 @@
                 '</div>' +
                 '</td>' +
                 '</tr>';
+
+                // 댓글 항목을 목록에 추가
                 commentsList.append(listItem);
             });
-
-            // 파일 목록 출력
-//            var filesList = $('#filesTable').find('tbody');
-//            filesList.empty(); // 목록 초기화
-//
-//            $.each(data.files, function(index, file) {
-//                var listItem = '<tr>' +
-//                '<td>' + file.fileName + '</td>' +
-//                '<td>' + file.type + '</td>' +
-//                '</tr>';
-//                filesList.append(listItem);
-//            });
         }
     }
     $('#postModal').on('shown.bs.modal', function () {
@@ -1052,123 +1095,123 @@
 
 
 
-<!-- 설정을 눌렀을 때 드롭다운이 나타나도록 -->
-<script>
-    $(document).ready(function() {
-        // ... 버튼을 클릭할 때 드롭다운 메뉴의 가시성을 토글합니다.
-        $(".settingBtn").click(function() {
-            $(this).next(".dropdown-menu").toggle();
-        });
-    });
-</script>
+<!--&lt;!&ndash; 설정을 눌렀을 때 드롭다운이 나타나도록 &ndash;&gt;-->
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        // ... 버튼을 클릭할 때 드롭다운 메뉴의 가시성을 토글합니다.-->
+<!--        $(".settingBtn").click(function() {-->
+<!--            $(this).next(".dropdown-menu").toggle();-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 
-<script>
-    $(document).ready(function() {
-        // 모든 드롭다운 메뉴를 숨깁니다.
-        $(".dropdown-menu").hide();
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        // 모든 드롭다운 메뉴를 숨깁니다.-->
+<!--        $(".dropdown-menu").hide();-->
 
-        // 클래스를 가진 settingBtn 버튼을 클릭할 때 드롭다운 메뉴의 가시성을 토글합니다.
-        $(".settingBtn").click(function() {
-            // 모든 드롭다운 메뉴를 숨깁니다.
-            $(".dropdown-menu").hide();
+<!--        // 클래스를 가진 settingBtn 버튼을 클릭할 때 드롭다운 메뉴의 가시성을 토글합니다.-->
+<!--        $(".settingBtn").click(function() {-->
+<!--            // 모든 드롭다운 메뉴를 숨깁니다.-->
+<!--            $(".dropdown-menu").hide();-->
 
-            // 클릭된 버튼 다음에 오는 드롭다운 메뉴를 찾아 가시성을 토글합니다.
-            $(this).next(".dropdown-menu").toggle();
+<!--            // 클릭된 버튼 다음에 오는 드롭다운 메뉴를 찾아 가시성을 토글합니다.-->
+<!--            $(this).next(".dropdown-menu").toggle();-->
 
-            // 클릭된 버튼 이외의 부분을 클릭할 때 드롭다운 메뉴를 숨깁니다.
-            $(document).on("click", function(event){
-                if(!$(event.target).closest(".dropdown").length) {
-                    $(".dropdown-menu").hide();
-                }
-            });
-        });
-    });
-</script>
+<!--            // 클릭된 버튼 이외의 부분을 클릭할 때 드롭다운 메뉴를 숨깁니다.-->
+<!--            $(document).on("click", function(event){-->
+<!--                if(!$(event.target).closest(".dropdown").length) {-->
+<!--                    $(".dropdown-menu").hide();-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 
-<!--스쿨에 가입하지 않은 유저 가입하기 처리-->
+<!--&lt;!&ndash;스쿨에 가입하지 않은 유저 가입하기 처리&ndash;&gt;-->
 
-<script>
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
 
-    // 문서가 로드되면 실행될 함수
-    $(document).ready(function() {
-        $("#joinButton").click(function() {
-            const searchParam = window.location.search.replace("?", "");
-            const { schoolNo } = window.Qs.parse(searchParam);
-            console.log(schoolNo);
-            join(schoolNo);
-        });
-    });
+<!--&lt;!&ndash;    // 문서가 로드되면 실행될 함수&ndash;&gt;-->
+<!--&lt;!&ndash;    $(document).ready(function() {&ndash;&gt;-->
+<!--&lt;!&ndash;        $("#joinButton").click(function() {&ndash;&gt;-->
+<!--&lt;!&ndash;            const searchParam = window.location.search.replace("?", "");&ndash;&gt;-->
+<!--&lt;!&ndash;            const { schoolNo } = window.Qs.parse(searchParam);&ndash;&gt;-->
+<!--&lt;!&ndash;            console.log(schoolNo);&ndash;&gt;-->
+<!--&lt;!&ndash;            join(schoolNo);&ndash;&gt;-->
+<!--&lt;!&ndash;        });&ndash;&gt;-->
+<!--&lt;!&ndash;    });&ndash;&gt;-->
 
-    function join(schoolNo) {
-        $.ajax({
-            type: "POST",
-            url: "/schoolUser/addSchoolUser",
-            data: { schoolNo: schoolNo },
-            success: function(response) {
-                // 성공 시 알림 표시 및 버튼 갱신
-                alert("가입이 완료되었습니다.");
-                console.log("가입 성공");
-                location.reload(); // 페이지 리로드
-            },
-            error: function(xhr, status, error) {
-                // 실패 시 에러 메시지 표시
-                alert("가입에 실패했습니다. 다시 시도해 주세요.");
-                console.error("가입 요청 실패:", error);
-            }
-        });
-    }
-
-
-</script>
+<!--&lt;!&ndash;    function join(schoolNo) {&ndash;&gt;-->
+<!--&lt;!&ndash;        $.ajax({&ndash;&gt;-->
+<!--&lt;!&ndash;            type: "POST",&ndash;&gt;-->
+<!--&lt;!&ndash;            url: "/schoolUser/addSchoolUser",&ndash;&gt;-->
+<!--&lt;!&ndash;            data: { schoolNo: schoolNo },&ndash;&gt;-->
+<!--&lt;!&ndash;            success: function(response) {&ndash;&gt;-->
+<!--&lt;!&ndash;                // 성공 시 알림 표시 및 버튼 갱신&ndash;&gt;-->
+<!--&lt;!&ndash;                alert("가입이 완료되었습니다.");&ndash;&gt;-->
+<!--&lt;!&ndash;                console.log("가입 성공");&ndash;&gt;-->
+<!--&lt;!&ndash;                location.reload(); // 페이지 리로드&ndash;&gt;-->
+<!--&lt;!&ndash;            },&ndash;&gt;-->
+<!--&lt;!&ndash;            error: function(xhr, status, error) {&ndash;&gt;-->
+<!--&lt;!&ndash;                // 실패 시 에러 메시지 표시&ndash;&gt;-->
+<!--&lt;!&ndash;                alert("가입에 실패했습니다. 다시 시도해 주세요.");&ndash;&gt;-->
+<!--&lt;!&ndash;                console.error("가입 요청 실패:", error);&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--&lt;!&ndash;        });&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
 
 
-<!-- 게시글 주소 복사 버튼 -->
-<script>
-    $(document).ready(function() {
-        $('#copyLinkButton').click(function() {
-            var url = window.location.href;
-            var tempInput = document.createElement('input');
-            tempInput.value = url;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            alert('게시글 주소가 복사되었습니다.');
-        });
-    });
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
 
 
-
-</script>
+<!--&lt;!&ndash; 게시글 주소 복사 버튼 &ndash;&gt;-->
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        $('#copyLinkButton').click(function() {-->
+<!--            var url = window.location.href;-->
+<!--            var tempInput = document.createElement('input');-->
+<!--            tempInput.value = url;-->
+<!--            document.body.appendChild(tempInput);-->
+<!--            tempInput.select();-->
+<!--            document.execCommand('copy');-->
+<!--            document.body.removeChild(tempInput);-->
+<!--            alert('게시글 주소가 복사되었습니다.');-->
+<!--        });-->
+<!--    });-->
 
 
 
-<!-- 폼 서브밋 -->
-<script>
-    $(document).ready(function() {
-        $("#postSearchForm").submit(function(event) {
-            event.preventDefault();
-            var content = $("input[name='keyword']").val();
-            var filter = $("select[name='filter']").val();
-            var schoolNo = $("input[name='schoolNo']").val();
-            $.ajax({
-                type: "GET",
-                url: "search",
-                data: {
-                    schoolNo: schoolNo,
-                    keyword: content,
-                    filter: filter
-                },
-                success: function(response) {
-                    $("#searchResult").html(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error("검색 요청 실패:", error);
-                }
-            });
-        });
-    });
-</script>
+<!--</script>-->
+
+
+
+<!--&lt;!&ndash; 폼 서브밋 &ndash;&gt;-->
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        $("#postSearchForm").submit(function(event) {-->
+<!--            event.preventDefault();-->
+<!--            var content = $("input[name='keyword']").val();-->
+<!--            var filter = $("select[name='filter']").val();-->
+<!--            var schoolNo = $("input[name='schoolNo']").val();-->
+<!--            $.ajax({-->
+<!--                type: "GET",-->
+<!--                url: "search",-->
+<!--                data: {-->
+<!--                    schoolNo: schoolNo,-->
+<!--                    keyword: content,-->
+<!--                    filter: filter-->
+<!--                },-->
+<!--                success: function(response) {-->
+<!--                    $("#searchResult").html(response);-->
+<!--                },-->
+<!--                error: function(xhr, status, error) {-->
+<!--                    console.error("검색 요청 실패:", error);-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 
 
 </body>
