@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>test</title>
+</head>
+<body>
+
+
+<div class="mb-3">
+    <label for="school_photo" class="form-label">스쿨 사진</label>
+    <!-- 스쿨 사진 표시 -->
+    <div>
+        <a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/school' + *{photo}}"
+           data-th-if="*{photo}">
+            <img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school' + *{photo}(type=f,w=80,h=80)}"
+                 height="80px"></a><br>
+        <a data-th-unless="*{photo}" href='/img/default-school-photo.jpeg'>
+            <img height='80px' src='/img/default-school-photo.jpeg'></a>
+    </div>
+    <!-- 사진 변경을 위한 파일 업로드 -->
+    <input id="school_photo" name='file' type='file'>
+</div>
+
+
+</body>
+</html>

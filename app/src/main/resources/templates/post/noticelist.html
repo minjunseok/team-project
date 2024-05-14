@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset='UTF-8'>
+    <title>비트캠프 데브옵스 5기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <style type="text/css">
+        table {
+            border-collapse: collapse;
+            width: 900px;
+        }
+
+        td, th {
+            border: 1px solid #000;
+            height: 30px;
+            padding: 0 10px;
+            text-align: center;
+
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div data-th-replace="header :: header">머리말</div>
+
+<h1>스쿨 회원 리스트</h1>
+
+
+
+<table border='1'>
+    <thread>
+        <tr>
+            <th>회원명</th>
+            <th>프로필 사진</th>
+            <th>회원 등급</th>
+        </tr>
+    </thread>
+
+    <tbody>
+
+    <tr data-th-each="schoolUser : ${schoolUsers}" data-th-object="${schoolUser}">
+
+        <td data-th-text="*{writer.nickname}">작성자</td>
+        <td data-th-text="*{writer.photo}">사진</td>
+        <td data-th-text="*{level.levelName}">회원 등급</td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<br>
+
+<h1>공지글 리스트</h1>
+
+<a data-th-href="@{form(schoolNo=${schoolNo})}" href="form.html">새 글</a>
+
+
+<!-- 검색창-->
+<form action='/post/search' method="post">
+    <div>
+        <select name="filter">
+            <option value="0">내용</option>
+            <option value="1">작성자</option>
+        </select>
+        <input name='keyword' type='text' placeholder='검색어 입력'>
+        <button>검색</button>
+    </div>
+</form>
+
+
+    <div id="fixed-post">
+        <h1>관리자 공지</h1>
+        <table border='1' data-th-data-schoolno="${schoolNo}" data-schoolno="100">
+            <thead>
+            <tr>
+                <th>작성자</th>
+                <th>사진</th>
+                <th>내용</th>
+                <th>작성일</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+
+            </tr>
+            </tbody>
+        </table>
+    </div><!-- #fixed-post -->
+
+
+<br>
+    <br>
+    <br>
+
+<div id="searchResult">
+    <table border='1' data-th-data-schoolno="${schoolNo}" data-schoolno="100">
+        <thread>
+            <tr>
+                <th>작성자</th>
+                <th>사진</th>
+                <th>내용</th>
+                <th>작성일</th>
+                <th>공지 핀</th>
+
+            </tr>
+
+        </thread>
+        <tbody>
+        <tr data-no="1" data-th-each="post : ${noticelist}" data-th-object="${post}">
+
+            <td data-th-text="*{writer.nickname}">작성자</td>
+            <td data-th-text="*{writer.photo}">사진</td>
+            <td><a class="school-post" data-th-text="*{content}"
+                   data-th-data-no="*{no}" data-no="100" href="noticeview"></a></td>
+            <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
+            <td><input type="checkbox" class="post-checkbox"></td>
+<!--         <td><a data-th-href="@{md(no=*{no})}" href="md.html?no=*{no}">...(설정)</a></td>-->
+        </tr>
+        <!--    현준 리스트 작업 (검색창 오류 발생하면 보려고 놓아둔 것-->
+        <!--    <tr data-th-each="post : ${postList}" data-th-object="${post}">-->
+        <!--        <td><a data-th-href="@{list(schoolNo=${schoolNo}, no=*{no})}" data-th-text="*{writer.name}"-->
+        <!--               href="list.html">홍길동</a></td>-->
+        <!--        <td><span th:utext="*{content}"></span></td>-->
+        <!--        <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">2024-03-27</td>-->
+        <!--        <td>-->
+        <!--            <a data-th-href="@{md(no=*{no})}" href="md.html?no=*{no}">설정</a>-->
+        <!--        </td>-->
+        <!--    </tr>-->
+        </tbody>
+    </table>
+</div><!-- #searchResult -->
+
+</div><!-- .container -->
+
+
+<div data-th-replace="post/noticeview :: modal">포스트 상세보기 모달</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<script>
+
+
+
+    const noticeModal = new bootstrap.Modal('#noticeModal', {
+        keyboard: false
+    })
+    let schoolNo = document.querySelector('#searchResult > table').getAttribute('data-schoolno');
+    let noticeList = document.querySelectorAll('.school-post');
+    noticeList.forEach(function(el) {
+
+        el.onclick = function(event) {
+            event.preventDefault();
+            let no = event.target.getAttribute("data-no");
+            console.log(no);
+
+            // 1) post 상세 정보 요청
+            $.ajax('noticeview/' + schoolNo, {
+                method: 'GET',
+                data: {no: no},
+                dataType: 'json'
+            }).done(function(result) {
+                console.log(result);
+
+                // 서버에서 가져온 데이터로 모달창의 입력폼을 초기화시키기
+                initModal(result);
+
+                // 모달 창 띄우기
+                noticeModal.show();
+            }).fail(function() {
+                console.log("실패!");
+            });
+            // 2) JSON으로 받은 객체를 가지고 모달 창을 띄워서 입력 폼에 값을 채운다.
+
+
+        }
+    });
+
+    function initModal(data) {
+        //주어진 데이터로 모달창의 입력폼을 채운다.
+        $('#post-form #nickname').val(data.post.writer.nickname);
+        $('#post-form #no').val(data.post.no);
+        $('#post-form #photo').val(data.post.writer.photo);
+        $('#post-form #content').val(data.post.content);
+
+        // createdAt 날짜 데이터를 yyyy-MM-dd 형식으로 변환하는 함수
+        function formatDate(date) {
+            // 날짜 객체 생성
+            var newDate = new Date(date);
+            // 년, 월, 일 추출
+            var year = newDate.getFullYear();
+            var month = newDate.getMonth() + 1;
+            var day = newDate.getDate();
+
+            // 월과 일이 한 자리 수인 경우 앞에 0을 추가하여 두 자리로 만듭니다.
+            if (month < 10) {
+                month = '0' + month;
+            }
+            if (day < 10) {
+                day = '0' + day;
+            }
+
+            // yyyy-MM-dd 형식으로 반환
+            return year + '-' + month + '-' + day;
+        }
+
+        // createdAt 날짜 데이터를 원하는 형식으로 변환하여 입력 폼에 설정
+        $('#post-form #createdat').val(formatDate(data.post.createdAt));
+
+
+        var commentsList = $('#commentsTable').find('tbody');
+        commentsList.empty(); // 목록 초기화
+
+        $.each(data.comments, function(index, comment) {
+            var listItem = '<tr>' +
+            '<td><img src="' + comment.writer.photo + '" alt="프로필 사진"></td>' +
+            '<td>' + comment.writer.nickname + '</td>' +
+            '<td>' + comment.content + '</td>' +
+            '<td>' + formatDate(comment.createdAt) + '</td>' +
+            '</tr>';
+            commentsList.append(listItem);
+        });
+
+        // 파일 목록 출력
+        var filesList = $('#filesTable').find('tbody');
+        filesList.empty(); // 목록 초기화
+
+        $.each(data.files, function(index, file) {
+            var listItem = '<tr>' +
+            '<td>' + file.fileName + '</td>' +
+            '<td>' + file.type + '</td>' +
+            '</tr>';
+            filesList.append(listItem);
+        });
+    }
+
+
+
+</script>
+
+<script>
+
+    $(document).ready(function() {
+        // 폼이 제출되었을 때의 동작 설정
+        $("#postSearchForm").submit(function(event) {
+            // 폼의 기본 동작인 페이지 리로드를 막습니다.
+            event.preventDefault();
+
+            // 입력된 content를 가져옵니다.
+            var content = $("#searchContent").val();
+
+            // 서버에 검색 요청을 보냅니다.
+            $.ajax({
+                type: "GET",
+                url: "/post/search", // 검색을 처리할 서버의 엔드포인트
+                data: { content: content }, // 검색어를 전달합니다.
+                success: function(response) {
+                    // 검색 결과를 받아와서 HTML로 표시합니다.
+                    $("#searchResult").html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error("검색 요청 실패:", error);
+                }
+            });
+        });
+    });
+
+
+    $(document).ready(function() {
+        // 글 수정하기 버튼 클릭 이벤트 핸들러
+
+    });
+
+
+
+    $("#update").on('click',function() {
+
+
+        var no = $("#no").val();
+        var schoolNo = document.querySelector('#searchResult > table').getAttribute('data-schoolno');
+        console.log(no);
+        console.log(schoolNo);
+        // 새로운 URL 생성
+        var newURL = 'md?no=' + no + '&schoolNo=' + schoolNo;
+
+        // 모달 닫기
+        $("#noticeModal").modal("hide");
+
+        // URL로 이동
+        window.location.href = newURL;
+    });
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+
+
+
+    $(document).ready(function() {
+        // 체크박스 클릭 이벤트 핸들러
+        $("#searchResult").on('change', '.post-checkbox', function() {
+            const isChecked = $(this).prop('checked');
+            const $tableRow = $(this).closest('tr');
+            const postId = $tableRow.data('no');
+            const $fixedPostsTable = $('#fixed-post').find('table');
+
+            // 선택된 게시글을 고정하거나 해제
+            if (isChecked) {
+                // 게시글 테이블에서 선택된 게시글 복제하여 고정 게시글 목록에 추가
+                const $clonedRow = $tableRow.clone(); // 원본 테이블 행 복제
+                $clonedRow.find('.post-checkbox').remove(); // 체크박스 제거
+                $fixedPostsTable.find('tbody').append($clonedRow); // 고정 게시글 테이블에 추가
+
+                // 여기에서 선택된 게시글을 배열에 추가할 수 있습니다.
+                console.log("게시글 고정:", postId);
+            } else {
+                // 고정 게시글 테이블에서 해당 게시글 제거
+                $fixedPostsTable.find(`tr[data-no="${postId}"]`).remove();
+
+                // 여기에서 선택된 게시글을 배열에서 제거할 수 있습니다.
+                console.log("게시글 해제:", postId);
+            }
+        });
+    });
+
+//    $(document).ready(function() {
+//        // 체크박스 클릭 이벤트 핸들러
+//        $("#searchResult").on('change', '.post-checkbox', function() {
+//            const isChecked = $(this).prop('checked');
+//            const $tableRow = $(this).closest('tr');
+//            const postId = $tableRow.data('no');
+//            const $fixedPostsTable = $('#fixed-post').find('table');
+//
+//            // 선택된 게시글을 고정하거나 해제
+//            if (isChecked) {
+//                // 이미 고정된 게시글이 있는지 확인
+//                const $existingFixedPosts = $fixedPostsTable.find('tbody').children();
+//                if ($existingFixedPosts.length > 0) {
+//                    // 이미 고정된 게시글이 있으면 체크박스 해제하고 메시지 표시
+//                    $(this).prop('checked', false);
+//                    alert('한 개의 게시글만 고정할 수 있습니다.');
+//                    return;
+//                }
+//
+//                // 게시글 테이블에서 선택된 게시글 복제하여 고정 게시글 목록에 추가
+//                const $clonedRow = $tableRow.clone(); // 원본 테이블 행 복제
+//                $clonedRow.find('.post-checkbox').remove(); // 체크박스 제거
+//                $fixedPostsTable.find('tbody').append($clonedRow); // 고정 게시글 테이블에 추가
+//
+//                // 여기에서 선택된 게시글을 배열에 추가할 수 있습니다.
+//                console.log("게시글 고정:", postId);
+//            } else {
+//                // 고정 게시글 테이블에서 해당 게시글 제거
+//                $fixedPostsTable.find(`tr[data-no="${postId}"]`).remove();
+//
+//                // 여기에서 선택된 게시글을 배열에서 제거할 수 있습니다.
+//                console.log("게시글 해제:", postId);
+//            }
+//        });
+//    });
+</script>
+
+
+
+</body>
+</html>

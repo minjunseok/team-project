@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moyeora.myapp.dao.CommentDao">
+  <resultMap id="CommentMap" type="Comment">
+    <id column="comment_no" property="no"/>
+    <result column="content" property="content"/>
+    <result column="created_at" property="createdAt"/>
+    <result column="user_no" property="userNo"/>
+    <result column="post_no" property="postNo"/>
+
+    <association property="schoolUser" javaType="SchoolUser">
+      <id column="user_no" property="userNo"/>
+    </association>
+
+    <association property="school" javaType="School">
+      <id column="school_no" property="no"/>
+      <result column="school_name" property="name"/>
+      <result column="school_photo" property="photo"/>
+    </association>
+
+    <association property="writer" javaType="User">
+      <id column="user_no" property="no"/>
+      <result column="name" property="name"/>
+      <result column="photo" property="photo"/>
+      <result column="nickname" property="nickname"/>
+    </association>
+  </resultMap>
+
+  <insert id="add" parameterType="Comment"
+          useGeneratedKeys="true" keyColumn="comment_no" keyProperty="no">
+    insert into comments(content, created_at, user_no, post_no)
+    values(#{content}, NOW() , #{userNo}, #{postNo})
+  </insert>
+
+
+  <select id="findByComment" resultMap="CommentMap">
+    SELECT distinct
+
+    u.photo,
+    u.nickname,
+    c.comment_no,
+    c.content,
+    c.created_at,
+    u.user_no
+    FROM
+
+    comments c
+
+    inner join users as u on u.user_no = c.user_no
+    WHERE
+
+    c.post_no =#{no}
+
+    order by c.created_at;
+  </select>
+
+</mapper>

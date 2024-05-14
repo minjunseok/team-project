@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="moyeora.myapp.dao.UserTagDao">
+    <resultMap id="UserTagMap" type="UserTag">
+        <id column="user_no" property="userNo"/>
+        <result column="tag_no" property="tagNo"/>
+
+<association property="tag" javaType="Tag">
+<id column="no" property="tag"/>
+<result column="name" property="name"/>
+</association>
+
+</resultMap>
+
+<insert id="add">
+    insert into user_tags(user_no,tag_no)
+    values (#{userNo},#{tagNo})
+</insert>
+
+<!--<insert id="update">-->
+<!--    insert into user_tags(user_no,tag_no)-->
+<!--    values (#{userNo},#{tagNo})-->
+<!--</insert>-->
+
+<delete id="deleteAllUserTagNo" parameterType="int">
+    delete from user_tags where user_no=#{userNo}
+</delete>
+
+    <select id="findGroupByHobby" resultType="moyeora.myapp.dto.admin.statistics.AdminUserHobbyResponseDTO">
+        select
+        t.name hobby,
+        count(*) ctn
+        from
+        user_tags u
+        inner join tags t on u.tag_no = t.tag_no
+        group by hobby
+        order by ctn desc
+    </select>
+
+
+</mapper>

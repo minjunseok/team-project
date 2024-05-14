@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>2조 팀플(스쿨마다 타이틀이 다르기 떄문에 category 적용 해야함)</title>
+
+  <!-- include libraries(jQuery, bootstrap) -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- include summernote css/js -->
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css"
+        rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+  <script src="https://cdn.bootpay.co.kr/js/bootpay-3.3.6.min.js" type="application/javascript"></script>
+</head>
+<body>
+<button class="vipclick" onclick="payment1('vip')">vip 정기구독</button>
+  <button class="vipclick" onclick="payment1('vvip')">vvip 정기구독</button>
+
+<script>
+const payment1 = (name) => {
+  BootPay.request({
+    price: 0, // 0으로 해야 한다.
+    order_id  : 'moyeora' + name + 1,
+    application_id: '660fc696b9bec6114960d836',
+    name: name,
+    pg: 'danal',
+    method: 'card_rebill', // 빌링키를 받기 위한 결제 수단
+    show_agree_window: 0, // 부트페이 정보 동의 창 보이기 여부
+    }).error(data => {
+    //결제 진행시 에러가 발생하면 수행됩니다.
+    console.log(data);
+    }).cancel(data => {
+    //결제가 취소되면 수행됩니다.
+    console.log(data);
+    }).done(data => {
+      axios.post('purchase', {
+        content : name,
+        billingKey : data.billing_key,
+        method : data.method
+      })
+    });
+}
+</script>
+</body>
+</html>
+
+

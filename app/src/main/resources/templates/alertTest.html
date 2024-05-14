@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset='UTF-8'>
+  <title>비트캠프 데브옵스 5기</title>
+  <link rel="stylesheet" href="/css/header.css" type="text/css"/>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@5.0.0/bundles/stomp.umd.min.js"></script>
+</head>
+<body>
+
+<div data-th-replace="header :: header">회원가입 | 로그인</div>
+
+<h1>alert test</h1>
+<form id="main-form">
+  <div class="form-container">
+    <input class="input-field" id="name" placeholder="name" type="text">
+    <input class="input-field" id="type" placeholder="type" type="text">
+    <input class="input-field" id="content" placeholder="content" type="text">
+    <input class="input-field" id="photo" placeholder="photo" type="text">
+    <input class="input-field" id="redirectPath" placeholder="redirect_path" type="text">
+    <button id="btn" type="submit">ok</button>
+  </div>
+</form>
+
+<script th:inline="javascript">
+  var eventSource;
+  var loginUser = [[${loginUser}]];
+  var alertList = [[${alertList}]];
+
+  function connectSSE() {
+    eventSource = new EventSource('/subscribe');
+
+    eventSource.addEventListener("open", function (event) {
+      console.log("connection open");
+    });
+
+    eventSource.addEventListener("alert", function (event) {
+      console.log(event.data);
+      handleReloadBoard();
+    });
+  }
+
+  function btnEvent() {
+    let formData = new FormData();
+    let alert = {
+      userNo : user.no,
+      name : $("#name").val(),
+      type : $("#type").val(),
+      content : $("#content").val(),
+      photo : $("#photo").val(),
+      redirectPath : $("#redirectPath").val()
+    }
+    formData.append("alert", new Blob([JSON.stringify(alert)], {type: "application/json"}));
+
+    $.ajax({
+     type: "POST",
+     url: "/alert/add",
+     data: formData,
+     contentType: false,
+     processData: false,
+     success: function (result) { console.log(result); },
+     error : function () { console.log("error"); }
+    });
+  }
+
+  $(function () {
+    $( "#btn" ).click(() => btnEvent());
+  });
+</script>
+<script src="/js/header.js"></script>
+
+</body>
+</html>

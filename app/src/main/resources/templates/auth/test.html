@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>moyeora</title>
+</head>
+<body>
+
+<div data-th-replace="header :: header">머리말</div>
+
+<h1>sign-up test form</h1>
+<div style="color:gray; font-size=10px;">소셜 회원가입 후 추가 데이터 받는 화면</div>
+
+<div>
+  <form  data-th-action="@{join}" data-th-if="${status == null}" id="joinForm" method="post">
+    <div>
+      <input data-th-value="${user?.provider}" id="provider" name="provider" readonly type="hidden">
+      <input data-th-value="${user?.providerId}" id="providerId" name="providerId" readonly type="hidden">
+      <input data-th-value="${user.role}" id="role" name="role" readonly type="hidden">
+    </div>
+    <div>
+      <label>
+        이메일: <input data-th-value="${user.email}" id="email" name="email" readonly required type="text">
+      </label>
+    </div>
+    <div>
+      <label>
+        이름: <input data-th-value="${user.name}" id="name" name="name" readonly type="text">
+      </label>
+    </div>
+    <div>
+      <label>
+        휴대전화: <input data-th-value="${user.phone}" id="phone" name="phone" type="text">
+      </label>
+    </div>
+    <button onclick="return checkForm()" type="submit">로그인</button>
+    <div data-th-if="${status != null}" data-th-text="${status}"></div>
+  </form>
+</div>
+
+<div data-th-replace="footer :: footer">꼬리말</div>
+
+</body>
+</html>

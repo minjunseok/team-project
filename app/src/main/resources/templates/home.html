@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <th:block th:replace="common/headCommon :: headerFragment"></th:block>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <title>비트캠프 데브옵스 5기</title>
+
+</head>
+<body>
+
+<div data-th-replace="header :: header">회원가입 | 로그인</div>
+
+
+<h1>moyeora home</h1>
+<p>welcome!</p>
+
+<div data-th-replace="footer :: footer">꼬리말</div>
+
+<script th:inline="javascript">
+  var loginUser = [[${loginUser}]];
+  var alertList = [[${alerts}]];
+</script>
+<script src="/js/header.js"></script>
+
+</body>
+</html>

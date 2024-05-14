@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moyeora.myapp.dao.SchoolTagDao">
+  <resultMap id="SchoolTagMap" type="SchoolTag">
+    <id column="tag_no" property="tagNo"/>
+    <result column="school_no" property="schoolNo"/>
+
+    <association property="tag" javaType="Tag">
+      <id column="no" property="tag"/>
+      <result column="name" property="name"/>
+    </association>
+
+  </resultMap>
+
+  <insert id="add">
+    insert into school_tags(tag_no,school_no)
+    values (#{tagNo},#{schoolNo})
+  </insert>
+
+
+  <delete id="deleteSchoolTags" parameterType="int">
+    DELETE FROM school_tags WHERE school_no = #{value};
+  </delete>
+</mapper>

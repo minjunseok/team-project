@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>비트캠프 데브옵스 5기</title>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+<a data-th-href="@{search}" href="search.html">검색결과</a>
+
+
+<tr data-th-each="school : ${name}" data-th-object="${school}">
+  <div>
+  <td data-th-text="*{name}">홍길동</td>
+  <td data-th-text="*{content}"></td>
+  </div>
+
+</tr>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="moyeora.myapp.dao.AlertDao">
+
+    <resultMap id="alertMap" type="Alert">
+        <id column="alert_no" property="alertNo"/>
+        <result column="user_no" property="userNo"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="content" property="content"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="is_read" property="isRead"/>
+        <result column="photo" property="photo"/>
+        <result column="redirect_path" property="redirectPath"/>
+        <result column="to_user_no" property="toUserNo"/>
+        <result column="school_no" property="schoolNo"/>
+    </resultMap>
+
+    <insert id="addAlert" parameterType="Alert" useGeneratedKeys="true" keyColumn="alert_no" keyProperty="alertNo">
+        insert into alerts (user_no,name,type,content,photo,redirect_path,to_user_no,school_no)
+        values (#{userNo},#{name},#{type},#{content},#{photo},#{redirectPath},#{toUserNo},#{schoolNo});
+    </insert>
+
+    <select id="findAll" resultMap="alertMap" parameterType="int">
+        select
+          *
+        from
+          alerts
+        where
+          user_no = #{value}
+        order by
+          alert_no desc;
+    </select>
+
+    <select id="findUnreadAlertList" resultMap="alertMap" parameterType="int">
+        select
+          *
+        from
+          alerts
+        where
+          user_no = #{value} and is_read = 0
+        order by
+          alert_no desc
+        limit 10;
+    </select>
+
+    <update id="update" parameterType="int">
+        update
+          alerts
+        set
+          is_read = 1
+        where
+          alert_no = #{value}
+    </update>
+
+</mapper>

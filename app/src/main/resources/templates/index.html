@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="//www.thymeleaf.org">
+
+<head>
+  <th:block th:replace="common/headCommon :: headerFragment"></th:block>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+  <title>moyeora</title>
+</head>
+<body>
+
+<div data-th-replace="header :: header">header</div>
+
+<div data-th-each="school : ${schools}" data-th-object="${school}">
+  <input type="hidden" data-th-value="*{no}">
+  <a style="height:30px;" data-th-href="@{post/list(schoolNo=*{no})}" data-th-text="*{name}"></a>
+  <div><a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/school/' + ${school.photo}}"></a><img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/' + ${school.photo}(type=f,w=40,h=40)}"></div>
+</div>
+<div ><a style="text-alien : right " data-th-href="@{school/form}">스쿨개설</a></div>
+
+<form th:action="@{/school/search}" method="get">
+  <input type="text" name="name">
+  <button type="submit">검색</button>
+</form>
+
+
+
+<!--  <th:block th:each="page:${#numbers.sequence(startPage,endPage)}">-->
+<!--    <a th:if="${page != nowPage}" th:href="@{/board/list(page=${page-1}, searchKeyword=${param.searchKeyword})}" th:text ="${page}"></a>-->
+<!--    <strong th:if="${page==nowPage}" th:text ="${page}" style="color:red"></strong>-->
+
+<!--  </th:block>-->
+
+
+<a style = "cursor: pointer" data-th-each="week : ${weeks}" data-th-onclick="@{'dataList(\'' + ${week} + '\')'}" data-th-text="${week}  "></a>
+<ol id = "byDate" data-th-each="schoolClasses : ${schoolClasses}" data-th-object="${schoolClasses}">
+  <li data-th-text="*{name}"></li>
+  <li data-th-text="*{photo}"></li>
+  <li data-th-text="*{nowMemberCount} +  '/'  + *{member}"></li>
+</ol>
+<!--<ol id="byDate" data-th-if="${schoolClasses.isEmpty()}">-->
+</ol>
+<div id="map" style="width:500px;height:400px;">맵</div>
+
+<div data-th-each="hotSchool : ${hotSchools}" data-th-object="${hotSchool}">
+  <input type="hidden" data-th-value="*{no}">
+  <!--  <div data-th-text="*{name}" data-th-onclick="goToSchool(${no})" style="cursor: pointer;"></div>-->
+  <div data-th-text="*{name}"></div>
+  <div>
+    <img data-th-if="*{photo}"
+         data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/' + *{photo}(type=f,w=160,h=160)}"
+         height='160px'>
+    <img data-th-unless="*{photo}" height='160px' src='/img/default-school-photo.jpeg'>
+  </div>
+  <div data-th-text="*{nowMemberCount}"></div>
+</div>
+
+<script>
+  let map;
+  let mapOption;
+  let mapContainer;
+    const dataList = (week) => {
+      map = new kakao.maps.Map(mapContainer, mapOption);
+      axios.get("school_class/list?date="+week)
+      .then(e => {
+         $("#byDate").empty();
+        var geocoder = new kakao.maps.services.Geocoder();
+        for(let data of e.data) {
+          $("#byDate").append("<li>" + data.name +"</li>")
+          $("#byDate").append("<li>" + data.photo +"</li>")
+          $("#byDate").append("<li>" + data.nowMemberCount + "/" + data.member + "</li>")
+          geocoder.addressSearch(""+data.location+"", function(result,status) {
+            console.log("adsasddasasdasd")
+            if(status ==kakao.maps.services.Status.OK) {
+              var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                      var marker = new kakao.maps.Marker({
+                          map: map,
+                          position: coords
+                      });
+                      var infowindow = new kakao.maps.InfoWindow({
+                          content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+                      });
+                      infowindow.open(map, marker);
+                      map.setCenter(coords);
+                        }
+                      })
+
+        }
+      })
+    }
+
+  var geocoder = new kakao.maps.services.Geocoder();
+
+
+  mapContainer = document.getElementById('map')
+  geocoder.addressSearch('서울특별시 서초구 방배로 93', function(result, status) {
+      console.log("테스트");
+       if (status === kakao.maps.services.Status.OK) {
+          mapOption = {
+          center: new kakao.maps.LatLng(result[0].y, result[0].x),
+          level: 6
+      };
+      map = new kakao.maps.Map(mapContainer, mapOption);
+
+
+      }
+  });
+
+
+
+  // 학교 클릭 시 해당 학교의 schoolNo를 전달하고 해당 학교 페이지로 이동하는 함수
+  const goToSchool = (schoolNo) => {
+      // schoolNo를 사용하여 해당 학교 페이지로 이동
+      window.location.href = '/school/detail?schoolNo=' + schoolNo; // 적절한 URL로 수정
+  }
+</script>
+
+<script th:inline="javascript">
+  var loginUser = [[${loginUser}]];
+  var alertList = [[${alerts}]];
+</script>
+<script src="/js/header.js"></script>
+
+</body>
+</html>

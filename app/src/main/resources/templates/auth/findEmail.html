@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>moyeora</title>
+  <link href="/css/auth.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="title">이메일 찾기</div>
+
+<form data-th-if="${email == null}" data-th-action="@{getEmail}" method="post">
+  <div>
+    <label>
+      <input id="name" name="name" type="text" placeholder="name">
+    </label>
+  </div>
+  <div>
+    <label>
+      <input id="phone" name="phone" type="text" placeholder="phone number : ex) 01012345678">
+    </label>
+  </div>
+  <button type="submit" onclick="return checkForm()">submit</button>
+</form>
+
+<div class="result" data-th-if="${email != null && email != 'none'}">
+  <p>가입한 이메일 : [[${email}]]</p>
+  <a data-th-href="@{form}">로그인</a>
+  <a data-th-href="@{findPassword}">비밀번호 찾기</a>
+</div>
+<div class="result" data-th-if="${email == 'none'}">
+  <span>가입정보가 없습니다.</span>
+  <a data-th-href="@{signIn}">회원가입</a>
+</div>
+
+<script>
+  function checkForm() {
+    var name = document.getElementById("name").value;
+    if ( name == null || name == "" || name.length < 1 ) {
+      alert("이름을 입력하세요.");
+      return false;
+    }
+    var phone = document.getElementById("phone").value;
+      if ( phone == null || phone == "" || phone.length < 1 ) {
+      alert("번호를 입력하세요.");
+      return false;
+    }
+  }
+</script>
+
+</body>
+</html>
