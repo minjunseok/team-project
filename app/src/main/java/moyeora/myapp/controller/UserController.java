@@ -1,8 +1,8 @@
 package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.security.util.RedisUtil;
-import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.service.TagService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.service.impl.DefaultMailService;
@@ -18,14 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import retrofit2.http.HEAD;
 
 import javax.mail.MessagingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import javax.servlet.http.HttpSession;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,96 +32,102 @@ import java.util.Random;
 @Controller
 @RequestMapping("/user")
 public class UserController implements InitializingBean {
-  private static final Log log = LogFactory.getLog(UserController.class);
-  private final UserService userService;
-  private final TagService tagService;
-  private final FileUpload fileUpload;
+    private static final Log log = LogFactory.getLog(UserController.class);
+    private final UserService userService;
+    private final TagService tagService;
+    private final FileUpload fileUpload;
     private final DefaultMailService mailService;
     private final RedisUtil redisUtil;
     private final String uploadDir = "user/";
     private String authId;
-  private final UserDao userDao;
-  private final HttpSession session;
-  @Value("${ncp.storage.bucket}")
-  private String bucket;
+    @Value("${ncp.storage.bucket}")
+    private String bucket;
 
 
-  @Override
-  public void afterPropertiesSet() throws Exception {
+    @Override
+    public void afterPropertiesSet() throws Exception {
 
-    log.debug(String.format("uploadDir: %s", this.uploadDir));
-  }
-
-  @GetMapping("form")
-  public void form(Model model) throws Exception {
-
-    model.addAttribute("tags", tagService.findAllTag());
-  }
-
-  @PostMapping("add")
-  public String add(User user, MultipartFile file) throws Exception {
-
-
-    if (file.getSize() > 0) {
-      String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
-      user.setPhoto(filename);
-    }
-    userService.add(user);
-
-    return "redirect:index";
-  }
-
-  @GetMapping("view")
-  public void view(Model model) throws Exception {
-    User user = userService.get(42);
-    List<UserTag> userTags = user.getTags();
-    HashMap<Integer, UserTag> userTagMap = new HashMap<>();
-    for (UserTag userTag : userTags) {
-      userTagMap.put(userTag.getTagNo(), userTag);
+        log.debug(String.format("uploadDir: %s", this.uploadDir));
     }
 
-    System.out.println(user);
-    model.addAttribute("user", user);
-    model.addAttribute("userTagMap", userTagMap);
-    model.addAttribute("tags", tagService.findAllTag());
-    for (UserTag tag : user.getTags()) {
-      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@" + tag.getTagNo());
+    @GetMapping("form")
+    public void form(Model model) throws Exception {
+
+        model.addAttribute("tags", tagService.findAllTag());
     }
-  }
 
-  @PostMapping("update")
-  public String update(User user, MultipartFile file) throws Exception {
+    @PostMapping("add")
+    public String add(User user, MultipartFile file) throws Exception {
+        System.out.println(user);
 
-        User old = userService.get(42);
+        if (file.getSize() > 0) {
+            String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
+            user.setPhoto(filename);
+        }
+        user.setRole(Role.USER.getKey());
+        userService.add(user);
+
+        return "redirect:/index";
+    }
+
+    @GetMapping("view")
+    public void view(Model model, @LoginUser User loginUser) throws Exception {
+        User user = userService.get(loginUser.getNo());
+
+        System.out.println("============>");
+        System.out.println(user);
+
+        List<UserTag> userTags = user.getTags();
+        HashMap<Integer, UserTag> userTagMap = new HashMap<>();
+        for (UserTag userTag : userTags) {
+            userTagMap.put(userTag.getTagNo(), userTag);
+        }
+
+        System.out.println(user);
+        model.addAttribute("user", user);
+        model.addAttribute("userTagMap", userTagMap);
+        model.addAttribute("tags", tagService.findAllTag());
+        for (UserTag tag : user.getTags()) {
+            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@" + tag.getTagNo());
+        }
+    }
+
+    @PostMapping("update")
+    public String update(User user, MultipartFile file, @LoginUser User loginUser) throws Exception {
+        User old = userService.get(loginUser.getNo());
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + old);
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + old.getNo());
         if (old == null) {
             throw new Exception("회원 번호가 유효하지 않습니다.");
         }
         user.setNo(old.getNo());
+
         user.setCreatedAt(old.getCreatedAt());
 
 
-        if(file.getSize() > 0){
+        if (file.getSize() > 0) {
             String filename = fileUpload.upload(this.bucket, this.uploadDir, file);
             user.setPhoto(filename);
             fileUpload.delete(this.bucket, this.uploadDir, old.getPhoto());
         } else {
             user.setPhoto(old.getPhoto());
         }
+
         userService.update(user);
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ user);
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ userService);
-        return "redirect:index";
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + user);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + userService);
+        return "redirect:/index";
     }
 
     @PostMapping("passwordUpdate")
     @ResponseBody
-    public String update(@RequestBody String password) throws Exception {
+    public String update(@RequestBody String password, @LoginUser User loginUser) throws Exception {
         User user = new User();
         user.setPassword(password);
-        user.setNo(63);
+        user.setNo(loginUser.getNo());
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + password);
 
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ userService);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + userService);
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + userService.passwordUpdate(user));
         userService.passwordUpdate(user);
 
@@ -229,23 +232,4 @@ public class UserController implements InitializingBean {
                 .toString();
     }
 
-  @PostMapping("/userNo")
-  @ResponseBody
-  public User getUserNo(HttpSession session) {
-
-    log.debug("@@@@@@@@@@==>" + session.getAttribute("SecurityContextImpl"));
-    Enumeration<?> attrName = session.getAttributeNames();
-    while (attrName.hasMoreElements()) {
-      String attr = (String) attrName.nextElement();
-      System.out.println("@@@@@@@@@@@@@=>"+session.getAttribute(attr));
-    }
-
-    log.debug("@@@@@@@@@@==>>>>" + session);
-    User loginUser = (User) session.getAttribute("loginUser");
-      if (loginUser == null) {
-        throw new RuntimeException("로그인 된 사용자 정보를 찾을 수 없습니다.");
-      }
-    return loginUser;
-  }
 }
-

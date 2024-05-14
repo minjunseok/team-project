@@ -8,21 +8,16 @@ import moyeora.myapp.service.CommentService;
 import moyeora.myapp.service.PostService;
 import moyeora.myapp.service.SchoolUserService;
 import moyeora.myapp.util.FileUpload;
-import moyeora.myapp.vo.AttachedFile;
-import moyeora.myapp.vo.Comment;
-import moyeora.myapp.vo.Post;
-import moyeora.myapp.vo.User;
+import moyeora.myapp.vo.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -59,7 +54,6 @@ public class PostController {
                                   HttpSession httpSession,
                                   @AuthenticationPrincipal PrincipalDetails principalDetails,
                                   @LoginUser User loginUser) {
-
 
         int userNo = loginUser.getNo();
         int schoolNo = postService.findByPostSchoolNo(post.getNo());
@@ -194,50 +188,8 @@ public class PostController {
 
 
 
-  @GetMapping("noticelist")
-  public void list(Model model, int schoolNo) {
 
 
-    System
-            .out.println(postService.findByNotice(schoolNo));
-    log.debug(postService.findByNotice(schoolNo));
-    log.debug(schoolUserService.findBySchoolUserList(schoolNo));
-    System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
-    List<Post> posts = postService.findByNotice(schoolNo);
-    Post post = postService.findByFixList(schoolNo);
-
-    System.out.print("@@@@@@@@@@@@@@@@@@@" + post);
-    model.addAttribute("schoolNo", schoolNo);
-    model.addAttribute("noticelist", posts);
-    model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
-      model.addAttribute("fixlist", post);
-  }
-
-
-//공지글 리스트 url
-  @GetMapping("noticeview/{lNo}")
-  @ResponseBody
-  public Object findByNotice(int no, @PathVariable String lNo) throws Exception {
-
-    int schoolNo = Integer.parseInt(lNo);
-    log.debug(postService.get(no, schoolNo));
-    Post post = postService.get(no, schoolNo);
-    List<AttachedFile> attachedFiles = postService.getAttachedFiles(no);
-    List<Comment> comments = postService.getComments(no);
-
-    if (post == null) {
-      throw new Exception("게시글 번호가 유효하지 않습니다.");
-    }
-    System.out.println(post);
-    System.out.println(attachedFiles);
-    System.out.println(comments);
-
-    Map<String,Object> result = new HashMap<>();
-    result.put("comments", comments);
-    result.put("files", attachedFiles);
-    result.put("post", post);
-    return result;
-  }
 
 ////공지게시판
 //  @PostMapping("noticeadd")
@@ -274,29 +226,98 @@ public class PostController {
 //  }
 
 
-  //
 
+
+
+
+
+
+    @GetMapping("noticelist")
+    public void list(Model model, int schoolNo) {
+
+
+        System
+                .out.println(postService.findByNotice(schoolNo));
+        log.debug(postService.findByNotice(schoolNo));
+
+        log.debug(schoolUserService.findBySchoolUserList(schoolNo));
+        System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
+        List<Post> post = postService.findByNotice(schoolNo);
+
+        System.out.print("@@@@@@@@@@@@@@@@@@@" + post);
+        model.addAttribute("schoolNo", schoolNo);
+        model.addAttribute("noticelist", post);
+        model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
+    }
+
+
+    //공지글 리스트 url
+    @GetMapping("noticeview/{lNo}")
+    @ResponseBody
+    public Object findByNotice(int no, @PathVariable String lNo) throws Exception {
+
+        int schoolNo = Integer.parseInt(lNo);
+        log.debug(postService.get(no, schoolNo));
+        Post post = postService.get(no, schoolNo);
+        List<AttachedFile> attachedFiles = postService.getAttachedFiles(no);
+        List<Comment> comments = postService.getComments(no);
+
+        if (post == null) {
+            throw new Exception("게시글 번호가 유효하지 않습니다.");
+        }
+        System.out.println(post);
+        System.out.println(attachedFiles);
+        System.out.println(comments);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("comments", comments);
+        result.put("files", attachedFiles);
+        result.put("post", post);
+        return result;
+    }
+
+    //공지게시판
+    @PostMapping("noticeadd")
+    public String addNotice(
+            Post post,
+            MultipartFile[] files,
+            HttpSession session) throws Exception {
+
+        // 파일 업로드 및 AttachedFile 생성
+        List<AttachedFile> attachedFiles = new ArrayList<>();
+        for (MultipartFile file : files) {
+            if (file.getSize() == 0) {
+                continue;
+            }
+            String filename = fileUpload.upload(this.bucketName, this.uploadDir, file);
+            // AttachedFile 객체 생성 후 파일 이름 설정
+            AttachedFile attachedFile = new AttachedFile();
+            attachedFile.setFileName(filename);
+            attachedFiles.add(attachedFile);
+        }
+
+
+        // 'created_at' 필드에 현재 시간 설정
+        post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
+
+        // 나머지 처리 코드
+        post.setCreatedAt(new Date());
+        postService.addNotice(post);
+
+        return "redirect:noticelist?schoolNo=" + post.getSchoolNo();
+    }
+
+
+    //
 
 
     @PostMapping("add")
     public String add(
+            @LoginUser User loginUser,
+            @LoginUser SchoolUser loginSchoolUser,
             Post post,
             HttpSession session,
             SessionStatus sessionStatus) throws Exception {
-
-//        User loginUser = (User) session.getAttribute("loginUser");
-//    if (loginUser == null) {
-//      throw new Exception("로그인하시기 바랍니다!");
-//    }
-//
-//    Post old = postService.get(post.getNo());
-//    if (old == null) {
-//      throw new Exception("번호가 유효하지 않습니다.");
-//
-//    } else if (old.getNo() != loginUser.getNo()) {
-//      throw new Exception("권한이 없습니다.");
-//    }
-
 
         // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
         List<AttachedFile> attachedFiles = (List<AttachedFile>) session.getAttribute("attachedFiles");
@@ -325,11 +346,14 @@ public class PostController {
         // 'created_at' 필드에 현재 시간 설정
         post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
 
+        post.setUserNo(loginUser.getNo());
+        post.setSchoolNo(loginSchoolUser.getSchoolNo());
+
         // 나머지 처리 코드
         log.debug("@@@@@@@===>>" + post);
         postService.add(post);
 
-        return "redirect:list?schoolNo=" + post.getSchoolNo();
+        return "redirect:list?schoolNo=" + loginSchoolUser.getSchoolNo();
     }
 
 
@@ -338,6 +362,7 @@ public class PostController {
                       HttpSession httpSession,
                       @AuthenticationPrincipal PrincipalDetails principalDetails,
                       @LoginUser User loginUser
+//                     @RequestParam("schoolNo") int schoolNo,
     ) {
 
             System.out.println(postService.findBySchoolPostList(schoolNo));
@@ -349,9 +374,10 @@ public class PostController {
 
             System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
             model.addAttribute("schoolNo", schoolNo);
-            model.addAttribute("postlists", posts);
+            model.addAttribute("postlist", post);
             model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
             model.addAttribute("fixlist", post);
+//        model.addAttribute("joined", schoolUserService.joinedSchoolUser(loginUser.getNo(), schoolNo));
         }
 
     @GetMapping("list2")
@@ -367,59 +393,17 @@ public class PostController {
         List<Post> posts = postService.findBySchoolPostList(schoolNo);
         Post post = postService.findByFixList(schoolNo);
 
-
         System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
+        model.addAttribute("sender", loginUser);
         model.addAttribute("schoolNo", schoolNo);
-        model.addAttribute("postlists", posts);
+        model.addAttribute("postlist", posts);
         model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
         model.addAttribute("fixlist", post);
-      model.addAttribute("joined", schoolUserService.joinedSchoolUser(loginUser.getNo(), schoolNo));
+//        // 스쿨에 가입된 유저인지 확인하기 위한 코드
+//        model.addAttribute("joined", schoolUserService.joinedSchoolUser(loginUser.getNo(), schoolNo));
     }
 
-            //삭제예정
-//  @GetMapping("list2")
-//  public void list2(Model model, int schoolNo,
-//                    HttpSession httpSession,
-//                    @AuthenticationPrincipal PrincipalDetails principalDetails,
-//                    @LoginUser User loginUser
-//  ) {
-//
-//    System.out.println(postService.findBySchoolPostList(schoolNo));
-//    log.debug(postService.findBySchoolPostList(schoolNo));
-//
-//    log.debug(schoolUserService.findBySchoolUserList(schoolNo));
-//    System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
-//    List<Post> posts = postService.findBySchoolPostList(schoolNo);
-//    Post post = postService.findByFixList(schoolNo);
-//
-//    System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
-//    model.addAttribute("schoolNo", schoolNo);
-//    model.addAttribute("postlists", posts);
-//    model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
-//    model.addAttribute("fixlist", post);
-//  }
-//
-//    @GetMapping("list")
-//    public void list(Model model, int schoolNo,
-//                     HttpSession httpSession,
-//                     @AuthenticationPrincipal PrincipalDetails principalDetails,
-//                     @LoginUser User loginUser
-//    ) {
-//
-//        System.out.println(postService.findBySchoolPostList(schoolNo));
-//        log.debug(postService.findBySchoolPostList(schoolNo));
-//
-//        log.debug(schoolUserService.findBySchoolUserList(schoolNo));
-//        System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
-//        List<Post> posts = postService.findBySchoolPostList(schoolNo);
-//        Post post = postService.findByFixList(schoolNo);
-//
-//        System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
-//        model.addAttribute("schoolNo", schoolNo);
-//        model.addAttribute("postlists", posts);
-//        model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
-//        model.addAttribute("fixlist", post);
-//    }
+
 
 
 
@@ -448,31 +432,6 @@ public class PostController {
     }
 
 
-    //삭제 예정
-//    @GetMapping("view/{lNo}")
-//    @ResponseBody
-//    public Object findByPost(int no, @PathVariable String lNo) throws Exception {
-//
-//        int schoolNo = Integer.parseInt(lNo);
-//        log.debug(postService.get(no, schoolNo));
-//        Post post = postService.get(no, schoolNo);
-//        List<AttachedFile> attachedFiles = postService.getAttachedFiles(no);
-//        List<Comment> comments = postService.getComments(no);
-//
-//        if (post == null) {
-//            throw new Exception("게시글 번호가 유효하지 않습니다.");
-//        }
-//        System.out.println(post);
-//        System.out.println(attachedFiles);
-//        System.out.println(comments);
-//
-//        Map<String,Object> result = new HashMap<>();
-//        result.put("comments", comments);
-//        result.put("files", attachedFiles);
-//        result.put("post", post);
-//        return result;
-//    }
-
 
 
 
@@ -486,12 +445,15 @@ public class PostController {
             Model model) {
         if (filter.equals("0")) { // 내용으로 검색
             List<Post> postList = postService.findBySchoolContent(schoolNo, keyword);
-            model.addAttribute("postList", postList);
+            model.addAttribute("postlists", postList);
         } else {                  // 작성자로 검색
             List<Post> postList = postService.findBySchoolUserName(schoolNo, keyword);
-            model.addAttribute("postList", postList);
+            model.addAttribute("postlists", postList);
         }
+
+        log.debug("@@@@@@@" + schoolNo + keyword);
         return "post/list";
+
     }
 
     @PostMapping("update")
@@ -512,7 +474,6 @@ public class PostController {
 //    } else if (old.getNo() != loginUser.getNo()) {
 //      throw new Exception("권한이 없습니다.");
 //    }
-
 
 
         ArrayList<AttachedFile> fileList = new ArrayList<>();
@@ -557,17 +518,16 @@ public class PostController {
 //      throw new Exception("권한이 없습니다.");
 //    }
 //
-    List<AttachedFile> files = postService.getAttachedFiles(no);
+        List<AttachedFile> files = postService.getAttachedFiles(no);
 
-    postService.delete(no, schoolNo);
+        postService.delete(no, schoolNo);
 
-    for (AttachedFile file : files) {
-    fileUpload.delete(this.bucketName, this.uploadDir, file.getFilePath());
+        for (AttachedFile file : files) {
+            fileUpload.delete(this.bucketName, this.uploadDir, file.getFilePath());
+        }
+
+        return "redirect:list?schoolNo=" + post.getSchoolNo();
     }
-
-    return "redirect:list?schoolNo=" + post.getSchoolNo();
-  }
-
 
 
     @GetMapping("md/{postNo}")

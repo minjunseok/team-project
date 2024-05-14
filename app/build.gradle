@@ -15,7 +15,6 @@ configurations {
     all {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
     }
-
 }
 
 tasks.named('bootBuildImage') {
@@ -36,6 +35,8 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
     implementation 'javax.xml.bind:jaxb-api:2.3.0'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.webjars:stomp-websocket:2.3.4'
+    implementation 'org.webjars:sockjs-client:1.5.1'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
@@ -59,38 +60,40 @@ dependencies {
     //AWS S3 API 라이브러리
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.688'
 
+    //kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+
+    //elasticsearch
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+
+    // Kafka에 로그를 전송하기 위해 Logback에 Kafka Appender를 추가
+    implementation 'com.github.danielwegener:logback-kafka-appender:0.2.0-RC2'
+
+    // Logstash에서 처리할 수 있는 JSON 형식으로 로그 메시지를 인코딩
+    implementation 'net.logstash.logback:logstash-logback-encoder:6.2'
+
+    ///modelMapper
+    implementation 'org.modelmapper:modelmapper:3.1.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
+    //aop
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
-
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
     testImplementation 'org.springframework.security:spring-security-test'
-
 
     // log4j 2.x 라이브러리
     //implementation 'org.apache.logging.log4j:log4j-core:2.23.1'
 
     //부트페이 라이브러리
     implementation 'io.github.bootpay:backend:+'
-
-    //coolsms 라이브러리
-    implementation 'net.nurigo:sdk:4.3.0'
-
     //json 파싱
     implementation 'org.json:json:20240303'
-
-    //부트페이 라이브러리
-    implementation 'io.github.bootpay:backend:+'
-
-
-    // Mybatis를 Spring 프레임워크와 더 쉽게 연동하고자 할 때 사용하는 라이브러리
-    // => Mybatis 3.5를 Spring 6.0.x와 연동시켜주는 라이브러리
-    //implementation 'org.mybatis:mybatis-spring:3.0.3'
-
-    // Lombok 라이브러리
-    // => 컴파일 할 때만 이 라이브러리를 사용한다.
-    //    컴파일이 완료된 후에는 이 라이브러리가 필요없다.
 }
 
 java {
@@ -99,9 +102,12 @@ java {
     }
 }
 
-// 자바 소스를 컴파일 할 때 적용할 옵션(Gradle 로 컴파일 할 때)
 tasks.withType(JavaCompile).configureEach {
-    // 프로젝트의 소스 파일 인코딩을 gradle에게 알려준다.
-    // $javac -encoding UTF-8 ..
     options.encoding = 'UTF-8'
 }
+
+tasks.register('wrapper', Wrapper) {
+    gradleVersion = '8.5'
+}
+
+tasks.register("prepareKotlinBuildScriptModel"){}

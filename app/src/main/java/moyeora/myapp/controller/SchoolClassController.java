@@ -2,30 +2,32 @@ package moyeora.myapp.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.annotation.LoginUser;
+import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
+import moyeora.myapp.dto.schoolclass.SchoolClassRequestDTO;
 import moyeora.myapp.service.SchoolClassService;
 import moyeora.myapp.service.SchoolMemberService;
 import moyeora.myapp.util.FileUpload;
 import moyeora.myapp.vo.JsonResult;
 import moyeora.myapp.vo.SchoolClass;
+import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
-@RequestMapping("/schoolclass")
+@RequestMapping("schoolclass")
 @RequiredArgsConstructor
 public class SchoolClassController {
 
@@ -33,17 +35,16 @@ public class SchoolClassController {
   private final SchoolClassService schoolClassService;
   private final FileUpload fileUpload;
   private final SchoolMemberService schoolMemberService;
+
   private final String uploadDir =  "schoolclass/";
   @Value("${ncp.storage.bucket}") private String bucket;
 
-  @GetMapping("/list")
+  @GetMapping("list")
   @ResponseBody
-  public List<SchoolClass> viewOfDate(String date) {
+  public Object viewOfDate(String date) {
     if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
-      System.out.println("1");
       return schoolClassService.findByDate(date);
     } else {
-      System.out.println("2");
       LocalDateTime currentTime = LocalDateTime.now();
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 날짜 형식 지정
       date = currentTime.format(formatter);
@@ -52,7 +53,7 @@ public class SchoolClassController {
   }
 
   @GetMapping("realCalendar")
-  public void form(Model model, int schoolNo) throws Exception{
+  public void form(Model model, int schoolNo) throws Exception {
     model.addAttribute("schoolMembers",schoolMemberService.list(schoolNo));
     System.out.println("=====classcontorller.schoolMember==============>    " + schoolMemberService);
 
@@ -94,7 +95,8 @@ public class SchoolClassController {
     System.out.println("=======classcontroller.startdate============>    " + startAtDate);
     System.out.println("=========classcontrollr.endeddate==========>    " + endedAtDate);
 
-    
+
+
     System.out.println("=======classcontroller============>    " + clazz);
 
     JsonResult jsonResult = new JsonResult();
@@ -104,7 +106,84 @@ public class SchoolClassController {
 
   }
 
+  @GetMapping("findByNo")
+  @ResponseBody
+  public Object findByNo(int classNo, @LoginUser User loginUser) throws Exception {
+    HashMap<String, Object> result = new HashMap<>();
+    result.put("schoolClass", schoolClassService.get(classNo));
+    result.put("isMember", schoolClassService.isMember(classNo, loginUser.getNo()));
+    return result;
+  }
+
+  @PostMapping("insert")
+  @ResponseBody
+  public Object attend(@RequestBody SchoolClassRequestDTO schoolClassRequestDTO, @LoginUser User loginUser) throws Exception {
+    schoolClassRequestDTO.setUserNo(loginUser.getNo());
+    schoolClassService.insert(schoolClassRequestDTO);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+    System.out.println(schoolClassRequestDTO);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+    return "";
+  }
 
 
+  @PostMapping("memberDelete")
+  @ResponseBody
+  public Object MemberDelete(@RequestBody SchoolClassRequestDTO schoolClassRequestDTO, @LoginUser User loginUser) throws Exception {
+    schoolClassRequestDTO.setUserNo(loginUser.getNo());
+    schoolClassService.memberDelete(schoolClassRequestDTO);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+    System.out.println(schoolClassRequestDTO);
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+    return "";
+  }
 
+  @PostMapping("classDelete")
+  @ResponseBody
+  public void classDelete(@RequestBody SchoolClass clazz, @LoginUser User loginUser) throws Exception {
+
+    ClassDeleteDTO classDeleteDTO = new ClassDeleteDTO();
+    classDeleteDTO.setClassNo(clazz.getNo());
+    System.out.println("@@@@@@@@@@@@@" + clazz.getNo());
+
+    classDeleteDTO.setUserNo(loginUser.getNo());
+
+    SchoolClassRequestDTO schoolClassRequestDTO = new SchoolClassRequestDTO();
+    schoolClassRequestDTO.setSchoolNo(clazz.getSchoolNo());
+    schoolClassRequestDTO.setClassNo(classDeleteDTO.getClassNo());
+    System.out.println("@@@@@@@@@@@@@");
+    System.out.println(schoolClassRequestDTO);
+    System.out.println("@@@@@@@@@@@@@");
+
+    schoolClassService.memberDelete(schoolClassRequestDTO);
+    schoolClassService.classDelete(classDeleteDTO);
+
+
+  }
+
+
+  @GetMapping("viewTest")
+  public Object test3(int classNo) throws Exception {
+
+
+    JsonResult jsonResult = new JsonResult();
+
+    jsonResult.setStatus("success");
+
+    return jsonResult;
+
+
+  }
+
+
+  @GetMapping("viewModalTest2")
+  public Object test1(int classNo) throws Exception {
+
+    JsonResult jsonResult = new JsonResult();
+
+    jsonResult.setStatus("success");
+
+    return jsonResult;
+
+  }
 }

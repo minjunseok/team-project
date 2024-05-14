@@ -17,8 +17,8 @@
   <script src="https://cdn.bootpay.co.kr/js/bootpay-3.3.6.min.js" type="application/javascript"></script>
 </head>
 <body>
-<button value="클릭" id="vipclick"/>
-
+<button class="vipclick" onclick="payment1('vip')">vip 정기구독</button>
+  <button class="vipclick" onclick="payment1('vvip')">vvip 정기구독</button>
 
 <script>
 const payment1 = (name) => {
@@ -44,7 +44,6 @@ const payment1 = (name) => {
       })
     });
 }
-  document.getElementById("vipclick").addEventListener("click", payment1("vip"));
 </script>
 </body>
 </html>

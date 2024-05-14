@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="moyeora.myapp.dao.ClassUserDao">
+    <resultMap id="ClassUserMap" type="ClassUser">
+        <id column="class_no" property="classNo"/>
+        <result column="user_no" property="userNo"/>
+        <result column="school_no" property="schoolNo"/>
+
+</resultMap>
+
+
+<select id="countMember">
+select count(*)
+from
+    class_users
+where
+    class_no = #{classNo}
+    and
+    user_no = #{userNo}
+</select>
+
+<delete id="memberDelete">
+delete
+from
+    class_users
+where
+     class_no = #{classNo}
+     and
+     school_no = #{schoolNo}
+</delete>
+
+<insert id="insert">
+    insert into class_users(user_no,class_no,school_no)
+    values (#{userNo},#{classNo},#{schoolNo})
+</insert>
+
+</mapper>

@@ -2,86 +2,86 @@
 <html lang='en'>
 
 <head>
-  <meta charset='UTF-8'>
-  <title>moyeora</title>
+    <meta charset='UTF-8'>
+    <title>moyeora</title>
 </head>
 
 <body>
 
-  <div data-th-replace="header :: header">머리말</div>
+<div data-th-replace="header :: header">머리말</div>
 
-  <h1>sign-up test form</h1>
-  <div style="color:gray; font-size=10px;">소셜 회원가입 후 추가 데이터 받는 화면</div>
+<h1>sign-up test form</h1>
+<div style="color:gray; font-size=10px;">소셜 회원가입 후 추가 데이터 받는 화면</div>
 
-  <form data-th-action="@{join}" data-th-if="${status == null}" id="joinForm" enctype='multipart/form-data'
-    method='post'>
+<form data-th-action="@{join}" data-th-if="${status == null}" id="joinForm" enctype='multipart/form-data'
+      method='post'>
     <div>
-      <input data-th-value="${user.provider}" id="provider" name="provider" readonly type="hidden">
-      <input data-th-value="${user.providerId}" id="providerId" name="providerId" readonly type="hidden">
-      <input data-th-value="${user.role}" id="role" name="role" readonly type="hidden">
+        <input data-th-value="${user.provider}" id="provider" name="provider" readonly type="hidden">
+        <input data-th-value="${user.providerId}" id="providerId" name="providerId" readonly type="hidden">
+        <input data-th-value="${user.role}" id="role" name="role" readonly type="hidden">
     </div>
     <div>
-      <label>
-        이메일: <input data-th-value="${user.email}" id="email" name="email" readonly required type="text">
-      </label>
+        <label>
+            이메일: <input data-th-value="${user.email}" id="email" name="email" readonly required type="text">
+        </label>
     </div>
     <div>
-      <label>
-        이름: <input data-th-value="${user.name}" id="name" name="name" readonly required type="text">
-      </label>
-    </div>
-
-    <div>
-      닉네임: <input name='nickname' placeholder="닉네임" required size="20" type='text'>
+        <label>
+            이름: <input data-th-value="${user.name}" id="name" name="name" readonly required type="text">
+        </label>
     </div>
 
     <div>
-      생년월일: <input id="birth" name='birth' type='date'>
+        닉네임: <input name='nickname' placeholder="닉네임" required size="20" type='text'>
     </div>
 
     <div>
-      전화번호: <input name='phone' placeholder="전화번호" required type='text'>
-    </div>
-
-
-    <div>
-      주소지:
-      <input onclick="sample2_execDaumPostcode()" type="button" value="우편번호 찾기"><br>
-      <input id="address" name="address" placeholder="주소" type="text"><br>
-      <input id="addressDetail" name="addressDetail" placeholder="상세주소" type="text">
-
+        생년월일: <input id="birth" name='birth' type='date'>
     </div>
 
     <div>
-      사진: <input name='file' type='file'>
-    </div>
-
-    <div>
-      자기소개: <textarea name='profile'></textarea>
-    </div>
-
-    <div>
-      <input name="gender" type="radio" value="0"> 남자
-      <input name="gender" type="radio" value="1"> 여자
+        전화번호: <input name='phone' placeholder="전화번호" required type='text'>
     </div>
 
 
     <div>
-      <h2>관심사 선택</h2>
+        주소지:
+        <input onclick="sample2_execDaumPostcode()" type="button" value="우편번호 찾기"><br>
+        <input id="address" name="address" placeholder="주소" type="text"><br>
+        <input id="addressDetail" name="addressDetail" placeholder="상세주소" type="text">
+
+    </div>
+
+    <div>
+        사진: <input name='file' type='file'>
+    </div>
+
+    <div>
+        자기소개: <textarea name='profile'></textarea>
+    </div>
+
+    <div>
+        <input name="gender" type="radio" value="0"> 남자
+        <input name="gender" type="radio" value="1"> 여자
+    </div>
+
+
+    <div>
+        <h2>관심사 선택</h2>
     </div>
 
     <tbody>
-      <tr data-th-each="tag : ${tags}">
+    <tr data-th-each="tag : ${tags}">
         <td>
-          <input data-th-checkbox="true" data-th-value="${tag.no}" name="tagNums" type="checkbox">
+            <input data-th-checkbox="true" data-th-value="${tag.no}" name="tagNums" type="checkbox">
         </td>
         <td>
-          <span data-th-text="${tag.name}">1</span>
+            <span data-th-text="${tag.name}">1</span>
         </td>
         <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
-          <br>
+            <br>
         </data-th-block>
-      </tr>
+    </tr>
     </tbody>
 
 
@@ -90,20 +90,20 @@
 
     <button onclick="return checkForm()" type="submit">로그인</button>
     <div data-th-if="${status != null}" data-th-text="${status}"></div>
-  </form>
+</form>
 
-  <div data-th-replace="footer :: footer">꼬리말</div>
+<div data-th-replace="footer :: footer">꼬리말</div>
 
 
-  <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+<div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
     <img alt="닫기 버튼" id="btnCloseLayer" onclick="closeDaumPostcode()"
-      src="//t1.daumcdn.net/postcode/resource/images/close.png"
-      style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1">
-  </div>
+         src="//t1.daumcdn.net/postcode/resource/images/close.png"
+         style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1">
+</div>
 
 
-  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  <script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
     // 우편번호 찾기 화면을 넣을 element
     var element_layer = document.getElementById('layer');
 
@@ -189,9 +189,7 @@
       element_layer.style.left = (((window.innerWidth || document.documentElement.clientWidth) - width) / 2 - borderWidth) + 'px';
       element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height) / 2 - borderWidth) + 'px';
     }
-  </script>
-
-
+</script>
 
 
 </body>

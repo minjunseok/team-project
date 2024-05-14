@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset='UTF-8'>
+  <title>meyeora</title>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@5.0.0/bundles/stomp.umd.min.js"></script>
+</head>
+<body>
+
+<div data-th-replace="header :: header">머리말</div>
+
+<h1>dm example</h1>
+
+<div data-th-replace="footer :: footer">꼬리말</div>
+<div id="chat-container"></div>
+
+<script th:inline="javascript">
+  var sender = [[${sender.no}]] > 0 ? [[${sender.no}]] : 4;
+  var receiver = [[${receiver.no}]] > 0 ? [[${receiver.no}]] : 5;
+
+  function dm() {
+    $.ajax({
+      type: "GET",
+      url: "/dm?sender=" + sender  + "&" + "receiver=" + receiver,
+      dataType: "html",
+      processData: false,
+      success: function (result) {
+        $("#chat-container").html(result);
+      }
+    });
+  }
+
+  $(function () {
+    dm();
+  });
+</script>
+
+</body>
+</html>

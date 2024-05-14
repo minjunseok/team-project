@@ -14,13 +14,30 @@ import moyeora.myapp.service.TagService;
 import moyeora.myapp.util.FileUpload;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.mail.MessagingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Random;
+import javax.mail.MessagingException;
+import lombok.RequiredArgsConstructor;
+import moyeora.myapp.security.config.PasswordEncoderConfig;
+import moyeora.myapp.service.TagService;
+import moyeora.myapp.service.impl.DefaultMailService;
+import moyeora.myapp.service.UserService;
+import moyeora.myapp.security.util.RedisUtil;
+import moyeora.myapp.util.FileUpload;
+import moyeora.myapp.vo.User;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Controller
@@ -107,10 +124,9 @@ public class AuthController {
   @PostMapping ("sendEmail")
   public String sendEmail(String email, Model model) throws Exception {
     User user = userService.get(email);
-    if(user == null) {
+
+    if(user == null || user.getPassword() == null) {
       model.addAttribute("status","email not found");
-    } else if (user.getPassword() == null) {
-      model.addAttribute("status","password null");
     } else {
       String authId = doSend(email, "[moyeora] authentication code", createCode(),
               createAuthId(email), "form");
@@ -130,8 +146,9 @@ public class AuthController {
 
   @PostMapping("verifyCode")
   public String verifyCode(String email, String code, String authId, Model model)
-          throws Exception {
-    String savedCode = (String) redisUtil.getData(authId + "_e");
+      throws Exception {
+    System.out.println(email+code+authId+model);
+    String savedCode = (String) redisUtil.getData(authId);
     if (savedCode == null) {
       model.addAttribute("status","savedCode == null");
     } else if (!savedCode.equals(code)) {
@@ -175,3 +192,4 @@ public class AuthController {
     return builder.toString();
   }
 }
+

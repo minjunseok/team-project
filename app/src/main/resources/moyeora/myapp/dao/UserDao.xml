@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="moyeora.myapp.dao.UserDao">
   <resultMap id="UserMap" type="User">
     <id column="user_no" property="no"/>
@@ -20,48 +20,55 @@
     <result column="photo" property="photo"/>
     <result column="address_detail" property="addressDetail"/>
     <result column="stop_date" property="stopDate"/>
+    <result column="tag_no" property="tagNo"/>
+    <result column="login_type" property="loginType"/>
     <result column="provider" property="provider"/>
     <result column="provider_id" property="providerId"/>
     <result column="role" property="role"/>
+
+    <result column="auth" property="auth"/>
+
+
 
     <collection property="tags" ofType="UserTag">
       <result column="user_no" property="userNo"/>
       <result column="tag_no" property="tagNo"/>
     </collection>
+
   </resultMap>
 
   <insert id="add" parameterType="User"
-     useGeneratedKeys="true" keyColumn="user_no" keyProperty="no">
-      insert into
-      users(name,password,address,phone,email,nickname,birth,gender,grade,created_at,profile,manner_point,photo,address_detail,provider,provider_id,role)
-      values(#{name},#{password},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{grade},
-      current_timestamp,#{profile},#{mannerPoint},#{photo},#{addressDetail},#{provider},#{providerId},#{role})
-    </insert>
+          useGeneratedKeys="true" keyColumn="user_no" keyProperty="no">
+    insert into
+    users(name,password,address,phone,email,nickname,birth,gender,grade,created_at,profile,manner_point,photo,address_detail,provider,provider_id,role)
+    values(#{name},#{password},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},#{grade},
+    current_timestamp,#{profile},#{mannerPoint},#{photo},#{addressDetail},#{provider},#{providerId},#{role})
+  </insert>
 
-<select id="findBy" resultMap="UserMap" parameterType="int">
+  <select id="findBy" resultMap="UserMap" parameterType="int">
     select
-        u.user_no,
-        u.name,
-        u.address,
-        u.phone,
-        u.email,
-        u.nickname,
-        u.birth,
-        u.gender,
-        u.grade,
-        u.created_at,
-        u.profile,
-        u.manner_point,
-        u.photo,
-        u.address_detail,
-        ut.tag_no
+    u.name,
+    u.address,
+    u.phone,
+    u.email,
+    u.nickname,
+    u.birth,
+    u.gender,
+    u.grade,
+    u.created_at,
+    u.profile,
+    u.manner_point,
+    u.photo,
+    u.address_detail,
+    ut.user_no,
+    ut.tag_no
     from
-        users as u
+    users as u
     inner join
-        user_tags as ut on u.user_no = ut.user_no
+    user_tags as ut on u.user_no = ut.user_no
     where
-        u.user_no =#{no};
-</select>
+    u.user_no =#{no};
+  </select>
 
   <insert id="add2" parameterType="list">
     insert into member_tags(user_no,tag_no)
@@ -69,9 +76,8 @@
   </insert>
 
   <insert id="save" parameterType="User" useGeneratedKeys="true" keyColumn="user_no" keyProperty="no">
-    insert into
-    users(name,address,phone,email,nickname,birth,gender,created_at,profile,photo,address_detail,provider,provider_id,role)
-    values(#{name},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},NOW(),#{profile},#{photo},#{addressDetail},#{provider},#{providerId},#{role})
+    insert into users(name,email,phone,provider,provider_id,role,created_at)
+    values(#{name},#{email},#{phone},#{provider},#{providerId},#{role},NOW())
   </insert>
 
   <delete id="delete" parameterType="int">
@@ -93,40 +99,38 @@
       user_no,
       email,
       name,
-    created_at
+      nickname,
+      photo,
+      created_at
     from
     users
     where
-    user_no=#{value}
+    user_no=#{no}
   </select>
 
   <select id="findByEmail" resultMap="UserMap" parameterType="string">
     select
-    user_no,
-    email,
-    password,
-    name
+        *
     from
     users
     where
-        email=#{email}
+      email=#{value}
   </select>
 
-
- <update id="update" parameterType="User">
- update users set
-     address=#{address},
-     phone=#{phone},
-     nickname=#{nickname},
-     birth=#{birth},
-     photo=#{photo},
-     profile=#{profile},
-     address_detail=#{addressDetail}
- where
-     user_no=#{no};
-    </update>
-
-
+  <update id="update" parameterType="User">
+    update users set
+    email=#{email},
+    nickname=#{nickname},
+    phone=#{phone},
+    address=#{address},
+    photo=#{photo}
+    profile=#{profile}
+    <if test="password != ''">
+      , password=#{password}
+    </if>
+    where
+    user_no=#{no}
+  </update>
 
   <update id="updatePassword" parameterType="User">
     update users set
@@ -137,35 +141,134 @@
 
   <select id="findByNameAndPhone" resultType="string">
     select
-      email
+    email
     from
-      users
+    users
     where
-      name=#{name}
-      and phone=#{phone}
+    name=#{name}
+    and phone=#{phone}
   </select>
 
   <select id="findOAuth2User" resultMap="UserMap">
     select
+      user_no,
+      email,
+      name,
+      role
+    from
+      users
+    where
+      email=#{email}
+      and provider=#{provider}
+  </select>
+
+  <select id="findAllNoMaster" resultMap="UserMap">
+    select
     user_no,
-    email,
     name,
-    role
+    auth,
+    nickname,
+    email,
+    created_at,
+    stop_date
     from
     users
     where
-    email=#{email}
-    and provider=#{provider}
+    auth &lt;= 1
+    order by
+    auth desc, created_at desc
+    limit #{limit} offset #{offset}
+  </select>
+
+  <update id="updateBlackList">
+    update
+      users
+    set
+    stop_date =
+        #{date}
+    where
+      user_no =
+      #{userNo}
+  </update>
+
+  <select id="findUserGrade" resultType="int">
+    SELECT
+    grade
+    FROM
+    users
+    WHERE
+    user_no=#{userNo}
   </select>
 
 
-<update id="passwordUpdate" parameterType="User">
-update users set
-    password = #{password}
-where
-    user_no=#{no}
-</update>
+  <update id="updateRole">
+    update
+    users
+    set
+    auth =
+    #{auth}
+    where
+    user_no =
+    #{userNo}
+  </update>
+
+  <select id="userProfile" resultType="int">
+    SELECT
+    name,
+    photo
+    FROM
+    users
+    WHERE
+    user_no=#{userNo}
+  </select>
 
 
+  <select id="findByUserInfo" resultMap="UserMap">
+    select
+      user_no,
+      name,
+      auth,
+      nickname,
+      email,
+      created_at,
+      stop_date
+    from
+      users
+    where
+      auth &lt;= 1
+    and
+      (name like '%${userInfo}%' or nickname like '%${userInfo}%' or email like '%${userInfo}%')
+    order by
+    auth desc, created_at desc
+  </select>
 
+  <select id="findGroupByGender" resultType="moyeora.myapp.dto.admin.statistics.AdminUserGenderResponseDTO">
+    select
+    gender,
+    count(gender) ctn
+    from
+    users
+    group by gender
+    order by ctn desc
+  </select>
+
+  <select id="findGroupByBirth" resultType="moyeora.myapp.dto.admin.statistics.AdminUserBirthResponseDTO">
+    select
+    substring(birth,1,4) as birthyear,
+    count(*) as ctn
+    from
+    users
+    group by birthyear
+    order by ctn desc
+  </select>
+
+  <select id="findGroupByLocal" resultType="moyeora.myapp.dto.admin.statistics.AdminUserLocalResponseDTO">
+    select
+    substring_index(address, ' ', 1) as local,
+    count(*) ctn
+    from
+    users
+    group by local
+    order by ctn desc
+  </select>
 </mapper>

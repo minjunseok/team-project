@@ -1,8 +1,7 @@
 package moyeora.myapp;
 
+
 import moyeora.myapp.annotation.LoginUserArgumentResolver;
-import moyeora.myapp.service.UserService;
-import moyeora.myapp.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,37 +25,38 @@ import java.util.List;
   "file:${user.home}/config/ncp-storage.properties",
         "file:${user.home}/config/ncp-secret.properties",
   "file:${user.home}/config/bootpay.properties",
-  "file:${user.home}/config/email.properties"
+  "file:${user.home}/config/email.properties"})
 //        "classpath:ncp-storage.properties",
 //        "classpath:ncp-secret.properties",
 //        "classpath:bootpay.properties",
 //        "classpath:config/email.properties"
         //"classpath:ncp-secret.properties",
-})
+//        "file:${user.home}/config/ncp-storage.properties",
+//        "file:${user.home}/config/ncp-secret.properties",
+//        "file:${user.home}/config/bootpay.properties",
+//        "file:${user.home}/config/email.properties",
+//        "file:${user.home}/config/oauth.properties"
 public class App implements WebMvcConfigurer {
 
-  @Autowired
-  LoginUserArgumentResolver loginUserArgumentResolver;
+    @Autowired
+    LoginUserArgumentResolver loginUserArgumentResolver;
 
-//  @Autowired //로그인 유저 번호 사용하기 위해서 적용
-  private UserService userService;
-  public static void main(String[] args) throws Exception {
-    System.out.println("과제관리 시스템 서버 실행!");
-    SpringApplication.run(App.class, args);
-  }
+    public static void main(String[] args) throws Exception {
+        System.out.println("과제관리 시스템 서버 실행!");
 
-  @GetMapping("/home")
-  public void home() {
-//    User user = userService.get(1); // 세션으로 1번 유저의 정보를 받아서 사용 홈 파라미터 (HttpSession session)
-//    session.setAttribute("loginUser", user);
-  }
+        SpringApplication.run(App.class, args);
+    }
 
-  @GetMapping("/about")
-  public void about() {
-  }
+    @GetMapping("/home")
+    public void home() {
+    }
 
-  @Override
-  public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-    resolvers.add(loginUserArgumentResolver);
-  }
+    @GetMapping("/about")
+    public void about() {
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(loginUserArgumentResolver);
+    }
 }

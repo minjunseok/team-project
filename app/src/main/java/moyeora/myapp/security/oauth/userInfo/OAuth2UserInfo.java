@@ -1,4 +1,6 @@
-package moyeora.myapp.security.OAuth.userInfo;
+
+package moyeora.myapp.security.oauth.userInfo;
+
 
 public interface OAuth2UserInfo {
   String getProvider();
