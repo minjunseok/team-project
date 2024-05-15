@@ -20,24 +20,32 @@ stompClient.onConnect = (frame) => {
 
 function setAlert(alert) {
   console.log(alert);
-  const li = "<li id=alert" + alert.alertNo + " class='alert'><a onclick=isRead('" + alert.redirectPath + "'," + alert.alertNo + ");>" + alert.name + "</a></li>"
-  $(li).prependTo("#notification_list");
+  const li = "<li class='notificationItem'><a class='notificationLink' onclick=isRead('" + alert.redirectPath + "'," + alert.alertNo + ");>" + alert.name + "</a></li>"
+  $(li).prependTo("#notificationList");
 }
 
 document.addEventListener("DOMContentLoaded", function() {
   var notificationToggle = document.getElementById("notificationToggle");
   var notificationContent = document.getElementById("notification");
+  var uMenuToggle = document.getElementById("uMenuToggle");
+  var uMenuContent = document.getElementById("uMenu");
 
   notificationToggle.addEventListener("click", function() {
 	notificationContent.style.display = notificationContent.style.display === "block" ? "none" : "block";
-	}
-  );
+  });
+
+  uMenuToggle.addEventListener("click", function() {
+	uMenuContent.style.display = uMenuContent.style.display === "block" ? "none" : "block";
+  });
 
   // Close notification if user clicks outside
   window.addEventListener("click", function(event) {
 	if (event.target !== notificationToggle && !notificationContent.contains(event.target)) {
-	  notificationContent.style.display = "none";
+	    notificationContent.style.display = "none";
 	}
+	if (event.target !== uMenuToggle && !uMenuContent.contains(event.target)) {
+	    uMenuContent.style.display = "none";
+    }
   });
 });
 
@@ -49,7 +57,30 @@ function loadAlert() {
     success: function (response) {
       alerts = response;
       for(key in alerts) {
-        $("#notification_list").append("<li id=alert" + alerts[key].alertNo + " class='alert'><a onclick=isRead('" + alerts[key].redirectPath + "'," + alerts[key].alertNo + ");>" + alerts[key].name + "</a></li>");
+        let dateTime = alerts[key].createdAt.substring(0, 10) + " " + alerts[key].createdAt.substring(12, 16);
+        let thumbnailImg = alerts[key].photo != null && alerts[key].photo.length > 0 ? "<img class='thumbnailImg' src=" + alerts[key].filePath + alerts[key].photo + " onerror=thumbnailImgError(this)>" : "";
+        $("#notificationList").append(
+        "<li class='notificationItem'>" +
+            "<a class='notificationLink' onclick=isRead('" + alerts[key].redirectPath + "'," + alerts[key].alertNo + ");>" +
+                "<div class='notificationThumbnail'>" +
+                    "<div class='thumbnailInner'>" +
+                        "<span class='thumbnailItem'>" + thumbnailImg + "</span>" +
+                    "</div>" +
+                "</div>" +
+                "<dl class='notificationInfoBox'>" +
+                    "<dd class='notificationInfo'>" +
+                        "<strong class='headLineText'>" +
+                            "<span class='nameText'>" + alerts[key].name + "</span>" +
+                        "</strong>" +
+                    "</dd>" +
+                    "<dd class='infoText alertContent'>" + alerts[key].content + "</dd>" +
+                    "<dd class='origin'>" +
+                        "<span class='infoText originText'>" + dateTime + "</span>" +
+                    "</dd>" +
+                "</dl>" +
+            "</a>" +
+        "</li>"
+        );
       }
     }
   })
@@ -64,6 +95,10 @@ function isRead(url,no) {
       location.href=url;
     }
   })
+}
+
+function thumbnailImgError(obj) {
+    $(obj).attr("src", "/img/모여라.png");
 }
 
 $(function () {

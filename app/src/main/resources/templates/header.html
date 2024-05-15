@@ -1,42 +1,42 @@
 <!DOCTYPE html>
-<html lang="en"
-	xmlns:sec="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.w3.org/1999/xhtml">
-	<head>
-		<th:block th:replace="common/headCommon :: headerFragment"></th:block>
-		<title>moyeora - 모여라에서 취미가 맞는 친구를 사귀어 보세요!</title>
-	</head>
-	<body>
-		<div th:fragment="header" class="header">
-			<header>
-				<nav class="navbar">
-					<div class="navbar_logo">
-						<a data-th-href="@{/index}"><img data-th-src="@{/img/moyeoraL.jpeg}" alt="moyeora logo"/></a>
-					</div>
-					<ul class="main_menu">
-						<li><a data-th-href="@{/user/form}">회원가입</a></li>
-						<li sec:authorize="isAnonymous()"><a data-th-href="@{/auth/form}">로그인</a></li>
-						<li sec:authorize="isAuthenticated()"><a data-th-href="@{/auth/logout}"><span data-th-text="${loginUser.name}"></span> 로그아웃</a></li>
-						<li><a data-th-href="@{/admin/chart}">관리자페이지</a></li>
-						<li><a data-th-href="@{/payment/form}">정기구독하기</a></li>
-<!--						<li>
-							<a id="notificationToggle">알림</a>
-							<div id="notification" class="notification_content"><ul id="notification_list"></ul></div>
-						</li>-->
-						<!--<li><a data-th-href="@{/mypage/mypost}">Feed</a></li>-->
-					</ul>
-					<div class="header_icons" sec:authorize="isAuthenticated()">
-						<a>
-							<img id="notificationToggle" data-th-src="@{/img/notifications_20dp_FILL1_wght400_GRAD0_opsz20.png}" alt="no image">
-						</a>
-						<div id="notification" class="notification_content"><ul id="notification_list"></ul></div>
-						<a data-th-href="@{/mypage}">
-							<img data-th-src="@{/img/account_circle_24dp_FILL1_wght400_GRAD0_opsz24.png}" alt="no image">
-						</a>
-					</div>
-				</nav>
-			</header>
-		</div>
-	</body>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:replace="common/headCommon :: headerFragment"></th:block>
+    <title>moyeora - 모여라에서 취미가 맞는 친구를 사귀어 보세요!</title>
+</head>
+<body>
+    <div th:fragment="header" class="header">
+        <header>
+            <div class="headerInner">
+                <div class="logoArea">
+                    <a data-th-href="@{/index}">
+                        <img data-th-src="@{/img/moyeoraL.jpeg}" alt="moyeora logo"/>
+                    </a>
+                </div>
+                <ul class="mainMenu">
+                    <li class="mainMenuItem"><a data-th-href="@{/user/form}">회원가입</a></li>
+                    <li class="mainMenuItem" sec:authorize="isAnonymous()"><a data-th-href="@{/auth/form}">로그인</a></li>
+                    <li class="mainMenuItem"><a data-th-href="@{/admin/chart}">관리자페이지</a></li>
+                    <li class="mainMenuItem"><a data-th-href="@{/payment/form}">정기구독하기</a></li>
+                </ul>
+                <div class="headerWidgetArea" sec:authorize="isAuthenticated()">
+                    <a class="WidgetTextStyle" data-th-href="@{/mypage/mypost}">피드</a>
+                    <img id="notificationToggle" class="notificationIcon" data-th-src="@{/img/notifications_20dp_FILL1_wght400_GRAD0_opsz20.png}" alt="no image">
+                    <article id="notification" class="toggleContent">
+                        <header><h4>내 소식</h4></header>
+                        <div class="notificationWrap"><ul id="notificationList"></ul></div>
+                    </article>
+                    <img id="uMenuToggle" data-th-src="@{/img/account_circle_24dp_FILL1_wght400_GRAD0_opsz24.png}" alt="no image">
+                    <article id="uMenu" class="toggleContent">
+                        <ul>
+                            <li class="uMenuItem"><a data-th-href="@{/auth/logout}">로그아웃</a></li>
+                            <li class="uMenuItem"><a data-th-href="@{/mypage}"> 마이페이지</a></li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </header>
+    </div>
+</body>
 </html>
 

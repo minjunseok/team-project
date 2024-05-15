@@ -17,4 +17,5 @@ public class Alert {
     private String redirectPath;
     private int toUserNo;
     private int schoolNo;
+    private String filePath;
 }

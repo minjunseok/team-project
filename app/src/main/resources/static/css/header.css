@@ -1,114 +1,264 @@
-/* Reset default styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Body styles */
-body {
-  font-family: 'Source Code Pro', monospace;
-  background-color: #f8f9fa;
-}
-
-/* Header styles */
 .header {
-  background-color: #343a40;
-  color: #ffffff;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
+.headerInner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1034px;
+    height: 50px;
+    margin: 0 auto;
 }
 
-.navbar_logo img {
-  width: 120px;
-  height: auto;
+.logoArea img {
+    width: 100px; /* Adjust logo size */
+    height: auto;
 }
 
-.main_menu {
-  list-style: none;
-  display: flex;
+.mainMenu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
 }
 
-.main_menu li {
-  margin-right: 20px;
+.mainMenu li {
+    margin-right: 20px;
 }
 
-.main_menu>li:last-child {
-  margin-right: 0;
+.mainMenu li:last-child {
+    margin-right: 0;
 }
 
-.main_menu li a {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 16px;
-  transition: all 0.3s ease;
-  cursor: pointer;
+.mainMenu a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+    transition: color 0.3s ease;
 }
 
-.main_menu>li:hover {
-  color: #ffc107;
+.mainMenu a:hover {
+    color: #0066ff;
 }
 
-.header_icons {
-  display: flex;
-  align-items: center;
+.headerWidgetArea > img {
+    width: 30px; /* Adjust icon size */
+    height: auto;
+    cursor: pointer;
 }
 
-.header_icons a {
-  margin-left: 20px;
-  position: relative;
+.headerWidgetArea {
+    display: flex;
 }
 
-.header_icons a img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
+.notificationIcon {
+    margin-left: auto;
+    margin-right: 20px;
+    cursor: pointer;
 }
 
-.header_icons a i {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 20px;
-}
-
-.notification_content {
-    display: none;
+.toggleContent {
     position: absolute;
-    /*top: 100%;*/
-    /*right: 0;*/
-    background-color: #fff;
-    border: 1px solid #ddd;
+    display: none;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    z-index: 999;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
-.notification_content ul {
+.toggleContent ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
-.notification_content ul li {
-    padding: 10px;
-    background-color: #f5f5f5;
-
+.toggleContent li {
+    padding: 10px 0 11px
 }
 
-.notification_content ul li a {
-    color: #343a40;
-    font-size: 11px;
+.toggleContent a {
+    color: #333333;
+    text-decoration: none;
+    position: relative;
 }
 
-.notification_content ul li:hover {
+.toggleContent a:hover {
+    color: #0066ff;
+}
+
+#notification {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 1000;
+    width: 300px; /* Set a specific width */
+}
+
+.notificationWrap {
+    max-height: 590px;
+    min-height: 170px;
+    overflow: hidden;
+    overflow-y: auto;
+    line-height: 1.43;
+    transition: max-height .2s ease-out;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: max-height;
+    -webkit-overflow-scrolling: touch;
+}
+
+#notificationList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notificationItem {
+}
+
+.notificationLink {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding-right: 20px;
     cursor: pointer;
-    background-color: par
+}
+
+.notificationLink:hover{
+    background-color: red;
+}
+
+.notificationThumbnail {
+    position: relative;
+    flex: 0 0 auto;
+    margin: 0 14px 0 18px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notificationThumbnail .thumbnailInner {
+    position: relative;
+    display: flex;
+    gap: .8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.notificationThumbnail .thumbnailItem {
+    width: 40px;
+    overflow: hidden;
+    aspect-ratio: auto 40 / 40;
+    height: 40px;
+}
+
+.recentThumbnail img {
+    vertical-align: top;
+}
+
+.notificationInfoBox {
+    flex: 1 1 auto;
+    width: 100%;
+    overflow: hidden;
+}
+
+.notificationInfo {
+}
+
+.notificationInfoBox  .headLineText {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+    display: flex;
+    max-width: 100%;
+    line-height: 1.2;
+}
+
+.notificationInfoBox  .nameText {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+    display: flex;
+    max-width: 100%;
+    line-height: 1.2;
+}
+
+.notificationInfoBox .infoText {
+    font-size: 13px;
+    font-weight: 400;
+    color: #222;
+    display: block;
+    overflow: hidden;
+    max-width: 100%;
+    white-space: nowrap;
+    word-break: normal;
+    overflow-wrap: normal;
+    text-overflow: ellipsis;
+    margin-top: 3px;
+    line-height: 1.23;
+}
+
+.notificationInfoBox .infoText.alertContent {
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    max-height: calc($ font-size* $ line-height* var(--lineClamp, $ lines));
+    font-size: 13px;
+    text-overflow: ellipsis;
+    line-height: 1.23;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    -webkit-line-clamp: var(--lineClamp, 2);
+    -webkit-box-orient: vertical;
+}
+
+.notificationInfoBox .origin {
+    font-size: 12px;
+    font-weight: 400;
+    color: #999;
+    display: flex;
+    align-items: center;
+    margin: 4px 0 0 10px;
+    line-height: 1.16;
+}
+
+.notificationInfoBox .originText {
+    font-size: 12px;
+    font-weight: 400;
+    color: #999;
+    display: flex;
+    align-items: center;
+    margin: 4px 0 0 0;
+    line-height: 1.16;
+}
+
+#mypageContent {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    display: none;
+    z-index: 1000;
 }

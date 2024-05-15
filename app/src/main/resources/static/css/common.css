@@ -1,0 +1,41 @@
+button, dd, dl, dt, fieldset, ol, p, ul {
+    margin: 0;
+    padding: 0;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+li {
+    text-align: -webkit-match-parent;
+}
+
+dd {
+    display: block;
+    margin-inline-start: 10px;
+    unicode-bidi: isolate;
+}
+
+dl {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
+}
+
+a {
+    color: #222;
+    text-decoration: none;
+}
+
+*, :after, :before {
+    box-sizing: border-box;
+}
+
+img {
+    overflow-clip-margin: content-box;
+    overflow: clip;
+}
