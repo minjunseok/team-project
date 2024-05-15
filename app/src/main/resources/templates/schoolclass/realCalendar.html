@@ -2,33 +2,18 @@
 <html lang='en'>
 <head>
     <meta charset='utf-8'/>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-    <!-- FullCalendar 라이브러리의 6.1.11 버전을 가져옵니다.   -->
-    <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-    <!--Moment.js 라이브러리의 2.18.1 버전을 가져옵니다.    -->
+    <script src="https://cdn.jsdelivr.net/npm/moment-timezone@0.5.40/builds/moment-timezone-with-data.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/moment-timezone@6.1.11/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
-    <!--FullCalendar 라이브러리의 5.10.1 버전의 로케일 파일을 가져옵니다.-->
-    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
-    <script crossorigin="anonymous"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
+    <script crossorigin="anonymous" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          var calendarEl = document.getElementById('calendar');
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth'
-          });
-          calendar.render();
-        });
-<!--캘린더를 초기화하고 뷰를 랜더링하는 역할을 한다.    -->
-    </script>
+
+ <link href="/css/calendar.css" rel="stylesheet"/>
 
 
     <style>
@@ -120,6 +105,9 @@
 </head>
 <body>
 
+<div class="logo-container">
+    <a href="/home"><img class="logo" src="/img/moyeora-logo.png"></a>
+</div>
 
 <div id='calendar'></div>
 
@@ -167,14 +155,20 @@
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         calendar = new FullCalendar.Calendar(calendarEl, {
+            eventColor: '#9e896a',
+            textColor: 'white',
+            timeZone: 'Asia/Seoul',
             initialView: 'dayGridMonth',
             headerToolbar: {
+                color: '#9e896a',
                 start: 'prev next today add',
                 center: 'title',
                 end: 'dayGridMonth,dayGridWeek,dayGridDay'
             },
             customButtons: {
+                
                 add: {
+                   
                     text: '일정등록',
                     click: function() {
                         myModal1();
@@ -192,19 +186,20 @@
             locale: 'ko',
             dateClick: function(info) {
                 myModal1();
-                var clickedDate = info.date;
-                var localDate = new Date(clickedDate.getTime() + clickedDate.getTimezoneOffset() * 60000); // 로컬 시간대로 변환
+               
+                const now = moment();
+
+                // 클릭된 날짜에 현재 시간 추가
+                const formattedDate = moment(info.date)
+                  .hour(now.hour())
+                  .minute(now.minute())
+                  .format('YYYY-MM-DDTHH:mm');
                 
-                // 현재 시간 가져오기
-                var now = new Date();
-                var currentHours = now.getHours();
-                var currentMinutes = now.getMinutes();
+                // 결과를 'start' 요소의 값으로 설정
+                document.getElementById('start').value = formattedDate;
+
                 
-                // 로컬 시간대의 시간과 분 추가
-                localDate.setHours(localDate.getHours() + currentHours);
-                localDate.setMinutes(localDate.getMinutes() + currentMinutes);
-                
-                document.getElementById('start').value = localDate.toISOString().slice(0, 16);
+                // info 객체를 콘솔에 로그
                 console.log(info);
             },
             eventClick: function(info) {
@@ -236,10 +231,22 @@
                     document.getElementById('locationDetail2').value = responseData.locationDetail;
                     document.getElementById('member').textContent = responseData.member;
                     document.getElementById('nowMemberCount').textContent = responseData.nowMemberCount;
-                    document.getElementById('startAt3').value = new Date(responseData.startAt).toISOString().slice(0,
-                    16);
-                    document.getElementById('endedAt3').value = new Date(responseData.endedAt).toISOString().slice(0,
-                    16);
+                        document.getElementById('endedAt3').value = new Date(responseData.endedAt).toISOString().slice(0,
+                        16);
+                    
+                    
+                    // startAt 처리
+                    const startAtDate = moment(responseData.startAt);
+                    document.getElementById('startAt3').value = startAtDate.format('YYYY-MM-DDTHH:mm');
+                    
+                     const endedAtDate = moment(responseData.endedAt);
+                    document.getElementById('endedAt3').value = endedAtDate.format('YYYY-MM-DDTHH:mm');
+                    
+                    console.log(responseData.startAt);
+                    console.log(startAt3);
+                    console.log(responseData.endedAt);
+                    console.log(endedAt3);
+                    
                     schoolNo = responseData.schoolNo;
                     classUserNo =  response.data.schoolClass.userNo;
                    
@@ -250,17 +257,16 @@
                     }
                     
                     if (response.data.schoolClass.userNo == loginUser) {
+                        $('#cancelButton').addClass("item-hidden");
+                        $('#submitButton').addClass("item-hidden");
                         $('#deleteEvent').removeClass("item-hidden");
-                         $('#classUpdateBtn').removeClass("item-hidden");
-                         isReadonly = false;
-                         console.log(isReadonly);
-                         console.log("false input 보인다");
+                        $('#classUpdateBtn').removeClass("item-hidden");
+                        toggleInputReadonly(true);
+                        
                     } else {
                         $('#deleteEvent').addClass("item-hidden");
                          $('#classUpdateBtn').addClass("item-hidden");
-                        isReadonly = true;
-                        console.log(isReadonly);
-                        console.log("true input 안보인다");
+                        toggleInputReadonly(false);
                     }
                     
                      console.log(response.data.schoolClass.userNo);
@@ -277,8 +283,7 @@
                           console.log(responseData.photo);
                     }
                     
-                    toggleInputReadonly(isReadonly);
-                    console.log(isReadonly);
+                    
                     console.log("vieModal1111111111");
                     searchPlaces2();
                     map2.relayout();
@@ -456,55 +461,60 @@
             <div class="modal-body">
 
 
-                <form id="classInfo">
+                <form id="classInfo" class="row g-3 needs-validation was-validated">
+                 <div class="form-group row justify-content-center">
                     <input name="schoolNo" type="hidden" id="schoolNoInput">
     
-                    <div>
-                        제목: <input name='name' type='text'>
+                    <div class="col-md-8">
+                        <input name='name' type='text' placeholder="제목" class="form-control" required>
                     </div>
 
-                    <div>
-                        설명: <label><textarea name='content'></textarea></label>
-
+                    <div class="col-md-8">
+                        <textarea name='content' placeholder="설명" class="form-control" required></textarea>
                     </div>
-                    사진: <input name='file' type='file'>
-
-                    <div>
+                     
+                     <div class="col-md-8">
+                        <input name='file' type='file' placeholder="사진" class="form-control">
+                     </div>
+                     
+                    <div class="col-md-8">
                         모임일 <br>
-                        날짜 시간 설정: <input id="start" name="startAt2" type="datetime-local">
+                        날짜 시간 설정: <input id="start" name="startAt2" type="datetime-local" class="form-control" required>
                     </div>
 
-                    <div>
+                    <div class="col-md-8">
                         종료 시간 <br>
-                        날짜 시간 설정: <input name="endedAt2" onchange="checkEndDate()" type="datetime-local">
+                        날짜 시간 설정: <input name="endedAt2" onchange="checkEndDate()" type="datetime-local" class="form-control" required>
 
                     </div>
 
-                    <div>
+                    <div class="col-md-8">
                         <button id="mapBtn" type="button">약속 장소 정하기</button>
                         <br>
-                        이름: <input id="location" name="location" type='text'><br>
-                        상세주소: <input id="locationDetail" name="locationDetail" placeholder="상세주소" type="text">
+                        <input id="location" name="location" type='text' placeholder="주소" class="form-control"
+                                   required>
+                        <input id="locationDetail" name="locationDetail"  type="text" placeholder="설명" class="form-control" required>
                     </div>
 
-                    <div>
-                        인원: <input name='member' type='text'>
+                    <div class="col-md-8">
+                        <input name='member' type='text' placeholder="인원" class="form-control" required>
                     </div>
 
 
 
-                    <div>
-                        정기여부:<input name="repeatSet" type="radio" value="0"> 정기
-                        <input name="repeatSet" type="radio" value="1"> 번개
-
+                    <div class="radio-container">
+                        <input id="regular" name="repeatSet" type="radio" value="0">
+                        <label for="regular">정기</label>
+                        <input id="irregular" name="repeatSet" type="radio" value="1">
+                        <label for="irregular">번개</label>
                     </div>
                     <br>
 
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">닫기</button>
-                        <button class="btn btn-primary" onclick="addEvent(); closeModal();" type="button">등록</button>
+                        <button class="btn cancel-button" data-bs-dismiss="modal" type="button">닫기</button>
+                        <button class="btn submit-button" onclick="addEvent(); closeModal();" type="button">등록</button>
                     </div>
-
+                 </div>
                 </form>
 
             </div>
@@ -840,7 +850,7 @@
                     console.log("실행");
                     var mapModal2 = document.querySelector("#mapModal2");
                     var mapModalInstance = bootstrap.Modal.getInstance(mapModal2);
-<!--                    mapModalInstance.hide();-->
+
                 };
 
 

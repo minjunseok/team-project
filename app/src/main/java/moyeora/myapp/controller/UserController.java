@@ -22,7 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,11 +80,13 @@ public class UserController implements InitializingBean {
     System.out.println("============>");
     System.out.println(user);
 
+
     List<UserTag> userTags = user.getTags();
     HashMap<Integer,UserTag> userTagMap = new HashMap<>();
     for (UserTag userTag : userTags) {
       userTagMap.put(userTag.getTagNo(), userTag);
     }
+
 
     System.out.println(user);
     model.addAttribute("user",user);
@@ -94,7 +99,8 @@ public class UserController implements InitializingBean {
 
   @PostMapping("update")
   public String update(User user, MultipartFile file, @LoginUser User loginUser) throws Exception {
-    User old = userService.get(user.getNo());
+
+    User old = userService.get(loginUser.getNo());
     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + old);
     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + old.getNo());
     if (old == null) {
@@ -123,6 +129,7 @@ public class UserController implements InitializingBean {
   @PostMapping("passwordUpdate")
   @ResponseBody
   public String update(@RequestBody String password, @LoginUser User loginUser) throws Exception {
+    // user View에서 사용하는 비밀번호 변경
     User user = new User();
     user.setPassword(password);
     user.setNo(loginUser.getNo());
@@ -132,7 +139,7 @@ public class UserController implements InitializingBean {
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + userService.passwordUpdate(user));
     userService.passwordUpdate(user);
 
-    return "redirect:index";
+    return "비밀번호가 성공적으로 변경되었습니다.";
   }
 
 

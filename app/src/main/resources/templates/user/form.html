@@ -3,15 +3,29 @@
 
 <head>
   <meta charset='UTF-8'>
-  <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
-  <script crossorigin="anonymous" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    <script crossorigin="anonymous" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-  <title>모여라 </title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    
+    <style>
+        .item-hidden {display: none;}
+    </style>
+  <link href="/css/user.css" rel="stylesheet"/>
+  <title> 모여라 </title>
+  
 </head>
 
-<body>
+<body class="p-3 m-0 border-0 bd-example m-0 border-0">
+
+<div class="logo-container">
+    <a href="/home"><img class="logo" src="/img/moyeora-logo.png"></a>
+</div>
 <script>
   function check_pwd() {
     var pwd = document.getElementById('pwd').value; //pwd라는 이름을 가진 id 참조
@@ -20,7 +34,11 @@
 
 
     if (pwd.length < 6 || pwd.length > 16) {
-      window.alert('비밀번호는 6자 이상, 16자 이하, 특수기호를 사용해야합니다')
+        Swal.fire({
+                icon: 'error',
+                title: '비밀번호는 6자 이상, 16자 이하, 특수기호를 사용해야합니다',
+                text: '다시 시도해주세요.'
+            });
       document.getElementById('pwd').value = ''; //입력이 맞지않으면 비밀번호 초기화
     }
 
@@ -32,7 +50,11 @@
     }
 
     if (check_SC === 0) {
-      window.alert('특수문자가 들어가 있지 않습니다') // 0으로 리턴받으면 출력
+         Swal.fire({
+                    icon: 'error',
+                    title: '특수문자가 들어가 있지 않습니다',
+                    text: '다시 시도해주세요.'
+         });
       document.getElementById('pwd').value = ''; // 입력이 맞지않으면 비밀번호 초기화
     }
 
@@ -42,6 +64,7 @@
         document.getElementById('check').style.color = 'green';
       }
       else {
+        document.getElementById('pwd2').value = ''; // 입력이 맞지않으면 비밀번호 초기화
         document.getElementById('check').innerHTML = '비밀번호가 일치하지 않습니다.';
         document.getElementById('check').style.color = 'red';
       }
@@ -150,97 +173,151 @@
 
 
 
-<h1>회원 관리 시스템</h1>
+
 
 <h2>회원 가입</h2>
+<br>
+<form id="user-form" action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'
+      class="row g-3 needs-validation was-validated" novalidate>
+ <div class="form-group row justify-content-center">
+     
+        <div class="col-md-3">
+            <input id="emailInputBox" name='email' class="form-control is-invalid" readonly placeholder="이메일" required
+                   type='text'>
+            <div class="valid-feedback">
+              인증 완료!!
+            </div>
+            <button id="emailCheckBtn" type="button">인증하기</button>
+        </div>
+  
+        <div class="col-md-3">
+            <input id="pwd" name='password' onchange="check_pwd()" class="form-control" placeholder="6자 이상, 16자 이하, 특수기호를 사용해야합니다" required type='password'>
+        </div>
+     
+
+    
+     <div class="col-md-3">
+        <input id="pwd2" name="pwd2" onchange="check_pwd()" class="form-control is-invalid" type="password"
+               placeholder="비밀번호 확인" required>
+        <span id="check"></span>
+    </div>
+     
+      <div class="col-md-3">
+         <input id="nickname" name='nickname' placeholder="닉네임" class="form-control" required  type='text'>
+      </div>
+  
+      <div class="col-md-3">
+         <input id="name" name='name' placeholder="이름" required type='text' class="form-control">
+      </div>
+
+       <div class="col-md-3">
+         <input id="birth" name='birth' type='date' class="form-control" required>
+       </div>
+
+      <div class="col-md-3">
+        <input id="phone" name='phone' placeholder="전화번호" class="form-control" required type='text'>
+      </div>
 
 
-<form id="user-form" action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
-  <div>
-    이메일: <input autofocus name='email' placeholder="이메일[본인확인용]" required size="20" type='text'>
+      <div class="col-md-3">
+        <input id="address" name="address" placeholder="주소" type="text" class="form-control" required>
+        <input id="addressDetail" name="addressDetail" placeholder="상세주소" type="text" class="form-control" required>
+          <button onclick="sample2_execDaumPostcode()" type="button">우편번호 찾기</button>
+      </div>
 
-  </div>
-  <small> *대소문자 특수기호 가능</small>
-  <button id="btn1" type="button">인증하기</button>
+      <div class="col-md-3">
+        <input id="file" name='file' type='file' class="form-control" required>
+      </div>
 
-
-  <div>
-    비밀번호: <input id="pwd" name='password' onchange="check_pwd()" placeholder="비밀번호." required size="20"
-                 type='password'>
-  </div>
-  <small> *대소문자 특수기호 가능</small>
-  <div>
-    비밀번호 확인: <input id="pwd2" name="pwd2" onchange="check_pwd()" type="password">&nbsp;<span id="check"></span>
-  </div>
-
-
-  <div>
-    닉네임: <input name='nickname' placeholder="닉네임" required size="20" type='text'>
-  </div>
-
-  <div>
-    이름: <input name='name' placeholder="이름" required size="20" type='text'>
-  </div>
-
-  <div>
-    생년월일: <input id="birth" name='birth' type='date'>
-  </div>
-
-  <div>
-    전화번호: <input name='phone' placeholder="전화번호" required type='text'>
-  </div>
-
-
-  <div>
-    주소지:
-    <input onclick="sample2_execDaumPostcode()" type="button" value="우편번호 찾기"><br>
-    <input id="address" name="address" placeholder="주소" type="text"><br>
-    <input id="addressDetail" name="addressDetail" placeholder="상세주소" type="text">
-
-  </div>
-
-  <div>
-    사진: <input name='file' type='file'>
-  </div>
-
-  <div>
-    자기소개: <textarea name='profile'></textarea>
-  </div>
-
-  <div>
-    <input name="gender" type="radio" value="0"> 남자
-    <input name="gender" type="radio" value="1"> 여자
-  </div>
+      <div class="col-md-3">
+      <textarea id="profile" name='profile'  class="form-control" placeholder="자기소개" required></textarea>
+      </div>
+     
+     <div class="col-md-2 gender-container">
+      <input id="male" name="gender" type="radio" value="0">
+      <label for="male">남자</label>
+      <input id="female" name="gender" type="radio" value="1">
+      <label for="female">여자</label>
+     </div>
 
 
   <div>
     <h2>관심사 선택</h2>
   </div>
-
-  <tbody>
-  <tr data-th-each="tag : ${tags}">
-    <td>
-      <input data-th-checkbox="true" data-th-value="${tag.no}" name="tagNums" type="checkbox">
-    </td>
-    <td>
-      <span data-th-text="${tag.name}">1</span>
-    </td>
-    <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
-      <br>
-    </data-th-block>
-  </tr>
+  
+  
+<div class="text-center">
+  <tbody class="text-center">
+    <tr data-th-each="tag : ${tags}">
+      <td>
+        <div class="checkbox-container">
+              <img class="checkbox-image" height='50px' width="50px" src='/img/default-photo.jpeg'>
+              <span data-th-text="${tag.name}"></span>
+              <input data-th-checkbox="true" data-th-value="${tag.no}" name="tagNums" type="checkbox" style="display: none;">
+        </div>
+      </td>
+      <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+        <br>
+      </data-th-block>
+    </tr>
   </tbody>
-
+</div>
   <br>
   <br>
 
 
-  <div>
-    <input type="submit" value="가입하기">
-    <input type="reset" value="취소하기">
+  <div class="text-center">
+    <input type="submit" class="submit-button" value="가입하기">
+    <input type="reset" class="cancel-button" onclick="window.location.href = '/index';" value="취소하기">
   </div>
-
+ </div>
 </form>
+
+
+<script>
+  const checkboxLabels = document.querySelectorAll('.checkbox-container');
+  
+checkboxLabels.forEach(label => {
+  label.addEventListener('click', function() {
+    const checkbox = this.querySelector('input[type="checkbox"]');
+    checkbox.checked = !checkbox.checked;
+    this.classList.toggle('checked', checkbox.checked);
+    
+  });
+});
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#user-form').submit(function(event) {
+            event.preventDefault();
+            
+             let genderSelected = $('input[name="gender"]:checked').val();
+            if (!genderSelected) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '회원 가입 실패!!!',
+                    text: '성별을 선택해야 합니다!!'
+                });
+                return false; // 양식 제출 중단
+            }
+
+            // 관심사 선택 확인
+            let checkedCount = $('.checkbox-container input[type="checkbox"]:checked').length;
+            if (checkedCount < 3) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '회원 가입 실패!!!',
+                    text: '관심사는 최소 3개 이상 골라야 합니다!!'
+                });
+                return false; // 양식 제출 중단
+            }
+
+            // 모든 유효성 검사를 통과하면 양식 제출
+            this.submit();
+        });
+    });
+</script>
 
 
 <div class="modal" id="myModal" tabindex="-1">
@@ -253,20 +330,21 @@
       <div class="modal-body">
 
         <form id="verifyCode" action="verifyCode" data-th-action="@{verifyCode}" method="post"
-              data-th-object="${user}">
-          <div>
-            <label for="email">이메일:</label>
-            <input data-th-value="${email}" id="email" name="email" type="email">
+              data-th-object="${user}" class="row g-3 needs-validation was-validated">
+          <div class="col-md-8">
+                <label for="email" class="form-label"></label>
+                <input data-th-value="${email}" id="email" name="email" type="email" class="form-control" required
+                       size="" placeholder="이메일[본인확인용]">
+                <button onclick="sendEmailCode()" type="button" class="btn btn-outline-secondary btn-sm">인증코드전송</button>
           </div>
-          <button onclick="sendEmailCode()" type="button">인증코드전송</button>
-
-          <div>
-            <label for="code">인증코드:</label>
-            <input id="code" name="code" type="text">
+          
+          <div class="col-md-8">
+            <label for="code" class="form-label"></label>
+            <input id="code" name="code" type="text"  class="form-control" required size="" placeholder="인증코드">
             <input data-th-value="${authId}" name="authId" type="hidden">
+            <button type="button" onclick="verifyEmail(); checkIdForm();" class="btn btn-outline-secondary btn-sm">확인
+            </button>
           </div>
-          <button type="button" onclick="verifyEmail()">확인</button>
-
         </form>
 
       </div>
@@ -278,7 +356,11 @@
   function checkIdForm() {
     var code = document.getElementById("code").value;
     if (code == null || code == "" || code.length < 1) {
-      alert("인증코드를 입력해주세요.");
+      
+      Swal.fire({
+          icon: 'error',  // 여기다가 아이콘 종류를 쓰면 됩니다.
+          title: '인증 코드르 입력하세요!!!',
+      });
       return false;
     }
   }
@@ -300,7 +382,7 @@
 <script>
   let myModal = new bootstrap.Modal(document.getElementById('myModal'), {});
 
-  document.querySelector("#btn1").onclick = function () {
+  document.querySelector("#emailCheckBtn").onclick = function () {
     myModal.show();
   };
 
@@ -310,13 +392,48 @@
 
 var AuthId;
 
+
+    $("#toastStart").click(function () {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'center-center',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+    
+        Toast.fire({
+            icon: 'success',
+            title: '성공'
+        })
+    });
+
+
+
   function sendEmailCode() {
     var email = $('#email').val();
     console.log(email);
     if (email.length < 1) {
-      alert("이메일을 입력하세요.");
+    
+      Swal.fire({
+          icon: 'error',
+          title: '이메일을 입력하세요!!!',
+      });
       return;
     }
+    
+     const loadingAlert = Swal.fire({
+        icon: 'info',
+        title: '이메일 전송 중...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 
     $.ajax({
       type: "POST",
@@ -328,7 +445,23 @@ var AuthId;
     }).done(function (result) {
       console.log(result);
       AuthId = result.authId;
-    })
+      
+      loadingAlert.close();
+      Swal.fire({
+            icon: 'success',
+            title: '인증코드 전송 완료!'
+      });
+      
+   }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.error('Ajax 요청 실패:', errorThrown);
+            
+            // 실패 알림 표시
+            Swal.fire({
+                icon: 'error',
+                title: '인증코드 전송 실패!',
+                text: '다시 시도해주세요.'
+            });
+    });
   }
 
   function verifyEmail(authId) {
@@ -343,10 +476,35 @@ var AuthId;
       dataType: 'json'
     }).done(function (result) {
       console.log(result);
-      $('#user-form input[name="email"]').val($('#email').val());
-      myModal.hide();
-
-    })
+      
+       if (result.status === 'success') {
+            $('#user-form input[name="email"]').val($('#email').val());
+            myModal.hide();
+            
+            Swal.fire({
+                icon: 'success',
+                title: '인증에 성공하였습니다.!!!',
+            });
+            $('#emailInputBox').removeClass('is-invalid').addClass('is-valid');
+            $('#emailCheckBtn').addClass("item-hidden");
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: '인증에 실패하였습니다.',
+                text: '다시 시도해주세요.'
+            });
+        }
+      
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.error('Ajax 요청 실패:', errorThrown);
+        
+        // SweetAlert2를 사용하여 실패 알림 창 표시
+        Swal.fire({
+            icon: 'error',
+            title: '인증에 실패하였습니다.',
+            text: '다시 시도해주세요.'
+        });
+    });
   }
 
 
