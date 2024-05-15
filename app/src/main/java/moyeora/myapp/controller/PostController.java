@@ -55,6 +55,11 @@ public class PostController {
                                   @AuthenticationPrincipal PrincipalDetails principalDetails,
                                   @LoginUser User loginUser) {
 
+
+        if (loginUser == null) {
+            return AjaxResponse.builder().status("error").message("로그인이 필요합니다.").build();
+        }
+
         int userNo = loginUser.getNo();
         int schoolNo = postService.findByPostSchoolNo(post.getNo());
 
@@ -87,9 +92,7 @@ public class PostController {
             return AjaxResponse.builder().status("error").message("게시글 고정에 실패하였습니다.").build();
         }
 
-    } else
-
-    {
+    } else {
 
         return AjaxResponse.builder().status("error").message("권한이 없습니다.").build();
 
@@ -147,6 +150,11 @@ public class PostController {
   public AjaxResponse fixedCancel(Post post,
                                     @LoginUser User loginUser) {
 
+
+
+      if (loginUser == null) {
+          return AjaxResponse.builder().status("error").message("로그인이 필요합니다.").build();
+      }
 
       int userNo = loginUser.getNo();
       int schoolNo = postService.findByPostSchoolNo(post.getNo());
@@ -283,6 +291,8 @@ public class PostController {
             MultipartFile[] files,
             HttpSession session) throws Exception {
 
+
+
         // 파일 업로드 및 AttachedFile 생성
         List<AttachedFile> attachedFiles = new ArrayList<>();
         for (MultipartFile file : files) {
@@ -311,50 +321,50 @@ public class PostController {
     //
 
 
-    @PostMapping("add")
-    public String add(
-            @LoginUser User loginUser,
-            @LoginUser SchoolUser loginSchoolUser,
-            Post post,
-            HttpSession session,
-            SessionStatus sessionStatus) throws Exception {
-
-        // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
-        List<AttachedFile> attachedFiles = (List<AttachedFile>) session.getAttribute("attachedFiles");
-
-
-        // attachedFiles가 null이 아닌지 확인
-        if (attachedFiles != null) {
-            // attachedFiles가 null이 아닐 경우에만 처리
-
-            for (int i = attachedFiles.size() - 1; i >= 0; i--) {
-                AttachedFile attachedFile = attachedFiles.get(i);
-                if (post.getContent().indexOf(attachedFile.getFilePath()) == -1) {
-                    // Object Storage에 업로드 한 파일 중에서 게시글 콘텐트에 포함되지 않은 것은 삭제한다.
-                    fileUpload.delete(this.bucketName, this.uploadDir, attachedFile.getFilePath());
-                    log.debug(String.format("%s 파일 삭제!", attachedFile.getFilePath()));
-                    attachedFiles.remove(i);
-                }
-            }
-            if (attachedFiles.size() > 0) {
-                post.setFileList(attachedFiles);
-            }
-            // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
-            sessionStatus.setComplete();
-        }
-
-        // 'created_at' 필드에 현재 시간 설정
-        post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
-
-        post.setUserNo(loginUser.getNo());
-        post.setSchoolNo(loginSchoolUser.getSchoolNo());
-
-        // 나머지 처리 코드
-        log.debug("@@@@@@@===>>" + post);
-        postService.add(post);
-
-        return "redirect:list?schoolNo=" + loginSchoolUser.getSchoolNo();
-    }
+//    @PostMapping("add")
+//    public String add(
+//            @LoginUser User loginUser,
+////            @LoginUser SchoolUser loginSchoolUser,
+//            Post post,
+//            HttpSession session,
+//            SessionStatus sessionStatus) throws Exception {
+//
+//        // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
+//        List<AttachedFile> attachedFiles = (List<AttachedFile>) session.getAttribute("attachedFiles");
+//
+//
+//        // attachedFiles가 null이 아닌지 확인
+//        if (attachedFiles != null) {
+//            // attachedFiles가 null이 아닐 경우에만 처리
+//
+//            for (int i = attachedFiles.size() - 1; i >= 0; i--) {
+//                AttachedFile attachedFile = attachedFiles.get(i);
+//                if (post.getContent().indexOf(attachedFile.getFilePath()) == -1) {
+//                    // Object Storage에 업로드 한 파일 중에서 게시글 콘텐트에 포함되지 않은 것은 삭제한다.
+//                    fileUpload.delete(this.bucketName, this.uploadDir, attachedFile.getFilePath());
+//                    log.debug(String.format("%s 파일 삭제!", attachedFile.getFilePath()));
+//                    attachedFiles.remove(i);
+//                }
+//            }
+//            if (attachedFiles.size() > 0) {
+//                post.setFileList(attachedFiles);
+//            }
+//            // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
+//            sessionStatus.setComplete();
+//        }
+//
+//        // 'created_at' 필드에 현재 시간 설정
+//        post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
+//
+//        post.setUserNo(loginUser.getNo());
+//        post.setSchoolNo(loginSchoolUser.getSchoolNo());
+//
+//        // 나머지 처리 코드
+//        log.debug("@@@@@@@===>>" + post);
+//        postService.add(post);
+//
+//        return "redirect:list?schoolNo=" + loginSchoolUser.getSchoolNo();
+//    }
 
 
     @GetMapping("list")
