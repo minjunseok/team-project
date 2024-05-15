@@ -30,13 +30,18 @@ document.addEventListener("DOMContentLoaded", function() {
   var uMenuToggle = document.getElementById("uMenuToggle");
   var uMenuContent = document.getElementById("uMenu");
 
-  notificationToggle.addEventListener("click", function() {
-	notificationContent.style.display = notificationContent.style.display === "block" ? "none" : "block";
-  });
+  if ( notificationToggle != null ) {
+    notificationToggle.addEventListener("click", function() {
+  	    notificationContent.style.display = notificationContent.style.display === "block" ? "none" : "block";
+    });
+  }
 
-  uMenuToggle.addEventListener("click", function() {
-	uMenuContent.style.display = uMenuContent.style.display === "block" ? "none" : "block";
-  });
+  if ( uMenuToggle != null ) {
+    uMenuToggle.addEventListener("click", function() {
+    	uMenuContent.style.display = uMenuContent.style.display === "block" ? "none" : "block";
+      });
+  }
+
 
   // Close notification if user clicks outside
   window.addEventListener("click", function(event) {
@@ -102,6 +107,8 @@ function thumbnailImgError(obj) {
 }
 
 $(function () {
-    loadAlert();
-    connect();
+    if ( user != null ) {
+        loadAlert();
+        connect();
+    }
 });

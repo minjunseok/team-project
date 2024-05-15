@@ -29,7 +29,7 @@ public class NotificationController {
 
     @PostMapping("/add")
     @ResponseBody
-    public Alert add(Model model, @RequestPart(value = "alert") Alert alert) {
+    public Alert add(Model model, @RequestPart(value = "alert") Alert alert) throws Exception {
         log.debug(alert.toString());
         return notificationService.add(alert);
     }
