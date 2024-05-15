@@ -14,8 +14,8 @@
     <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"-->
     <!--          integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg=="-->
     <!--          crossorigin="anonymous" referrerpolicy="no-referrer" type="text/css/">-->
-    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <!-- include summernote css/js -->
+<!--    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+<!--     include summernote css/js-->
 <!--    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">-->
 <!--    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>-->
 
@@ -44,50 +44,9 @@
 						</form>
 				</div>
 		</div>
+</div>
 
-    <script>
-        function postForm() {
-            addFormModal.show();
 
-            // Summernote 에디터를 초기화합니다.
-            $('#summernote').summernote({
-                height: 300,
-                width: 500,
-                callbacks: {
-                    onInit: function() {
-                        console.log('Summernote 생성됨!');
-                    },
-                    onImageUpload: function(files) {
-                        let data = new FormData();
-                        for (const file of files) {
-                            data.append("files", file);
-                        }
-                        $.ajax({
-                            url: 'file/upload', // 파일 업로드 처리를 하는 엔드포인트 URL
-                            type: 'POST',
-                            dataType: 'json',
-                            contentType: false,
-                            processData: false,
-                            data: data
-                        }).done(function(result) {
-                            if (result.length == 0) {
-                                alert('로그인 하세요!');
-                                return;
-                            }
-                            // 서버에서 받은 업로드 파일 이름을 가지고 <img> 태그를 설정합니다.
-                            for (const attachedFile of result) {
-                                $('#summernote').summernote('insertImage',
-                                    'https://kr.object.ncloudstorage.com/moyeorastorage/post/'
-                                    + attachedFile.filePath);
-                            }
-                        });
-                    }
-                }
-            });
-
-        }
-
-    </script>
 
 </body>
 </html>
