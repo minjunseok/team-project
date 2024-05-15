@@ -38,9 +38,14 @@ public class CommentController {
     @PostMapping("addComment")
     public AjaxResponse commentAdd(
             @RequestBody Comment comment,
-            @AuthenticationPrincipal PrincipalDetails principalDetails,
             @LoginUser User loginUser) throws Exception {
 
+
+
+        //사전에 세션의 로그인 여부를 체크한 후 ajax 쪽으로 결과 dto 리턴
+        if (loginUser == null) {
+            return AjaxResponse.builder().status("error").message("로그인이 필요합니다.").build();
+        }
 
         int levelNo = schoolUserService.findLevel(comment.getSchoolNo(), loginUser.getNo());
         log.debug("@@@@@@@@@@@@@@@@@ levelNo = " + levelNo);
@@ -83,10 +88,10 @@ public class CommentController {
             @AuthenticationPrincipal PrincipalDetails principalDetails,
             @LoginUser User loginUser) throws Exception {
 
-//        int levelNo = schoolUserService.findLevel(comment.getSchoolNo(), loginUser.getNo());
-//
-//
-//        log.debug("@@@@@@@@@@@@@@@@ levelNo" + levelNo);
+        if (loginUser == null) {
+            return AjaxResponse.builder().status("error").message("로그인이 필요합니다.").build();
+        }
+
 
         int commentUserNo = comment.getUserNo();
 
@@ -150,6 +155,10 @@ public class CommentController {
             @AuthenticationPrincipal PrincipalDetails principalDetails,
             @LoginUser User loginUser) throws Exception {
 
+
+        if (loginUser == null) {
+            return AjaxResponse.builder().status("error").message("로그인이 필요합니다.").build();
+        }
 
 
         int levelNo = schoolUserService.findLevel(comment.getSchoolNo(), loginUser.getNo());

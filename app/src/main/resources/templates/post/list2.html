@@ -135,7 +135,7 @@
 <!--    </div>-->
 <!--</div>-->
 
-<!--<div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>-->
+<!--<div data-th-replace="../form :: postAdd-modal">새 글 작성</div>-->
 
 <!-- 스쿨에 가입하지 않은 경우에만 가입하기 버튼을 보여줌 -->
 <!--<div data-th-unless="${joined}">-->
@@ -183,7 +183,9 @@
                         </tbody>
                     </table>
                 </div>
-
+<br>
+<br>
+<br>
 
                                 <div id="searchResult">
                                     <table border='1' data-th-data-schoolno="${schoolNo}">
@@ -570,20 +572,24 @@
         };
 
         $.ajax({
-            type: 'POST',
-            url: '../comment/addComment',
-            contentType: 'application/json', // Content-Type 지정
-            data: JSON.stringify(commentData),
-            success: function(response) {
+        type: 'POST',
+        url: '../comment/addComment',
+        contentType: 'application/json', // Content-Type 지정
+        data: JSON.stringify(commentData),
+        success: function(response) {
+            if(response.status === "success") {
                 alert("댓글이 성공적으로 등록되었습니다!");
-            },
-            error: function(xhr, status, error) {
-                alert("댓글 등록에 실패했습니다. 오류 메시지: " + error);
+            } else {
+                alert("댓글 등록에 실패했습니다.  " + response.message);
             }
-        });
+        },
+        error: function(xhr, status, error) {
+            alert("댓글 등록에 실패했습니다. 오류 메시지: " + error);
+        }
+    });
 
-        // 모달 닫기
-        $("#commentModal2").modal("hide");
+    // 모달 닫기
+    $("#commentModal2").modal("hide");
     }
 
 
@@ -621,6 +627,7 @@
             success: function(response) {
                 if (response.status === "success") {
                     alert("댓글이 삭제되었습니다!");
+
 
                 } else {
                     // 오류가 발생한 경우
@@ -685,10 +692,10 @@
             data: JSON.stringify(commentUpdateData), // 변환된 JSON 데이터 전송
             success: function(response) {
                 if (response.status === "success") {
-                    alert("댓글 수정이 성공적으로 완료되었습니다!");
+                    alert("댓글을 수정하였습니다.");
                 } else {
                     // 오류가 발생한 경우
-                    alert("댓글 수정에 실패했습니다. 오류 메시지: " + response.message);
+                    alert("댓글 수정에 실패했습니다." + response.message);
                 }
             },
             error: function(xhr, status, error) {
@@ -821,7 +828,7 @@
         // 해당 테이블에 글이 이미 있는지 확인
         if ($('#fixed-post tbody tr').length > 0) {
             // 이미 글이 있는 경우 경고 메시지 표시
-            alert('이미 공지글이 등록되어 있습니다. 공지는 한 개만 등록할 수 있습니다.');
+            alert('이미 고정글이 등록되어 있습니다. 한 게시글만 등록할 수 있습니다.');
             return; // 동작 중지
         }
 
@@ -830,21 +837,25 @@
             method: 'POST',
             data: { no: no, categoryNo: 3 },
             success: function(response) {
-                alert('공지가 성공적으로 등록되었습니다.');
 
-//                changepostClassName(no);
+                if (response.status === "success") {
 
-                refreshPage()
+                    alert('게시글이 고정되었습니다.');
+                        refreshPage()
+                } else {
+                // 오류가 발생한 경우
 
+                alert("게시글 고정에 실패했습니다." + response.message);
 
-            },
-            error: function(xhr, status, error) {
-                alert('공지 등록 실패.');
+                }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('공지 등록 실패.');
 
-            }
-        });
+                        }
+                    });
 
-    });
+                });
 
     // 체크박스 클릭 이벤트 핸들러
     $("#searchResult").on('change', '.post-checkbox', function() {
@@ -890,8 +901,14 @@
             method: 'POST',
             data: { no: no, categoryNo: 0 },
             success: function(response) {
-                alert('게시글 고정이 해제되었습니다.');
+                if (response.status === "success") {
+                    alert("해제되었습니다.");
 
+
+                } else {
+                    // 오류가 발생한 경우
+                    alert("게시글 고정 해제에 실패했습니다." + response.message);
+                }
                 refreshPage()
             },
             error: function(xhr, status, error) {
@@ -1036,29 +1053,23 @@
 //            });
 
             // 파일 목록 출력
-//            var filesList = $('#filesTable').find('tbody');
-//            filesList.empty(); // 목록 초기화
-//
-//            $.each(data.files, function(index, file) {
-//                var listItem = '<tr>' +
-//                '<td>' + file.fileName + '</td>' +
-//                '<td>' + file.type + '</td>' +
-//                '</tr>';
-//                filesList.append(listItem);
-//            });
+            var filesList = $('#filesTable').find('tbody');
+            filesList.empty(); // 목록 초기화
+
+            $.each(data.files, function(index, file) {
+                var listItem = '<tr>' +
+                '<td>' + file.fileName + '</td>' +
+                '<td>' + file.type + '</td>' +
+                '</tr>';
+                filesList.append(listItem);
+            });
                 // 이미지 URL 생성
-        <div><a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/school/' + ${school.photo}}"></a>
-                var linkUrl = 'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + comment.writer.photo;
+//        <div><a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/school/' + ${school.photo}}"></a>
+//                var linkUrl = 'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + comment.writer.photo;
 
                 // 댓글 항목 생성
                 var listItem = '<tr>' +
-                '<td>' +
-                '<div>' +
-
-
-
-
-                '</div>' +
+                '<td>' + comment.writer.photo +
                 '</td>' +
                 '<td>' + comment.writer.nickname + '</td>' +
                 '<td>' + comment.content + '</td>' +
