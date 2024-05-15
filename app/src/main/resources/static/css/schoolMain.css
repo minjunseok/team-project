@@ -13,48 +13,108 @@ th {
 	text-align: center;
 }
 
-/* 회원 리스트 */
-.left-container .userList {
-	width: 80px;
-	border: 1px solid #9e896a;
-	border-collapse: collapse;
-	margin-top: 50px;
-	margin-right: 0;
-}
-/* 회원 리스트 */
-.userList th,
-.userList td {
-	border: 1px solid #9e896a;
-	padding: 10px;
-	text-align: center;
-}
-
 /* 클릭 영역 확대 및 포인터 변경 CSS */
 tbody tr:hover {
 	background-color: #f5f5f5;
 	cursor: pointer;
 }
 
+.container {
+	margin: 0;
+	padding: 16px;
+	max-width: 100%;
+	display: flex;
+	gap: 16px;
+}
+
+.right-container {
+	width: 30%;
+}
+
 /* 왼쪽 컨테이너 */
 .left-container {
-	float: left;
+	/* float: left; */
 	width: 300px; /* 왼쪽 컨테이너의 너비 설정 */
-	margin-left: 100px;
 }
 
-/* 센터 컨테이너 */
-.center-container {
-	margin-left: 100px; /* 왼쪽 컨테이너의 너비에 따라 조정 */
-	margin-right: 10px; /* 오른쪽 간격 설정 */
+/* 회원 리스트 */
+.left-container .userList {
+	margin-top: 50px;
+	border-radius: 16px;
+	border: 1px solid #9e896a;
 }
+
+.left-container .userList ul {
+	margin: 0;
+	padding: 0;
+}
+
+.left-container .userList li {
+	list-style: none;
+	display: flex;
+	text-align: center;
+	border-bottom: 1px solid #9e896a;
+}
+.left-container .userList li:last-of-type {
+	border-bottom: none;
+}
+.left-container .userList .col {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.left-container .userList .col:first-of-type {
+	flex: 0 1 25%;
+	max-width: 25%;
+	overflow: hidden;
+}
+.left-container .userList .col:nth-child(2) {
+	flex: 2 0 auto;
+	max-width: 45%;
+}
+.left-container .userList .col:last-of-type {
+	flex: 1 1 30%;
+	max-width: 30%;
+	border-right: none;
+	word-break: keep-all;
+}
+
+/* 회원 리스트 */
+/* .left-container .userList th,
+.left-container .userList td {
+	border: 1px solid #9e896a;
+	padding: 10px;
+	text-align: center;
+}
+.left-container .userList td:last-of-type {
+	word-break: keep-all;
+}
+.left-container .userList .col1 {
+	width: 25%;
+}
+.left-container .userList .col3 {
+	width: 30%;
+} */
 
 /* 검색창 스타일 */
-.search-bar {
-	float: center;
-	width: 600px; /* 검색창의 너비 설정 */
-	margin-left: 42%;
-	border: 1px solid #cbbca7;
+.searchBar {
+	padding-bottom: 16px;
+}
+
+.searchBarContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	padding: 10px;
+	border: 1px solid #cbbca7;
+}
+
+.searchBarContainer .inputKeyword {
+	margin: 0 30px;
+	width: 100%;
 }
 
 .Stl {
@@ -78,7 +138,17 @@ tbody tr:hover {
 }
 
 .md_container {
+	padding: 10% 15%;
 	margin-left: auto;
 	margin-right: auto;
 	width: 300px;
+}
+
+.md_container #post_setting {
+	margin: 0 auto;
+}
+
+.md_container .createButton {
+	background-color: #9e896a;
+	width: 100%;
 }
