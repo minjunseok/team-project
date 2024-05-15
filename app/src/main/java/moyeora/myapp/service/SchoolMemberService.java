@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SchoolMemberService {
 
-  List<SchoolMember> list(int schoolNo);
+  List<SchoolMember> list(int classNo);
 
 
 

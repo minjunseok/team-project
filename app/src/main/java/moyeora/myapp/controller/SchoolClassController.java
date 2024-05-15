@@ -53,11 +53,11 @@ public class SchoolClassController {
   }
 
   @GetMapping("realCalendar")
-  public void form(Model model, int schoolNo,@LoginUser User loginUser) throws Exception {
-    model.addAttribute("schoolMembers",schoolMemberService.list(schoolNo));
+  public void form(Model model,@LoginUser User loginUser) throws Exception {
+//    model.addAttribute("schoolMembers",schoolMemberService.list(schoolNo));
     model.addAttribute("loginUser",loginUser.getNo());
     System.out.println("=====classcontorller.schoolMember==============>    " + schoolMemberService);
-    System.out.println("realCalendar@@@@@@@@" + schoolNo);
+//    System.out.println("realCalendar@@@@@@@@" + schoolNo);
 
   }
 
@@ -118,10 +118,13 @@ public class SchoolClassController {
 
   @GetMapping("findByNo")
   @ResponseBody
-  public Object findByNo(int classNo, @LoginUser User loginUser) throws Exception {
+  public Object findByNo(int classNo, @LoginUser User loginUser, Model model) throws Exception {
     HashMap<String, Object> result = new HashMap<>();
     result.put("schoolClass", schoolClassService.get(classNo));
     result.put("isMember", schoolClassService.isMember(classNo, loginUser.getNo()));
+    model.addAttribute("schoolMembers",schoolMemberService.list(classNo));
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@"+schoolMemberService.list(classNo));
+
     return result;
   }
 

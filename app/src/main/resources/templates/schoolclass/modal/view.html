@@ -20,69 +20,87 @@
             
             <div class="modal-body">
 
-            
-                <div>
-                제목: <input data-th-value="${name}" id="name">
-                </div>
-                nickname: <span data-th-text="${nickname}" id="nickname"></span>
-                levelName: <span data-th-text="${levelName}" id="levelName"></span>
-                <div>
-                        <button class="btn btn-success item-hidden" id="submitButton" type="button">참가하기</button>
-                        <button class="btn btn-secondary item-hidden" id="cancelButton" type="button">참가 취소하기</button>
-                </div>
-
-                <div>
-                    member: <span data-th-text="${member}" id="member"></span>
-                </div>
-                <div>
-                    nowMemberCount: <span data-th-text="${nowMemberCount}" id="nowMemberCount"></span>
-                </div>
-                <div>
-                    startAt: <input th:value="${startAt}"  id="startAt3"
-                                    type="datetime-local"></input>
-                </div>
-                <div>
-                    endedAt: <input th:value="${endedAt}"  id="endedAt3" type="datetime-local">
-                </div>
-                <div>
-                    photo: <img id="photo">
-                            <input name='file' type='file' id="updateFile">
-                </div>
-                
-                <div>
-                    content: <input data-th-text="${content}" id="content">
-                </div>
-                <div>
-                    locationDetail: <input data-th-text="${locationDetail}" id="locationDetail2">
-                </div>
-
-
-                <div class="map_wrap">
-                    <div id="map2" style="width:100%;height:100%;"></div>
-                    <div class="bg_white" id="menu_wrap">
-                        <div class="option">
-                            <div>
-                                <form onsubmit="searchPlaces2(); return false;">
-                                    키워드 : <input  id="keyword2" size="15" type="text" >
-                                    <button type="submit">검색하기</button>
-                                </form>
-                            </div>
-                        </div>
-                        <hr>
-
-                        <ul id="placesList2"></ul>
-                        <div id="pagination2"></div>
+                <div class="form-group row justify-content-center">
+                    
+                    <div class="col-md-3">
+                    제목: <input data-th-value="${name}" id="name" class="form-control customInputBox-color">
                     </div>
-                </div>
-                <button class="btn btn-danger item-hidden" id="deleteEvent">삭제하기</button>
-                <button class="btn btn-primary item-hidden" id="classUpdateBtn">수정하기</button>
-           
-            
+                    
+                    <div class="col-md-3">
+                    nickname: <span data-th-text="${nickname}" id="nickname" class="form-control customInputBox-color"></span>
+                    </div>
+                    
+                    <div class="col-md-2">
+                    levelName: <span data-th-text="${levelName}" id="levelName" class="form-control customInputBox-color"></span>
+                    </div>
+                    
+                        <div class="col-md-2">
+                            <button class="btn btn-success item-hidden" id="submitButton" type="button">참가하기</button>
+                            <button class="btn btn-secondary item-hidden" id="cancelButton" type="button">참가 취소하기</button>
+                        </div>
+<!--                    <br>-->
+<!--                    <div class="col-md-2">-->
+<!--                    <button id="btn5" type="button">참여 멤버</button>-->
+<!--                    </div>-->
+      
+                    <div class="col-md-3">
+                        member: <span data-th-text="${member}" id="member" class="form-control customInputBox-color"></span>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        nowMemberCount: <span data-th-text="${nowMemberCount}" id="nowMemberCount" class="form-control customInputBox-color"></span>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        startAt: <input th:value="${startAt}"  id="startAt3"
+                                        type="datetime-local" class="form-control customInputBox-color">
+                    </div>
+                    
+                    <div class="col-md-4">
+                        endedAt: <input th:value="${endedAt}"  id="endedAt3" type="datetime-local" class="form-control customInputBox-color">
+                    </div>
+                    
+                    <div class="col-md-4">
+                        photo: <img id="photo">
+                                <input name='file' type='file' id="updateFile" class="form-control customInputBox-color">
+                    </div>
+                    
+                    <div class="col-md-4">
+                        content: <input data-th-text="${content}" id="content" class="form-control customInputBox-color">
+                    </div>
+                    
+                    <div class="col-md-4">
+                        locationDetail: <input data-th-text="${locationDetail}" id="locationDetail2" class="form-control customInputBox-color">
+                    </div>
+    
+    
+                    <div class="map_wrap">
+                        <div id="map2" style="width:100%;height:100%;"></div>
+                        <div class="bg_white" id="menu_wrap">
+                            <div class="option">
+                                <div>
+                                    <form onsubmit="searchPlaces2(); return false;">
+                                        키워드 : <input  id="keyword2" size="15" type="text" >
+                                        <button type="submit">검색하기</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <hr>
+    
+                            <ul id="placesList2"></ul>
+                            <div id="pagination2"></div>
+                        </div>
+                    </div>
+                </div>  
+                    <button class="btn btn-danger item-hidden" id="deleteEvent">삭제하기</button>
+                    <button class="btn btn-primary item-hidden" id="classUpdateBtn">수정하기</button>
+                
+               
             </div>
         </div>
     </div>
  
-
+<!--<div data-th-replace="schoolclass/modal/test :: testModal">클래스 삭제 모달</div>-->
 
     <script>
         var submitButton = document.getElementById('submitButton');
@@ -190,14 +208,14 @@
         });
         
         function toggleInputReadonly(isReadonly) {
-            var inputElements = document.querySelectorAll('#modal-body2 input');
+            var inputElements = document.querySelectorAll('#viewModal input, #viewModal input[type="file"],#viewModal input[type="text"],#viewModal input[type="datetime-local"]');
             inputElements.forEach(function(inputElement) {
-                inputElement.readOnly = isReadonly;
+             
                 // 읽기 전용이 아닐 때 스타일 변경
-                if (isReadonly) {
+                if (isReadonly == false) {
                     inputElement.style.backgroundColor = '#fff'; // 배경색 변경
                     inputElement.style.border = 'none'; // 테두리 추가
-                    inputElement.disabled = isReadonly;
+                    inputElement.readOnly = true;
                 } else {
                     inputElement.style.backgroundColor = ''; // 배경색 초기화
                     inputElement.style.border = ''; // 테두리 초기화
