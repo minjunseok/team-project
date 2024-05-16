@@ -14,23 +14,37 @@
                     </a>
                 </div>
                 <ul class="mainMenu">
-                    <li class="mainMenuItem"><a data-th-href="@{/user/form}">회원가입</a></li>
                     <li class="mainMenuItem" sec:authorize="isAnonymous()"><a data-th-href="@{/auth/form}">로그인</a></li>
-                    <li class="mainMenuItem"><a data-th-href="@{/admin/chart}">관리자페이지</a></li>
-                    <li class="mainMenuItem"><a data-th-href="@{/payment/form}">정기구독하기</a></li>
                 </ul>
                 <div class="headerWidgetArea" sec:authorize="isAuthenticated()">
-                    <a class="WidgetTextStyle" data-th-href="@{/mypage/mypost}">피드</a>
+                    <ul class="widgetList">
+                        <li class="widgetItem"><a class="btnTextStyle" data-th-href="@{/mypage/mypost}">관리자 페이지</a></li>
+                        <li class="widgetItem"><a class="btnTextStyle" data-th-href="@{/mypage/mypost}">피드</a></li>
+                    </ul>
                     <img id="notificationToggle" class="notificationIcon" data-th-src="@{/img/notifications_20dp_FILL1_wght400_GRAD0_opsz20.png}" alt="no image">
                     <article id="notification" class="toggleContent">
-                        <header><h4>내 소식</h4></header>
+                        <header class="notificationHeader">
+                            <h4 class="notificationHeaderTitle">내 소식</h4>
+                            <div class="actionArea">
+                                <div id="listLink" class="alerts">
+                                    <span>전체 보기</span>
+                                </div>
+                                <div id="readAll" class="readAll">
+                                    <span>모두 읽음</span>
+                                </div>
+                            </div>
+
+                        </header>
                         <div class="notificationWrap"><ul id="notificationList"></ul></div>
                     </article>
+                    <div></div>
+                    <img id="chatList" class="chatIcon" data-th-src="@{/img/chat_24dp_FILL0_wght400_GRAD0_opsz24.png}" alt="no image">
                     <img id="uMenuToggle" data-th-src="@{/img/account_circle_24dp_FILL1_wght400_GRAD0_opsz24.png}" alt="no image">
                     <article id="uMenu" class="toggleContent">
                         <ul>
                             <li class="uMenuItem"><a data-th-href="@{/auth/logout}">로그아웃</a></li>
                             <li class="uMenuItem"><a data-th-href="@{/mypage}"> 마이페이지</a></li>
+                            <li class="uMenuItem"><a data-th-href="@{/payment/form}">정기구독하기</a></li>
                         </ul>
                     </article>
                 </div>

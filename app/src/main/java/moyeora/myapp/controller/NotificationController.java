@@ -37,12 +37,18 @@ public class NotificationController {
     @GetMapping("/list")
     @ResponseBody
     public List<Alert> list(Model model, int no) {
-        return notificationService.findUnreadAlertList(no);
+        return notificationService.findAll(no);
     }
 
     @GetMapping("/update")
     @ResponseBody
     public void update(Model model, int no) {
-        notificationService.update(no);
+        notificationService.updateIsRead(no);
+    }
+
+    @GetMapping("/updateAll")
+    @ResponseBody
+    public void updateAll(Model model, int no) {
+        notificationService.updateAllIsRead(no);
     }
 }

@@ -10,5 +10,8 @@ public interface AlertDao {
     void addAlert(Alert alert);
     List<Alert> findAll(int no);
     List<Alert> findUnreadAlertList(int no);
-    void update(int no);
+
+    void updateIsRead(int no);
+
+    void updateAllIsRead(int no);
 }

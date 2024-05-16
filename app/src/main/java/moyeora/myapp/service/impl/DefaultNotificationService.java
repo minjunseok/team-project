@@ -48,7 +48,11 @@ public class DefaultNotificationService {
         return alertDao.findUnreadAlertList(no);
     }
 
-    public void update(int no) {
-        alertDao.update(no);
+    public void updateIsRead(int no) {
+        alertDao.updateIsRead(no);
+    }
+
+    public void updateAllIsRead(int no) {
+        alertDao.updateAllIsRead(no);
     }
 }

@@ -45,6 +45,14 @@
     color: #0066ff;
 }
 
+.notificationHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 54px;
+    padding: 0 18px 0 22px;
+}
+
 .headerWidgetArea > img {
     width: 30px; /* Adjust icon size */
     height: auto;
@@ -55,9 +63,34 @@
     display: flex;
 }
 
+.headerWidgetArea .widgetList {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.headerWidgetArea .widgetItem .btnTextStyle {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--tier2TextMainLv03);
+    display: flex;
+    align-items: center;
+    margin: 0 6px;
+    padding: 0 5px;
+    height: 32px;
+    border-radius: 16px;
+    line-height: 29px;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+
+.chatIcon {
+    margin-left: auto;
+    cursor: pointer;
+}
+
 .notificationIcon {
     margin-left: auto;
-    margin-right: 20px;
     cursor: pointer;
 }
 
@@ -80,7 +113,8 @@
 }
 
 .toggleContent li {
-    padding: 10px 0 11px
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .toggleContent a {
@@ -106,6 +140,29 @@
     width: 300px; /* Set a specific width */
 }
 
+.notificationHeader {
+}
+
+
+.notificationHeaderTitle {
+}
+
+.actionArea {
+    display: flex;
+    color: #797D7F;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.actionArea > div:not(:last-of-type) {
+    margin : 0 5px 0 0;
+}
+
+.actionArea > div:hover {
+    background-color: yellow;
+    opacity: 0.33;
+}
+
 .notificationWrap {
     max-height: 590px;
     min-height: 170px;
@@ -126,6 +183,10 @@
 }
 
 .notificationItem {
+}
+
+.notificationItem.unread {
+    background-color: yellow;
 }
 
 .notificationLink {

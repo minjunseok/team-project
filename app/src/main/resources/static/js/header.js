@@ -20,7 +20,7 @@ stompClient.onConnect = (frame) => {
 
 function setAlert(alert) {
   console.log(alert);
-  const li = "<li class='notificationItem'><a class='notificationLink' onclick=isRead('" + alert.redirectPath + "'," + alert.alertNo + ");>" + alert.name + "</a></li>"
+  const li = "<li class='notificationItem'><a class='notificationLink' onclick=update('" + alert.redirectPath + "'," + alert.alertNo + ");>" + alert.name + "</a></li>"
   $(li).prependTo("#notificationList");
 }
 
@@ -64,9 +64,10 @@ function loadAlert() {
       for(key in alerts) {
         let dateTime = alerts[key].createdAt.substring(0, 10) + " " + alerts[key].createdAt.substring(12, 16);
         let thumbnailImg = alerts[key].photo != null && alerts[key].photo.length > 0 ? "<img class='thumbnailImg' src=" + alerts[key].filePath + alerts[key].photo + " onerror=thumbnailImgError(this)>" : "";
+        let notificationItem = alerts[key].isRead == "1" ? "<li class='notificationItem'>" : "<li class='notificationItem unread'>";
         $("#notificationList").append(
-        "<li class='notificationItem'>" +
-            "<a class='notificationLink' onclick=isRead('" + alerts[key].redirectPath + "'," + alerts[key].alertNo + ");>" +
+        notificationItem +
+            "<a class='notificationLink' onclick=update('" + alerts[key].redirectPath + "'," + alerts[key].alertNo + ");>" +
                 "<div class='notificationThumbnail'>" +
                     "<div class='thumbnailInner'>" +
                         "<span class='thumbnailItem'>" + thumbnailImg + "</span>" +
@@ -91,10 +92,21 @@ function loadAlert() {
   })
 }
 
-function isRead(url,no) {
+function loadChat() {
   $.ajax({
     type: "GET",
-    url: "/alert/update?no=" + no,
+    url: "/chat/chatList?no=" + user.no,
+    data: {},
+    success: function () {
+      location.href=url;
+    }
+  })
+}
+
+function update(url,no) {
+  $.ajax({
+    type: "GET",
+    url: "/ChatList?no=" + user.no,
     data: {},
     success: function () {
       location.href=url;
@@ -103,12 +115,25 @@ function isRead(url,no) {
 }
 
 function thumbnailImgError(obj) {
-    $(obj).attr("src", "/img/모여라.png");
+  $(obj).attr("src", "/img/모여라.png");
+}
+
+function updateAlerts() {
+  $.ajax({
+    type: "GET",
+    url: "/alert/updateAll?no=" + user.no,
+    data: {},
+    success: function () {
+      console.log("updateAll success");
+    }
+  })
 }
 
 $(function () {
     if ( user != null ) {
-        loadAlert();
         connect();
+        loadAlert();
+        loadChat();
     }
+    $( "#readAll" ).click(() => updateAlerts());
 });

@@ -43,16 +43,25 @@
           user_no = #{value} and is_read = 0
         order by
           alert_no desc
-        limit 10;
+        limit 30;
     </select>
 
-    <update id="update" parameterType="int">
+    <update id="updateIsRead" parameterType="int">
         update
           alerts
         set
           is_read = 1
         where
           alert_no = #{value}
+    </update>
+
+    <update id="updateAllIsRead" parameterType="int">
+        update
+          alerts
+        set
+          is_read = 1
+        where
+          user_no = #{value} and is_read = 0
     </update>
 
 </mapper>
