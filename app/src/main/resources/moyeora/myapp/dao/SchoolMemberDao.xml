@@ -27,7 +27,7 @@
   </resultMap>
 
 
-<select id="findAllBySchoolNo" resultMap="SchoolMemberMap" parameterType="int">
+<select id="findByClassMember" resultMap="SchoolMemberMap" parameterType="int">
 
 <!--select-->
 <!--    u.user_no,-->
@@ -47,30 +47,21 @@
 <!--   schools as s on  s.school_no = sc.school_no-->
 <!--where-->
 <!--    s.school_no = #{schoolNo}-->
-SELECT
-    u.user_no,
-    u.photo,
-    u.nickname,
-    l.level_no,
-    l.name AS level_name,
-    s.school_no,
-    s.name AS school_name,
-    sc.class_no
-FROM
-    users AS u
-INNER JOIN
-    school_users AS su ON u.user_no = su.user_no
-INNER JOIN
-    levels AS l ON l.level_no = su.level_no
-INNER JOIN
-    schools AS s ON s.school_no = su.school_no
-INNER JOIN
-    class_users AS cu ON u.user_no = cu.user_no
-INNER JOIN
-    school_classes AS sc ON cu.class_no = sc.class_no
-WHERE
-    sc.class_no = #{no};
-
+select
+ cu.class_no,
+ cu.user_no,
+ cu.school_no,
+ u.nickname,
+ u.photo,
+ su.level_no,
+ l.name as level_name
+ from
+ class_users as cu
+ inner join users as u on cu.user_no = u.user_no
+ inner join school_users as su on cu.user_no = su.user_no and su.school_no = cu.school_no
+ inner join levels as l on su.level_no = l.level_no
+ where
+ cu.class_no = #{classNo};
 
 </select>
 

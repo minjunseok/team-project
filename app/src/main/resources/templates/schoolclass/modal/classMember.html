@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset='utf-8'/>
+
+
+
+</head>
+<body>
+
+
+
+<div class="modal" data-th-fragment="classMemberModal" id="classMemberModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">참여 멤버</h5>
+            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+          </div>
+              <div class="modal-body">
+                    <table>
+                        <thead>
+                            <tr>
+                            <th>사진</th>
+                            <th>닉네임</th>
+                            <th>등급</th>
+                            </tr>
+                        </thead>
+                        <tbody id="memberTableBody">
+                       
+                        </tbody>
+                    </table>
+        
+              </div>
+        </div>
+    </div>
+    
+
+
+    <script>
+        document.querySelector("#classMemberBtn").onclick = function() {
+            const myModal5 = new bootstrap.Modal(document.getElementById('classMemberModal'), {})
+             myModal5.show();
+             console.log("모달 출력");
+             console.log(nickname);
+             console.log(levelName);
+        };
+        
+    </script>
+
+    <script>
+         $('#classMemberBtn').on('click', function() {
+            classMember();
+        });
+        
+    function classMember() {
+        console.log(classNo)
+        $.ajax({
+            url: '/schoolclass/findByClassMember',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                        classNo: classNo
+                    }
+        }).done(function(result) {
+            console.log(result)
+           
+            let tbody = $('#memberTableBody');
+                tbody.empty(); // 기존 내용을 비웁니다.
+
+                result.schoolMembers.forEach(function(member) {
+                 console.log(member.photo);
+                    let photoUrl = member.photo ? 'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/' + member
+                    .photo + '?type=f&w=80&h=80' : '/img/default-photo.jpeg';
+                    
+                    let row = `<tr>
+                        <td>
+                            <a href="${photoUrl}">
+                                <img src="${photoUrl}" height="80px">
+                            </a>
+                        </td>
+                        <td>${member.nickname}</td>
+                        <td>${member.level.levelName}</td>
+                    </tr>`;
+                    
+                    tbody.append(row);
+                });
+        });
+     }
+    </script>
+    
+</div>
+</body>
+
+</html>
