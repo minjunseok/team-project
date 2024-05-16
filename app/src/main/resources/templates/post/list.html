@@ -282,33 +282,44 @@
 
 					<div
 						id="fixed-post"
+						data-th-data-schoolno="${schoolNo}"
+						data-schoolno="100"
 						class="table-responsive"
 					>
 						<div
+							data-th-each="post : ${postlists}"
+							data-th-object="${post}"
+							data-th-data-no="*{no}"
 							class="table"
-							data-th-data-schoolno="${schoolNo}"
-							data-schoolno="100"
 						>
 							<div class="d-flex justify-content-between">
 								<div
 									class="me-3"
+									data-th-text="*{writer.photo}"
 									style="width: 10%; padding-left: 12px; padding-top: 12px"
 								>
-									<!-- src 주소는 서버에 유저의 사진이 저장되어있는 경로를 지정해야 함 -->
-									<img
-										class="rounded-circle img-fluid"
-										src="../../static/img/default-photo.jpeg"
-										alt=""
-									/>
+									사진
 								</div>
 								<div class="w-100">
 									<div class="d-flex justify-content-between">
 										<div class="">
-											<span class="mb-0 d-inline-block">닉네임</span>
+											<span
+												class="mb-0 d-inline-block"
+												data-th-text="*{writer.nickname}"
+												>닉네임</span
+											>
 										</div>
-										<div class="fixed-toolbar"></div>
+										<div data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">
+											작성일
+										</div>
+										
+									<div
+										class="mt-3"
+										data-th-utext="*{content}"
+										data-th-data-no="*{no}"
+									>
+										content
 									</div>
-									<div class="mt-3">게시글 content</div>
 								</div>
 							</div>
 						</div>
