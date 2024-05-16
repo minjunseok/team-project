@@ -50,6 +50,14 @@
         .modal-dialog {
             max-width: 750px; /* 또는 필요한 크기로 지정 */
         }
+
+        /* 화살표 제거 */
+        .dropdown-toggle::after {
+
+            background-color: #f5f5dc; /* 연한 갈색 */
+            width: 100%; /* 테이블 영역만큼 너비 조절 */
+            display: none;
+        }
     </style>
 
     <!--새 글쓰기 모달 참조-->
@@ -185,9 +193,10 @@
                          <tbody>
                              <tr data-th-each="post : ${fixlist}" data-th-object="${post}" data-th-data-no="*{no}" data-no="100">
                                 <td data-th-text="*{writer.nickname}">작성자</td>
-<!--                                 <td>-->
-<!--                                 </td>-->
-                                 <td data-text="*{writer.photo}">사진</td>
+                                 <td>
+                                     <img th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + ${post.writer.photo}"
+                                          style="width: 50px; height: 50px;">
+                                 </td>
                                  <td class="school-post" data-th-text="*{content}" data-th-data-no="*{no}" data-no="100">게시글 내용</td>
                                  <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
                                  <td>작업</td>
@@ -200,55 +209,48 @@
 <br>
 <br>
 
-                                <div id="searchResult">
-                                    <table border='1' data-th-data-schoolno="${schoolNo}">
-                                        <thead>
-                                            <tr>
-                                                <th>닉네임</th>
-                                                <th>사진</th>
-                                                <th>내용</th>
-                                                <th>작성일</th>
-                                                <th>작업</th>
-                                                <th>고정 핀</th>
+<div id="searchResult">
+    <table border='1' data-th-data-schoolno="${schoolNo}">
+        <thead>
+        <tr>
+            <th>닉네임</th>
+            <th>사진</th>
+            <th>내용</th>
+            <th>작성일</th>
+            <th>작업</th>
+<!--            <th>고정 핀</th>-->
+        </tr>
+        </thead>
 
-                                            </tr>
-                                        </thead>
+        <tbody>
+        <tr data-th-each="post : ${postlist}" data-th-object="${post}" data-th-data-no="${post.no}" data-no="100">
+            <td data-th-text="*{writer.nickname}">작성자</td>
+            <td>
+                <img th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + ${post.writer.photo}" style="width: 50px; height: 50px;">
+            </td>
+            <td class="school-post" th:utext="*{content}" data-th-data-no="${no}" data-no="100">게시글 내용</td>
+            <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
+            <td>
+                <div class="dropdown" data-th-data-no="${no}" data-no="100">
+                    <button class="btn btn-secondary dropdown-toggle dropdown-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        ...
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#" data-action="1" data-th-data-no="${no}" data-no="100">작업1</a>
+                        <a class="dropdown-item" href="#" data-action="2" data-th-data-no="${no}" data-no="100">작업2</a>
+                        <a class="dropdown-item" href="#" data-action="3" data-th-data-no="${no}" data-no="100">작업3</a>
+                        <a class="dropdown-item" href="#" data-action="4" data-th-data-no="${no}" data-no="100">게시글 고정</a>
+                    </div>
+                </div>
+            </td>
+<!--            <td><input type="checkbox" class="post-checkbox" data-th-data-no="${post.no}" data-no="100"></td>-->
+        </tr>
+        </tbody>
+    </table>
+</div>
 
-                                        <tbody><tr data-th-each="post : ${postlist}" data-th-object="${post}" data-th-data-no="*{no}" data-no="100">
-
-                                                <td data-th-text="*{writer.nickname}">작성자</td>
-                                            <td>
-                                            <img th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + ${post.writer.photo}"
-                                                 style="width: 50px; height: 50px;">
-                                            </td>
-                                                <td class="school-post" th:utext="*{content}" data-th-data-no="*{no}" data-no="100">게시글 내용</td>
-                                                <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
-                                                <td>작업</td>
-                                                <td><input type="checkbox" class="post-checkbox" data-th-data-no="*{no}" data-no="100"></td>
-                                            </tr>
-                                         </tbody>
-                                    </table>
-                                </div>
 
 
-<!--<td>-->
-<!--    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="display: block;width: 100px;">-->
-<!--        <div class="container">-->
-<!--            <div class="row" style="width: 100px;">-->
-<!--                <div class="post_md" style="width: 110px;">글 수정 &lt;!&ndash;  id="post_md"  onclick="postMd()" &ndash;&gt;</div>-->
-<!--            </div>-->
-<!--            &lt;!&ndash;												<div data-th-replace="post/postModal/md :: postMd-modal">글 수정</div>&ndash;&gt;-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <a id="delete" data-th-href="@{delete(schoolNo=*{schoolNo}, post_no=${post.no})}"-->
-<!--               class="dropdown-item">삭제</a>-->
-<!--        </div>-->
-
-<!--        <div>-->
-<!--            <a id="copyLinkButton" class="dropdown-item">주소 복사</a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</td>-->
 
 
 <!-- 게시글 고정 해제 모달 -->
@@ -394,6 +396,8 @@
 
 <div data-th-replace="post/view :: modal">포스트 상세보기 모달</div>
 
+<!--<div data-th-replace="post/postModal/md :: postMd-modal">글 수정</div>-->
+
 <!--<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>-->
 
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js"-->
@@ -483,7 +487,7 @@
     }
 
     function setUserNo(userNo) {
-        no = no;
+        userNo = userNo;
     }
 
     function setSchoolNo(schoolNo) {
@@ -554,17 +558,19 @@
         $("#commentModal2").modal("hide");
         //            parseInt(schoolNo);
 
-        console.log("@@@@@@@@@" + schoolNo);
+        console.log("@@@@@@@@@댓글을 등록할 게시글이 있는 스쿨의 번호 = " + schoolNo);
 
-        console.log("@@@@@@@@@@@@@@" + selectedPost.no);
+        console.log("@@@@@@@@@@@@@@댓글을 등록할 게시글의 번호 = " + selectedPost.no);
 
 
 
-        var postNo = selectedPost.no;
+        let postNo = selectedPost.no;
 
-        var content = $("#commentInput").val(); // 댓글 내용을 가져옴
+        let content = $("#commentInput").val(); // 댓글 내용을 가져옴
 
         console.log("@@@@@@@@@@@@" + content);
+
+        console.log("@@@@@@@@@@@@전역변수를 저장한 postNo" + postNo);
 
 
         setContent(content);
@@ -577,7 +583,7 @@
 
 
 
-    function commentAdd(content,postNo,schoolNo) {
+    function commentAdd(content, postNo, schoolNo) {
 
         var commentData = {
             content: content,
@@ -586,35 +592,25 @@
         };
 
         $.ajax({
-        type: 'POST',
-        url: '../comment/addComment',
-        contentType: 'application/json', // Content-Type 지정
-        data: JSON.stringify(commentData),
-        success: function(response) {
-            if(response.status === "success") {
-                alert("댓글이 성공적으로 등록되었습니다!");
-            } else {
-                alert("댓글 등록에 실패했습니다.  " + response.message);
+            type: 'POST',
+            url: '../comment/addComment',
+            contentType: 'application/json', // Content-Type 지정
+            data: JSON.stringify(commentData),
+            success: function(response) {
+                if (response.status === "댓글 등록 성공") {
+                    alert("댓글이 성공적으로 등록되었습니다!");
+                } else {
+                    alert("댓글 등록에 실패했습니다. " + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("댓글 등록에 실패했습니다. 오류 메시지: " + error);
             }
-        },
-        error: function(xhr, status, error) {
-            alert("댓글 등록에 실패했습니다. 오류 메시지: " + error);
-        }
-    });
+        });
 
-    // 모달 닫기
-    $("#commentModal2").modal("hide");
+        // 모달 닫기
+        $("#commentModal2").modal("hide");
     }
-
-
-
-
-
-    // 댓글 등록 취소 버튼 클릭 이벤트 핸들러
-    $(document).on("click", "#commentNo2", function() {
-    // 모달 닫기
-    $("#commentModal2").modal("hide");
-    });
 
 
 </script>
@@ -828,14 +824,14 @@
 
 <!--게시글 고정 기능-->
 <script>
-    let no = $(this).data('no');
+    var postNo = $(this).data('no');
 
     let fixedPost = $('#fixed-post tbody');
 
 
 
     $('#confirmBtn').on('click', function() {
-        console.log(no);
+        console.log("고정할 게시글의 번호 =" + postNo);
 
         $('#confirmationModal').modal('hide');
 
@@ -849,7 +845,7 @@
         $.ajax({
             url: 'fix',
             method: 'POST',
-            data: { no: no, categoryNo: 3 },
+            data: { no: postNo, categoryNo: 3 },
             success: function(response) {
 
                 if (response.status === "success") {
@@ -871,21 +867,21 @@
 
                 });
 
-    // 체크박스 클릭 이벤트 핸들러
-    $("#searchResult").on('change', '.post-checkbox', function() {
-        console.log('post-checkbox............');
-        if ($(this).prop('checked')) {
-            no = $(this).data('no');
-
-
-            // 모달 표시
-            $('#confirmationModal').on('hidden.bs.modal', function () {
-                // 모달이 숨겨질 때 체크박스를 해제합니다.
-                $('.post-checkbox').prop('checked', false);
-            });
-            $('#confirmationModal').modal('show');
-        }
-    });
+//    // 체크박스 클릭 이벤트 핸들러
+//    $("#searchResult").on('change', '.post-checkbox', function() {
+//        console.log('post-checkbox............');
+//        if ($(this).prop('checked')) {
+//            no = $(this).data('no');
+//
+//
+//            // 모달 표시
+//            $('#confirmationModal').on('hidden.bs.modal', function () {
+//                // 모달이 숨겨질 때 체크박스를 해제합니다.
+//                $('.post-checkbox').prop('checked', false);
+//            });
+//            $('#confirmationModal').modal('show');
+//        }
+//    });
 
 
 
@@ -894,6 +890,7 @@
         console.log('fix-checkbox............');
         if ($(this).prop('checked')) {
             no = $(this).data('no');
+            console.log('이 게시글의 번호는 =' + no);
             // 모달 표시
             $('#unfixConfirmationModal').on('hidden.bs.modal', function () {
                 // 모달이 숨겨질 때 체크박스를 해제합니다.
@@ -965,15 +962,20 @@
             return;
         }
 
+        if ($(event.target).closest('td').find('.dropdown-toggle').length > 0) {
+            return;
+        }
+
         let schoolNo = document.querySelector('#searchResult > table').getAttribute('data-schoolno');
         let no = $(this).data('no');
 
         selectedPost.no = no;
 
-
-        console.log(no);
+        console.log("전역변수에 게시글번호 넣어놨다가 써야지 = " + selectedPost.no);
         console.log(schoolNo);
-        console.log("@@@@@@@@@@@" + selectedPost.no);
+        console.log("@@@@@@@@@@@해당 게시글 일반 no 번호 = " + no);
+
+
 
 
         setPostNo(no);
@@ -1065,11 +1067,11 @@
                 '<td style="display: none;">' + comment.commentNo + '</td>' +
                 '<td style="display: none;">' + comment.userNo + '</td>' +
                 '<td>' +
-                '<div class="dropdown">' +
-                '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">' +
+                '<div class="comment-dropdown dropdown">' +
+                '<button class="btn btn-secondary dropdown-toggle comment-dropdown-toggle" type="button" id="commentDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
                 '더보기' +
                 '</button>' +
-                '<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">' +
+                '<ul class="dropdown-menu comment-dropdown-menu" aria-labelledby="commentDropdownButton">' +
                 '<li><a class="dropdown-item" href="javascript:void(0);" onclick="editComment(' + comment.commentNo + ')">수정</a></li>' +
                 '<li><a class="dropdown-item" href="javascript:void(0);" onclick="deleteComment(' + comment.commentNo + ')">삭제</a></li>' +
                 '</ul>' +
@@ -1122,6 +1124,9 @@
                     for (const file of files) {
                         data.append("files", file);
                     }
+            // schoolNo도 함께 전송합니다.
+            data.append("schoolNo", schoolNo);
+
                     $.ajax({
                         url: 'file/upload', // 파일 업로드 처리를 하는 엔드포인트 URL
                         type: 'POST',
@@ -1132,7 +1137,7 @@
 //
                     }).done(function(result) {
                         if (result.length == 0) {
-                            alert('로그인 하세요!');
+                            alert('게시글 작성에 실패하였습니다!');
                             return;
                         }
                         // 서버에서 받은 업로드 파일 이름을 가지고 <img> 태그를 설정합니다.
@@ -1149,6 +1154,72 @@
     }
 </script>
 
+<!--드롭다운 수정-->
+<script>
+    $(document).ready(function() {
+        // 드롭다운 버튼을 클릭했을 때
+        $(document).on('click', '.dropdown-button, .comment-dropdown-toggle', function(event) {
+            event.stopPropagation(); // 이벤트 전파 중지
+            var no = $(this).closest('tr').data('no');
+            selectedPost.no = no; // 해당 게시글의 번호 가져오기
+
+            var dropdown = $(this).next('.dropdown-menu'); // 클릭된 버튼 다음에 오는 드롭다운 메뉴 선택
+
+            // 현재 드롭다운 메뉴가 열려있는지 확인하여 토글링
+            if (dropdown.hasClass('show')) {
+                dropdown.removeClass('show'); // 열려있으면 닫기
+            } else {
+                $('.dropdown-menu').removeClass('show'); // 다른 드롭다운 메뉴는 닫기
+                dropdown.addClass('show'); // 클릭된 드롭다운 메뉴 열기
+            }
+
+            // 클릭된 드롭다운 버튼의 게시글 번호 저장
+            // dropdown.data('postNo', selectedPost.no);
+        });
+
+        // 문서의 클릭 이벤트를 감지하여 드롭다운 닫기
+        $(document).on('click', function(event) {
+            $('.dropdown-menu').removeClass('show'); // 모든 드롭다운 메뉴 닫기
+        });
+
+        // 각 드롭다운 항목에 대한 클릭 이벤트 설정
+        $(document).on('click', '.dropdown-item', function(event) {
+            event.stopPropagation(); // 이벤트 전파 중지
+            event.preventDefault(); // 링크 기본 동작 방지
+
+            var actionIndex = $(this).data('action'); // 해당 항목의 작업 인덱스 가져오기
+
+            switch(actionIndex) {
+                case 1:
+                    alert("게시글 수정이 들어갈 위치 = " + selectedPost.no);
+                    break;
+                case 2:
+                    alert("게시글 삭제가 들어갈 위치 = " + selectedPost.no);
+                    break;
+                case 3:
+                    alert("URL복사가 들어갈 위치 = " + selectedPost.no);
+                    break;
+                case 4:
+                    postNo = selectedPost.no;
+                    console.log("case 4 게시글 고정할 번호 =" + postNo);
+                    setPostNo(postNo);
+                    fixPost(postNo);
+                    break;
+                default:
+                    console.log("Unknown action");
+            }
+
+            // 드롭다운 닫기
+            $(this).closest('.dropdown').removeClass('show');
+        });
+    });
+
+    function fixPost(postNo) {
+
+        $('#confirmationModal').modal('show');
+    }
+
+</script>
 
 
 
@@ -1222,24 +1293,24 @@
 <!--&lt;!&ndash;</script>&ndash;&gt;-->
 
 
-<!--&lt;!&ndash; 게시글 주소 복사 버튼 &ndash;&gt;-->
-<!--<script>-->
-<!--    $(document).ready(function() {-->
-<!--        $('#copyLinkButton').click(function() {-->
-<!--            var url = window.location.href;-->
-<!--            var tempInput = document.createElement('input');-->
-<!--            tempInput.value = url;-->
-<!--            document.body.appendChild(tempInput);-->
-<!--            tempInput.select();-->
-<!--            document.execCommand('copy');-->
-<!--            document.body.removeChild(tempInput);-->
-<!--            alert('게시글 주소가 복사되었습니다.');-->
-<!--        });-->
-<!--    });-->
+<!-- 게시글 주소 복사 버튼 -->
+<script>
+    $(document).ready(function() {
+        $('#copyLinkButton').click(function() {
+            var url = window.location.href;
+            var tempInput = document.createElement('input');
+            tempInput.value = url;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('게시글 주소가 복사되었습니다.');
+        });
+    });
 
 
 
-<!--</script>-->
+</script>
 
 
 
