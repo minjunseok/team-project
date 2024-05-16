@@ -220,29 +220,29 @@
 						</ul>
 					</div>
 					<!-- <table class="userList">
-											<colgroup>
-												<col class="col1" />
-												<col class="col2" />
-												<col class="col3" />
-											</colgroup>
-											<thead>
-												<tr>
-													<th>프로필 사진</th>
-													<th>닉네임</th>
-													<th>회원 등급</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr
-													data-th-each="schoolUser : ${schoolUsers}"
-													data-th-object="${schoolUser}"
-												>
-													<td data-th-text="*{writer.photo}">사진</td>
-													<td data-th-text="*{writer.nickname}">작성자</td>
-													<td data-th-text="*{level.levelName}">회원 등급</td>
-												</tr>
-											</tbody>
-										</table> -->
+								<colgroup>
+									<col class="col1" />
+									<col class="col2" />
+									<col class="col3" />
+								</colgroup>
+								<thead>
+									<tr>
+										<th>프로필 사진</th>
+										<th>닉네임</th>
+										<th>회원 등급</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr
+										data-th-each="schoolUser : ${schoolUsers}"
+										data-th-object="${schoolUser}"
+									>
+										<td data-th-text="*{writer.photo}">사진</td>
+										<td data-th-text="*{writer.nickname}">작성자</td>
+										<td data-th-text="*{level.levelName}">회원 등급</td>
+									</tr>
+								</tbody>
+							</table> -->
 				</div>
 
 				<div class="center-container">
@@ -289,28 +289,53 @@
 							data-th-data-schoolno="${schoolNo}"
 							data-schoolno="100"
 						>
-							<div class="d-flex justify-content-between">
-								<div
-									class="me-3"
-									style="width: 10%; padding-left: 12px; padding-top: 12px"
+							<ul>
+								<li>
+									<div class="col">닉네임</div>
+									<div class="col">사진</div>
+									<div class="col">내용</div>
+									<div class="col">작성일</div>
+									<div class="col">설정</div>
+								</li>
+								<li
+									data-th-each="post : ${fixlist}"
+									data-th-object="${post}"
+									data-th-data-no="*{no}"
+									data-no="100"
 								>
-									<!-- src 주소는 서버에 유저의 사진이 저장되어있는 경로를 지정해야 함 -->
-									<img
-										class="rounded-circle img-fluid"
-										src="../../static/img/default-photo.jpeg"
-										alt=""
-									/>
-								</div>
-								<div class="w-100">
-									<div class="d-flex justify-content-between">
-										<div class="">
-											<span class="mb-0 d-inline-block">닉네임</span>
-										</div>
-										<div class="fixed-toolbar"></div>
+									<div class="col">
+										<span data-th-text="*{writer.nickname}">작성자</span>
 									</div>
-									<div class="mt-3">게시글 content</div>
-								</div>
-							</div>
+									<div class="col">
+										<span data-th-text="*{writer.photo}">사진</span>
+									</div>
+									<div class="col">
+										<span
+											class="school-post"
+											data-th-text="*{content}"
+											data-th-data-no="*{no}"
+											data-no="100"
+										>
+											게시글 내용
+										</span>
+									</div>
+									<div class="col">
+										<span data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</span>
+									</div>
+									<div class="col">
+										<span>
+											<label>
+												<input
+													type="checkbox"
+													class="fix-checkbox"
+													data-th-data-no="*{no}"
+													data-no="100"
+												/>
+											</label>
+										</span>
+									</div>
+								</li>
+							</ul>
 						</div>
 					</div>
 
@@ -940,8 +965,8 @@
 											if (result.isConfirmed) {
 												console.log('가입신청 성공');
 												location.reload(); // 페이지 리로드
-												//																				$("#joinButton").hide(); // 가입하기 버튼 숨기기
-												//																				$("#joinPendingMessage").show(); // 가입 대기 메시지 표시
+												//																$("#joinButton").hide(); // 가입하기 버튼 숨기기
+												//																$("#joinPendingMessage").show(); // 가입 대기 메시지 표시
 												console.log(levelNo);
 											}
 										});
