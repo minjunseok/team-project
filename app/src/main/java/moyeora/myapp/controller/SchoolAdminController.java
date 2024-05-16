@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.dto.school.admin.SchoolMemberUpdateRequestDTO;
 import moyeora.myapp.dto.school.admin.SchoolOpenRangeUpdateRequestDTO;
+import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
 import moyeora.myapp.service.SchoolAdminService;
 import moyeora.myapp.service.SchoolService;
 import moyeora.myapp.service.TagService;
@@ -162,7 +163,7 @@ public class SchoolAdminController {
         return ResponseEntity.status(200).body(schoolAdminService.findBySchoolNo(schoolNo));
     }
 
-    @GetMapping("/test")
+   // @GetMapping("/test")
     public void test(Model model, int schoolNo) {
         School school = schoolAdminService.getSchool(schoolNo);
         log.debug(school.getTags().getFirst().getSchoolNo());
@@ -184,11 +185,11 @@ public class SchoolAdminController {
 
     @GetMapping("/schoolInfo")
     @ResponseBody
-    public Object schoolInfo(Model model, int schoolNo) {
+    public Object schoolInfo(Model model, int schoolNo,@LoginUser User loginUser) {
 
 
         School school = schoolAdminService.getSchool(schoolNo);
-        log.debug(school.getTags().getFirst().getSchoolNo());
+        log.debug(school.getTags().getFirst().getSchoolNo()); //?
 
         List<SchoolTag> schooltags = school.getTags();
         HashMap<Integer, SchoolTag> schoolTagMap = new HashMap<>();
@@ -212,13 +213,10 @@ public class SchoolAdminController {
     public String update(
             School school,
             @RequestParam(value = "file", required = false) MultipartFile file,
+            @LoginUser User loginUser,
             HttpSession session) throws Exception {
 
-//        School loginUser = (School) session.getAttribute("loginUser");
-//        if (loginUser == null) {
-//            throw new Exception("로그인하시기 바랍니다!");
-//        }
-//
+
         School old = schoolAdminService.getSchool(school.getNo());
         log.debug(old);
 //        if (old == null) {
@@ -238,7 +236,6 @@ public class SchoolAdminController {
         // 나머지 로직 실행 및 업데이트
         schoolAdminService.update(school);
         // 업데이트 후 리다이렉트
-        //return "redirect:list";
         return "redirect:/school/admin?schoolNo=" + school.getNo();
     }
 
@@ -255,7 +252,7 @@ public class SchoolAdminController {
 
     @GetMapping("deleteSchool")
     @ResponseBody
-    public String deleteSchool(int schoolNo) throws Exception {
+    public String deleteSchool(int schoolNo,ClassDeleteDTO classDeleteDTO) throws Exception {
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@삭제");
 
         School school = schoolAdminService.getSchoolNo(schoolNo);

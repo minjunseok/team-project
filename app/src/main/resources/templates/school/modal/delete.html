@@ -20,7 +20,7 @@
                             type="button"></button>
                 </div>
                 <div class="modal-body">
-                    <p>정말로 이 학교를 삭제하시겠습니까?</p>
+                    <p>정말로 이 스쿨을 삭제하시겠습니까?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -57,7 +57,7 @@
                              toast: true,
                              position: "top-end",
                              showConfirmButton: false,
-                             timer: 3000,
+                             timer: 2000,
                              timerProgressBar: true,
                              didOpen: (toast) => {
                                  toast.onmouseenter = Swal.stopTimer;
@@ -69,7 +69,6 @@
                              title: "스쿨삭제 완료!"
                          });
 
-                        
                          setTimeout(function() {
                              window.location.href = '/index';
                          }, 2000);

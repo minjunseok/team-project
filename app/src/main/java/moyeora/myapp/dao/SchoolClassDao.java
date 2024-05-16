@@ -23,4 +23,9 @@ public interface SchoolClassDao {
   SchoolClass findByNo(int classNo);
 
   void classDelete(ClassDeleteDTO classDeleteDTO);
+
+  // 해당스쿨의 클래스를 다 지움
+  int deleteAllSchoolClass(int schoolNo);
+
+  int deleteAllSchoolClassUser(int schoolNo);
 }
