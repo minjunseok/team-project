@@ -57,6 +57,7 @@ public class CommentController {
 
         // 조건이 충족되었을 때
         try {
+
             log.debug("@@@@@@@@@@@@@@@@@@ comment 데이터 주입전" + comment);
 
             log.debug("@@@@@@@@@@@@@@@@@@@" + loginUser.getNo());

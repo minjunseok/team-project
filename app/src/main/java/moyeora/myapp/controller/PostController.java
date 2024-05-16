@@ -584,12 +584,34 @@ public class PostController {
     public Object fileUpload(
             MultipartFile[] files,
             HttpSession session,
+            @LoginUser User loginUser,
             Model model) throws Exception {
 
         //    User loginUser = (User) session.getAttribute("loginUser");
 //    if (loginUser == null) {
 //      throw new Exception("로그인하시기 바랍니다!");
 //    }
+
+
+
+        if (loginUser == null) {
+            return AjaxResponse.builder().status("error").message("로그인이 필요합니다.").build();
+        }
+
+        int userNo = loginUser.getNo();
+        int schoolNo = postService.findByPostSchoolNo(post.getNo());
+
+
+
+
+        log.debug("schoolNo + @@@@@@@@@@@@@@@@@@@" + schoolNo);
+        log.debug("userNo + @@@@@@@@@@@@@@@@@@@@@" + userNo);
+        log.debug("sessionNo + @@@@@@@@@@@@@@@@@@@@@" + loginUser.getNo());
+
+
+        int levelNo = schoolUserService.findLevel(schoolNo, userNo);
+
+        log.debug("levelNo + @@@@@@@@@@@@@@@@@@@@@@@@" + levelNo);
 
         // FileUpoladHelper Object Storage에 저장한 파일의 이미지 이름을 보관할 컬렉션을 준비한다.
         ArrayList<AttachedFile> fileList = new ArrayList<>();
