@@ -153,14 +153,34 @@
             responseType:'json'
           })
             .then(function (response) {
-                let count = document.getElementById('nowMemberCount').innerText
-                count = Number(count) + 1
-                document.getElementById('nowMemberCount').innerText = count
-                var responseData = response.data;
-                console.log(responseData);
-                $('#cancelButton').removeClass("item-hidden");
-                $('#submitButton').addClass("item-hidden");
-            })
+            
+         nowMemberCount = nowMemberCount;
+         let totalMembers = member;
+        
+        console.log(nowMemberCount);
+        console.log(totalMembers);
+
+    // 버튼 내의 .member-ratio 클래스를 가진 span 요소를 찾습니다.
+    let spanElement = document.querySelector('.btn-lg .member-ratio');
+
+    // 현재 멤버 수와 총 멤버 수를 사용하여 멤버 비율을 계산합니다.
+    let count = Number(nowMemberCount) + 1; // 현재 멤버 수를 1 증가시킵니다.
+    let memberRatio = count + '/' + totalMembers;
+
+    // 버튼 내의 .member-ratio 클래스를 가진 span 요소에 멤버 비율을 표시합니다.
+    if (spanElement) {
+        spanElement.innerText = memberRatio;
+    }
+
+    // 각 변수의 값을 콘솔에 출력합니다.
+    console.log("현재 멤버 수:", nowMemberCount);
+    console.log("총 멤버 수:", totalMembers);
+    console.log("멤버 비율:", memberRatio);
+
+    // Cancel 버튼은 보이고 Submit 버튼은 숨깁니다.
+    $('#cancelButton').removeClass("item-hidden");
+    $('#submitButton').addClass("item-hidden");
+})
             .catch(function (error) {
                 console.error('에러 발생:', error);
             });
@@ -187,11 +207,31 @@
             responseType:'json'
           })
             .then(function (response) {
-                let count = document.getElementById('nowMemberCount').innerText
-                count = Number(count) - 1
-                document.getElementById('nowMemberCount').innerText = count
-                var responseData = response.data;
-                console.log(responseData);
+                lnowMemberCount = nowMemberCount;
+                let totalMembers = member;
+        
+                console.log(nowMemberCount);
+                console.log(totalMembers);
+
+                // 버튼 내의 .member-ratio 클래스를 가진 span 요소를 찾습니다.
+                let spanElement = document.querySelector('.btn-lg .member-ratio');
+            
+                // 현재 멤버 수와 총 멤버 수를 사용하여 멤버 비율을 계산합니다.
+                let count = Number(nowMemberCount) - 1;
+               // count가 1일 때는 멤버 비율을 그대로 유지합니다.
+                let memberRatio = count === 0 ? nowMemberCount + '/' + totalMembers : count + '/' + totalMembers;
+
+            
+                // 버튼 내의 .member-ratio 클래스를 가진 span 요소에 멤버 비율을 표시합니다.
+                if (spanElement) {
+                    spanElement.innerText = memberRatio;
+                }
+            
+                // 각 변수의 값을 콘솔에 출력합니다.
+                console.log("현재 멤버 수:", nowMemberCount);
+                console.log("총 멤버 수:", totalMembers);
+                console.log("멤버 비율:", memberRatio);
+                
                 $('#cancelButton').addClass("item-hidden");
                 $('#submitButton').removeClass("item-hidden");
             })
@@ -246,8 +286,6 @@
              
                 // 읽기 전용이 아닐 때 스타일 변경
                 if (isReadonly == false) {
-                    inputElement.style.backgroundColor = '#fff'; // 배경색 변경
-                    inputElement.style.border = 'none'; // 테두리 추가
                     inputElement.readOnly = true;
                 } else {
                     inputElement.style.backgroundColor = ''; // 배경색 초기화
