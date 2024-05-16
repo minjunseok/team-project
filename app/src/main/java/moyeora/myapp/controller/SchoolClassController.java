@@ -122,9 +122,18 @@ public class SchoolClassController {
     HashMap<String, Object> result = new HashMap<>();
     result.put("schoolClass", schoolClassService.get(classNo));
     result.put("isMember", schoolClassService.isMember(classNo, loginUser.getNo()));
-    model.addAttribute("schoolMembers",schoolMemberService.list(classNo));
-    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@"+schoolMemberService.list(classNo));
 
+    return result;
+  }
+
+  @GetMapping("findByClassMember")
+  @ResponseBody
+  public Object findByClassMember(int classNo) throws Exception {
+    System.out.println("@@@@@@@@@findByClassMember 실행@@@@@@@@@@@@@@@@@");
+    HashMap<String, Object> result = new HashMap<>();
+    System.out.println("@@@@@@@@@findByClassMember@@@@@@@@@@@@@@@@@");
+    result.put("schoolMembers",schoolMemberService.list(classNo));
+    System.out.println("@@@@@@@@@1111111111@@@@@@@@@@@@@@@@@"+schoolMemberService.list(classNo));
     return result;
   }
 

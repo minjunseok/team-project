@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface SchoolMemberDao {
-   List<SchoolMember> findAllBySchoolNo(int classNo);
+   List<SchoolMember> findByClassMember(int classNo);
 
 
 }

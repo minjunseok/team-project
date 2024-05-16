@@ -121,106 +121,106 @@
 
 <h2>회원 정보 수정</h2>
 <br>
+
 <form action="update" data-th-action="@{update}" data-th-object="${user}"
       enctype='multipart/form-data' method='post' class="row g-3 needs-validation was-validated" novalidate>
-  <div class="form-group row justify-content-center">
-      
-        <div class="col-md-3">
-        <a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + *{photo}}" data-th-if="*{photo}">
-          <img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/' + *{photo}(type=f,w=80,h=80)}"></a><br>
-        <a data-th-unless="*{photo}" href='/img/default-photo.jpeg'>
-          <img height='80px' src='/img/default-photo.jpeg'></a><br>
-        <input name='file' type='file' class="form-control customInputBox-color">
-      </div>
-    
-      <div class="col-md-3">
-        이메일: <input data-th-value='*{email}' disabled name='email' type='text' value="hong@test.com"
-                class="form-control customInputBox-color">
-      </div>
-    
-      <div class="col-md-3">
-        <input disabled name='pwd' placeholder="비밀번호"  type='password' class="form-control customInputBox-color">
-          <br>
-        <button id="btn1" type="button">변경하기</button>
-      </div>
-    
-      <div class="col-md-3">
-        닉네임:<input data-th-value="*{nickname}" name='nickname' type='text'   class="form-control customInputBox-color">
-      </div>
-    
-      <div class="col-md-3">
-        이름:<input data-th-value="*{name}" disabled name='name' type='text' class="form-control customInputBox-color">
-      </div>
-    
-      <div class="col-md-3">
-        생년월일: <input data-th-value="*{birth}" name='birth' readonly
-                 class="form-control customInputBox-color" type="text">
-      </div>
-    
-      <div class="col-md-3">
-        전화번호: <input data-th-value="*{phone}" name='phone' placeholder="전화번호" type='text' class="form-control customInputBox-color">
-      </div>
-    
-      <div class="col-md-3">
-          주소:
-        <input data-th-value="*{address}" id="address" name="address" placeholder="주소" type="text" class="form-control customInputBox-color">
-        <input data-th-value="*{addressDetail}" id="addressDetail" name="addressDetail" placeholder="상세주소" type="text" class="form-control customInputBox-color">
-        <br>
-          <button onclick="sample2_execDaumPostcode()" type="button" >우편번호 찾기</button>
-      </div>
-    
-      <div class="col-md-3">
-        <div>
-          <label for="profile">프로필:</label>
-          <textarea id="profile" name="profile" class="form-control customInputBox-color">[[*{profile}]]</textarea>
+   
+        <div class="form-group row justify-content-center">
+          
+            <div class="col-md-3">
+            <a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + *{photo}}" data-th-if="*{photo}">
+              <img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/' + *{photo}(type=f,w=80,h=80)}"></a><br>
+            <a data-th-unless="*{photo}" href='/img/default-photo.jpeg'>
+              <img height='80px' src='/img/default-photo.jpeg'></a><br>
+            <input name='file' type='file' class="form-control customInputBox-color">
+          </div>
+        
+          <div class="col-md-3">
+            이메일: <input data-th-value='*{email}' disabled name='email' type='text' value="hong@test.com"
+                    class="form-control customInputBox-color">
+          </div>
+        
+          <div class="col-md-3">
+            <input disabled name='pwd' placeholder="비밀번호"  type='password' class="form-control customInputBox-color">
+              <br>
+            <button id="btn1" type="button">변경하기</button>
+          </div>
+        
+          <div class="col-md-3">
+            닉네임:<input data-th-value="*{nickname}" name='nickname' type='text'   class="form-control customInputBox-color">
+          </div>
+        
+          <div class="col-md-3">
+            이름:<input data-th-value="*{name}" disabled name='name' type='text' class="form-control customInputBox-color">
+          </div>
+        
+          <div class="col-md-3">
+            생년월일: <input data-th-value="*{birth}" name='birth' readonly
+                     class="form-control customInputBox-color" type="text">
+          </div>
+        
+          <div class="col-md-3">
+            전화번호: <input data-th-value="*{phone}" name='phone' placeholder="전화번호" type='text' class="form-control customInputBox-color">
+          </div>
+        
+          <div class="col-md-3">
+              주소:
+            <input data-th-value="*{address}" id="address" name="address" placeholder="주소" type="text" class="form-control customInputBox-color">
+            <input data-th-value="*{addressDetail}" id="addressDetail" name="addressDetail" placeholder="상세주소" type="text" class="form-control customInputBox-color">
+            <br>
+              <button onclick="sample2_execDaumPostcode()" type="button" >우편번호 찾기</button>
+          </div>
+        
+          <div class="col-md-3">
+            <div>
+              <label for="profile">프로필:</label>
+              <textarea id="profile" name="profile" class="form-control customInputBox-color">[[*{profile}]]</textarea>
+            </div>
+          </div>
+        
+          <div class="col-md-3">
+            가입일 <input data-th-value="${#dates.format(user.createdAt,'yyyy-MM-dd')}" disabled type='text'
+                    class="form-control customInputBox-color">
+          </div>
+        
+          
+          
+          <div class="col-md-2 gender-container">
+          <input id="male" data-th-checked="*{gender == 0}" disabled type="radio" value="0">
+          <label for="male">남자</label>
+          <input id="female" data-th-checked="*{gender == 1}" disabled type="radio" value="1">
+          <label for="female">여자</label>
+         </div>
+        
+          <div>
+            <h2>관심사</h2>
+          </div>
+          
+          
+          <div class="text-center">
+              <tbody class="text-center">
+                <tr data-th-each="tag : ${tags}">
+                  <td>
+                    <div class="checkbox-container">
+                          <img class="checkbox-image" height='50px' width="50px" src='/img/default-photo.jpeg'>
+                          <span data-th-text="${tag.name}"></span>
+                          <input  data-th-checkbox="true" data-th-checked="${userTagMap[tag.no] != null}"
+                                  data-th-value="${tag.no}" name="tagNums" type="checkbox" style="display: none;">
+                    </div>
+                  </td>
+                  <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+                    <br>
+                  </data-th-block>
+                </tr>
+              </tbody>
+          </div>
+          
+        
+          <div class="text-center">
+            <button type="submit" class="submit-button btn-lg">회원 정보 수정</button>
+          </div>
         </div>
-      </div>
-    
-      <div class="col-md-3">
-        가입일 <input data-th-value="${#dates.format(user.createdAt,'yyyy-MM-dd')}" disabled type='text'
-                class="form-control customInputBox-color">
-      </div>
-    
-      
-      
-      <div class="col-md-2 gender-container">
-      <input id="male" data-th-checked="*{gender == 0}" disabled type="radio" value="0">
-      <label for="male">남자</label>
-      <input id="female" data-th-checked="*{gender == 1}" disabled type="radio" value="1">
-      <label for="female">여자</label>
-     </div>
-    
-      <div>
-        <h2>관심사</h2>
-      </div>
-      
-      
-      <div class="text-center">
-          <tbody class="text-center">
-            <tr data-th-each="tag : ${tags}">
-              <td>
-                <div class="checkbox-container">
-                      <img class="checkbox-image" height='50px' width="50px" src='/img/default-photo.jpeg'>
-                      <span data-th-text="${tag.name}"></span>
-                      <input  data-th-checkbox="true" data-th-checked="${userTagMap[tag.no] != null}"
-                              data-th-value="${tag.no}" name="tagNums" type="checkbox" style="display: none;">
-                </div>
-              </td>
-              <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
-                <br>
-              </data-th-block>
-            </tr>
-          </tbody>
-      </div>
-      
-      
-    
-    
-      <div class="text-center">
-        <button type="submit" class="submit-button">변경</button>
-      </div>
-  </div>
-</form>
+    </form>
 
 
 

@@ -16,19 +16,7 @@
  <link href="/css/calendar.css" rel="stylesheet"/>
 
 
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }   
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+   
 
 
     <style>
@@ -229,8 +217,8 @@
                     document.getElementById('nickname').textContent = responseData.user.nickname;
                     document.getElementById('keyword2').value = responseData.location;
                     document.getElementById('locationDetail2').value = responseData.locationDetail;
-                    document.getElementById('member').textContent = responseData.member;
-                    document.getElementById('nowMemberCount').textContent = responseData.nowMemberCount;
+                    document.getElementById('memberRatio').textContent = responseData.nowMemberCount + '/' + responseData.member;
+
                         document.getElementById('endedAt3').value = new Date(responseData.endedAt).toISOString().slice(0,
                         16);
                     
