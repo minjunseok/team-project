@@ -19,6 +19,27 @@ tbody tr:hover {
 	cursor: pointer;
 }
 
+.Stl {
+	background-color: #cbbca7;
+	text-align: center;
+	border: 1px solid #cbbca7;
+	padding: 5px;
+}
+
+.Stl a {
+	font-size: 16px;
+	margin-left: 30px;
+	--bs-btn-padding-y: 0.5rem;
+	--bs-btn-padding-x: 2rem;
+	--bs-btn-font-size: 0.8rem;
+	background-color: #cbbca7;
+	border: none;
+}
+
+.Stl a:hover {
+	background-color: #e8b882;
+}
+
 .container {
 	margin: 0;
 	padding: 16px;
@@ -117,38 +138,89 @@ tbody tr:hover {
 	width: 100%;
 }
 
-.Stl {
-	background-color: #cbbca7;
+.searchBar .bi-search {
+	width: 15%;
 	text-align: center;
-	border: 1px solid #cbbca7;
-	padding: 5px;
+	font-size: 1.5rem;
+	border: 1px solid;
+	color: #aa977e;
 }
 
-.Stl a {
-	margin-left: 30px;
-	--bs-btn-padding-y: 0.5rem;
-	--bs-btn-padding-x: 2rem;
-	--bs-btn-font-size: 0.8rem;
-	background-color: #cbbca7;
-	border: none;
+.searchBar input {
+	height: 35px;
 }
 
-.Stl a:hover {
-	background-color: #e8b882;
-}
-
-.md_container {
+.left-container .md_container .join_container {
 	padding: 10% 15%;
 	margin-left: auto;
 	margin-right: auto;
 	width: 300px;
 }
 
-.md_container #post_setting {
+.left-container .md_container #post_setting {
 	margin: 0 auto;
 }
 
-.md_container .createButton {
+.left-container .md_container .createButton {
 	background-color: #9e896a;
 	width: 100%;
+}
+
+.left-container .join_container {
+	margin: 0 auto;
+}
+
+.left-container .join_container .createButton {
+	background-color: #9e896a;
+	width: 100%;
+}
+
+.table-responsive .table {
+	border: 1px solid #9e896a;
+}
+
+.table-responsive .table ul {
+	margin: 0;
+	padding: 0;
+}
+
+.table-responsive .table li {
+	list-style: none;
+	display: flex;
+	text-align: center;
+	border-bottom: 1px solid #9e896a;
+}
+.table-responsive .table li:last-of-type {
+	border-bottom: none;
+}
+.table-responsive .table .col {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.table-responsive .table .col:first-of-type {
+	flex: 0 1 25%;
+	max-width: 15%;
+	overflow: hidden;
+}
+.table-responsive .table .col:nth-child(2) {
+	flex: 2 0 auto;
+	max-width: 20%;
+}
+.table-responsive .table .col:nth-child(3) {
+	flex: 2 0 auto;
+	max-width: 40%;
+}
+.table-responsive .table .col:nth-child(4) {
+	flex: 2 0 auto;
+	max-width: 20%;
+}
+.table-responsive .table .col:last-of-type {
+	flex: 1 1 30%;
+	max-width: 10%;
+	border-right: none;
+	word-break: keep-all;
 }
