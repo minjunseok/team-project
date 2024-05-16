@@ -198,4 +198,9 @@
     DELETE FROM schools WHERE school_no = #{value}
   </delete>
 
+  <delete id="deleteSchoolGm" parameterType="int">
+    DELETE FROM gm
+    WHERE school_no = #{value}
+  </delete>
+
 </mapper>

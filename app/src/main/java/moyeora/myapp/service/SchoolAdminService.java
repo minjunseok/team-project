@@ -2,6 +2,7 @@ package moyeora.myapp.service;
 
 import moyeora.myapp.dto.school.admin.SchoolMemberUpdateRequestDTO;
 import moyeora.myapp.dto.school.admin.SchoolOpenRangeUpdateRequestDTO;
+import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
 
@@ -36,5 +37,6 @@ public interface SchoolAdminService {
   int deleteSchool(int schoolNo);
 
   School getSchoolNo(int schoolNo);
+
 
 }

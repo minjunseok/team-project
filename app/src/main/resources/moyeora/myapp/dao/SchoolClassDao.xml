@@ -39,7 +39,6 @@
             <result column="level_name" property="levelName"/>
     </association>
 
-
   </resultMap>
 
 
@@ -63,72 +62,77 @@
         date_format(start_at, '%Y-%m-%d') = '${date}'
     </select>
 
-  <select id="findByUserAddress" resultMap="ClassMap" parameterType="String">
+    <select id="findByUserAddress" resultMap="ClassMap" parameterType="String">
 
-  </select>
+    </select>
 
-<insert id="add" parameterType="SchoolClass"
-    useGeneratedKeys="true" keyColumn="class_no" keyProperty="no">
-    insert into school_classes(school_no,user_no,name,content,location,start_at,created_at,ended_at,member,repeat_set,photo,location_detail)
-    values(#{schoolNo},#{userNo},#{name},#{content},#{location},#{startAt},current_timestamp,#{endedAt},#{member},#{repeatSet},
-    #{photo},#{locationDetail})
-</insert>
+    <insert id="add" parameterType="SchoolClass"
+        useGeneratedKeys="true" keyColumn="class_no" keyProperty="no">
+        insert into school_classes(school_no,user_no,name,content,location,start_at,created_at,ended_at,member,repeat_set,photo,location_detail)
+        values(#{schoolNo},#{userNo},#{name},#{content},#{location},#{startAt},current_timestamp,#{endedAt},#{member},#{repeatSet},
+        #{photo},#{locationDetail})
+    </insert>
 
-<select id="calendarList" resultMap="ClassMap" parameterType="int">
-    select
-         class_no,
-         school_no,
-         name,
-         start_at,
-         ended_at,
-         member,
-         repeat_set
-    from school_classes where school_no =#{schoolNo};
-</select>
-
-
-
-<select id="findBySchool" resultMap="ClassMap" parameterType="int">
-    select * from school_classes where school_no =#{schoolNo};
-</select>
-
-<select id="findByNo" resultMap="ClassMap" parameterType="int">
-SELECT
-  sc.class_no,
-  sc.school_no,
-  sc.user_no,
-  sc.name,
-  sc.content,
-  sc.location,
-  sc.location_detail,
-  sc.start_at,
-  sc.ended_at,
-  sc.photo,
-  sc.member,
-  (select count(*) from class_users as cu where cu.class_no = sc.class_no) AS now_member_count,
-  u.nickname,
-  su.level_no,
-  l.name AS level_name
-FROM
-  school_classes AS sc
-  INNER JOIN users AS u ON sc.user_no = u.user_no
-  INNER JOIN school_users AS su ON sc.user_no = su.user_no AND sc.school_no = su.school_no
-  INNER JOIN levels AS l ON su.level_no = l.level_no
-WHERE
-  sc.class_no = #{classNo}
-
-</select>
-
-<delete id="classDelete">
-delete
-from
-    school_classes
-where
-    user_no = #{userNo}
-    and
-    class_no = #{classNo}
-
-</delete>
+    <select id="calendarList" resultMap="ClassMap" parameterType="int">
+        select
+             class_no,
+             school_no,
+             name,
+             start_at,
+             ended_at,
+             member,
+             repeat_set
+        from school_classes where school_no =#{schoolNo};
+    </select>
 
 
+
+    <select id="findBySchool" resultMap="ClassMap" parameterType="int">
+        select * from school_classes where school_no =#{schoolNo};
+    </select>
+
+    <select id="findByNo" resultMap="ClassMap" parameterType="int">
+    SELECT
+      sc.class_no,
+      sc.school_no,
+      sc.user_no,
+      sc.name,
+      sc.content,
+      sc.location,
+      sc.location_detail,
+      sc.start_at,
+      sc.ended_at,
+      sc.photo,
+      sc.member,
+      (select count(*) from class_users as cu where cu.class_no = sc.class_no) AS now_member_count,
+      u.nickname,
+      su.level_no,
+      l.name AS level_name
+    FROM
+      school_classes AS sc
+      INNER JOIN users AS u ON sc.user_no = u.user_no
+      INNER JOIN school_users AS su ON sc.user_no = su.user_no AND sc.school_no = su.school_no
+      INNER JOIN levels AS l ON su.level_no = l.level_no
+    WHERE
+      sc.class_no = #{classNo}
+
+    </select>
+
+    <delete id="classDelete">
+    delete
+    from
+        school_classes
+    where
+        user_no = #{userNo}
+        and
+        class_no = #{classNo}
+    </delete>
+
+    <delete id="deleteAllSchoolClass" parameterType="int">
+        DELETE FROM school_classes WHERE school_no=#{value}
+    </delete>
+
+    <delete id="deleteAllSchoolClassUser" parameterType="int">
+        DELETE FROM class_users WHERE school_no=#{value}
+    </delete>
 </mapper>

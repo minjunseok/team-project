@@ -14,202 +14,259 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-  
-  <!-- 공통 헤더 적용 첨부 -->
-  <!-- <link rel="stylesheet" href="/static/admin/css/header.css"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
-        rel="stylesheet"> -->
-<style>
-  /* black 모달에만 적용되는 스타일 */
-  #black .modal-dialog {
-    max-width: 600px; /* 모달 창의 최대 너비를 지정 */
+
+
+  <style>
+    /* 공통 스타일 */
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      margin-top: 50px;
+      margin-bottom: 30px;
+
+    }
+    .menu-item {
+      margin-top: 20px;
+      cursor: pointer;
+      padding: 15px 0;
+      color: #fff;
+      border-radius: 30px;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    .menu-item:hover {
+      transform: scale(1.1);
+    }
+    .item {
+      background-color: rgb(158, 137, 106);
+    }
+
+    /* 모달 스타일 */
+    .modal-header {
+      background-color: rgb(158, 137, 106);
+      color: #fff;
+      border-bottom: none;
+    }
+
+    .modal-content {
+      background-color: #f8f9fa;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    }
+
+    .modal-body {
+      padding: 20px;
+
+    }
+
+    .modal-title {
+      font-weight: bold;
+    }
+
+    /* 테이블 스타일 */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      color: black;
+    }
+
+    /* 버튼 스타일 */
+    .btn {
+      border-radius: 20px;
+      padding: 8px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-outline-danger {
+      color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .btn-outline-danger:hover {
+      background-color: #dc3545;
+      color: #fff;
+    }
+
+    .btn-outline-success {
+      color: #28a745;
+      border-color: #28a745;
+    }
+
+    .btn-outline-success:hover {
+      background-color: #28a745;
+      color: #fff;
+    }
+
+    .btn-close {
+      color: #fff;
+      opacity: 1;
+      font-size: 22px;
+    }
+
+  /* 체크된 라디오 버튼 스타일 */
+  .btn-group > input[type="radio"]:checked + label.custom-btn {
+    background-color: rgb(158, 137, 106);
+    color: white;
+    border-color: rgb(158, 137, 106);
+
   }
 
-  #black .modal-header {
-    padding: 1rem; /* 모달 헤더의 내부 여백을 추가 */
+  /* 마우스를 올렸을 때 스타일 */
+  .btn-group > input[type="radio"]:hover + label.custom-btn {
+    border-color: rgb(158, 137, 106);
+    background-color: rgba(158, 137, 106, 0.1); /* 마우스를 올렸을 때 배경색 지정 */
+    color: black;
   }
 
-  #black .modal-body {
-    padding: 1rem; /* 모달 바디의 내부 여백을 추가 */
+  /* 버튼이 눌렸을 때 스타일 */
+  .btn-group > input[type="radio"]:active + label.custom-btn {
+    border-color: rgb(158, 137, 106);
+    background-color: rgba(158, 137, 106, 0.3); /* 버튼이 눌렸을 때 배경색 지정 */
+    color: black;
   }
 
-  #black .modal-content {
-    border-radius: 10px; /* 모달 컨텐츠의 모서리를 둥글게 만듭니다. */
+  /* 기본 스타일 */
+  .custom-btn {
+    color: rgb(158, 137, 106); /* 버튼 내 텍스트 색상 */
+    border-color: transparent;
+    background-color: transparent;
   }
 
-  #black table {
-    width: 100%; /* 테이블을 모달 바디의 가로 너비에 맞춥니다. */
-    border-collapse: collapse; /* 테이블 셀의 경계를 병합하여 깔끔하게 만듭니다. */
-  }
 
-  #black th, #black td {
-    padding: 0.5rem; /* 테이블 셀의 내부 여백을 추가합니다. */
-    text-align: center; /* 테이블 내용을 가운데 정렬합니다. */
-  }
-
-  /* submit 모달에만 적용되는 스타일 */
-  #submit .modal-dialog {
-    max-width: 600px; /* 모달 창의 최대 너비를 지정 */
-  }
-
-  #submit .modal-header {
-    padding: 1rem; /* 모달 헤더의 내부 여백을 추가 */
-  }
-
-  #submit .modal-body {
-    padding: 1rem; /* 모달 바디의 내부 여백을 추가 */
-  }
-
-  #submit .modal-content {
-    border-radius: 10px; /* 모달 컨텐츠의 모서리를 둥글게 만듭니다. */
-  }
-
-  #submit table {
-    width: 100%; /* 테이블을 모달 바디의 가로 너비에 맞춥니다. */
-    border-collapse: collapse; /* 테이블 셀의 경계를 병합하여 깔끔하게 만듭니다. */
-  }
-
-  #submit th, #submit td {
-    padding: 0.5rem; /* 테이블 셀의 내부 여백을 추가합니다. */
-    text-align: center; /* 테이블 내용을 가운데 정렬합니다. */
-  }
-
-  
-
-    
-</style>
-
+  </style>
 
 </head>
 <body>
 
-<!--<div data-th-replace="header :: header">머리말</div>-->
-
 <div class="container">
   <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 text-center">
+      <div class="menu-item item" id="school_setting" onclick="schoolForm()">스쿨 정보 수정</div>
+      <div class="menu-item item" id="user_setting" onclick="modal1()">회원 관리</div>
+      <div class="menu-item item" id="submit_setting" onclick="modal2()">블랙리스트 관리</div>
+      <div class="menu-item item" id="black_setting" onclick="modal3()">가입 승인 관리</div>
+      <div class="menu-item item" id="private_setting" onclick="modal4()">공개 여부</div>
+      <div class="menu-item item" id="school_delete" onclick="schoolDeleteForm()">스쿨 삭제</div>
     </div>
-    <div class="col-md-8" style="text-align:center;" id="">
-      <div id="school_setting" onclick="schoolForm()">스쿨 정보 수정</div>
-      <div id="user_setting" onclick="modal1()">회원 관리</div>
-      <div id="submit_setting" onclick="modal2()">블랙리스트 관리</div>
-      <div id="black_setting" onclick="modal3()">가입 승인 관리</div>
-      <div id="private_setting" onclick="modal4()">공개여부</div>
-      <div id="school_statistics" onclick="modal5()">스쿨 통계</div>
-      <div id="school_delete" onclick="schoolDeleteForm()">스쿨 삭제</div>
-      <!-- modal member list -->
-      <div class="modal" id="member">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">회원 관리</h5>
-              <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-              <table>
-                <thead>
-                <tr>
-                  <th>사진</th>
-                  <th>닉네임</th>
-                  <th>등급</th>
-                  <th>부 매니저 관리</th>
-                  <th>블랙리스트 추가</th>
-                </tr>
-                </thead>
-                <tbody id="member-list">
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="submit">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">가입 승인 관리</h5>
-              <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-              <table>
-                <thead>
-                <tr>
-                  <th>사진</th>
-                  <th>닉네임</th>
-                  <th>승인/거절</th>
-                </tr>
-                </thead>
-                <tbody id="submit-list">
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="black">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">블랙리스트 관리</h5>
-              <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-              <table>
-                <thead>
-                <tr>
-                  <th>사진</th>
-                  <th>닉네임</th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody id="black-list">
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal" id="openClosed">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">회원 관리</h5>
-              <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-              <table>
-                <tbody id="openClosed-check">
-                <input class="openClosed" name="openClosed" id="open" type="radio" value=1>공개
-                <input class="openClosed" name="openClosed" id="closed" type="radio" value=0>비공개
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div data-th-replace="school/modal/school :: school-modal">스쿨 변경</div>
-      <div data-th-replace="school/modal/delete :: school-modal">스쿨 삭제</div>
-
-    </div>
-
-
-  </div>
-  <div class="col-md-2" style="text-align:center;">
+    <div class="col-md-2"></div>
   </div>
 </div>
+
+<div class="modal fade" id="member">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">회원 관리</h5>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+      </div>
+      <div class="modal-body">
+        <table>
+          <thead>
+          <tr>
+            <th>사진</th>
+            <th>닉네임</th>
+            <th>등급</th>
+            <th>부 매니저 관리</th>
+            <th>블랙리스트 추가</th>
+          </tr>
+          </thead>
+          <tbody id="member-list">
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
+<div class="modal fade" id="submit">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">가입 승인 관리</h5>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+      </div>
+      <div class="modal-body">
+        <table>
+          <thead>
+          <tr>
+            <th>사진</th>
+            <th>닉네임</th>
+            <th>승인/거절</th>
+          </tr>
+          </thead>
+          <tbody id="submit-list">
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="black">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">블랙리스트 관리</h5>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+      </div>
+      <div class="modal-body">
+        <table>
+          <thead>
+          <tr>
+            <th>사진</th>
+            <th>닉네임</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody id="black-list">
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="openClosed">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">공개여부</h5>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+      </div>
+      <div class="modal-body">
+        <div class="btn-group" role="group" aria-label="공개여부">
+          <input class="btn-check openClosed" type="radio" name="openClosed" id="open" value="1">
+          <label class="btn btn-outline-primary custom-btn" for="open">공개</label>
+        </div>
+        <div class="btn-group" role="group" aria-label="공개여부">
+          <input class="btn-check openClosed" type="radio" name="openClosed" id="closed" value="0">
+          <label class="btn btn-outline-primary custom-btn" for="closed">비공개</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-th-replace="school/modal/school :: school-modal">스쿨 변경</div>
+<div data-th-replace="school/modal/delete :: school-modal">스쿨 삭제</div>
 
 <script>
   const modal1 = () => {
@@ -231,6 +288,7 @@
       const myModal = new bootstrap.Modal(document.getElementById('openClosed'), {})
       myModal.show();
   }
+
 
   $(document).on('click', '.auth', function() {
       const queryString = window.location.search;
@@ -268,8 +326,6 @@
       });
   });
 
-
-
   $(document).on('click', '.black', function() {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
@@ -302,8 +358,6 @@
     })
   })
 
-
-
   $(document).on('click', '.approve', function() {
       const queryString = window.location.search;
       const params = new URLSearchParams(queryString);
@@ -331,8 +385,6 @@
       });
   });
 
-
-
   $(document).on('click', '.reject', function() {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
@@ -354,11 +406,18 @@
       const params = new URLSearchParams(queryString);
       const schoolNo = params.get('schoolNo');
       const openRange = $(this).val()
+
       axios.post("admin/openClosed", {
         schoolNo,
         openRange
-      })
+      }).then(() => {
+        console.log(openRange);
+        openClosedCheck(); // 값 변경 후에 openClosedCheck 함수 호출하여 라디오 버튼 업데이트
+      }).catch((error) => {
+        console.error('Error:', error);
+      });
   })
+
 
   function userList() {
     const queryString = window.location.search;
@@ -415,20 +474,21 @@
           text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
           text += "<td><img src='https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/" + d.member.photo + "?type=f&w=80&h=80' alt='사진'></td>";
           text += "<th>"+d.member.nickname+"</th>"
-          text += "<th><button class='btn btn-outline-success btn-sm approve'>승인</button></th>"
-          text += "<th><button class='btn btn-outline-danger btn-sm reject'>거절</button></th></tr>"
+          text += "<th><button class='btn btn-outline-success btn-sm approve'>승인</button>"
+          text += "<button class='btn btn-outline-danger btn-sm reject'>거절</button></th></tr>"
          $("#submit-list").append(text)
         }
       })
-  }
+    }
 
   function openClosedCheck() {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
     const schoolNo = params.get('schoolNo');
+
     axios.get("admin/openClosedCheck?schoolNo="+schoolNo)
-    .then((e) => {
-      const openRange = e.data.openRange
+    .then((response) => {
+      const openRange = response.data.openRange
       if(openRange===1) {
         $("#open").prop("checked", true)
       } else if(openRange===0) {
@@ -443,8 +503,7 @@
           submitList();
           openClosedCheck();
   });
-
-
 </script>
+
 </body>
 </html>

@@ -5,12 +5,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>모여라</title>
 
-
 </head>
 <body>
 
 <div class="modal" id="schoolInfoModal" data-th-fragment="school-modal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form data-th-object="${school}" id="schoolInfoForm" enctype="multipart/form-data">
                 <input type="hidden" id="schoolNo" name="schoolNo" value="">
@@ -41,16 +40,19 @@
                         <input type="file" id="school_photo" name="photo" accept="image/*" class="form-control"  required/>
 
                     </div>
+
                     <div class="mb-3">
                         <h5>스쿨 설명</h5>
                         <label for="school_content" class="form-label"></label>
                         <textarea id="school_content" class="form-control" name="school_content"></textarea>
                     </div>
+
                     <div id="school_tags" class="mb-3">
                         <h5>스쿨 관심사</h5>
                         <label class="form-label"></label>
 
                         <div class="tag-checkboxes" id="tag-checkboxes">
+                            <div class="form-check">
                             <tr data-th-each="tag : ${tags}">
                                 <td>
                                     <input data-th-checkbox="true"
@@ -64,6 +66,7 @@
                                 </data-th-block>
                             </tr>
                         </div>
+                        </div>
                     </div>
                 </div>
                 <!--                <button class="btn btn-primary">업데이트</button>-->
@@ -71,6 +74,7 @@
             </form>
         </div>
     </div>
+
 
 
     <script>
@@ -194,7 +198,6 @@
                         setTimeout(function() {
                             window.location.reload();
                         }, 2000);
-                        //window.location.reload();
                     } else {
                         console.error('Error updating school information:', response.data.error);
                         // 오류 처리 코드 추가

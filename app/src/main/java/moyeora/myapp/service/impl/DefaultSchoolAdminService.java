@@ -1,11 +1,10 @@
 package moyeora.myapp.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.dao.SchoolDao;
-import moyeora.myapp.dao.SchoolTagDao;
-import moyeora.myapp.dao.SchoolUserDao;
+import moyeora.myapp.dao.*;
 import moyeora.myapp.dto.school.admin.SchoolMemberUpdateRequestDTO;
 import moyeora.myapp.dto.school.admin.SchoolOpenRangeUpdateRequestDTO;
+import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
 import moyeora.myapp.service.SchoolAdminService;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
@@ -20,6 +19,8 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
   private final SchoolUserDao schoolUserDao;
   private final SchoolDao schoolDao;
   private final SchoolTagDao schoolTagDao;
+  private final SchoolClassDao schoolClassDao;
+  private final PostDao postDao;
 
   public List<SchoolUser> findUserBySchoolNo(int schoolNo,int levelNo) {
     return schoolUserDao.findUserBySchoolNo(schoolNo,levelNo);
@@ -102,17 +103,29 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
   }
 
 
+
   @Override
   public int deleteSchool(int schoolNo) {
     int rowsAffected = 0;
-    // school_users 테이블에서 해당 학교의 데이터 삭제
-    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@user");
-    rowsAffected += schoolUserDao.deleteSchoolUsers(schoolNo);
-    // school_tags 테이블에서 해당 학교의 데이터 삭제
-    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@tag");
+    //  해당 스쿨 GM 삭제
+    rowsAffected += schoolDao.deleteSchoolGm(schoolNo);
+
+    // 해당 스쿨 태그 삭제
     rowsAffected += schoolTagDao.deleteSchoolTags(schoolNo);
-    // schools 테이블에서 해당 학교의 데이터 삭제
-    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@sc");
+
+    // 해당 스쿨 클래스 유저 삭제
+    rowsAffected += schoolClassDao.deleteAllSchoolClassUser(schoolNo);
+
+    // 해당 스쿨 클래스 삭제
+    rowsAffected += schoolClassDao.deleteAllSchoolClass(schoolNo);
+
+    // 해당 스쿨 포스트 삭제
+    rowsAffected += postDao.deleteAllSchoolPost(schoolNo);
+
+    // 해당 학교 유저 삭제
+    rowsAffected += schoolUserDao.deleteSchoolUsers(schoolNo);
+
+    // 해당 학교 삭제
     rowsAffected += schoolDao.deleteSchool(schoolNo);
 
     return rowsAffected;
