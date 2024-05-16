@@ -309,16 +309,15 @@
 												>닉네임</span
 											>
 										</div>
-										<div data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">
-											작성일
+										<div data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</div>
+
+										<div
+											class="mt-3"
+											data-th-utext="*{content}"
+											data-th-data-no="*{no}"
+										>
+											content
 										</div>
-										
-									<div
-										class="mt-3"
-										data-th-utext="*{content}"
-										data-th-data-no="*{no}"
-									>
-										content
 									</div>
 								</div>
 							</div>
