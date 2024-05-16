@@ -30,6 +30,8 @@ where
      class_no = #{classNo}
      and
      school_no = #{schoolNo}
+     and
+     user_no = #{userNo}
 </delete>
 
 <insert id="insert">

@@ -108,6 +108,8 @@
     let loginUser = [[${loginUser}]];
     let isReadonly;
     let classUserNo;
+    let member;
+    let nowMemberCount;
 
     window.onload = function() {
     
@@ -235,6 +237,10 @@
                     console.log(responseData.endedAt);
                     console.log(endedAt3);
                     
+                    member = responseData.member;
+                    nowMemberCount = responseData.nowMemberCount;
+                    console.log(member);
+                    console.log(nowMemberCount);
                     schoolNo = responseData.schoolNo;
                     classUserNo =  response.data.schoolClass.userNo;
                    
