@@ -30,11 +30,13 @@ public class ChatController {
     private final UserService userService;
     private final FileUploadHelper storageService;
 
-    private String gmUploadDir = "gm/";
-    private String dmUploadDir = "dm/";
-
     @Value("${ncp.storage.bucket}")
     private String bucketname;
+    @Value("${ncp.storage.endpoint}")
+    private String endpoint;
+
+    private String gmUploadDir = "gm/";
+    private String dmUploadDir = "dm/";
 
     @GetMapping("chatTest")
     public String chatTestForm(Model model, int sender, int receiver) {
@@ -122,9 +124,25 @@ public class ChatController {
         log.info("메세지 전송 성공");
     }
 
-    @GetMapping("chatList")
+    @GetMapping("gmListOnlyLast")
     @ResponseBody
-    public List<Object> getChatList(int no) {
-        return new ArrayList<>();
+    public List<Gm> GmListOnlyLast(int no) {
+        List<Gm> list = chatService.getGmListOnlyLast(no);
+        String ncdPath = this.bucketname + "/" + this.endpoint;
+        for (Gm gm : list) {
+            gm.setFilePath(ncdPath + "/" + gmUploadDir);
+        }
+        return list;
+    }
+
+    @GetMapping("dmListOnlyLast")
+    @ResponseBody
+    public List<Dm> DmListOnlyLast(int no) {
+        List<Dm> list = chatService.getDmListOnlyLast(no);
+        String ncdPath = this.bucketname + "/" + this.endpoint;
+        for (Dm dm : list) {
+            dm.setFilePath(ncdPath + "/" + dmUploadDir);
+        }
+        return list;
     }
 }

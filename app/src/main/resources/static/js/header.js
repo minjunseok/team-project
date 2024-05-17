@@ -1,5 +1,4 @@
 var user = loginUser;
-var alerts = "";
 console.log("header.js");
 console.log(user);
 
@@ -20,13 +19,15 @@ stompClient.onConnect = (frame) => {
 
 function setAlert(alert) {
   console.log(alert);
-  const li = "<li class='notificationItem'><a class='notificationLink' onclick=update('" + alert.redirectPath + "'," + alert.alertNo + ");>" + alert.name + "</a></li>"
+  const li = "<li class='notificationItem'><a class='notificationLink' onclick=updateAlert('" + alert.redirectPath + "'," + alert.alertNo + ");>" + alert.name + "</a></li>"
   $(li).prependTo("#notificationList");
 }
 
 document.addEventListener("DOMContentLoaded", function() {
   var notificationToggle = document.getElementById("notificationToggle");
   var notificationContent = document.getElementById("notification");
+  var uChatToggle = document.getElementById("uChatToggle");
+  var uChatContent = document.getElementById("uChat");
   var uMenuToggle = document.getElementById("uMenuToggle");
   var uMenuContent = document.getElementById("uMenu");
 
@@ -37,9 +38,15 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   if ( uMenuToggle != null ) {
+    uChatToggle.addEventListener("click", function() {
+      uChatContent.style.display = uChatContent.style.display === "block" ? "none" : "block";
+    });
+  }
+
+  if ( uMenuToggle != null ) {
     uMenuToggle.addEventListener("click", function() {
     	uMenuContent.style.display = uMenuContent.style.display === "block" ? "none" : "block";
-      });
+    });
   }
 
 
@@ -48,6 +55,9 @@ document.addEventListener("DOMContentLoaded", function() {
 	if (event.target !== notificationToggle && !notificationContent.contains(event.target)) {
 	    notificationContent.style.display = "none";
 	}
+	if (event.target !== uChatToggle && !uChatContent.contains(event.target)) {
+       uChatContent.style.display = "none";
+    }
 	if (event.target !== uMenuToggle && !uMenuContent.contains(event.target)) {
 	    uMenuContent.style.display = "none";
     }
@@ -60,14 +70,14 @@ function loadAlert() {
     url: "/alert/list?no=" + user.no,
     data: {},
     success: function (response) {
-      alerts = response;
+      let alerts = response;
       for(key in alerts) {
         let dateTime = alerts[key].createdAt.substring(0, 10) + " " + alerts[key].createdAt.substring(12, 16);
         let thumbnailImg = alerts[key].photo != null && alerts[key].photo.length > 0 ? "<img class='thumbnailImg' src=" + alerts[key].filePath + alerts[key].photo + " onerror=thumbnailImgError(this)>" : "";
         let notificationItem = alerts[key].isRead == "1" ? "<li class='notificationItem'>" : "<li class='notificationItem unread'>";
         $("#notificationList").append(
         notificationItem +
-            "<a class='notificationLink' onclick=update('" + alerts[key].redirectPath + "'," + alerts[key].alertNo + ");>" +
+            "<a class='notificationLink' onclick=updateAlert('" + alerts[key].redirectPath + "'," + alerts[key].alertNo + ");>" +
                 "<div class='notificationThumbnail'>" +
                     "<div class='thumbnailInner'>" +
                         "<span class='thumbnailItem'>" + thumbnailImg + "</span>" +
@@ -92,21 +102,42 @@ function loadAlert() {
   })
 }
 
-function loadChat() {
+function loadChatGm() {
   $.ajax({
     type: "GET",
-    url: "/chat/chatList?no=" + user.no,
+    url: "/gmListOnlyLast?no=" + user.no,
     data: {},
-    success: function () {
-      location.href=url;
+    success: function (result) {
+      console.log("gmListOnlyLast success");
+      console.log(result);
+      for(key in result) {
+        console.log(result[key].message)
+        $("#gmList").append(
+        let thumbnailImg = "<img class='thumbnailImg' src=" + result[key].filePath + result[key].school.photo + " onerror=thumbnailImgError(this)>" : "";
+        let notificationItem = result[key].isRead == "1" ? "<li class='notificationItem'>" : "<li class='notificationItem unread'>";
+        );
+      }
     }
   })
 }
 
-function update(url,no) {
+function loadChatDm() {
   $.ajax({
     type: "GET",
-    url: "/ChatList?no=" + user.no,
+    url: "/dmListOnlyLast?no=" + user.no,
+    data: {},
+    success: function (result) {
+      console.log("dmListOnlyLast success");
+      console.log(result);
+      for(key in result) { console.log(result[key].message)}
+    }
+  })
+}
+
+function updateAlert(url,no) {
+  $.ajax({
+    type: "GET",
+    url: "/alert/update?no=" + no,
     data: {},
     success: function () {
       location.href=url;
@@ -123,8 +154,9 @@ function updateAlerts() {
     type: "GET",
     url: "/alert/updateAll?no=" + user.no,
     data: {},
-    success: function () {
+    success: function (result) {
       console.log("updateAll success");
+      console.log(result);
     }
   })
 }
@@ -133,7 +165,8 @@ $(function () {
     if ( user != null ) {
         connect();
         loadAlert();
-        loadChat();
+        loadChatGm();
+        loadChatDm();
     }
     $( "#readAll" ).click(() => updateAlerts());
 });

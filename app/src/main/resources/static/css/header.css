@@ -45,19 +45,26 @@
     color: #0066ff;
 }
 
-.notificationHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 54px;
-    padding: 0 18px 0 22px;
-}
-
 .headerWidgetArea > img {
     width: 30px; /* Adjust icon size */
     height: auto;
     cursor: pointer;
+
 }
+
+.headerIcon {
+    width: 25px; /* Adjust icon size */
+    height: auto;
+    cursor: pointer;
+    margin-left: 16px;
+}
+
+.headerIcon:hover {
+    color: #cbbca7;
+}
+
+
+
 
 .headerWidgetArea {
     display: flex;
@@ -67,6 +74,7 @@
     display: flex;
     align-items: center;
     position: relative;
+    margin-bottom: 0;
 }
 
 .headerWidgetArea .widgetItem .btnTextStyle {
@@ -82,6 +90,11 @@
     line-height: 29px;
     text-decoration: none;
     border: 1px solid transparent;
+}
+
+.headerWidgetArea .widgetItem .btnTextStyle:hover {
+    color: white;
+    background-color: #cbbca788;
 }
 
 .chatIcon {
@@ -106,6 +119,19 @@
     z-index: 1000;
 }
 
+/*#notification {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 1000;
+    width: 300px; *//* Set a specific width *//*
+}*/
+
 .toggleContent ul {
     list-style: none;
     padding: 0;
@@ -115,6 +141,14 @@
 .toggleContent li {
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+.toggleContent ul li a {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding-right: 20px;
+    cursor: pointer;
 }
 
 .toggleContent a {
@@ -140,7 +174,12 @@
     width: 300px; /* Set a specific width */
 }
 
-.notificationHeader {
+.toggleContent > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 54px;
+    padding: 0 18px 0 22px;
 }
 
 
@@ -159,8 +198,7 @@
 }
 
 .actionArea > div:hover {
-    background-color: yellow;
-    opacity: 0.33;
+    background-color: #cbbca788;
 }
 
 .notificationWrap {
@@ -177,6 +215,10 @@
 }
 
 #notificationList {
+
+}
+
+.toggleContent > ul {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -189,16 +231,16 @@
     background-color: yellow;
 }
 
-.notificationLink {
+/*.notificationLink {
     display: flex;
     width: 100%;
     align-items: center;
     padding-right: 20px;
     cursor: pointer;
-}
+}*/
 
 .notificationLink:hover{
-    background-color: red;
+    background-color: #cbbca788;
 }
 
 .notificationThumbnail {
@@ -238,6 +280,8 @@
     flex: 1 1 auto;
     width: 100%;
     overflow: hidden;
+    margin-top: 1rem;
+
 }
 
 .notificationInfo {
@@ -297,7 +341,6 @@
     color: #999;
     display: flex;
     align-items: center;
-    margin: 4px 0 0 10px;
     line-height: 1.16;
 }
 

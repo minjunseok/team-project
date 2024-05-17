@@ -1,11 +1,12 @@
 package moyeora.myapp.dao;
 
 
-import java.util.List;
 import moyeora.myapp.vo.Dm;
 import moyeora.myapp.vo.DmRoom;
 import moyeora.myapp.vo.Gm;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 
 @Mapper
@@ -26,5 +27,9 @@ public interface ChatDao {
   DmRoom findDmRoomByNo(int no);
 
   DmRoom findDmRoomByUserNo(int user1, int user2);
+
+  List<Gm> getGmListOnlyLast(int no);
+
+  List<Dm> getDmListOnlyLast(int no);
 
 }

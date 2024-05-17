@@ -5,52 +5,90 @@
     <title>moyeora - 모여라에서 취미가 맞는 친구를 사귀어 보세요!</title>
 </head>
 <body>
-    <div th:fragment="header" class="header">
-        <header>
-            <div class="headerInner">
-                <div class="logoArea">
-                    <a data-th-href="@{/index}">
-                        <img data-th-src="@{/img/moyeoraL.jpeg}" alt="moyeora logo"/>
-                    </a>
-                </div>
-                <ul class="mainMenu">
-                    <li class="mainMenuItem" sec:authorize="isAnonymous()"><a data-th-href="@{/auth/form}">로그인</a></li>
-                </ul>
-                <div class="headerWidgetArea" sec:authorize="isAuthenticated()">
-                    <ul class="widgetList">
-                        <li class="widgetItem"><a class="btnTextStyle" data-th-href="@{/mypage/mypost}">관리자 페이지</a></li>
-                        <li class="widgetItem"><a class="btnTextStyle" data-th-href="@{/mypage/mypost}">피드</a></li>
-                    </ul>
-                    <img id="notificationToggle" class="notificationIcon" data-th-src="@{/img/notifications_20dp_FILL1_wght400_GRAD0_opsz20.png}" alt="no image">
-                    <article id="notification" class="toggleContent">
-                        <header class="notificationHeader">
-                            <h4 class="notificationHeaderTitle">내 소식</h4>
-                            <div class="actionArea">
-                                <div id="listLink" class="alerts">
-                                    <span>전체 보기</span>
-                                </div>
-                                <div id="readAll" class="readAll">
-                                    <span>모두 읽음</span>
-                                </div>
-                            </div>
-
-                        </header>
-                        <div class="notificationWrap"><ul id="notificationList"></ul></div>
-                    </article>
-                    <div></div>
-                    <img id="chatList" class="chatIcon" data-th-src="@{/img/chat_24dp_FILL0_wght400_GRAD0_opsz24.png}" alt="no image">
-                    <img id="uMenuToggle" data-th-src="@{/img/account_circle_24dp_FILL1_wght400_GRAD0_opsz24.png}" alt="no image">
-                    <article id="uMenu" class="toggleContent">
-                        <ul>
-                            <li class="uMenuItem"><a data-th-href="@{/auth/logout}">로그아웃</a></li>
-                            <li class="uMenuItem"><a data-th-href="@{/mypage}"> 마이페이지</a></li>
-                            <li class="uMenuItem"><a data-th-href="@{/payment/form}">정기구독하기</a></li>
-                        </ul>
-                    </article>
-                </div>
+<div th:fragment="header" class="header">
+    <header>
+        <div class="headerInner">
+            <div class="logoArea">
+                <a data-th-href="@{/index}">
+                    <img data-th-src="@{/img/moyeoraL.jpeg}" alt="moyeora logo"/>
+                </a>
             </div>
-        </header>
-    </div>
+            <ul class="mainMenu">
+                <li class="mainMenuItem" sec:authorize="isAnonymous()"><a data-th-href="@{/auth/form}">로그인</a></li>
+            </ul>
+            <div class="headerWidgetArea" sec:authorize="isAuthenticated()">
+                <ul class="widgetList">
+                    <li class="widgetItem"><a class="btnTextStyle" data-th-href="@{/mypage/mypost}">관리자 페이지</a></li>
+                    <li class="widgetItem"><a class="btnTextStyle" data-th-href="@{/mypage/mypost}">피드</a></li>
+                </ul>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-bell-fill headerIcon" viewBox="0 0 16 16">
+                    <path id="notificationToggle"
+                          d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
+                </svg>
+                <!--                    <img id="notificationToggle" class="notificationIcon" data-th-src="@{/img/notifications_20dp_FILL1_wght400_GRAD0_opsz20.png}" alt="no image">-->
+                <article id="notification" class="toggleContent">
+                    <header class="notificationHeader">
+                        <h5 class="notificationHeaderTitle">내 소식</h5>
+                        <div class="actionArea">
+                            <div id="listLink" class="alerts">
+                                <span>전체 보기</span>
+                            </div>
+                            <div id="readAll" class="readAll">
+                                <span>모두 읽음</span>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="notificationWrap">
+                        <ul id="notificationList" class="notificationList"></ul>
+                    </div>
+                </article>
+
+                <div id="uChatToggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-chat-left-text headerIcon" viewBox="0 0 16 16">
+                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                    <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+                </svg>
+                </div>
+                <!--                    <img id="uChat" class="chatIcon" data-th-src="@{/img/chat_24dp_FILL0_wght400_GRAD0_opsz24.png}" alt="no image">-->
+                <!--                    <img  data-th-src="@{/img/account_circle_24dp_FILL1_wght400_GRAD0_opsz24.png}" alt="no image">-->
+                <article id="uChat" class="toggleContent">
+                    <header class="uChatHeader">
+                        <h5 class="uChatHeaderTitle">채팅</h5>
+                        <div class="actionArea">
+                            <div id="chatReadAll" class="readAll">
+                                <span>모두 읽음</span>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="uChatWrap">
+                        <div class="uChatGroup">
+                            <span class="uChatWrap">내 채팅</span>
+                            <ul id="dmList" class="uChatList"><li class="uChatItem">test text</li></ul>
+                        </div>
+                        <div class="uChatGroup">
+                            <span>스쿨 채팅</span>
+                            <ul id="gmList" class="uChatList"><li class="uChatItem">test text</li></ul>
+                        </div>
+                    </div>
+                </article>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-person-circle headerIcon" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                    <path id="uMenuToggle" fill-rule="evenodd"
+                          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                </svg>
+                <article id="uMenu" class="toggleContent">
+                    <div class="list-group list-group-flush">
+                        <a data-th-href="@{/auth/logout}" class="list-group-item list-group-item-action">로그아웃</a>
+                        <a data-th-href="@{/mypage}" class="list-group-item list-group-item-action"> 마이페이지</a>
+                        <a data-th-href="@{/payment/form}" class="list-group-item list-group-item-action">정기구독하기</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </header>
+</div>
 </body>
 </html>
-

@@ -8,7 +8,6 @@
     <!--resultMap-->
     <resultMap id="gmMap" type="Gm">
         <id column="gm_no" property="no"/>
-        <result column="school_no" property="schoolNo"/>
         <result column="message" property="message"/>
         <result column="photo" property="photo"/>
         <result column="created_at" property="sendDate"/>
@@ -17,6 +16,12 @@
             <result column="name" property="name"/>
             <result column="nickname" property="nickname"/>
             <result column="photo" property="photo"/>
+        </association>
+        <association property="school" javaType="School">
+            <id column="school_no" property="no"/>
+            <result column="name" property="name"/>
+            <result column="photo" property="photo"/>
+            <result column="open_range" property="openRange"/>
         </association>
     </resultMap>
 
@@ -49,31 +54,63 @@
 
     <!--Gm-->
     <insert id="saveGm" parameterType="Gm">
-        insert into gm(school_no, user_no, message, photo, created_at)
-        values(#{schoolNo}, #{sender.no} ,#{message} ,#{photo} ,#{sendDate})
+        insert into gm(school_no, user_no, message, photo)
+        values(#{school.no}, #{sender.no} ,#{message} ,#{photo})
     </insert>
 
     <select id="findGmListBySchoolNo" resultMap="gmMap" parameterType="int">
         select
             g.gm_no,
-            g.school_no,
             g.message,
             g.photo,
             g.created_at,
             u.user_no,
             u.name,
             u.nickname,
-            u.photo
+            u.photo,
+            sc.school_no,
+            sc.name,
+            sc.photo,
+            sc.open_range
         from
             gm g inner join users u on g.user_no=u.user_no
+            inner join schools sc
         where
-            g.school_no = #{value}
+            sc.school_no = #{value}
+    </select>
+
+    <select id="getGmListOnlyLast" resultMap="gmMap" parameterType="int">
+        select
+            g.gm_no,
+            g.message,
+            g.photo,
+            g.created_at,
+            u.user_no,
+            u.name,
+            u.nickname,
+            u.photo,
+            sc.school_no,
+            sc.name school_name,
+            sc.photo school_photo,
+            sc.open_range
+        from
+            gm g
+            inner join schools sc on sc.school_no=g.school_no
+            inner join school_users su on g.school_no=su.school_no
+            inner join users u on su.user_no=u.user_no
+        JOIN (
+            select
+            max(gm_no) as 'max_no'
+            FROM gm
+            group by school_no
+        ) sq on (g.gm_no  = sq.max_no)
+        where su.user_no = #{value}
     </select>
 
     <!--Dm-->
     <insert id="saveDm" parameterType="Dm">
-        insert into dm(user_no2, user_no, message, photo, created_at, room_no)
-        values(#{sender.no}, #{receiver.no} ,#{message} ,#{photo} ,#{sendDate}, #{roomNo})
+        insert into dm(user_no2, user_no, message, photo, room_no)
+        values(#{sender.no}, #{receiver.no} ,#{message} ,#{photo} , #{roomNo})
     </insert>
 
     <select id="findDmListBySenderAndReceiver" resultMap="dmMap" parameterType="int">
@@ -140,6 +177,22 @@
             room_no = #{value}
     </select>
 
+    <select id="getDmListOnlyLast" resultMap="dmMap" parameterType="int">
+        select
+            *
+        from (
+            select *
+            from dm
+            where (room_no, dm_no) in (
+                select room_no, MAX(dm_no) as dm_no
+                from dm
+                where user_no=#{value} or user_no2=#{value}
+                group by room_no
+            )
+        order by dm_no desc) d
+        group by d.room_no;
+    </select>
+
     <!--DmRoom-->
     <insert id="addDmRoom" parameterType="DmRoom" useGeneratedKeys="true" keyColumn="room_no" keyProperty="no">
         insert into dm_room(user_no, user_no2)
@@ -163,6 +216,4 @@
         where
             (user_no = #{user1} and user_no2 = #{user2}) or (user_no = #{user2} and user_no2 = #{user1})
     </select>
-
-
 </mapper>

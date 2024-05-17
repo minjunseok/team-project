@@ -45,6 +45,13 @@ public class DefaultChatService {
 
     public DmRoom getDmRoom(int sender, int receiver) {
         return chatDao.findDmRoomByUserNo(sender,receiver);
+    }
 
+    public List<Gm> getGmListOnlyLast(int no) {
+        return chatDao.getGmListOnlyLast(no);
+    }
+
+    public List<Dm> getDmListOnlyLast(int no) {
+        return chatDao.getDmListOnlyLast(no);
     }
 }

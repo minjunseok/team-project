@@ -53,7 +53,6 @@
   var chatList = [[${chatList}]]
   var room = [[${room}]]
   var photo = "";
-  var sendDate = "";
 
   var dmFilePath = "https://kr.object.ncloudstorage.com/moyeorastorage/dm/";
   var dmFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/dm/";
@@ -116,7 +115,6 @@
           receiver : {no : receiver.no, nickname:receiver.nickname},
           message : $("#message").val(),
           photo : "",
-          sendDate : moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
           roomNo : room.no
       }
       console.log(dm);
@@ -144,7 +142,6 @@
               'receiver': {no : result.receiver.no},
               'message': result.message,
               'photo': result.photo,
-              'sendDate': moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
               'roomNo': room.no,
             })
           });

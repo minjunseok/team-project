@@ -53,12 +53,12 @@
   var sender = [[${sender}]];
   var chatList = [[${chatList}]];
   var photo = "";
-  var sendDate = "";
 
   console.log(chatList);
 
  var gmFilePath = "https://kr.object.ncloudstorage.com/moyeorastorage/gm/";
  var gmFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/gm/";
+ var fileSize_40 = "?type=f&w=40&h=40";
 
   function connect() {
       stompClient.activate();
@@ -110,11 +110,10 @@
 
   function sendMessage() {
       let gm = {
-          schoolNo : schoolNo,
+          schoolNo : {no : schoolNo},
           sender : {no : sender.no, nickname : sender.nickname},
           message : $("#message").val(),
-          photo : "",
-          sendDate : moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+          photo : ""
       }
 
       let formData = new FormData();
@@ -136,11 +135,10 @@
             stompClient.publish({
             destination: "/pub/gm",
             body: JSON.stringify({
-              'schoolNo': result.schoolNo,
+              'schoolNo': {no : result.school.no},
               'sender': {no : result.sender.no, nickname : sender.nickname},
               'message': result.message,
-              'photo': result.photo,
-              'sendDate': moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+              'photo': result.photo
             })
           });
         },
@@ -160,12 +158,12 @@
           "</div></div>");
         }
         if(gm.photo != null && gm.photo.length > 0) {
-          let filePath = (sender.photo.length > 0) ? gmFileCdnDomain + "user/" + sender.photo + "?type=f&w=20&h=20&ttype=jpg" : "/img/user-icons-default.png";
+          let filePath = (sender.photo.length > 0) ? gmFileCdnDomain + "user/" + sender.photo + fileSize_40 : "/img/user-icons-default.png";
           $("#conversation").append(
           "<div class='username sender'>" + sender.nickname + "</div>" +
           "<div class = 'message-container sent-message'><div class = 'message-text'>" +
           "<a href=" + gmFilePath + gm.photo + ">" +
-          "<img src=" + gmFileCdnDomain + gm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>"
+          "<img src=" + gmFileCdnDomain + gm.photo + fileSize_40 + "></a>"
           + "</div></div>");
         }
       } else {
@@ -180,7 +178,7 @@
           "<div class='username receiver'>" + gm.sender.nickname + "</div>" +
           "<div class = 'message-container received-message'><div class = 'message-text'>" +
           "<a href=" + gmFilePath + gm.photo + ">" +
-          "<img src=" + gmFileCdnDomain + gm.photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>"
+          "<img src=" + gmFileCdnDomain + gm.photo + fileSize_40 + "></a>"
           + "</div></div>");
         }
       }
@@ -202,7 +200,7 @@
               "<div class='username sender'>" + chatList[chat].sender.nickname + "</div>" +
               "<div class = 'message-container sent-message'><div class = 'message-text'>" +
               "<a href=" + gmFilePath + chatList[chat].photo + ">" +
-              "<img src=" + gmFileCdnDomain + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" + "</div></div>");
+              "<img src=" + gmFileCdnDomain + chatList[chat].photo + fileSize_40 + "></a>" + "</div></div>");
             }
           } else {
             if(chatList[chat].message.length > 0) {
@@ -216,7 +214,7 @@
               "<div class='username receiver'>" + chatList[chat].sender.nickname + "</div>" +
               "<div class = 'message-container received-message'><div class = 'message-text'>" +
               "<a href=" + gmFilePath + chatList[chat].photo + ">" +
-              "<img src=" + gmFileCdnDomain + chatList[chat].photo + "?type=f&w=80&h=80&ttype=jpg" + "></a>" +
+              "<img src=" + gmFileCdnDomain + chatList[chat].photo + fileSize_40fileSize_40 + "></a>" +
               "</div></div>");
             }
           }
