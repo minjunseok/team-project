@@ -40,7 +40,7 @@
   <insert id="addSchoolUser" parameterType="SchoolUser">
   INSERT INTO
     school_users (user_no, school_no, level_no, created_at)
-    values (#{userNo}, #{schoolNo}, #{levelNo}, NOW())
+    values (#{userNo}, #{schoolNo}, 5, NOW())
   </insert>
 
 
@@ -165,21 +165,20 @@
     school_no = #{schoolNo}
   </update>
 
+
+  <update id="disableForeignKeyChecks">
+    SET FOREIGN_KEY_CHECKS=0;
+  </update>
+
   <delete id="deleteMember">
-    <![CDATA[
-      SET FOREIGN_KEY_CHECKS=0;
-    ]]>
-    delete
-    from
-    school_users
-    where
-    user_no = #{userNo}
-    and
-    school_no = #{schoolNo}
-    <![CDATA[
-      SET FOREIGN_KEY_CHECKS=1;
-    ]]>
+    delete from school_users where user_no = #{userNo} and school_no = #{schoolNo}
   </delete>
+
+  <update id="enableForeignKeyChecks">
+    SET FOREIGN_KEY_CHECKS=1;
+  </update>
+
+
 
   <select id="findAdmin" resultType="int">
     select
@@ -193,6 +192,7 @@
     and
     level_no = 4
   </select>
+
   <select id="findSubAdmin" resultType="int">
     select
     count(*)
@@ -210,7 +210,8 @@
 
 
   <delete id="deleteSchoolUsers" parameterType="int">
-    DELETE FROM school_users WHERE school_no = #{value};
+    DELETE FROM school_users
+    WHERE school_no = #{value}
   </delete>
 
 

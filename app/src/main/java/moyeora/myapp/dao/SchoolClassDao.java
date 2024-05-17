@@ -27,4 +27,9 @@ public interface SchoolClassDao {
 
   int classUpdate(SchoolClass clazz);
 
+
+  // 해당스쿨의 클래스를 다 지움
+  int deleteAllSchoolClass(int schoolNo);
+
+  int deleteAllSchoolClassUser(int schoolNo);
 }
