@@ -3,7 +3,6 @@
 <html lang='en'>
 <head>
     <meta name="form" content="width=device-width, initial-scale=1.0">
-
 		<title>새 글 작성</title>
 <!--		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
 <!--		&lt;!&ndash; include libraries(jQuery, bootstrap) &ndash;&gt;-->
@@ -32,7 +31,7 @@
 				<div class="modal-content">
 						<form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
 								<input type="hidden" name="schoolNo" data-th-value="${schoolNo}">
-								<input type="hidden" name="userNo" data-th-value="${userNo}">
+<!--								<input type="hidden" name="userNo" data-th-value="${userNo}">-->
 								<div>
 										<!-- Summernote 에디터 -->
 										<textarea id="summernote" name='content'></textarea>

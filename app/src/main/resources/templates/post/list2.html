@@ -23,9 +23,9 @@
 
         table {
             border-collapse: collapse;
-            width: 100%; /* 테이블 너비를 100%로 설정하여 부모 요소에 맞게 조절될 수 있도록 합니다. */
+            width: 85%; /* 테이블 너비를 부모 요소에 맞게 조절될 수 있도록 합니다. */
+            margin: 0 auto; /* 가운데 정렬 */
         }
-
         td, th {
             border: 1px solid #000;
             height: 30px;
@@ -60,6 +60,9 @@
         }
     </style>
 
+
+
+
     <!--새 글쓰기 모달 참조-->
 
 <!--    <script type="text/javascript"-->
@@ -89,7 +92,7 @@
 
     <title>스쿨 메인페이지</title>
 
-<!--    <script src="https://kit.fontawesome.com/ee5cb5f44c.js" crossorigin="anonymous"></script>-->
+    <script src="https://kit.fontawesome.com/ee5cb5f44c.js" crossorigin="anonymous"></script>
 
 
 </head>
@@ -150,17 +153,17 @@
 <!--            </div>-->
 <!--        </div>-->
 <!--    </div>-->
-<button class="post-add" id="postAddBtn">새 글 작성</button>
 
 
 <!--</div>-->
 
-
-<!-- 스쿨에 가입하지 않은 경우에만 가입하기 버튼을 보여줌 -->
-<!--<div data-th-unless="${joined}">-->
-<!--    <button id="joinButton">가입하기</button>-->
-<!--</div>-->
-
+<!-- 로그인 유저 레벨의 따른 분기점을 가진 가입하기 버튼 -->
+<div th:unless="${loginUser != null and accessLevel != null}">
+    <button id="joinButton">가입하기</button>
+</div>
+<div th:if="${loginUser != null and accessLevel != null}">
+    <button id="postAddBtn">새 글 작성</button>
+</div>
 
 <!--<th:block th:unless="${schoolUser}">-->
 <!--		<button id="joinButton">가입하기</button>-->
@@ -178,6 +181,7 @@
 
 <a data-th-href="@{noticelist(schoolNo=${schoolNo})}" href="noticelist.html">공지 사항</a>
 
+
 <div id="fixed-post">
     <table border='1' data-th-data-schoolno="${schoolNo}" data-schoolno="100">
         <thead>
@@ -188,23 +192,26 @@
             <th>작성일</th>
             <th>작업</th>
             <th>고정해제</th>
-                 </tr>
-                    </thead>
-                         <tbody>
-                             <tr data-th-each="post : ${fixlist}" data-th-object="${post}" data-th-data-no="*{no}" data-no="100">
-                                <td data-th-text="*{writer.nickname}">작성자</td>
-                                 <td>
-                                     <img th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + ${post.writer.photo}"
-                                          style="width: 50px; height: 50px;">
-                                 </td>
-                                 <td class="school-post" data-th-text="*{content}" data-th-data-no="*{no}" data-no="100">게시글 내용</td>
-                                 <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
-                                 <td>작업</td>
-                                 <td><input type="checkbox" class="fix-checkbox" data-th-data-no="*{no}" data-no="100"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-th-each="post : ${fixlist}" data-th-object="${post}" data-th-data-no="*{no}" data-no="100">
+            <td data-th-text="*{writer.nickname}">작성자</td>
+            <td>
+                <img th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + ${post.writer.photo}"
+                     style="width: 50px; height: 50px;">
+            </td>
+            <td class="school-post" th:utext="*{content}" data-th-data-no="*{no}" data-no="100">게시글 내용</td>
+            <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
+            <td>작업</td>
+            <!-- 체크박스가 표시되는 부분을 타임리프 조건문으로 감싸기 -->
+            <td th:if="${accessLevel != 4 and accessLevel != 5}">
+                <input type="checkbox" class="fix-checkbox" data-th-data-no="*{no}" data-no="100">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <br>
 <br>
 <br>
@@ -218,7 +225,7 @@
             <th>내용</th>
             <th>작성일</th>
             <th>작업</th>
-<!--            <th>고정 핀</th>-->
+            <th style="display: none;">숨겨진 writer.no</th>
         </tr>
         </thead>
 
@@ -236,14 +243,14 @@
                         ...
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#" data-action="1" data-th-data-no="${no}" data-no="100">작업1</a>
-                        <a class="dropdown-item" href="#" data-action="2" data-th-data-no="${no}" data-no="100">작업2</a>
-                        <a class="dropdown-item" href="#" data-action="3" data-th-data-no="${no}" data-no="100">작업3</a>
+                        <a class="dropdown-item" href="#" data-action="1" data-th-data-no="${no}" data-no="100">글 삭제</a>
+                        <a class="dropdown-item" href="#" data-action="2" data-th-data-no="${no}" data-no="100">글 수정</a>
+                        <a class="dropdown-item" href="#" data-action="3" data-th-data-no="${no}" data-no="100">URL 복사</a>
                         <a class="dropdown-item" href="#" data-action="4" data-th-data-no="${no}" data-no="100">게시글 고정</a>
                     </div>
                 </div>
             </td>
-<!--            <td><input type="checkbox" class="post-checkbox" data-th-data-no="${post.no}" data-no="100"></td>-->
+            <td class="hidden-data" th:data-user-no="${post.writer.no}" style="display: none;"></td>
         </tr>
         </tbody>
     </table>
@@ -252,6 +259,9 @@
 
 
 
+
+
+<!--게시글 관련 모달 모음-->
 
 <!-- 게시글 고정 해제 모달 -->
 <div class="modal fade" id="unfixConfirmationModal" tabindex="-1" aria-labelledby="unfixConfirmationModalLabel" aria-hidden="true">
@@ -292,6 +302,22 @@
     </div>
 </div>
 
+<!--게시글 삭제-->
+<div class="modal fade" id="postDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="postDeleteModalLabel">게시글 삭제</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">해당 게시글을 삭제하시겠습니까?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="postDeleteNo" data-dismiss="modal">아니오</button>
+                <button type="button" class="btn btn-primary" id="postDeleteYes">예</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!--댓글 CRUD 관련 모달-->
@@ -396,7 +422,7 @@
 
 <div data-th-replace="post/view :: modal">포스트 상세보기 모달</div>
 
-<!--<div data-th-replace="post/postModal/md :: postMd-modal">글 수정</div>-->
+<div data-th-replace="post/postModal/md :: postMd-modal">글 수정</div>
 
 <!--<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>-->
 
@@ -409,7 +435,87 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/summernote/summernote.min.js"></script>
+
+</body>
+
+
+<!--loginUser 모델 객체에서 필요한 데이터 추출-->
+<script type="text/javascript">
+
+
+    function setLoginUser() {
+        loginUser = loginUser;
+    }
+
+    function setAccessLevel() {
+        accessLevel = accessLevel;
+    }
+
+    //가져온 로그인 유저의 level을 자바스크립트로써 전역변수에 담아 활용한다.
+    var loginUser ='[[${loginUser != null ? loginUser : "null"}]]';
+    var accessLevel ='[[${accessLevel != null ? accessLevel : "null"}]]';
+
+    console.log("가져온 로그인 유저의 데이터 = " + loginUser);
+    console.log("가져온 로그인 유저의 현재 스쿨 레벨 = " + accessLevel);
+
+
+    // loginUser가 존재하는 경우에만 데이터 추출
+    if (loginUser && loginUser.length > 0) {
+        // loginUser 변수로부터 사용자 정보 추출
+        var loginUserString = loginUser.toString();
+
+        // 사용자 번호 추출
+        var userNo = loginUserString.match(/no=(\d+)/);
+        if (userNo) {
+            userNo = userNo[1];
+            console.log('userNo:', userNo);
+
+        }
+        var loginUserNo = userNo;
+
+        // 사용자 이름 추출
+        var userName = loginUserString.match(/name=([^,]+)/);
+        if (userName) {
+            userName = userName[1];
+            console.log('userName:', userName);
+        }
+    } else {
+        console.log('로그인된 사용자 정보가 없습니다.');
+    }
+
+</script>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        var joinButton = document.getElementById('joinButton');
+        if (joinButton) {
+            joinButton.onclick = function() {
+                setAccessLevel();
+                setLoginUser();
+                console.log("가입버튼이 실행됨")
+                checkAccessLevel();
+            };
+        }
+    });
+
+    function checkAccessLevel() {
+        // 현재 accessLevel 값 가져오기
+        if (loginUser === "null" && accessLevel === "null") {
+            // loginUser와 accessLevel이 모두 null인 경우
+            alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+            window.location.href = 'http://localhost:8080/auth/form';
+        } else if (accessLevel === "null") {
+            // accessLevel이 null인 경우
+            alert("가입 페이지로 이동하는 소스 추가해야함");
+            // 원하는 동작을 추가하세요
+        }
+    }
+</script>
+
+
+
 <!--댓글 등록 자바스크립트-->
+
 <script>
 
     var selectedPost = {
@@ -429,6 +535,14 @@
     };
 
     var schoolNo = getSchoolNoFromUrl();
+
+    var selectedPostContent = {
+        postContent: null
+    };
+
+    var selectedPostUserNo = {
+        postUserNo: null
+    };
 
 
 
@@ -480,6 +594,10 @@
 
     function setContent(content) {
         content = content;
+    }
+
+    function setPostContent(postContent) {
+        postContent = postContent;
     }
 
     function setPostNo(no) {
@@ -845,7 +963,7 @@
         $.ajax({
             url: 'fix',
             method: 'POST',
-            data: { no: postNo, categoryNo: 3 },
+            data: {no: postNo, categoryNo: 3 },
             success: function(response) {
 
                 if (response.status === "success") {
@@ -1098,6 +1216,9 @@
 
     $(document).on("click", "#postAddBtn", function() {
 
+        if(accessLevel === 5) {
+            console.log("가입 대기중인 회원입니다");
+        }
         console.log("게시글 작성 모달 실행");
 
         postForm();
@@ -1124,8 +1245,8 @@
                     for (const file of files) {
                         data.append("files", file);
                     }
-            // schoolNo도 함께 전송합니다.
-            data.append("schoolNo", schoolNo);
+                    // schoolNo도 함께 전송합니다.
+                    data.append("schoolNo", schoolNo);
 
                     $.ajax({
                         url: 'file/upload', // 파일 업로드 처리를 하는 엔드포인트 URL
@@ -1134,25 +1255,188 @@
                         contentType: false,
                         processData: false,
                         data: data,
-//
-                    }).done(function(result) {
-                        if (result.length == 0) {
-                            alert('게시글 작성에 실패하였습니다!');
+                    }).done(function(response) {
+                        if (response.status === "error") {
+                            alert(response.message);
+                            return;
+                        }
+                        if (response.data.length === 0) {
+                            alert('파일 업로드에 실패하였습니다!');
                             return;
                         }
                         // 서버에서 받은 업로드 파일 이름을 가지고 <img> 태그를 설정합니다.
-                        for (const attachedFile of result) {
+                        for (const attachedFile of response.data) {
                             $('#summernote').summernote('insertImage',
-                                'https://kr.object.ncloudstorage.com/moyeorastorage/post/'
-                                + attachedFile.filePath);
+                                'https://kr.object.ncloudstorage.com/moyeorastorage/post/' + attachedFile.filePath);
+                        }
+                    }).fail(function(xhr, status, error) {
+                        console.log("AJAX 에러: ", status, error);
+                        alert('파일 업로드 중 에러가 발생하였습니다.');
+                    });
+                }
+            }
+        });
+    }
+</script>
+
+
+<!--서머노트 활용 스쿨 게시글 수정-->
+<script>
+
+
+
+
+
+    function postMd(postNo, schoolNo, postContent) {
+
+        console.log("schoolNo를 잘 가져왔니? = " + schoolNo);
+        console.log("postNo를 잘 가져왔니? = " + postNo);
+        console.log("서머노트 content를 온전히 잘 가져왔나? " + postContent);
+        console.log("@@@@@@==>> Md 실행완료!");
+
+        $('#post_md_modal').modal('show');
+
+        // 기존에 생성된 Summernote 에디터 인스턴스가 있다면 파괴합니다.
+        if ($('#summernoteContent').next('.note-editor').length) {
+            $('#summernoteContent').summernote('destroy');
+            console.log('기존 Summernote 인스턴스 파괴됨.');
+        }
+
+        // Summernote 에디터를 초기화합니다.
+        console.log("서머노트 초기화 실행");
+        $('#summernoteContent').summernote({
+            height: 300,
+            width: '100%',
+            callbacks: {
+                onInit: function() {
+                    console.log('Summernote 생성됨!');
+                    $('#summernoteContent').summernote('code', postContent);
+                    console.log("@@@@@@@@@@@@@@@@@@실행 2" + postContent);
+                },
+                onImageUpload: function(files) {
+                    let data = new FormData();
+                    for (const file of files) {
+                        data.append("files", file);
+                        console.log('파일이름 = ' + file.name); // 파일 이름 출력
+                    }
+
+                    data.append("postNo", postNo);
+                    data.append("schoolNo", schoolNo);
+
+                    console.log("json과 함께 넘길 postNo = " + postNo);
+                    console.log("json과 함께 넘길 schoolNo = " + schoolNo);
+
+
+                    $.ajax({
+                        url: 'file/upload', // 파일 업로드 처리를 하는 엔드포인트 URL
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: false,
+                        processData: false,
+                        data: data,
+                        success: function(result) {
+                            if (result.status === 'success') {
+                                // 서버에서 받은 업로드 파일 이름을 가지고 <img> 태그를 설정합니다.
+                                for (const attachedFile of result.data) {
+                                    $('#summernoteContent').summernote('insertImage',
+                                        'https://kr.object.ncloudstorage.com/moyeorastorage/post/' + attachedFile.filePath);
+                                }
+                            } else {
+                                console.error("파일 업로드 실패: ", result.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("파일 업로드 실패: ", status, error);
                         }
                     });
                 }
             }
         });
-
     }
+
+
 </script>
+
+
+<script>
+    function deletePost(postNo, schoolNo) {
+
+        console.log("schoolNo를 잘 가져왔니? = " + schoolNo);
+        console.log("postNo를 잘 가져왔니? = " + postNo);
+
+        console.log("@@@@@@==>> deletePost 실행완료!");
+
+        $('#postDeleteModal').modal('show');
+    }
+
+    //    <button type="button" class="btn btn-secondary" id="postDeleteNo" data-dismiss="modal">아니오</button>
+    //    <button type="button" class="btn btn-primary" id="postDeleteYes">예</button>
+    //    @GetMapping("delete")
+    //    public String delete(
+    //    Post post,
+    //    @RequestParam("postNo") int no,
+    //    @RequestParam("schoolNo") int schoolNo,
+    //    HttpSession session) throws Exception {
+    //
+    //
+    //        //    User loginUser = (User) session.getAttribute("loginUser");
+    //        //    if (loginUser == null) {
+    //        //      throw new Exception("로그인하시기 바랍니다!");
+    //        //    }
+    //        //
+    //        //    Post post = postService.get(no);
+    //        //    if (post == null) {
+    //        //      throw new Exception("번호가 유효하지 않습니다.");
+    //        //
+    //        //    } else if (post.getNo() != loginUser.getNo()) {
+    //        //      throw new Exception("권한이 없습니다.");
+    //        //    }
+    //        //
+    //        List<AttachedFile> files = postService.getAttachedFiles(no);
+    //
+    //        postService.delete(no, schoolNo);
+    //
+    //        for (AttachedFile file : files) {
+    //            fileUpload.delete(this.bucketName, this.uploadDir, file.getFilePath());
+    //        }
+    //
+    //        return "redirect:list?schoolNo=" + post.getSchoolNo();
+    //    }
+
+    $(document).on("click", "#postDeleteNo", function() {
+        $('#postDeleteModal').modal("hide");
+    });
+
+    //댓글 등록 아니오를 눌렀을 시
+    $(document).on("click", "#postDeleteYes", function() {
+        // 모달 닫기
+        $('#postDeleteModal').modal("hide");
+
+
+        $.ajax({
+            type: "GET",
+            url: "delete",
+            data: { no: postNo,
+                schoolNo: schoolNo},
+
+            success: function(response) {
+                // 성공 시 알림 표시 및 버튼 갱신
+                alert("게시글이 삭제되었습니다.");
+                location.reload(); // 페이지 리로드
+            },
+            error: function(xhr, status, error) {
+                // 실패 시 에러 메시지 표시
+                alert("삭제에 실패했습니다. 다시 시도해 주세요.");
+
+            }
+        });
+
+
+    });
+
+
+</script>
+
 
 <!--드롭다운 수정-->
 <script>
@@ -1160,8 +1444,17 @@
         // 드롭다운 버튼을 클릭했을 때
         $(document).on('click', '.dropdown-button, .comment-dropdown-toggle', function(event) {
             event.stopPropagation(); // 이벤트 전파 중지
+
+            selectedPostUserNo.postUserNo = $(this).closest('tr').find('.hidden-data').attr('data-user-no');
             var no = $(this).closest('tr').data('no');
+            let content = $(this).closest('tr').find('.school-post').html();
+
+
+            console.log("로그인 유저 번호 받아오기 = " + loginUserNo);
+            console.log("글쓴이 번호 받아오기 =  " +  selectedPostUserNo.postUserNo );
             selectedPost.no = no; // 해당 게시글의 번호 가져오기
+            selectedPostContent.postContent = content;
+            console.log("작업에 필요한 해당 데이터의 content = " + selectedPostContent.postContent);
 
             var dropdown = $(this).next('.dropdown-menu'); // 클릭된 버튼 다음에 오는 드롭다운 메뉴 선택
 
@@ -1191,13 +1484,51 @@
 
             switch(actionIndex) {
                 case 1:
-                    alert("게시글 수정이 들어갈 위치 = " + selectedPost.no);
-                    break;
+                    if(loginUserNo === selectedPostUserNo.postUserNo) {
+                        postNo = selectedPost.no;
+                        console.log("case 1 게시글 삭제할 게시글 번호 =" + postNo);
+                        setSchoolNo(schoolNo);
+                        setPostNo(postNo);
+                        deletePost(postNo,schoolNo);
+                        break;
+
+                    } else {
+                        alert("삭제 권한이 없습니다.");
+                        break;
+                    }
+
+
                 case 2:
-                    alert("게시글 삭제가 들어갈 위치 = " + selectedPost.no);
+                    if(loginUserNo === selectedPostUserNo.postUserNo) {
+                        postNo = selectedPost.no;
+
+                        console.log("case 2 게시글 수정할 게시글 번호 =" + postNo);
+                        console.log("주입해야할 post content = " + selectedPostContent.postContent);
+                        let postContent = selectedPostContent.postContent;
+
+
+                        setPostNo(postNo);
+                        setSchoolNo(schoolNo);
+                        setPostContent(postContent);
+                        console.log("@@@@@@@postNo = " + postNo);
+                        console.log("@@@@@@@schoolNo = " + schoolNo);
+                        console.log("@@@@@@@postContent = " + postContent);
+
+                        postMd(postNo,schoolNo,postContent);
+                        break;
+
+                     } else {
+
+                        alert ("수정 권한이 없습니다.");
+                        break;
+
+                    }
                     break;
                 case 3:
-                    alert("URL복사가 들어갈 위치 = " + selectedPost.no);
+                    copyUrlToClipboard();
+
+                    alert("URL복사가 들어갈 게시글 번호  = " + selectedPost.no);
+
                     break;
                 case 4:
                     postNo = selectedPost.no;
@@ -1219,78 +1550,59 @@
         $('#confirmationModal').modal('show');
     }
 
+    function copyUrlToClipboard() {
+        var dummy = document.createElement('input');
+        var url = window.location.href;
+        document.body.appendChild(dummy);
+        dummy.value = url;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+        alert('URL이 클립보드에 복사되었습니다: ' + url);
+    }
+
 </script>
 
 
 
-<!--&lt;!&ndash; 설정을 눌렀을 때 드롭다운이 나타나도록 &ndash;&gt;-->
-<!--<script>-->
-<!--    $(document).ready(function() {-->
-<!--        // ... 버튼을 클릭할 때 드롭다운 메뉴의 가시성을 토글합니다.-->
-<!--        $(".settingBtn").click(function() {-->
-<!--            $(this).next(".dropdown-menu").toggle();-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
-
-<!--<script>-->
-<!--    $(document).ready(function() {-->
-<!--        // 모든 드롭다운 메뉴를 숨깁니다.-->
-<!--        $(".dropdown-menu").hide();-->
-
-<!--        // 클래스를 가진 settingBtn 버튼을 클릭할 때 드롭다운 메뉴의 가시성을 토글합니다.-->
-<!--        $(".settingBtn").click(function() {-->
-<!--            // 모든 드롭다운 메뉴를 숨깁니다.-->
-<!--            $(".dropdown-menu").hide();-->
-
-<!--            // 클릭된 버튼 다음에 오는 드롭다운 메뉴를 찾아 가시성을 토글합니다.-->
-<!--            $(this).next(".dropdown-menu").toggle();-->
-
-<!--            // 클릭된 버튼 이외의 부분을 클릭할 때 드롭다운 메뉴를 숨깁니다.-->
-<!--            $(document).on("click", function(event){-->
-<!--                if(!$(event.target).closest(".dropdown").length) {-->
-<!--                    $(".dropdown-menu").hide();-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
-
-<!--&lt;!&ndash;스쿨에 가입하지 않은 유저 가입하기 처리&ndash;&gt;-->
-
-<!--&lt;!&ndash;<script>&ndash;&gt;-->
-
-<!--&lt;!&ndash;    // 문서가 로드되면 실행될 함수&ndash;&gt;-->
-<!--&lt;!&ndash;    $(document).ready(function() {&ndash;&gt;-->
-<!--&lt;!&ndash;        $("#joinButton").click(function() {&ndash;&gt;-->
-<!--&lt;!&ndash;            const searchParam = window.location.search.replace("?", "");&ndash;&gt;-->
-<!--&lt;!&ndash;            const { schoolNo } = window.Qs.parse(searchParam);&ndash;&gt;-->
-<!--&lt;!&ndash;            console.log(schoolNo);&ndash;&gt;-->
-<!--&lt;!&ndash;            join(schoolNo);&ndash;&gt;-->
-<!--&lt;!&ndash;        });&ndash;&gt;-->
-<!--&lt;!&ndash;    });&ndash;&gt;-->
-
-<!--&lt;!&ndash;    function join(schoolNo) {&ndash;&gt;-->
-<!--&lt;!&ndash;        $.ajax({&ndash;&gt;-->
-<!--&lt;!&ndash;            type: "POST",&ndash;&gt;-->
-<!--&lt;!&ndash;            url: "/schoolUser/addSchoolUser",&ndash;&gt;-->
-<!--&lt;!&ndash;            data: { schoolNo: schoolNo },&ndash;&gt;-->
-<!--&lt;!&ndash;            success: function(response) {&ndash;&gt;-->
-<!--&lt;!&ndash;                // 성공 시 알림 표시 및 버튼 갱신&ndash;&gt;-->
-<!--&lt;!&ndash;                alert("가입이 완료되었습니다.");&ndash;&gt;-->
-<!--&lt;!&ndash;                console.log("가입 성공");&ndash;&gt;-->
-<!--&lt;!&ndash;                location.reload(); // 페이지 리로드&ndash;&gt;-->
-<!--&lt;!&ndash;            },&ndash;&gt;-->
-<!--&lt;!&ndash;            error: function(xhr, status, error) {&ndash;&gt;-->
-<!--&lt;!&ndash;                // 실패 시 에러 메시지 표시&ndash;&gt;-->
-<!--&lt;!&ndash;                alert("가입에 실패했습니다. 다시 시도해 주세요.");&ndash;&gt;-->
-<!--&lt;!&ndash;                console.error("가입 요청 실패:", error);&ndash;&gt;-->
-<!--&lt;!&ndash;            }&ndash;&gt;-->
-<!--&lt;!&ndash;        });&ndash;&gt;-->
-<!--&lt;!&ndash;    }&ndash;&gt;-->
 
 
-<!--&lt;!&ndash;</script>&ndash;&gt;-->
+
+<!--스쿨에 가입하지 않은 유저 가입하기 처리-->
+
+<script>
+
+    // 문서가 로드되면 실행될 함수
+    $(document).ready(function() {
+        $("#joinButton").click(function() {
+            const searchParam = window.location.search.replace("?", "");
+            const { schoolNo } = window.Qs.parse(searchParam);
+            console.log(schoolNo);
+            join(schoolNo);
+        });
+    });
+
+    function join(schoolNo) {
+        $.ajax({
+            type: "POST",
+            url: "/schoolUser/addSchoolUser",
+            data: { schoolNo: schoolNo },
+            success: function(response) {
+                // 성공 시 알림 표시 및 버튼 갱신
+                alert("가입이 완료되었습니다.");
+                console.log("가입 성공");
+                location.reload(); // 페이지 리로드
+            },
+            error: function(xhr, status, error) {
+                // 실패 시 에러 메시지 표시
+                alert("가입에 실패했습니다. 다시 시도해 주세요.");
+                console.error("가입 요청 실패:", error);
+            }
+        });
+    }
+
+
+</script>
 
 
 <!-- 게시글 주소 복사 버튼 -->
@@ -1314,7 +1626,6 @@
 
 
 
-<!--&lt;!&ndash; 폼 서브밋 &ndash;&gt;-->
 
 
 <!--스쿨 내 게시글 검색-->

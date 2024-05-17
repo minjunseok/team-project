@@ -256,7 +256,7 @@
 
 <!--스쿨에 가입된 유저의 레벨을 찾음-->
 
-  <select id="findBySchoolNo" resultType="int">
+  <select id="findByMemberCheck" resultType="int">
 <!--count(*)를 사용하면 school_users 데이터 값이 있으면 1, 없으면 0으로 찾아서 값을 넘겨줌-->
   SELECT count(*)
   FROM school_users

@@ -24,8 +24,8 @@ public class DefaultSchoolUserService implements SchoolUserService {
 
     // 스쿨에 가입이 된 유저인지 확인하기 위한 코드
     @Override
-    public int joinedSchoolUser(int userNo, int schoolNo) {
-        return schoolUserDao.findBySchoolNo(userNo, schoolNo);
+    public int findByMemberCheck(int schoolNo, int userNo) {
+        return schoolUserDao.findByMemberCheck(schoolNo, userNo);
     }
 
     @Override

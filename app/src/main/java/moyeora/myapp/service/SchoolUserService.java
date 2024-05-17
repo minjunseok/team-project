@@ -20,10 +20,11 @@ public interface SchoolUserService {
 
 
       // 스쿨에 가입이 된 유저인지 확인하기 위한 코드
-      int joinedSchoolUser(int userNo, int schoolNo);
+      int findByMemberCheck(int schoolNo, int useNo);
 
 
-        int findByUserLevelNo(int schoolNo, int userNo);
+
+      int findByUserLevelNo(int schoolNo, int userNo);
 
 
 }

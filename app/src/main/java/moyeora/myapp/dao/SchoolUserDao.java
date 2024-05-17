@@ -50,7 +50,7 @@ public interface SchoolUserDao {
 
 
     // 스쿨에 가입이 되어있는지 안되어있는지 확인하기 위한 코드
-    int findBySchoolNo(int userNo, int schoolNo);
+    int findByMemberCheck(int schoolNo, int userNo);
 
 
 }

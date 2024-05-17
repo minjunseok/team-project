@@ -324,14 +324,16 @@ public class PostController {
     @PostMapping("add")
     public String add(
             @LoginUser User loginUser,
-//            @LoginUser SchoolUser loginSchoolUser,
+            @RequestParam int schoolNo,
             Post post,
             HttpSession session,
             SessionStatus sessionStatus) throws Exception {
 
-        // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
-        List<AttachedFile> attachedFiles = (List<AttachedFile>) session.getAttribute("attachedFiles");
 
+        int userNo = loginUser.getNo();
+        // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
+        List<AttachedFile> attachedFiles = (List<AttachedFile>)session.getAttribute("attachedFiles");
+        schoolNo = (Integer)session.getAttribute("schoolNo");
 
         // attachedFiles가 null이 아닌지 확인
         if (attachedFiles != null) {
@@ -355,63 +357,91 @@ public class PostController {
 
         // 'created_at' 필드에 현재 시간 설정
         post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
+        post.setUserNo(userNo);
+        log.debug("@@@@@@@@@@@@@@ userNo 주입성공 = " + userNo);
+        post.setSchoolNo(schoolNo);
+        log.debug("@@@@@@@@@@@@@ schoolNo 주입성공 = " + schoolNo);
 
-        post.setUserNo(loginUser.getNo());
 
 
         // 나머지 처리 코드
-        log.debug("@@@@@@@===>>" + post);
+        log.debug("@@@@@@@ 주입만 완료된 post 객체 ===>>" + post);
         postService.add(post);
 
-        return "redirect:list?schoolNo=" + post.getSchoolNo();
+
+
+        return "redirect:list2?schoolNo=" + schoolNo;
     }
 
 
-    @GetMapping("list")
-    public void list(Model model, int schoolNo,
-                      HttpSession httpSession,
-                      @AuthenticationPrincipal PrincipalDetails principalDetails,
-                      @LoginUser User loginUser
-//                     @RequestParam("schoolNo") int schoolNo,
-    ) {
+//    @GetMapping("list")
+//    public void list(Model model,
+//                      HttpSession httpSession,
+//                      @AuthenticationPrincipal PrincipalDetails principalDetails,
+//                      @LoginUser User loginUser,
+//                     @RequestParam("schoolNo") int schoolNo
+//
+//
+//    ) {
+//
+//            System.out.println(postService.findBySchoolPostList(schoolNo));
+//            log.debug(postService.findBySchoolPostList(schoolNo));
+//            log.debug(schoolUserService.findBySchoolUserList(schoolNo));
+//            System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
+//            List<Post> posts = postService.findBySchoolPostList(schoolNo);
+//            Post post = postService.findByFixList(schoolNo);
+//
+//            System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
+//            model.addAttribute("schoolNo", schoolNo);
+//            model.addAttribute("postlist", post);
+//            model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
+//            model.addAttribute("fixlist", post);
+////        model.addAttribute("joined", schoolUserService.joinedSchoolUser(loginUser.getNo(), schoolNo));
+//        }
 
-            System.out.println(postService.findBySchoolPostList(schoolNo));
-            log.debug(postService.findBySchoolPostList(schoolNo));
-            log.debug(schoolUserService.findBySchoolUserList(schoolNo));
-            System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
-            List<Post> posts = postService.findBySchoolPostList(schoolNo);
-            Post post = postService.findByFixList(schoolNo);
-
-            System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
-            model.addAttribute("schoolNo", schoolNo);
-            model.addAttribute("postlist", post);
-            model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
-            model.addAttribute("fixlist", post);
-//        model.addAttribute("joined", schoolUserService.joinedSchoolUser(loginUser.getNo(), schoolNo));
-        }
 
     @GetMapping("list2")
-    public void list2(Model model, int schoolNo,
-                     @AuthenticationPrincipal PrincipalDetails principalDetails,
-                     @LoginUser User loginUser
-    ) {
+    public void list2(Model model,
+                      @RequestParam("schoolNo") int schoolNo,
+                      @AuthenticationPrincipal PrincipalDetails principalDetails,
+                      @LoginUser User loginUser) {
 
+
+        if (loginUser != null) {
+            int memberCheck = schoolUserService.findByMemberCheck(schoolNo,loginUser.getNo());
+
+            if (memberCheck == 1) {
+
+                int userNo = loginUser.getNo();
+
+                // 회원이고 해당 학교의 회원인 경우
+                log.debug("@@@@@@@@@@@@@@@@ 회원이니까 모델을 전부다 넘긴다");
+                int accessLevel = schoolUserService.findLevel(schoolNo, userNo);
+                model.addAttribute("accessLevel", accessLevel);
+                model.addAttribute("loginUser", loginUser);
+            } else {
+                // 회원이지만 해당 학교의 회원이 아닌 경우
+                log.debug("@@@@@@@@@@@@@@@@ 넌 비회원이구나");
+            }
+        } else {
+            // 비회원인 경우
+            log.debug("@@@@@@@@@@@@@@@@ 넌 로그인을 아예 안 했구나");
+        }
+
+        // 로그인 상태와 관계없이 공통으로 처리해야 할 부분
         System.out.println(postService.findBySchoolPostList(schoolNo));
-        log.debug(postService.findBySchoolPostList(schoolNo));
-        log.debug(schoolUserService.findBySchoolUserList(schoolNo));
         System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
         List<Post> posts = postService.findBySchoolPostList(schoolNo);
         Post post = postService.findByFixList(schoolNo);
-
-        System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
-        model.addAttribute("sender", loginUser);
         model.addAttribute("schoolNo", schoolNo);
         model.addAttribute("postlist", posts);
         model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
         model.addAttribute("fixlist", post);
-//        // 스쿨에 가입된 유저인지 확인하기 위한 코드
-//        model.addAttribute("joined", schoolUserService.joinedSchoolUser(loginUser.getNo(), schoolNo));
     }
+
+
+
+
 
 
 
@@ -453,24 +483,51 @@ public class PostController {
             @RequestParam("keyword") String keyword,
             @RequestParam("filter") String filter,
             Model model) {
+
+
         if (filter.equals("0")) { // 내용으로 검색
-            List<Post> postList = postService.findBySchoolContent(schoolNo, keyword);
-            model.addAttribute("postlists", postList);
+            List<Post> posts = postService.findBySchoolContent(schoolNo, keyword);
+            Post post = postService.findByFixList(schoolNo);
+            model.addAttribute("postlist", posts);
+            model.addAttribute("fixlist", post);
         } else {                  // 작성자로 검색
-            List<Post> postList = postService.findBySchoolUserName(schoolNo, keyword);
-            model.addAttribute("postlists", postList);
+            List<Post> posts = postService.findBySchoolUserName(schoolNo, keyword);
+            Post post = postService.findByFixList(schoolNo);
+            model.addAttribute("postlist", posts);
+            model.addAttribute("fixlist", post);
         }
 
         log.debug("@@@@@@@" + schoolNo + keyword);
-        return "post/list";
+        return "post/list2";
 
     }
+
 
     @PostMapping("update")
     public String update(
             Post post,
+            Integer no,
+            Integer schoolNo,
             MultipartFile[] files,
             HttpSession session) throws Exception {
+
+
+        List<AttachedFile> attachedFiles = (List<AttachedFile>)session.getAttribute("attachedFiles");
+
+
+        log.debug("@@@@@@@@@@@@ 세션에서 가져온 schoolNo = " + session.getAttribute("schoolNo"));
+
+        schoolNo = (Integer)session.getAttribute("schoolNo");
+
+        log.debug(" @@@@@@@@@@@@@@ 형변환 성공한 schoolNo = " + schoolNo);
+
+        log.debug("@@@@@@@@@@@@ 세션에서 가져온 postNo = " + session.getAttribute("postNo"));
+
+        no = (Integer)session.getAttribute("postNo");
+
+        log.debug(" @@@@@@@@@@@@@@ 형변환 성공한 postNo = " + no);
+
+
 
 //    User loginUser = (User) session.getAttribute("loginUser");
 //    if (loginUser == null) {
@@ -499,19 +556,27 @@ public class PostController {
         if (fileList.size() > 0) {
             post.setFileList(fileList);
         }
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
+        log.debug("변경된 서머노트 내용이 정상적으로 꽂혔을까요? = "  + post);
+
+        post.setSchoolNo(schoolNo);
+
+        log.debug("가져온 postNo가 정상적으로 꽂혔을까요? = "  + schoolNo);
+        post.setNo(no);
+
+        log.debug("가져온 postNo이 정상적으로 꽂혔을까요? = "  + no);
+
         postService.update(post);
 
-        return "redirect:list?schoolNo=" + post.getSchoolNo();
+        return "redirect:list2?schoolNo=" + post.getSchoolNo();
 
     }
 
-
+    @ResponseBody
     @GetMapping("delete")
     public String delete(
             Post post,
-            @RequestParam("post_no") int no,
-            @RequestParam("schoolNo") int schoolNo,
+            int no,
+            int schoolNo,
             HttpSession session) throws Exception {
 
 
@@ -529,6 +594,10 @@ public class PostController {
 //    }
 //
         List<AttachedFile> files = postService.getAttachedFiles(no);
+
+
+        log.debug("@@@@@@@@@@@@@@@@@@@ 게시글번호" + post.getNo());
+        log.debug("@@@@@@@@@@@@@@@@@@@ 게시글번호" + post.getSchoolNo());
 
         postService.delete(no, schoolNo);
 
@@ -579,41 +648,21 @@ public class PostController {
         return "redirect:list?schoolNo=" + post.getSchoolNo();
     }
 
+
+
+
+
     @PostMapping("file/upload")
     @ResponseBody
-    public Object fileUpload(
+    public AjaxResponse fileUpload(
             MultipartFile[] files,
             HttpSession session,
             @LoginUser User loginUser,
+            @RequestParam int schoolNo,
+            @RequestParam(value = "postNo" ,required = false) Integer no,
             Model model) throws Exception {
 
-        //    User loginUser = (User) session.getAttribute("loginUser");
-//    if (loginUser == null) {
-//      throw new Exception("로그인하시기 바랍니다!");
-//    }
-
-
-
-        if (loginUser == null) {
-            return AjaxResponse.builder().status("error").message("로그인이 필요합니다.").build();
-        }
-
-        int userNo = loginUser.getNo();
-        int schoolNo = postService.findByPostSchoolNo(post.getNo());
-
-
-
-
-        log.debug("schoolNo + @@@@@@@@@@@@@@@@@@@" + schoolNo);
-        log.debug("userNo + @@@@@@@@@@@@@@@@@@@@@" + userNo);
-        log.debug("sessionNo + @@@@@@@@@@@@@@@@@@@@@" + loginUser.getNo());
-
-
-        int levelNo = schoolUserService.findLevel(schoolNo, userNo);
-
-        log.debug("levelNo + @@@@@@@@@@@@@@@@@@@@@@@@" + levelNo);
-
-        // FileUpoladHelper Object Storage에 저장한 파일의 이미지 이름을 보관할 컬렉션을 준비한다.
+//         FileUpoladHelper Object Storage에 저장한 파일의 이미지 이름을 보관할 컬렉션을 준비한다.
         ArrayList<AttachedFile> fileList = new ArrayList<>();
 
         // 클라이언트가 보낸 멀티파트 파일을 FileUpoladHelper Object Storage에 업로드한다.
@@ -627,6 +676,15 @@ public class PostController {
 
         // 업로드한 파일 목록을 세션에 보관한다.
         ArrayList<AttachedFile> oldfileList = (ArrayList<AttachedFile>) session.getAttribute("attachedFiles");
+        session.setAttribute("schoolNo",schoolNo);
+
+        log.debug("schoolNo가 session 에 담겼을까요" + session.getAttribute("schoolNo"));
+
+        session.setAttribute("postNo",no);
+
+        log.debug("postNo가 session 에 담겼을까요" + session.getAttribute("postNo"));
+
+
         if (oldfileList != null) {
             oldfileList.addAll(fileList);
             model.addAttribute("fileList", oldfileList);
@@ -636,6 +694,53 @@ public class PostController {
 
         // 클라이언트에서 이미지 이름을 가지고 <img> 태그를 생성할 수 있도록
         // 업로드한 파일의 이미지 정보를 보낸다.
-        return fileList;
+        return AjaxResponse.builder().status("success").data(fileList).build();
     }
+
+//    @PostMapping("file/upload")
+//    @ResponseBody
+//    public Object fileUpload(
+//            MultipartFile[] files,
+//            HttpSession session,
+//            @LoginUser User loginUser,
+//            Model model) throws Exception {
+//
+//
+//
+//    if (loginUser == null) {
+//      throw new Exception("로그인하시기 바랍니다!");
+//    }
+//
+//
+//
+////        if (loginUser == null) {
+////            return AjaxResponse.builder().status("error").message("로그인이 필요합니다.").build();
+////        }
+////
+////
+//        // FileUpoladHelper Object Storage에 저장한 파일의 이미지 이름을 보관할 컬렉션을 준비한다.
+//        ArrayList<AttachedFile> fileList = new ArrayList<>();
+//
+//        // 클라이언트가 보낸 멀티파트 파일을 FileUpoladHelper Object Storage에 업로드한다.
+//        for (MultipartFile file : files) {
+//            if (file.getSize() == 0) {
+//                continue;
+//            }
+//            String filename = fileUpload.upload(this.bucketName, this.uploadDir, file);
+//            fileList.add(AttachedFile.builder().filePath(filename).build());
+//        }
+//
+//        // 업로드한 파일 목록을 세션에 보관한다.
+//        ArrayList<AttachedFile> oldfileList = (ArrayList<AttachedFile>) session.getAttribute("attachedFiles");
+//        if (oldfileList != null) {
+//            oldfileList.addAll(fileList);
+//            model.addAttribute("fileList", oldfileList);
+//        } else {
+//            model.addAttribute("fileList", fileList);
+//        }
+//
+//        // 클라이언트에서 이미지 이름을 가지고 <img> 태그를 생성할 수 있도록
+//        // 업로드한 파일의 이미지 정보를 보낸다.
+//        return fileList;
+//    }
 }
