@@ -336,8 +336,25 @@
                             calendarEvent.remove();
                             console.log(calendarEvent);
                             console.log("삭제하기 실행");
-                            closeViewModal();
-                            location.reload();
+                            const Toast = Swal.mixin({
+                             toast: true,
+                             position: "top-end",
+                             showConfirmButton: false,
+                             timer: 2000,
+                             timerProgressBar: true,
+                             didOpen: (toast) => {
+                                 toast.onmouseenter = Swal.stopTimer;
+                                 toast.onmouseleave = Swal.resumeTimer;
+                             }
+                         });
+                         Toast.fire({
+                             icon: "success",
+                             title: "삭제 완료!"
+                         });
+                        setTimeout(function() {
+                               closeViewModal();
+                             location.reload();
+                         }, 2000);
                         }).catch(function(error) {
                             Swal.fire({
                                 icon: 'error',
@@ -433,9 +450,27 @@
                 
             }).then(function(response) {
                     console.error('업데이트 실행');
-                    closeViewModal();
-                    location.reload();
-            
+                    
+                    const Toast = Swal.mixin({
+                             toast: true,
+                             position: "top-end",
+                             showConfirmButton: false,
+                             timer: 2000,
+                             timerProgressBar: true,
+                             didOpen: (toast) => {
+                                 toast.onmouseenter = Swal.stopTimer;
+                                 toast.onmouseleave = Swal.resumeTimer;
+                             }
+                         });
+                         Toast.fire({
+                             icon: "success",
+                             title: "수정완료"
+                         });
+                        setTimeout(function() {
+                            closeViewModal();
+                             location.reload();
+                         }, 2000);
+                        
             }).catch(function(error) {
                 Swal.fire({
                         icon: 'error',
@@ -659,17 +694,36 @@
                     });
                     return;
                 }
-                calendar.addEvent({
-                    title: name,
-                    start: startDate,
-                    end : endDate,
-                    allDay: true
-                });
-                console.log("서버에 이벤트를 성공적으로 추가했습니다.");
+               
                 
                form.reset();
-               location.reload();
                
+               const Toast = Swal.mixin({
+                             toast: true,
+                             position: "top-end",
+                             showConfirmButton: false,
+                             timer: 2000,
+                             timerProgressBar: true,
+                             didOpen: (toast) => {
+                                 toast.onmouseenter = Swal.stopTimer;
+                                 toast.onmouseleave = Swal.resumeTimer;
+                             }
+                         });
+                         Toast.fire({
+                             icon: "success",
+                             title: "등록완료"
+                         });
+                         
+                         setTimeout(function() {
+                         calendar.addEvent({
+                            title: name,
+                            start: startDate,
+                            end : endDate,
+                            allDay: true
+                        });
+                console.log("서버에 이벤트를 성공적으로 추가했습니다.");
+                             location.reload();
+                         }, 2000);
                
                console.log("모달이 리셋되었습니다!!");
             });
@@ -726,7 +780,11 @@
 
 
         if (!keyword.replace(/^\s+|\s+$/g, '')) {
-            alert('키워드를 입력해주세요!');
+            Swal.fire({
+                    icon: 'warning',
+                    title: '키워드를 입력해주세요!',
+                    text: '다시 시도해주세요.'
+                });
             return false;
         }
 
@@ -749,12 +807,20 @@
 
         } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
 
-            alert('검색 결과가 존재하지 않습니다.');
+            Swal.fire({
+                    icon: 'warning',
+                    title: '검색결과가 존재하지 않습니다',
+                    text: '다시 시도해주세요.'
+                });
             return;
 
         } else if (status === kakao.maps.services.Status.ERROR) {
 
-            alert('검색 결과 중 오류가 발생했습니다.');
+            Swal.fire({
+                    icon: 'warning',
+                    title: '검색중 오류 발생',
+                    text: '다시 시도해주세요.'
+                });
             return;
 
         }
@@ -766,7 +832,11 @@
 
 
         if (!keyword2.replace(/^\s+|\s+$/g, '')) {
-            alert('키워드를 입력해주세요!');
+            Swal.fire({
+                    icon: 'warning',
+                    title: '키워드를 입력해주세요!',
+                    text: '다시 시도해주세요.'
+                });
             return false;
         }
 
@@ -789,13 +859,22 @@
             console.log("페이지 번호 표출");
 
         } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-
-            alert('검색 결과가 존재하지 않습니다.222222222222');
+             Swal.fire({
+                    icon: 'warning',
+                    title: '검색결과가 존재하지 않습니다!',
+                    text: '다시 시도해주세요.'
+                });
+            
             return;
 
         } else if (status === kakao.maps.services.Status.ERROR) {
-
-            alert('검색 결과 중 오류가 발생했습니다.');
+            
+             Swal.fire({
+                    icon: 'warning',
+                    title: '검색 결과 중 오류가 발생했습니다.',
+                    text: '다시 시도해주세요.'
+                });
+     
             return;
 
         }
