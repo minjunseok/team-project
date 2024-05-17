@@ -400,8 +400,8 @@ public class PostController {
 //        }
 
 
-    @GetMapping("list2")
-    public void list2(Model model,
+    @GetMapping("list")
+    public void list(Model model,
                       @RequestParam("schoolNo") int schoolNo,
                       @AuthenticationPrincipal PrincipalDetails principalDetails,
                       @LoginUser User loginUser) {
@@ -498,7 +498,7 @@ public class PostController {
         }
 
         log.debug("@@@@@@@" + schoolNo + keyword);
-        return "post/list2";
+        return "post/list";
 
     }
 
@@ -567,7 +567,7 @@ public class PostController {
 
         postService.update(post);
 
-        return "redirect:list2?schoolNo=" + post.getSchoolNo();
+        return "redirect:list?schoolNo=" + post.getSchoolNo();
 
     }
 
@@ -697,50 +697,5 @@ public class PostController {
         return AjaxResponse.builder().status("success").data(fileList).build();
     }
 
-//    @PostMapping("file/upload")
-//    @ResponseBody
-//    public Object fileUpload(
-//            MultipartFile[] files,
-//            HttpSession session,
-//            @LoginUser User loginUser,
-//            Model model) throws Exception {
-//
-//
-//
-//    if (loginUser == null) {
-//      throw new Exception("로그인하시기 바랍니다!");
-//    }
-//
-//
-//
-////        if (loginUser == null) {
-////            return AjaxResponse.builder().status("error").message("로그인이 필요합니다.").build();
-////        }
-////
-////
-//        // FileUpoladHelper Object Storage에 저장한 파일의 이미지 이름을 보관할 컬렉션을 준비한다.
-//        ArrayList<AttachedFile> fileList = new ArrayList<>();
-//
-//        // 클라이언트가 보낸 멀티파트 파일을 FileUpoladHelper Object Storage에 업로드한다.
-//        for (MultipartFile file : files) {
-//            if (file.getSize() == 0) {
-//                continue;
-//            }
-//            String filename = fileUpload.upload(this.bucketName, this.uploadDir, file);
-//            fileList.add(AttachedFile.builder().filePath(filename).build());
-//        }
-//
-//        // 업로드한 파일 목록을 세션에 보관한다.
-//        ArrayList<AttachedFile> oldfileList = (ArrayList<AttachedFile>) session.getAttribute("attachedFiles");
-//        if (oldfileList != null) {
-//            oldfileList.addAll(fileList);
-//            model.addAttribute("fileList", oldfileList);
-//        } else {
-//            model.addAttribute("fileList", fileList);
-//        }
-//
-//        // 클라이언트에서 이미지 이름을 가지고 <img> 태그를 생성할 수 있도록
-//        // 업로드한 파일의 이미지 정보를 보낸다.
-//        return fileList;
-//    }
+
 }
