@@ -45,8 +45,8 @@ public class SchoolAdminController {
 
     @GetMapping
     public String setting(int schoolNo, Model model, @LoginUser User loginUser) {
-
        if (schoolAdminService.authSubAdmin(loginUser.getNo(), schoolNo) < 1) {
+           System.out.println("schooladmin");
         return "redirect:/index";
         }   
         School school = schoolAdminService.getSchool(schoolNo);

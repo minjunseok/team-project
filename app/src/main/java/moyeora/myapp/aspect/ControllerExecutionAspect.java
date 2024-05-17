@@ -49,7 +49,6 @@ public class ControllerExecutionAspect {
         // 요청된 URL 확인
         String url = request.getRequestURL().toString();
         System.out.println("Requested URL: " + url);
-        Object[] args = joinPoint.getArgs();
         Map<String, Object> map = new HashMap<>();
         ObjectMapper obj = new ObjectMapper();
         //String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -59,7 +58,7 @@ public class ControllerExecutionAspect {
         map.put("email", "email");
         map.put("class", className);
         map.put("method", methodName);
-        map.put("result", objectConvert(result));
+        //map.put("result", result);
         if (request.getParameter("schoolNo") != null) {
             map.put("schoolno", request.getParameter("schoolNo"));
         }

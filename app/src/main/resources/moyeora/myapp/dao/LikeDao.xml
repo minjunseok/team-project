@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moyeora.myapp.dao.LikeDao">
+    <select id="findLike" resultType="int">
+        select
+            count(*)
+        from
+            likes
+        where user_no = #{userNo}
+        and post_no = #{postNo}
+    </select>
+
+    <insert id="addLike">
+        insert into likes(user_no,post_no)
+        values(#{userNo}, #{postNo})
+    </insert>
+
+    <delete id="deleteLike">
+        delete
+        from
+            likes
+        where user_no = #{userNo}
+        and post_no = #{postNo}
+    </delete>
+</mapper>

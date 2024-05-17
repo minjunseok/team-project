@@ -32,5 +32,17 @@
         #{receiptNo}
       )
   </insert>
+  <select id="findExpiredDate" resultType="java.sql.Date">
+    select
+      expiration_date
+    from
+      purchases
+    where
+      user_no=#{userNo}
+    and
+      expiration_date > now();
+    order by expiration_date desc
+    limit 1
+  </select>
 
 </mapper>

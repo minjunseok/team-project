@@ -42,4 +42,6 @@ public interface SchoolUserDao {
 
   int deleteSchoolUsers(int schoolNo);
 
+  List<Integer> findMasterByUserNo(int userNo);
+  void forcedDrop(int schoolNo);
 }
