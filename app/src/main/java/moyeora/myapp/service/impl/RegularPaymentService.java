@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.bootpay.Bootpay;
 import kr.co.bootpay.model.request.SubscribePayload;
 import lombok.NoArgsConstructor;
-import moyeora.myapp.dao.BillingKeyDao;
-import moyeora.myapp.dao.PurchaseDao;
-import moyeora.myapp.dao.SchoolDao;
-import moyeora.myapp.dao.UserDao;
+import moyeora.myapp.dao.*;
 import moyeora.myapp.dto.payment.RegularPaymentRequestDTO;
 import moyeora.myapp.service.PaymentService;
 import moyeora.myapp.vo.BillingKey;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +27,7 @@ public class RegularPaymentService implements PaymentService {
   private UserDao userDao;
   private SchoolDao schoolDao;
   private BillingKeyDao billingKeyDao;
+  private SchoolUserDao schoolUserDao;
   String restapi_key;
   String private_key;
 
@@ -37,7 +36,7 @@ public class RegularPaymentService implements PaymentService {
           @Value("${bootpay.private.key}") String private_key,
           PurchaseDao purchaseDao,
           UserDao userDao,
-          SchoolDao schoolDao, BillingKeyDao billingKeyDao) {
+          SchoolDao schoolDao, BillingKeyDao billingKeyDao, SchoolUserDao schoolUserDao) {
     System.out.println(restapi_key + "@@@@@@@@");
     this.restapi_key = restapi_key;
     this.private_key = private_key;
@@ -45,6 +44,7 @@ public class RegularPaymentService implements PaymentService {
     this.userDao = userDao;
     this.schoolDao = schoolDao;
     this.billingKeyDao = billingKeyDao;
+    this.schoolUserDao = schoolUserDao;
   }
 
 
@@ -60,14 +60,21 @@ public class RegularPaymentService implements PaymentService {
     } else {
       throw new Exception();
     }
-    Calendar c = Calendar.getInstance();
-    c.add(Calendar.MONTH, 1);
-    if (c.get(Calendar.DAY_OF_MONTH) > 28) {
-      c.set(Calendar.DAY_OF_MONTH, 28);
-    }
-    Date nextBillingDate = new Date(c.getTimeInMillis());
-    regularPaymentRequestDTO.setNextBillingDate(nextBillingDate);
+    if(purchaseDao.findExpiredDate(regularPaymentRequestDTO.getUserNo())!=null) {
+      java.sql.Date currentDate = purchaseDao.findExpiredDate(regularPaymentRequestDTO.getUserNo());
+      LocalDate localDate = currentDate.toLocalDate();
+      LocalDate newLocalDate = localDate.plusMonths(1);
+      java.sql.Date newDate = java.sql.Date.valueOf(newLocalDate);
+      regularPaymentRequestDTO.setNextBillingDate(newDate);
+    } else {
+      java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
 
+// LocalDate로 변환
+      LocalDate localDate = currentDate.toLocalDate();
+      LocalDate newLocalDate = localDate.plusMonths(1);
+      java.sql.Date newDate = java.sql.Date.valueOf(newLocalDate);
+      regularPaymentRequestDTO.setNextBillingDate(newDate);
+    }
     payload.billingKey = regularPaymentRequestDTO.getBillingKey();
     payload.orderName = regularPaymentRequestDTO.getContent();
     payload.orderId = "moyeora" + (System.currentTimeMillis() / 1000);
@@ -118,6 +125,9 @@ public class RegularPaymentService implements PaymentService {
   public void stopSubscribe(int userNo) {
     schoolDao.updateLimitedMan(userNo, 30);
     billingKeyDao.deleteKey(userNo);
+    for(int a : schoolUserDao.findMasterByUserNo(userNo)) {
+      schoolUserDao.forcedDrop(a);
+    }
   }
 
   public void deleteByError() {

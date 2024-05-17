@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+<!-- 모달 -->
+<div class="modal" id="profile-modal" data-th-fragment="profile-modal" >
+        <div class="modal-dialog" style="float: center; right:100px; ">
+            <div class="modal-content" style="width:720px;">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalLabel">프로필</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: calc(100vh - 200px); overflow-x: hidden; overflow-y: auto;">
+        <!-- loader END -->
+        <!-- Wrapper Start -->
+        <div class="wrapper">
+            <div id="content-page" class="content-page">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-body profile-page p-0">
+                                    <div class="profile-header">
+                                        <div class="position-relative">
+                                            <img src="/profile/images/page-img/profile-bg1.jpg" alt="profile-bg" class="rounded img-fluid">
+                                            <ul class="header-nav list-inline d-flex flex-wrap justify-end p-0 m-0">
+                                            </ul>
+                                        </div>
+                                        <div class="user-detail text-center mb-3" id="userDetail">
+                                            <div class="profile-img" id="profile-user-img">
+                                            </div>
+                                            <div class="profile-detail" id="profile-user-nickname">
+                                            </div>
+                                        </div>
+                                        <div class="profile-info p-3 d-flex align-items-center justify-content-between position-relative">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-sm-12 d-flex align-items-center">
+                                                        &nbsp;&nbsp;<a id="add-follow" style="cursor:pointer;" class="mb-0">팔로우하기</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <a style="cursor:pointer" class="mb-0">1:1채팅</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="social-info">
+                                                <ul class="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
+                                                    <li class="text-center ps-3" style="cursor:pointer" id="post-click">
+                                                        <h6>Posts</h6>
+                                                        <a style="cursor:pointer" id="post-count" class="mb-0">690</a>
+                                                    </li>
+                                                    <li class="text-center ps-3" style="cursor:pointer" id="follower-click">
+                                                        <h6>Followers</h6>
+                                                        <a id="follower-count" class="mb-0">206</a>
+                                                    </li>
+                                                    <li class="text-center ps-3" style="cursor:pointer" id="following-click">
+                                                        <h6>Following</h6>
+                                                        <a style="cursor:pointer" id="following-count" class="mb-0">100</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="timeline" role="tabpanel">
+                                    <div class="card-body p-0">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-body" id="post-body">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+            </div>
+    </div>
+</div>
+</body>
+<script src="/profile/js/libs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!-- slider JavaScript -->
+<script src="/profile/js/slider.js"></script>
+<!-- masonry JavaScript -->
+<script src="/profile/js/masonry.pkgd.min.js"></script>
+<!-- SweetAlert JavaScript -->
+<script src="/profile/js/enchanter.js"></script>
+<!-- SweetAlert JavaScript -->
+<script src="/profile/js/sweetalert.js"></script>
+<!-- app JavaScript -->
+<script src="/profile/js/charts/weather-chart.js"></script>
+<script src="/profile/js/app.js"></script>
+<script src="/profile/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+<script src="/profile/js/lottie.js"></script>
+<script src="/admin/js/moment.js"></script>
+<script src="/js/profile.js"></script>
+<script>
+    profile(1)
+</script>
+</html>

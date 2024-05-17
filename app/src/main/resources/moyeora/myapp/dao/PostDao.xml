@@ -5,7 +5,6 @@
 <mapper namespace="moyeora.myapp.dao.PostDao">
 
   <resultMap id="PostMap" type="Post">
-
     <id column="post_no" property="no"/>
     <result column="school_no" property="schoolNo"/>
     <result column="user_no" property="userNo"/>
@@ -181,7 +180,7 @@
   </select>
   <select id="findByUser" resultMap="PostMap" parameterType="int">
     SELECT
-    u.user_no,
+    u.user_no user_no,
     u.name AS user_name,
     p.post_no,
     s.school_no,
@@ -199,6 +198,8 @@
     INNER JOIN schools s ON s.school_no = p.school_no
     INNER JOIN users u ON p.user_no = u.user_no
     LEFT OUTER JOIN files f ON p.post_no = f.post_no
+    LEFT OUTER JOIN comments c ON p.post_no = c.post_no
+    INNER JOIN users u2 ON c.user_no = u2.user_no
     where p.user_no=#{no}
     order by p.created_at desc;
   </select>

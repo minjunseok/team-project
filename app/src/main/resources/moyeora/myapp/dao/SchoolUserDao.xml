@@ -236,6 +236,28 @@
     AND su.level_no IN (3, 4)
     AND user_no =#{userNo};
   </select>
+  
+  <delete id="forcedDrop">
+    delete from school_users
+    where user_no NOT IN (
+    select user_no from (
+    select user_no
+    from school_users
+    where school_no=#{schoolNo}
+    order by created_at desc
+    limit 25
+    ) as top_users
+    ) and school_no=#{schoolNo};
+  </delete>
 
-
+  <select id="findMasterByUserNo">
+    select
+      user_no
+    from
+      school_users
+    where
+      user_no=#{userNo}
+    and
+      level_no=4;
+  </select>
 </mapper>
