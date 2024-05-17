@@ -181,7 +181,7 @@
       class="row g-3 needs-validation was-validated" novalidate>
  <div class="form-group row justify-content-center">
      
-        <div class="col-md-3">
+        <div class="col-md-8">
             <input id="emailInputBox" name='email' class="form-control is-invalid" readonly placeholder="이메일" required
                    type='text'>
             <div class="valid-feedback">
@@ -190,46 +190,46 @@
             <button id="emailCheckBtn" type="button">인증하기</button>
         </div>
   
-        <div class="col-md-3">
+        <div class="col-md-8">
             <input id="pwd" name='password' onchange="check_pwd()" class="form-control" placeholder="6자 이상, 16자 이하, 특수기호를 사용해야합니다" required type='password'>
         </div>
      
 
     
-     <div class="col-md-3">
+     <div class="col-md-8">
         <input id="pwd2" name="pwd2" onchange="check_pwd()" class="form-control is-invalid" type="password"
                placeholder="비밀번호 확인" required>
         <span id="check"></span>
     </div>
      
-      <div class="col-md-3">
+      <div class="col-md-8">
          <input id="nickname" name='nickname' placeholder="닉네임" class="form-control" required  type='text'>
       </div>
   
-      <div class="col-md-3">
+      <div class="col-md-8">
          <input id="name" name='name' placeholder="이름" required type='text' class="form-control">
       </div>
 
-       <div class="col-md-3">
+       <div class="col-md-8">
          <input id="birth" name='birth' type='date' class="form-control" required>
        </div>
 
-      <div class="col-md-3">
+      <div class="col-md-8">
         <input id="phone" name='phone' placeholder="전화번호" class="form-control" required type='text'>
       </div>
 
 
-      <div class="col-md-3">
+      <div class="col-md-8">
         <input id="address" name="address" placeholder="주소" type="text" class="form-control" required>
         <input id="addressDetail" name="addressDetail" placeholder="상세주소" type="text" class="form-control" required>
           <button onclick="sample2_execDaumPostcode()" type="button">우편번호 찾기</button>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-8">
         <input id="file" name='file' type='file' class="form-control" required>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-8">
       <textarea id="profile" name='profile'  class="form-control" placeholder="자기소개" required></textarea>
       </div>
      
@@ -274,6 +274,7 @@
 </form>
 
 
+
 <script>
   const checkboxLabels = document.querySelectorAll('.checkbox-container');
   
@@ -312,9 +313,21 @@ checkboxLabels.forEach(label => {
                 });
                 return false; // 양식 제출 중단
             }
-
-            // 모든 유효성 검사를 통과하면 양식 제출
-            this.submit();
+            Swal.fire({
+              title: '회원 가입 완료',
+              text: '가입을 환영합니다.',
+              imageUrl: '/img/moyeora-logo.png',
+              imageWidth: 400,
+              imageHeight: 200,
+              imageAlt: 'Custom image',
+              showConfirmButton: true, // 확인 버튼 표시
+              allowOutsideClick: false, // SweetAlert 창 외부 클릭으로 창 닫기 금지
+            }).then((result) => {
+                // SweetAlert 창이 닫힌 후에 폼을 제출합니다.
+                if (result.isConfirmed) {
+                this.submit(); // 폼 제출
+                }
+            });
         });
     });
 </script>
