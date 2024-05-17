@@ -49,6 +49,8 @@ tbody tr:hover {
 }
 
 .right-container {
+	padding-left: 8px;
+	border: 1px solid #cbbca7;
 	width: 30%;
 }
 
@@ -56,6 +58,11 @@ tbody tr:hover {
 .left-container {
 	/* float: left; */
 	width: 300px; /* 왼쪽 컨테이너의 너비 설정 */
+}
+
+.img-md {
+	padding: 8px;
+	border: 1px solid #cbbca7;
 }
 
 /* 회원 리스트 */

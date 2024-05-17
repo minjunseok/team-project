@@ -11,6 +11,7 @@
 		/>
 
 		<!-- 웹 타이틀 옆 작은 이미지 설정 -->
+		<!-- 서버에서 이미지 받아야 함 -->
 		<link
 			rel="icon"
 			href="../../static/img/moyeora-logo.png"
@@ -145,34 +146,36 @@
 			<div class="container">
 				<!-- 왼쪽 고정 요소 -->
 				<div class="left-container">
-					<figure class="figure">
-						<img
-							src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/1dcdc4b5-7645-4143-82f6-0300c5927112?type=f&w=400&h=400"
-							class="figure-img img-fluid rounded"
-							alt=""
-						/>
-						<figcaption
-							class="figure-caption"
-							style="text-align: center"
-						>
-							스쿨 이름 출력 되는 곳!
-						</figcaption>
-					</figure>
-
-					<div
-						class="md_container"
-						data-th-if="${joined}"
-					>
-						<div
-							id="post_setting"
-							onclick="postForm()"
-						>
-							<button
-								type="button"
-								class="btn text-white createButton"
+					<div class="img-md">
+						<figure class="figure">
+							<img
+								src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/1dcdc4b5-7645-4143-82f6-0300c5927112?type=f&w=400&h=400"
+								class="figure-img img-fluid rounded"
+								alt=""
+							/>
+							<figcaption
+								class="figure-caption"
+								style="text-align: center"
 							>
-								새 글 작성
-							</button>
+								스쿨 이름 출력 되는 곳!
+							</figcaption>
+						</figure>
+
+						<div
+							class="md_container"
+							data-th-if="${joined}"
+						>
+							<div
+								id="post_setting"
+								onclick="postForm()"
+							>
+								<button
+									type="button"
+									class="btn text-white createButton"
+								>
+									새 글 작성
+								</button>
+							</div>
 						</div>
 					</div>
 
