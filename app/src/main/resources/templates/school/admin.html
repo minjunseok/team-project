@@ -161,6 +161,45 @@
     margin-left: auto;
     margin-right: auto;
   }
+  
+  .checkbox-container {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+
+.checkbox-container.checked .checkbox-image {
+   opacity: 1; /* 체크된 상태일 때 이미지를 더 진하게 만듭니다. */
+
+}
+
+.checkbox-container.checked::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5; /* 선택사항: 투명도 조절 */
+  border-radius: 5px; /* 선택사항: 둥근 경계를 위해 추가 */
+  z-index: 1; /* 이미지 위로 표시 */
+}
+
+
+.checkbox-container {
+  display: inline-block;
+  text-align: center;
+  margin-right: 20px; /* 사진과 사진 사이의 간격 조절 */
+}
+
+.checkbox-container .checkbox-image {
+  display: block;
+  opacity: 0.5; /* 체크되지 않은 상태일 때 이미지를 반투명하게 만듭니다. */
+  margin-bottom: 5px; /* 사진 아래에 이름과의 간격 조절 */
+}
+  
+  
+  
 
   </style>
 
@@ -519,6 +558,11 @@
           openClosedCheck();
   });
 </script>
+
+
+
+
+
 
 </body>
 </html>

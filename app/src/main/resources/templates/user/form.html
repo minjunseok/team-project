@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
   <meta charset='UTF-8'>
@@ -251,9 +251,12 @@
         <tr data-th-each="tag : ${tags}">
           <td>
             <div class="checkbox-container">
-                  <img class="checkbox-image" height='50px' width="50px" src='/img/default-photo.jpeg'>
+                  <img class="checkbox-image" th:src="@{'/img/tag/tag' + ${tag.no} + '.png'}" alt="no image" height='50px'
+                       width="50px">
                   <span data-th-text="${tag.name}"></span>
-                  <input data-th-checkbox="true" data-th-value="${tag.no}" name="tagNums" type="checkbox" style="display: none;">
+                  <input data-th-checkbox="true"  data-th-value="${tag.no}" name="tagNums"
+                         type="checkbox"
+                         style="display: none;">
             </div>
           </td>
           <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
@@ -522,8 +525,6 @@ var AuthId;
 
 
 </script>
-
-
 
 
 

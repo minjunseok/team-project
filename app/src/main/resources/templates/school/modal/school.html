@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset='UTF-8'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>모여라</title>
-
 </head>
 <body>
-
 <div class="modal" id="schoolInfoModal" data-th-fragment="school-modal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -32,106 +30,108 @@
                         <h5>현재 스쿨 사진</h5>
                         <label for="school_photo" class="form-label"></label>
                         <!-- 스쿨 사진 표시 -->
-                        <div>
+                        <div class="text-center img-thumbnail" >
                             <img id="school_photo1">
                         </div>
                         <!-- 사진 변경을 위한 파일 업로드 -->
                         <!--  <input id="school_photo" name='photo' type='file'>-->
                         <input type="file" id="school_photo" name="photo" accept="image/*" class="form-control"  required/>
-
                     </div>
-
                     <div class="mb-3">
                         <h5>스쿨 설명</h5>
                         <label for="school_content" class="form-label"></label>
                         <textarea id="school_content" class="form-control" name="school_content"></textarea>
                     </div>
-
+                    
                     <div id="school_tags" class="mb-3">
                         <h5>스쿨 관심사</h5>
                         <label class="form-label"></label>
-
-                        <div class="tag-checkboxes" id="tag-checkboxes">
-                            <div class="form-check">
+                        
+                        <div class="text-center tag-checkboxes" id="tag-checkboxes">
+                          <tbody class="text-center">
                             <tr data-th-each="tag : ${tags}">
-                                <td>
-                                    <input data-th-checkbox="true"
-                                           data-th-value="${tag.no}" name="tagNums" type="checkbox" disabled >
-                                </td>
-                                <td>
-                                    <span data-th-text="${tag.name}">1</span>
-                                </td>
-                                <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
-                                    <br>
-                                </data-th-block>
+                              <td>
+                                <div class="checkbox-container">
+                                      <img class="checkbox-image" th:src="@{'/img/tag/tag' + ${tag.no} + '.png'}" alt="no image" height='50px'
+                                           width="50px">
+                                      <span data-th-text="${tag.name}"></span>
+                                      <input data-th-checkbox="true" data-th-value="${tag.no}" name="tagNums" type="checkbox" style="display: none;" disabled>
+                                </div>
+                              </td>
+                              <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+                                <br>
+                              </data-th-block>
                             </tr>
-                        </div>
+                          </tbody>
                         </div>
                     </div>
+                    
                 </div>
                 <!--                <button class="btn btn-primary">업데이트</button>-->
                 <button class="btn btn-primary btn-warning centered" type="button" onclick="update()">업데이트</button>
             </form>
         </div>
     </div>
-
-
-
     <script>
         const schoolFormModal = new bootstrap.Modal(document.getElementById('schoolInfoModal'), {});
         var signupBtn = 0; // 스쿨명 중복 체크 여부를 나타내는 변수
         var initialSchoolName = ""; // 초기 스쿨 이름 저장 변수
-
-
         function schoolForm() {
             // 서버로부터 사용자 목록을 가져오는 코드 작성
             const queryString = window.location.search;
             const params = new URLSearchParams(queryString);
             const schoolNo = params.get('schoolNo');
-
             // 모달을 출력하기 전에 모달에서 출력할 때 사용할 데이터를 준비한다.
             axios.get("/school/admin/schoolInfo?schoolNo=" + schoolNo)
             .then((response) => {
                 // 서버로부터 받은 데이터를 처리하는 코드 작성
                 console.log(response.data); // 받은 데이터를 콘솔에 출력하여 확인
-
                 // 스쿨 번호를 숨겨진 폼 필드에 할당
                 document.getElementById('schoolNo').value = schoolNo;
-
                 // 여기에 받은 데이터를 화면에 표시하는 코드를 작성할 수 있습니다.
                 let school_name = document.getElementById('school_name');
                 school_name.value = response.data.name;
                 initialSchoolName = response.data.name; // 초기 스쿨 이름 저장
-
                 let school_content = document.getElementById('school_content');
                 school_content.value = response.data.content;
-
                 let school_photo1 = document.getElementById('school_photo1');
                 school_photo1.src = 'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/' + response.data.photo + '?type=f&w=160&h=160';
-
-
                 // 서버로부터 받은 태그들을 순회하면서 체크박스를 생성합니다.
+                
                 response.data.tags.forEach(tag => {
-                    console.log(tag.tagNo);
-                    document.querySelector(`input[type="checkbox"][value="${tag.tagNo}"]`).checked = "checked";
-                });
-
+                console.log(tag.tagNo);
+                const checkbox = document.querySelector(`input[type="checkbox"][value="${tag.tagNo}"]`);
+                if (checkbox) {
+                    checkbox.checked = true;
+                    checkbox.closest('.checkbox-container').classList.add('checked');
+                    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@");
+                }
+            });
+                
                 schoolFormModal.show();
             })
             .catch((error) => {
                 console.error('Error fetching user list:', error); // 오류가 발생한 경우 콘솔에 오류 메시지 출력
             });
         }
-
-
-
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.disabled = true; // 체크박스를 disable 상태로 설정
+                checkbox.closest('.checkbox-container').classList.add('disabled'); // 부모 요소에 disabled 클래스 추가
+            });
+        });
+        
+        
+        
+        
         function update() {
             // 선택된 태그 번호를 배열로 저장
             var tagNums = [];
             document.querySelectorAll('input[name="tagNums"]:checked').forEach(tag => {
                 tagNums.push(parseInt(tag.value));
             });
-
             if (tagNums.length === 0) {
                 Swal.fire({
                   icon: 'warning',
@@ -140,7 +140,6 @@
                 });
                 return;
             }
-
             // 스쿨 이름이 변경되었는지 확인
             var currentSchoolName = document.getElementById('school_name').value;
             if (currentSchoolName !== initialSchoolName && signupBtn === 0) {
@@ -151,19 +150,15 @@
                 });
                 return;
             }
-
-
             // 다른 필요한 데이터들을 formData에 추가
             var formData = new FormData();
             formData.append('no', document.getElementById('schoolNo').value);
             formData.append('name', document.getElementById('school_name').value);
             formData.append('content', document.getElementById('school_content').value);
             formData.append('tagNums', tagNums);
-
             // 파일이 있을 경우 추가
             var fileInput = document.getElementById('school_photo');
             var file = fileInput.files[0];
-
             if (file) {
                 formData.append('file', file);
             } else {
@@ -172,7 +167,6 @@
                 let previousPhotoFileName = previousPhotoUrl.substring(previousPhotoUrl.lastIndexOf('/') + 1);
                 formData.append('file', previousPhotoFileName);
             }
-
             axios.post("/school/admin/update", formData)
                 .then((response) => {
                     console.log(response);
@@ -208,15 +202,11 @@
                     // 오류 처리 코드 추가
                 });
         }
-
-
         $(document).ready(function () {
             var updateBtn = $("#updateBtn"); // 업데이트 버튼
-
             // 중복 확인 버튼 클릭 이벤트
             $("#signupBtn").click(function () {
                 var schoolName = $("#school_name").val(); // 스쿨명 입력값 가져오기
-
                    if (schoolName.length < 2) {
                        Swal.fire({
                           icon: 'warning',
@@ -225,7 +215,6 @@
                         });
                        return; // 함수 종료
                    }
-
                 // AJAX를 이용한 중복 확인
                 $.ajax({
                     url: "checkDuplicateSchoolName",
@@ -260,7 +249,5 @@
         });
     </script>
 </div>
-
-
 </body>
 </html>
