@@ -15,6 +15,11 @@
     <style>
         .form-section {
             margin-bottom: 20px; /* 각 섹션의 아래쪽 간격 조정 */
+            
+        }
+
+        h3 {
+            text-align: center;
         }
 
         .school-visibility {
@@ -27,7 +32,15 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
+            border: 4px solid  #9e896a;
+            padding: 3rem;
+            border-radius: 1rem;
+            width: 600px;
+            margin: 20px auto;
         }
+
+        
 
         /* 오른쪽 정렬 스타일 */
         .right-aligned {
@@ -54,7 +67,7 @@
         cursor: pointer;
         margin-right: 50px;
         margin-left: 20px;
-        white-space: nowrap; /* 텍스트가 넘칠 경우 줄바꿈 방지 */
+        /* white-space: nowrap; 텍스트가 넘칠 경우 줄바꿈 방지 */
         }
 
         .open-container input[type="radio"]:checked + label {
@@ -62,6 +75,7 @@
             color: #fff;
             border-color: rgb(158, 137, 106);
         }
+
 
     </style>
 </head>
@@ -73,13 +87,16 @@
           class="was-validated"
           novalidate="">
         <div id="div1" style="display: inline-block;" class="form-section">
-            <label class="form-label" for="name">스쿨 이름</label>
+
+            <label class="form-label" for="name"></label>
+            <h3 style="margin-left: 80px;">스쿨 이름</h3>
             <input type="text" name="name" id="name" class="form-control" required="">
         </div>
         <button type="button" id="signupBtn" class="btn btn-warning">중복 확인</button>
 
         <div style="max-width:300px;" class="form-section">
-            스쿨 사진 <input type="file" id="image" name="file" accept="image/*" class="form-control" onchange="setThumbnail(event);" required/>
+            <h3>스쿨 사진</h3>
+             <input type="file" id="image" name="file" accept="image/*" class="form-control" onchange="setThumbnail(event);" required/>
             <div id="school_image"></div>
             <script>
                 function setThumbnail(event) {
@@ -99,12 +116,13 @@
         </div>
 
         <div style="max-width: 300px;" class="form-section">
-            스쿨 설명 <textarea class="form-control" id="validationTextarea" name='content' placeholder="스쿨 소개"  required></textarea>
+            <h3>스쿨 설명</h3>
+             <textarea class="form-control" id="validationTextarea" name='content' placeholder="스쿨 소개"  required></textarea>
             <div class="invalid-feedback"></div>
         </div>
 
         <div class="form-section right-aligned">
-            <h2>관심사 선택</h2>
+            <h3>관심사 선택</h3>
         </div>
 
         <tbody>
@@ -122,9 +140,9 @@
         </tbody>
 
         <div class="school-visibility form-section right-aligned">
-            <h2>스쿨 공개 여부</h2>
+            <h3>스쿨 공개 여부</h3>
         </div>
-
+        
         <!-- <div class="form-section form-section right-aligned">
             <input class="form-check-input" type="radio" name="openRange" id="flexRadioDefault1" value="0" checked>
             <label class="form-check-label" for="flexRadioDefault1">비공개</label>
