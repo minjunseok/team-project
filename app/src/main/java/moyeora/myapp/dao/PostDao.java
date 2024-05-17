@@ -66,6 +66,6 @@ public interface PostDao {
 
   int findByPostSchoolNo(int no);
 
-
+  int deleteAllSchoolPost(int schoolNo);
 
 }

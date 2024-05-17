@@ -130,6 +130,9 @@ where
 
 </delete>
 
+    <delete id="deleteAllSchoolClass" parameterType="int">
+        DELETE FROM school_classes WHERE school_no=#{value}
+    </delete>
 
 <update id="classUpdate">
 update school_classes set
@@ -147,8 +150,7 @@ where
     class_no = #{no}
   </update>
 
-
-
-
-
+    <delete id="deleteAllSchoolClassUser" parameterType="int">
+        DELETE FROM class_users WHERE school_no=#{value}
+    </delete>
 </mapper>

@@ -35,6 +35,10 @@ public interface SchoolUserDao {
 
   void deleteMember(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
 
+  void disableForeignKeyChecks(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
+
+  void enableForeignKeyChecks(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
+
   int findAdmin(int userNo, int schoolNo);
   int findSubAdmin(int userNo, int schoolNo);
 

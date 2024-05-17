@@ -453,6 +453,12 @@
   </select>
 
 
+    <delete id="deleteAllSchoolPost" parameterType="int">
+        DELETE from posts
+        WHERE school_no = #{value}
+    </delete>
+
+
 </mapper>
 
 <!--  <collection property="fileList" ofType="AttachedFile">-->
