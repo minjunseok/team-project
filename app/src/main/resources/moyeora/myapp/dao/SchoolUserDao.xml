@@ -223,6 +223,7 @@
   </select>
 
 
+
   <delete id="deleteSchoolUsers" parameterType="int">
     DELETE FROM school_users
     WHERE user_no = #{userNo}
@@ -231,7 +232,6 @@
 
 
   <select id="findBySchoolLevelNo" resultType="int">
-
     <!--  세션유저의 user_no를 받아 권한이 매니저인가 부매니저인가 묻는 쿼리문-->
     SELECT DISTINCT
 
@@ -254,10 +254,9 @@
   </select>
 
 
-
 <!--스쿨에 가입된 유저의 레벨을 찾음-->
 
-  <select id="findBySchoolNo" resultType="int">
+  <select id="findByMemberCheck" resultType="int">
 <!--count(*)를 사용하면 school_users 데이터 값이 있으면 1, 없으면 0으로 찾아서 값을 넘겨줌-->
   SELECT count(*)
   FROM school_users

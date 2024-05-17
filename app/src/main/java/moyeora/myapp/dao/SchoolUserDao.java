@@ -11,6 +11,7 @@ public interface SchoolUserDao {
 
     int findByUserLevelNo(int schoolNo, int userNo);
 
+
     public SchoolUser findByUserNo(int no);
 
     public void insert(SchoolUser user);
@@ -28,7 +29,12 @@ public interface SchoolUserDao {
 
     List<SchoolUser> findBlackUserBySchoolNo(int no);
 
-    int findLevel(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
+
+
+  int findLevel(int schoolNo, int userNo); //민준 사용
+
+  int findLevel(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
+
 
     void updateLevel(SchoolMemberUpdateRequestDTO memberUpdateRequestDTO);
 
@@ -44,7 +50,7 @@ public interface SchoolUserDao {
 
 
     // 스쿨에 가입이 되어있는지 안되어있는지 확인하기 위한 코드
-    int findBySchoolNo(int userNo, int schoolNo);
+    int findByMemberCheck(int schoolNo, int userNo);
 
 
 }

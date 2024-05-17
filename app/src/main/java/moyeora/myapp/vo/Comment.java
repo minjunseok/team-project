@@ -19,7 +19,7 @@ public class Comment {
   private SchoolUser schoolUser;
   private School school;
   private User writer;
-  private int no;
+  private int commentNo;
   private String content;
   private Date createdAt;
   private int userNo;
