@@ -12,6 +12,11 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    
     <title>moyeora</title>
     
     <link href="/css/user.css" rel="stylesheet"/>
@@ -162,9 +167,21 @@
                 });
                 return false; // 양식 제출 중단
             }
-
-            // 모든 유효성 검사를 통과하면 양식 제출
-            this.submit();
+            Swal.fire({
+              title: '회원 가입 완료',
+              text: '가입을 환영합니다.',
+              imageUrl: '/img/moyeora-logo.png',
+              imageWidth: 400,
+              imageHeight: 200,
+              imageAlt: 'Custom image',
+              showConfirmButton: true, // 확인 버튼 표시
+              allowOutsideClick: false, // SweetAlert 창 외부 클릭으로 창 닫기 금지
+            }).then((result) => {
+                // SweetAlert 창이 닫힌 후에 폼을 제출합니다.
+                if (result.isConfirmed) {
+                this.submit(); // 폼 제출
+                }
+            });
         });
     });
 </script>

@@ -180,6 +180,7 @@ public class SchoolClassController {
     System.out.println("@@@@classDelete@@@@@@(classDelete)loginUser.getNo()@@@@@@@@@" + loginUser.getNo());
 
     SchoolClassRequestDTO schoolClassRequestDTO = new SchoolClassRequestDTO();
+    schoolClassRequestDTO.setUserNo(loginUser.getNo());
     schoolClassRequestDTO.setSchoolNo(clazz.getSchoolNo());
     schoolClassRequestDTO.setClassNo(classDeleteDTO.getClassNo());
     System.out.println("@@@@@@classDelete@@@@@@@");
