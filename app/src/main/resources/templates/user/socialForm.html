@@ -35,39 +35,39 @@
                 <input data-th-value="${user.role}" id="role" name="role" readonly type="hidden">
             </div>
         
-            <div class="col-md-3">
+            <div class="col-md-8">
                  <input data-th-value="${user.email}" id="email" name="email" type="text"
                         class="form-control is-valid" readonly required>
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-8">
                 <input data-th-value="${user.name}" id="name" name="name" class="form-control is-valid" readonly required type="text">
             </div>
         
-            <div class="col-md-3">
+            <div class="col-md-8">
                 <input name='nickname' placeholder="닉네임" class="form-control is-invalid" required type='text'>
             </div>
         
-            <div class="col-md-3">
+            <div class="col-md-8">
                 생년월일<input id="birth" name='birth' type='date' class="form-control" required>
             </div>
         
-            <div class="col-md-3">
+            <div class="col-md-8">
                 <input id="phone" name='phone' placeholder="전화번호" class="form-control" required type='text'>
             </div>
         
         
-            <div class="col-md-3">
+            <div class="col-md-8">
                 <input id="address" name="address" placeholder="주소" type="text" class="form-control" required>
                 <input id="addressDetail" name="addressDetail" placeholder="상세주소" type="text" class="form-control" required>
                 <button onclick="sample2_execDaumPostcode()" type="button">우편번호 찾기</button>
             </div>
         
-            <div class="col-md-3">
+            <div class="col-md-8">
                 <input id="file" name='file' type='file' class="form-control" required>
             </div>
         
-            <div class="col-md-3">
+            <div class="col-md-8">
                 <textarea id="profile" name='profile'  class="form-control" placeholder="자기소개" required></textarea>
             </div>
      
@@ -115,7 +115,6 @@
    </div>
 </form>
 
-<div data-th-replace="footer :: footer">꼬리말</div>
 
 
 <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">

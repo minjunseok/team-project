@@ -49,7 +49,7 @@
 /* 여기서 *는 1부터 5까지 사용할 수 있습니다. */
 .row .col-md-4,
 .row .col-md-5,
-.row .col-md-3 {
+.row .col-md-3{
     margin-bottom: 1rem; /* 원하는 간격으로 조정할 수 있습니다. */
 
 }
