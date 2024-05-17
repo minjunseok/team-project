@@ -275,35 +275,33 @@
 
 <!-- 작성자 이름으로 게시글 검색 -->
 <select id="findBySchoolUserName" resultMap="PostMap">
-   SELECT
-        u.user_no,
-        u.nickname,
-        u.photo,
-        p.post_no,
-        s.school_no,
-        p.created_at,
-        (SELECT COUNT(*) FROM likes AS l WHERE l.post_no = p.post_no) AS like_count,
-        (SELECT COUNT(*) FROM comments AS c WHERE c.post_no = p.post_no) AS comment_count,
-        s.name AS school_name,
-        s.photo AS school_photo,
-        p.content,
-        f.path,
-        f.name,
-        f.post_no
+    SELECT
+    u.user_no,
+    u.nickname,
+    u.photo,
+    p.post_no,
+    s.school_no,
+    p.created_at,
+    (SELECT COUNT(*) FROM likes AS l WHERE l.post_no = p.post_no) AS like_count,
+    (SELECT COUNT(*) FROM comments AS c WHERE c.post_no = p.post_no) AS comment_count,
+    s.name AS school_name,
+    s.photo AS school_photo,
+    p.content,
+    f.path,
+    f.name,
+    f.post_no
     FROM
-        posts p
-	INNER JOIN
-		school_users su ON su.school_no = p.school_no
+    posts p
     INNER JOIN
-        schools s ON s.school_no = su.school_no
+    schools s ON s.school_no = p.school_no
     INNER JOIN
-        users u ON su.user_no = u.user_no
+    users u ON p.user_no = u.user_no
     LEFT OUTER JOIN
-        files f ON p.post_no = f.post_no
+    files f ON p.post_no = f.post_no
     WHERE
-        u.nickname LIKE '%${keyword}%'
+    u.nickname LIKE '%${keyword}%'
     ORDER BY
-        like_count DESC;
+    like_count DESC;
 </select>
 
 
@@ -433,6 +431,7 @@
 
     SELECT DISTINCT
 
+    p.user_no user_no,
     p.school_no school_no,
     u.nickname,
     p.post_no,
