@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>스쿨 삭제</title>
@@ -7,8 +7,6 @@
     <!-- 부트스트랩 CSS 및 JS 추가 -->
 </head>
 <body>
-
-
 <div class="modal" id="deleteSchoolModal" th:fragment="school-modal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -29,57 +27,61 @@
             </form>
         </div>
     </div>
-
-
     <script>
         // 모달 요소를 찾아서 deleteSchoolModal 변수에 할당합니다.
         const deleteSchoolModal = new bootstrap.Modal(document.getElementById('deleteSchoolModal'));
-
         function schoolDeleteForm() {
             console.log('schoolDeleteForm()');
-
             // 삭제 버튼 클릭 시 모달에 스쿨명 표시
                const queryString = window.location.search;
                const params = new URLSearchParams(queryString);
                const schoolNo = params.get('schoolNo');
             // 모달 열기
             deleteSchoolModal.show();
-
             // 삭제 확인 버튼 클릭 시
             $('#confirmDeleteBtn').one('click', function() {
-                // 서버로 삭제 요청 보내는 코드 작성
-                axios.get('/school/admin/deleteSchool?schoolNo=' + schoolNo)
-                    .then(response => {
-                        console.log('스쿨 삭제 완료');
-                        console.log(response.data);
-
-                         const Toast = Swal.mixin({
-                             toast: true,
-                             position: "top-end",
-                             showConfirmButton: false,
-                             timer: 2000,
-                             timerProgressBar: true,
-                             didOpen: (toast) => {
-                                 toast.onmouseenter = Swal.stopTimer;
-                                 toast.onmouseleave = Swal.resumeTimer;
-                             }
-                         });
-                         Toast.fire({
-                             icon: "success",
-                             title: "스쿨삭제 완료!"
-                         });
-
-                         setTimeout(function() {
-                             window.location.href = '/index';
-                         }, 2000);
-                    })
-                    .catch(error => {
-                        console.error('스쿨 삭제 실패', error);
-                    });
-
-                // 모달 창 닫기
                 deleteSchoolModal.hide();
-            });
-        }
+            Swal.fire({
+                title: "이 작업은 되돌릴 수 없습니다。",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085D6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "네 삭제하겠습니다!",
+                cancelButtonText: "취소"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // 서버로 삭제 요청 보내는 코드 작성
+                    deleteSchoolModal.hide();
+                    axios.get('/school/admin/deleteSchool?schoolNo=' + schoolNo)
+                        .then(response => {
+                            console.log('스쿨 삭제 완료');
+                            console.log(response.data);
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    Toast.fire({
+                        icon: "success",
+                        title: "스쿨삭제 완료!"
+                    });
+                    setTimeout(function() {
+                        window.location.href = '/index';
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.error('스쿨 삭제 실패', error);
+                });
+            }
+        });
+    });
+}
     </script>
 </div>

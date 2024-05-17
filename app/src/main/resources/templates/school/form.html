@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang='en'>
-
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset='UTF-8'>
     <title>모여라</title>
@@ -11,21 +10,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-
     <style>
         .form-section {
             margin-bottom: 20px; /* 각 섹션의 아래쪽 간격 조정 */
-            
         }
-
         h3 {
             text-align: center;
         }
-
         .school-visibility {
             margin-top: 20px;
         }
-
          /* 가운데 정렬 스타일 */
         .centered {
             display: flex;
@@ -33,31 +27,25 @@
             align-items: center;
             height: 100vh;
             flex-direction: column;
-            border: 4px solid  #9e896a;
+            border: 4px solid  #9E896A;
             padding: 3rem;
             border-radius: 1rem;
             width: 600px;
             margin: 20px auto;
         }
-
-        
-
         /* 오른쪽 정렬 스타일 */
         .right-aligned {
             display: flex;
             justify-content: center;
             margin-right: 20px;
         }
-        
         .open-container {
             display: flex;
             align-items: center;
         }
-
         .open-container input[type="radio"] {
             display: none;
         }
-
        .open-container label {
         display: inline-block;
         margin-right: 10px;
@@ -69,17 +57,14 @@
         margin-left: 20px;
         /* white-space: nowrap; 텍스트가 넘칠 경우 줄바꿈 방지 */
         }
-
         .open-container input[type="radio"]:checked + label {
             background-color: rgb(158, 137, 106);
             color: #fff;
             border-color: rgb(158, 137, 106);
         }
-
-
+    
     </style>
 </head>
-
 <body class="p-3 m-0 border-0 bd-example m-0 border-0">
 <div class="centered">
     <form onsubmit="return validateForm()" action="add" data-th-action="@{add}" enctype='multipart/form-data'
@@ -87,87 +72,82 @@
           class="was-validated"
           novalidate="">
         <div id="div1" style="display: inline-block;" class="form-section">
-
             <label class="form-label" for="name"></label>
             <h3 style="margin-left: 80px;">스쿨 이름</h3>
             <input type="text" name="name" id="name" class="form-control" required="">
         </div>
         <button type="button" id="signupBtn" class="btn btn-warning">중복 확인</button>
-
         <div style="max-width:300px;" class="form-section">
             <h3>스쿨 사진</h3>
              <input type="file" id="image" name="file" accept="image/*" class="form-control" onchange="setThumbnail(event);" required/>
             <div id="school_image"></div>
             <script>
-                function setThumbnail(event) {
-                    var existingImage = document.querySelector("div#school_image img");
-                    if (existingImage) {
-                        existingImage.remove();
+                    function setThumbnail(event) {
+                        var existingImage = document.querySelector("div#school_image img");
+                        if (existingImage) {
+                            existingImage.remove();
+                        }
+                        var reader = new FileReader();
+                        reader.onload = function (event) {
+                            var img = document.createElement("img");
+                            img.setAttribute("src", event.target.result);
+                            img.style.height = '160px';
+                            img.style.objectFit = 'cover';
+                            document.querySelector("div#school_image").appendChild(img);
+                        };
+                        reader.readAsDataURL(event.target.files[0]);
                     }
-                    var reader = new FileReader();
-                    reader.onload = function (event) {
-                        var img = document.createElement("img");
-                        img.setAttribute("src", event.target.result);
-                        document.querySelector("div#school_image").appendChild(img);
-                    };
-                    reader.readAsDataURL(event.target.files[0]);
-                }
             </script>
         </div>
-
         <div style="max-width: 300px;" class="form-section">
             <h3>스쿨 설명</h3>
              <textarea class="form-control" id="validationTextarea" name='content' placeholder="스쿨 소개"  required></textarea>
             <div class="invalid-feedback"></div>
         </div>
-
         <div class="form-section right-aligned">
             <h3>관심사 선택</h3>
         </div>
-
-        <tbody>
+        <div class="text-center">
+          <tbody class="text-center">
             <tr data-th-each="tag : ${tags}">
-                <td>
-                    <input type="checkbox" data-th-checkbox="true" name="tagNums" data-th-value="${tag.no}" class="form-check-input" value="" required="">
-                </td>
-                <td>
-                    <span data-th-text="${tag.name}">1</span>
-                </td>
-                <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
-                    <br>
-                </data-th-block>
+              <td>
+                <div class="checkbox-container">
+                      <img class="checkbox-image" th:src="@{'/img/tag/tag' + ${tag.no} + '.png'}" alt="no image" height='50px' width="50px">
+                      <span data-th-text="${tag.name}"></span>
+                      <input data-th-checkbox="true"  data-th-value="${tag.no}" name="tagNums" type="checkbox" style="display: none;">
+                </div>
+              </td>
+              <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+                <br>
+              </data-th-block>
             </tr>
-        </tbody>
-
+          </tbody>
+        </div>
         <div class="school-visibility form-section right-aligned">
             <h3>스쿨 공개 여부</h3>
         </div>
-        
         <!-- <div class="form-section form-section right-aligned">
             <input class="form-check-input" type="radio" name="openRange" id="flexRadioDefault1" value="0" checked>
             <label class="form-check-label" for="flexRadioDefault1">비공개</label>
             <input class="form-check-input" type="radio" name="openRange" id="flexRadioDefault2" value="1">
             <label class="form-check-label" for="flexRadioDefault2">공개</label>
         </div> -->
-
         <div class="open-container right-aligned">
             <input id="closed" name="openRange" type="radio" value="0" checked>
             <label  for="closed">비공개</label>
             <input id="open" name="openRange" type="radio" value="1">
             <label  for="open">공개</label>
         </div>
-
         <div class="school-visibility form-section right-aligned ">
         <button type="submit" class="btn btn-warning right-aligned">개설 하기</button>
         </div>
-
-
     </form>
 </div>
 
+
+
 <script>
     var signupBtn = 0; // 스쿨명 중복 체크 여부를 나타내는 변수
-
     function validateForm() {
         var fileInput = document.getElementById('image');
         if (fileInput.files.length === 0) {
@@ -178,7 +158,6 @@
             });
             return false;
         }
-
         var checkboxes = document.getElementsByName('tagNums');
         var isChecked = false;
         for (var i = 0; i < checkboxes.length; i++) {
@@ -195,7 +174,6 @@
             });
             return false;
         }
-
         // 스쿨명이 사용 가능한지 확인 (signupBtn이 1인 경우 사용 가능함을 의미)
         if (signupBtn !== 1) {
             Swal.fire({
@@ -205,7 +183,6 @@
             });
             return false;
         }
-
         document.querySelector("#form1").onsubmit = () => {
           // submit 타입의 버튼을 클릭하면 onsubmit 으로 등록한 함수가 호출된다.
           // 여기에서 입력 폼 값을 검증하는 일을 한다.
@@ -220,7 +197,6 @@
             return false; // false를 리턴하면 입력 폼의 값을 서버에 제출하지 않는다.
                           // 즉 HTTP 요청을 수행하지 않는다.
           }
-
           // true를 리턴하거나 아무것도 리턴하지 않으면 원래대로
           // 입력 폼의 값을 서버에 제출한다. 즉 HTTP 요청을 수행한다.
         };
@@ -241,16 +217,10 @@
         });
         return true;
     }
-
-
-
-
-
     // 아이디 체크여부 확인 (아이디 중복일 경우 = 0 , 중복이 아닐경우 = 1 )
     $("#signupBtn").click(function() {
         var schoolName = $("#name").val();
         console.log("Sending schoolName: " + schoolName);
-
         if (schoolName.length < 2) {
             Swal.fire({
               icon: 'warning',
@@ -259,7 +229,6 @@
             });
             return; // 길이가 충족되지 않으면 함수 종료
         }
-
         $.ajax({
             url: "checkDuplicateSchoolName",
             type: 'GET',
@@ -295,21 +264,6 @@
             }
         });
     });
-
-
-    // document.querySelector("#form1").onsubmit = () => {
-    //     var name = document.querySelector("#name");
-    //     if (name.value == "" || name.value.length < 2) {
-    //         alert("스쿨이름을 2자 이상을 입력하세요.");
-    //         return false; // false를 리턴하면 입력 폼의 값을 서버에 제출하지 않는다.-->
-    //         // 즉 HTTP 요청을 수행하지 않는다.-->
-    //    }
-    //     // true를 리턴하거나 아무것도 리턴하지 않으면 원래대로-->
-    //     // 입력 폼의 값을 서버에 제출한다. 즉 HTTP 요청을 수행한다.-->
-    // };
-
-
 </script>
 </body>
-
 </html>
