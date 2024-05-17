@@ -65,6 +65,10 @@ tbody tr:hover {
 	border: 1px solid #9e896a;
 }
 
+.left-container .userList span {
+	overflow: hidden;
+}
+
 .left-container .userList ul {
 	margin: 0;
 	padding: 0;
@@ -79,6 +83,7 @@ tbody tr:hover {
 .left-container .userList li:last-of-type {
 	border-bottom: none;
 }
+
 .left-container .userList .col {
 	display: inline-flex;
 	align-items: center;
@@ -103,22 +108,9 @@ tbody tr:hover {
 	word-break: keep-all;
 }
 
-/* 회원 리스트 */
-/* .left-container .userList th,
-.left-container .userList td {
-	border: 1px solid #9e896a;
-	padding: 10px;
-	text-align: center;
+.center-container {
+	background-color: #aa977e3f;
 }
-.left-container .userList td:last-of-type {
-	word-break: keep-all;
-}
-.left-container .userList .col1 {
-	width: 25%;
-}
-.left-container .userList .col3 {
-	width: 30%;
-} */
 
 /* 검색창 스타일 */
 .searchBar {
@@ -136,6 +128,7 @@ tbody tr:hover {
 .searchBarContainer .inputKeyword {
 	margin: 0 30px;
 	width: 100%;
+	background-color: #cbbca765;
 }
 
 .searchBar .bi-search {
@@ -175,8 +168,60 @@ tbody tr:hover {
 	width: 100%;
 }
 
+/* 고정 게시글 목록 */
+#fixed-post {
+	padding: 0 20px;
+}
+
+#fixed-post .table {
+	background-color: #cbbca765;
+}
+
+#fix-hd {
+	height: 80px;
+}
+
+#fix-hd .fix-img {
+	height: 80px;
+	width: 120px;
+	padding-left: 24px;
+	padding-top: 24px;
+	overflow: hidden;
+}
+
+#fix-hd .fix-nick {
+	padding-right: 200px;
+	padding-top: 16px;
+}
+.fix-nick span {
+	background-color: #cbbca700;
+}
+
+#fix-hd2 {
+	height: 100%;
+	background-color: #cbbca700;
+}
+
+#fix-hd2 .fix-ca {
+	padding-right: 100px;
+}
+
+.fix-content {
+	padding-left: 24px;
+	padding-top: 24px;
+}
+
+/* 게시글 목록 */
+#searchResult {
+	padding: 0 20px;
+}
+
+#searchResult .table {
+	background-color: white;
+}
+
 .table-responsive .table {
-	border: 1px solid #9e896a;
+	border: 1px solid black;
 }
 
 .table-responsive .table ul {
@@ -223,4 +268,34 @@ tbody tr:hover {
 	max-width: 10%;
 	border-right: none;
 	word-break: keep-all;
+}
+
+#list-hd {
+	height: 80px;
+}
+
+#list-hd .list-img {
+	height: 80px;
+	width: 120px;
+	padding-left: 24px;
+	padding-top: 24px;
+	overflow: hidden;
+}
+
+#list-hd .list-nick {
+	padding-right: 200px;
+	padding-top: 16px;
+}
+
+#list-hd2 {
+	height: 100%;
+}
+
+#list-hd2 .list-ca {
+	padding-right: 100px;
+}
+
+.list-content {
+	padding-left: 24px;
+	padding-top: 24px;
 }

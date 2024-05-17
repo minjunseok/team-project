@@ -149,7 +149,7 @@
 						<img
 							src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/1dcdc4b5-7645-4143-82f6-0300c5927112?type=f&w=400&h=400"
 							class="figure-img img-fluid rounded"
-							alt="..."
+							alt=""
 						/>
 						<figcaption
 							class="figure-caption"
@@ -219,30 +219,6 @@
 							</li>
 						</ul>
 					</div>
-					<!-- <table class="userList">
-											<colgroup>
-												<col class="col1" />
-												<col class="col2" />
-												<col class="col3" />
-											</colgroup>
-											<thead>
-												<tr>
-													<th>프로필 사진</th>
-													<th>닉네임</th>
-													<th>회원 등급</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr
-													data-th-each="schoolUser : ${schoolUsers}"
-													data-th-object="${schoolUser}"
-												>
-													<td data-th-text="*{writer.photo}">사진</td>
-													<td data-th-text="*{writer.nickname}">작성자</td>
-													<td data-th-text="*{level.levelName}">회원 등급</td>
-												</tr>
-											</tbody>
-										</table> -->
 				</div>
 
 				<div class="center-container">
@@ -253,7 +229,10 @@
 							method="post"
 						>
 							<div class="searchBarContainer">
-								<select name="filter">
+								<select
+									name="filter"
+									style="background-color: #cbbca765"
+								>
 									<option value="0">내용</option>
 									<option value="1">작성자</option>
 								</select>
@@ -280,6 +259,9 @@
 						</form>
 					</div>
 
+					<div>고정 게시글</div>
+
+					<!-- 고정 게시글 -->
 					<div
 						id="fixed-post"
 						data-th-data-schoolno="${schoolNo}"
@@ -292,74 +274,28 @@
 							data-th-data-no="*{no}"
 							class="table"
 						>
-							<div class="d-flex justify-content-between">
+							<div
+								id="fix-hd"
+								class="d-flex justify-content-between"
+							>
 								<div
-									class="me-3"
+									class="fix-img"
 									data-th-text="*{writer.photo}"
-									style="width: 10%; padding-left: 12px; padding-top: 12px"
 								>
 									사진
 								</div>
-								<div class="w-100">
-									<div class="d-flex justify-content-between">
-										<div class="">
-											<span
-												class="mb-0 d-inline-block"
-												data-th-text="*{writer.nickname}"
-												>닉네임</span
-											>
-										</div>
-										<div data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</div>
-
-										<div
-											class="mt-3"
-											data-th-utext="*{content}"
-											data-th-data-no="*{no}"
-										>
-											content
-										</div>
-									</div>
+								<div class="fix-nick">
+									<span data-th-text="*{writer.nickname}">닉네임</span>
 								</div>
-							</div>
-						</div>
-					</div>
 
-					<!-- 게시글 목록 테이블 -->
-					<div
-						id="searchResult"
-						class="contentList table-responsive"
-					>
-						<table
-							class="table"
-							border="1"
-							data-th-data-schoolno="${schoolNo}"
-						>
-							<thead>
-								<tr>
-									<th>닉네임</th>
-									<th>사진</th>
-									<th>내용</th>
-									<th>작성일</th>
-									<th>공지 핀</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr
-									data-th-each="post : ${postlists}"
-									data-th-object="${post}"
-									data-th-data-no="*{no}"
-								>
-									<td data-th-text="*{writer.nickname}">작성자</td>
-									<td data-th-text="*{writer.photo}">사진</td>
-									<td
-										class="school-post"
-										data-th-utext="*{content}"
-										data-th-data-no="*{no}"
+								<div>
+									<div
+										id="fix-hd2"
+										class="d-flex justify-content-between"
 									>
-										게시글 내용
-									</td>
-									<td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
-									<td>
+										<div class="fix-ca">
+											<span data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</span>
+										</div>
 										<div class="dropdown">
 											<button
 												class="btn btn-secondary settingBtn"
@@ -373,58 +309,134 @@
 												class="dropdown-menu"
 												aria-labelledby="dropdownMenuButton"
 											>
-												<div>
-													<a
-														id="md"
-														class="btn_md"
-														data-toggle="modal"
-														data-target="#editPostModal"
-														>글 수정</a
-													>
-												</div>
-												<div>
-													<a
-														id="delete"
-														data-th-href="@{delete(schoolNo=*{schoolNo}, post_no=${post.no})}"
-														class="dropdown-item"
-														>삭제</a
-													>
-												</div>
-												<div>
-													<a
-														id="copyLinkButton"
-														class="dropdown-item"
-														>주소 복사</a
-													>
-												</div>
-												<div>
-													<a
-														id="report"
-														class="dropdown-item"
-														>게시글 신고</a
-													>
-												</div>
-												<div>
-													<label
-														for="gradeMd"
-														id="gradeMdLabel"
-														style="display: none"
-														>공지로 등록</label
-													>
-													<input
-														type="checkbox"
-														id="gradeMd"
-														name="post"
-														value="1"
-														style="display: none"
-													/>
-												</div>
+												<button
+													class="dropdown-item"
+													type="button"
+												>
+													공지 해제
+												</button>
 											</div>
 										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+									</div>
+								</div>
+							</div>
+							<div
+								class="fix-content"
+								data-th-utext="*{content}"
+								data-th-data-no="*{no}"
+							>
+								content
+							</div>
+						</div>
+					</div>
+
+					<div>일반 게시글</div>
+
+					<!-- 게시글 목록 테이블 -->
+					<div
+						id="searchResult"
+						data-th-data-schoolno="${schoolNo}"
+						class="table-responsive"
+					>
+						<div
+							data-th-each="post : ${postlists}"
+							data-th-object="${post}"
+							data-th-data-no="*{no}"
+							class="table"
+						>
+							<div
+								id="list-hd"
+								class="d-flex justify-content-between"
+							>
+								<div
+									class="list-img"
+									data-th-text="*{writer.photo}"
+								>
+									사진
+								</div>
+								<div class="list-nick">
+									<span data-th-text="*{writer.nickname}"> 닉네임 </span>
+								</div>
+
+								<div
+									id="list-hd2"
+									class="d-flex justify-content-between"
+								>
+									<div class="list-ca">
+										<span data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</span>
+									</div>
+									<div class="dropdown">
+										<button
+											class="btn btn-secondary settingBtn"
+											type="button"
+											data-bs-toggle="dropdown"
+											aria-expanded="false"
+										>
+											...
+										</button>
+										<div
+											class="dropdown-menu"
+											aria-labelledby="dropdownMenuButton"
+										>
+											<div>
+												<a
+													id="md"
+													class="btn_md"
+													data-toggle="modal"
+													data-target="#editPostModal"
+													>글 수정</a
+												>
+											</div>
+											<div>
+												<a
+													id="delete"
+													data-th-href="@{delete(schoolNo=*{schoolNo}, post_no=${post.no})}"
+													class="dropdown-item"
+													>삭제</a
+												>
+											</div>
+											<div>
+												<a
+													id="copyLinkButton"
+													class="dropdown-item"
+													>주소 복사</a
+												>
+											</div>
+											<div>
+												<a
+													id="report"
+													class="dropdown-item"
+													>게시글 신고</a
+												>
+											</div>
+											<div>
+												<label
+													for="gradeMd"
+													id="gradeMdLabel"
+													style="display: none"
+													>공지로 등록</label
+												>
+												<input
+													type="checkbox"
+													id="gradeMd"
+													name="post"
+													value="1"
+													style="display: none"
+												/>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div
+								class="list-content"
+								data-th-utext="*{content}"
+								data-th-data-no="*{no}"
+							>
+								content
+							</div>
+						</div>
+
 						<!-- 글 수정 모달 -->
 						<div
 							class="modal fade"
