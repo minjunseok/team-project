@@ -132,7 +132,7 @@ function loadChatDm() {
     success: function (result) {
       console.log("dmListOnlyLast success");
       console.log(result);
-      for(key in result) { console.log(result[key].message)}
+      for(key in result) { console.log(result[key].message) }
     }
   })
 }

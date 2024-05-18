@@ -16,7 +16,7 @@
             <id column="user_no" property="no"/>
             <result column="name" property="name"/>
             <result column="nickname" property="nickname"/>
-            <result column="photo" property="photo"/>
+            <result column="user_photo" property="photo"/>
         </association>
         <association property="school" javaType="School">
             <id column="school_no" property="no"/>
@@ -55,10 +55,32 @@
     </resultMap>
 
     <!--Gm-->
-    <insert id="saveGm" parameterType="Gm">
+    <insert id="saveGm" parameterType="Gm" useGeneratedKeys="true" keyProperty="no">
         insert into gm(school_no, user_no, message, photo)
         values(#{school.no}, #{sender.no} ,#{message} ,#{photo})
     </insert>
+
+    <select id="getGm" resultMap="gmMap" parameterType="int">
+        select
+            g.gm_no,
+            g.message,
+            g.photo,
+            g.created_at,
+            g.is_read,
+            u.user_no,
+            u.name,
+            u.nickname,
+            u.photo user_photo,
+            sc.school_no,
+            sc.name school_name,
+            sc.photo school_photo,
+            sc.open_range
+        from
+            gm g inner join users u on g.user_no=u.user_no
+            inner join schools sc
+        where
+            g.gm_no = #{value}
+    </select>
 
     <select id="findGmListBySchoolNo" resultMap="gmMap" parameterType="int">
         select
@@ -70,7 +92,7 @@
             u.user_no,
             u.name,
             u.nickname,
-            u.photo,
+            u.photo user_photo,
             sc.school_no,
             sc.name school_name,
             sc.photo school_photo,
@@ -92,7 +114,7 @@
             u.user_no,
             u.name,
             u.nickname,
-            u.photo,
+            u.photo user_photo,
             sc.school_no,
             sc.name school_name,
             sc.photo school_photo,
@@ -112,10 +134,28 @@
     </select>
 
     <!--Dm-->
-    <insert id="saveDm" parameterType="Dm">
+    <insert id="saveDm" parameterType="Dm" useGeneratedKeys="true" keyProperty="no">
         insert into dm(user_no2, user_no, message, photo, room_no)
         values(#{sender.no}, #{receiver.no} ,#{message} ,#{photo} , #{roomNo})
     </insert>
+
+    <select id="getDm" resultMap="dmMap" parameterType="int">
+        select
+            d.dm_no,
+            d.message,
+            d.created_at,
+            d.photo,
+            d.room_no,
+            d.is_read,
+            u.user_no,
+            u.name,
+            u.nickname,
+            u.photo
+        from
+            dm d inner join users u on d.user_no=u.user_no
+        where
+            d.dm_no=#{value}
+    </select>
 
     <select id="findDmListBySenderAndReceiver" resultMap="dmMap" parameterType="int">
         select

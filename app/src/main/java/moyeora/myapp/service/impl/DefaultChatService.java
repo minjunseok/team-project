@@ -19,8 +19,16 @@ public class DefaultChatService {
         chatDao.saveGm(gm);
     }
 
+    public Gm getGm(int no) {
+        return chatDao.getGm(no);
+    }
+
     public void saveDm(Dm dm) {
         chatDao.saveDm(dm);
+    }
+
+    public Dm getDm(int no) {
+        return chatDao.getDm(no);
     }
 
     public List<Gm> getGmList(int no) {

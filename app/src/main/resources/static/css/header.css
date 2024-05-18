@@ -1,6 +1,5 @@
 .header {
     background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 10px 20px;
 }
 
@@ -61,7 +60,7 @@
 }
 
 .headerIcon {
-    width: 25px; /* Adjust icon size */
+    width: 20px; /* Adjust icon size */
     height: auto;
     cursor: pointer;
     margin-left: 16px;
@@ -71,7 +70,13 @@
     color: #cbbca7;
 }
 
+.translate-new-notification {
+    transform: translate(-80%,-20%)!important;
+}
 
+.translate-new-chat {
+    transform: translate(-50%,-20%)!important;
+}
 
 
 .headerWidgetArea {
@@ -147,8 +152,8 @@
 }
 
 .toggleContent li {
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border-top: 1px solid #ccc;
+    /*border-radius: 5px;*/
 }
 
 .toggleContent ul li a {
@@ -166,7 +171,7 @@
 }
 
 .toggleContent a:hover {
-    color: #0066ff;
+    background-color: #cbbca788;
 }
 
 #notification {

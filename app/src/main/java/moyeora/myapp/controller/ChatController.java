@@ -120,6 +120,8 @@ public class ChatController {
             }
         }
         chatService.saveGm(gm);
+        gm = chatService.getGm(gm.getNo());
+        log.debug("getGm = " + gm.toString());
         return gm;
     }
 
@@ -141,6 +143,7 @@ public class ChatController {
             }
         }
         chatService.saveDm(dm);
+        dm = chatService.getDm(dm.getNo());
         return dm;
     }
 

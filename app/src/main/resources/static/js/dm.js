@@ -138,6 +138,8 @@
   function loadChat(chatList) {
       if(chatList != null) {
         for(chat in chatList) {
+          let d = chatList[chat].sendDate.substring(0, 10);
+          let t = chatList[chat].sendDate.substring(12, 16);
           if(chatList[chat].sender.no == sender.no) {
             if(chatList[chat].message.length > 0) {
               $("#conversation").append(

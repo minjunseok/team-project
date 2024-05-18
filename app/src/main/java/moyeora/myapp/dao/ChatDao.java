@@ -14,7 +14,11 @@ public interface ChatDao {
 
   void saveGm(Gm gm);
 
+  Gm getGm(int no);
+
   void saveDm(Dm dm);
+
+  Dm getDm(int no);
 
   List<Gm> findGmListBySchoolNo(int no);
 
