@@ -71,7 +71,7 @@ public class ChatController {
     @MessageMapping("/gm")
     public Gm publishGm(Gm gm) {
         operations.convertAndSend
-                ("/sub/gm/" + gm.getSchoolNo(), gm);
+                ("/sub/gm/" + gm.getSchool(), gm);
         log.info("메세지 전송 성공");
         return gm;
     }
@@ -128,7 +128,7 @@ public class ChatController {
     @ResponseBody
     public List<Gm> GmListOnlyLast(int no) {
         List<Gm> list = chatService.getGmListOnlyLast(no);
-        String ncdPath = this.bucketname + "/" + this.endpoint;
+        String ncdPath = this.endpoint + "/" + this.bucketname;
         for (Gm gm : list) {
             gm.setFilePath(ncdPath + "/" + gmUploadDir);
         }

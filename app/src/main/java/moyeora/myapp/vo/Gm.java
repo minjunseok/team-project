@@ -13,7 +13,6 @@ public class Gm implements Serializable {
     private static final long serialVersionUID = 100L;
 
     private int no;
-    private int schoolNo;
     private School school;
     private User sender;
     private String message;
@@ -28,18 +27,18 @@ public class Gm implements Serializable {
     }
 
     @Builder
-    public Gm(int no, int schoolNo, User sender, String message, String photo) {
+    public Gm(int no, School school, User sender, String message, String photo) {
         this.no = no;
-        this.schoolNo = schoolNo;
+        this.school = school;
         this.sender = sender;
         this.message = message;
         this.photo = photo;
     }
 
     @Builder
-    public Gm(int no, int schoolNo, User sender, String message, String photo, @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") Timestamp sendDate) {
+    public Gm(int no, School school, User sender, String message, String photo, @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") Timestamp sendDate) {
         this.no = no;
-        this.schoolNo = schoolNo;
+        this.school = school;
         this.sender = sender;
         this.message = message;
         this.photo = photo;
@@ -47,8 +46,8 @@ public class Gm implements Serializable {
     }
 
     @Builder
-    public Gm(int schoolNo, User sender, String message, String photo, @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")Timestamp sendDate) {
-        this.schoolNo = schoolNo;
+    public Gm(School school, User sender, String message, String photo, @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") Timestamp sendDate) {
+        this.school = school;
         this.sender = sender;
         this.message = message;
         this.photo = photo;
@@ -56,8 +55,8 @@ public class Gm implements Serializable {
     }
 
     @Builder
-    public Gm(int schoolNo, User sender, String message, String photo) {
-        this.schoolNo = schoolNo;
+    public Gm(School school, User sender, String message, String photo) {
+        this.school = school;
         this.sender = sender;
         this.message = message;
         this.photo = photo;

@@ -54,8 +54,6 @@
   var chatList = [[${chatList}]];
   var photo = "";
 
-  console.log(chatList);
-
  var gmFilePath = "https://kr.object.ncloudstorage.com/moyeorastorage/gm/";
  var gmFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/gm/";
  var fileSize_40 = "?type=f&w=40&h=40";
@@ -110,7 +108,7 @@
 
   function sendMessage() {
       let gm = {
-          schoolNo : {no : schoolNo},
+          school : {no : schoolNo},
           sender : {no : sender.no, nickname : sender.nickname},
           message : $("#message").val(),
           photo : ""
@@ -135,7 +133,7 @@
             stompClient.publish({
             destination: "/pub/gm",
             body: JSON.stringify({
-              'schoolNo': {no : result.school.no},
+              'school': {no : result.school.no},
               'sender': {no : result.sender.no, nickname : sender.nickname},
               'message': result.message,
               'photo': result.photo
@@ -149,7 +147,7 @@
   }
 
   function showMessage(gm) {
-      console.log(gm);
+      console.log("showMessage" + gm.message);
       if(gm.sender.no == sender.no) {
         if(gm.message != null && gm.message.length > 0) {
           $("#conversation").append(
@@ -185,6 +183,7 @@
       $("#main-form")[0].reset();
       $("#file-count").text(0);
   }
+
   function loadChat(chatList) {
       if(chatList != null) {
         for(chat in chatList) {
@@ -214,7 +213,7 @@
               "<div class='username receiver'>" + chatList[chat].sender.nickname + "</div>" +
               "<div class = 'message-container received-message'><div class = 'message-text'>" +
               "<a href=" + gmFilePath + chatList[chat].photo + ">" +
-              "<img src=" + gmFileCdnDomain + chatList[chat].photo + fileSize_40fileSize_40 + "></a>" +
+              "<img src=" + gmFileCdnDomain + chatList[chat].photo + fileSize_40 + "></a>" +
               "</div></div>");
             }
           }

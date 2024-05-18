@@ -111,10 +111,13 @@ function loadChatGm() {
       console.log("gmListOnlyLast success");
       console.log(result);
       for(key in result) {
-        console.log(result[key].message)
+        let thumbnailImg = "<img class='thumbnailImg' src=" + result[key].filePath + result[key].school.photo + " onerror=thumbnailImgError(this)>";
+        let uChatItem = result[key].isRead == "1" ? "<li class='uChatItem'>" : "<li class='uChatItem unread'>";
         $("#gmList").append(
-        let thumbnailImg = "<img class='thumbnailImg' src=" + result[key].filePath + result[key].school.photo + " onerror=thumbnailImgError(this)>" : "";
-        let notificationItem = result[key].isRead == "1" ? "<li class='notificationItem'>" : "<li class='notificationItem unread'>";
+        uChatItem +
+            "<a class='chatLink' onclick=chatLink('" + result[key].school.no + "'," + user.no + ");>" + result[key].school.name +
+            "</a>" +
+        "</li>"
         );
       }
     }
@@ -159,6 +162,10 @@ function updateAlerts() {
       console.log(result);
     }
   })
+}
+
+function chatLink(schoolNo, sender) {
+  window.open("/gm?schoolNo=" + schoolNo + "&sender=" + sender, 'gm', 'width=700px,height=800px,scrollbars=yes');
 }
 
 $(function () {
