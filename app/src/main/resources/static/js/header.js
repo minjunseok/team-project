@@ -73,7 +73,7 @@ function loadAlert() {
       let alerts = response;
       for(key in alerts) {
         let dateTime = alerts[key].createdAt.substring(0, 10) + " " + alerts[key].createdAt.substring(12, 16);
-        let thumbnailImg = alerts[key].photo != null && alerts[key].photo.length > 0 ? "<img class='thumbnailImg' src=" + alerts[key].filePath + alerts[key].photo + " onerror=thumbnailImgError(this)>" : "";
+        let thumbnailImg = alerts[key].photo != null && alerts[key].photo.length > 0 ? "<img class='thumbnailItem' src=" + alerts[key].filePath + alerts[key].photo + " onerror=thumbnailImgError(this)>" : "";
         let notificationItem = alerts[key].isRead == "1" ? "<li class='notificationItem'>" : "<li class='notificationItem unread'>";
         $("#notificationList").append(
         notificationItem +

@@ -52,6 +52,10 @@
 
 }
 
+.headerIcon-wrap {
+    cursor: pointer;
+}
+
 .headerIcon {
     width: 25px; /* Adjust icon size */
     height: auto;
@@ -365,4 +369,8 @@
     padding: 10px;
     display: none;
     z-index: 1000;
+}
+
+svg {
+    pointer-events: none;
 }
