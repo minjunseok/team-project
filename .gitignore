@@ -12,9 +12,6 @@ ncp-secret.properties
 
 ncp-secret.storage.properties
 
-.properties
-
-
 application.properties
 
 bootpay.properties
