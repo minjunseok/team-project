@@ -25,13 +25,13 @@ body {
 }
 
 /* Form Styles */
-form {
-  max-width: 400px;
+.login-form-wrap {
+  max-width: 450px;
   margin: 20px auto;
   padding: 20px;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  /*box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);*/
 }
 
 h1 {
@@ -45,10 +45,10 @@ label {
 }
 
 input[type="text"],
+input[type="email"],
 input[type="password"] {
-  width: calc(100% - 22px);
+  width: 100%;
   padding: 10px;
-  margin-bottom: 15px;
   border: 1px solid #E1D39F;
   border-radius: 4px;
 }
@@ -67,6 +67,29 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #D9C48A;
 }
+
+.checkbox-label {
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] { display: none; }
+
+.checkbox-on { width: 20px; height: 20px; border: solid #D9C48A; position: absolute; top: 0; left: 0; }
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-on { background: #D9C48A; }
+.checkbox-on:after { content: ""; position: absolute; display: none; }
+.checkbox-label input[type="checkbox"]:checked + .checkbox-on:after { display: block; }
+.checkbox-on:after { width: 6px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); position: absolute; left: 6px; top: 2px; }
+
 
 a {
   display: block;
@@ -101,7 +124,8 @@ a:hover {
 }
 
 .login-menu a:hover {
-  background-color: #f0f0f0;
+  background-color: #E1D39F;
+  color: white;
 }
 
 .social-login-icons {
@@ -116,11 +140,12 @@ a:hover {
 
 /* Result Sections */
 .result {
+  margin: 20px auto;
+  width: 450px;
   margin-top: 20px;
   padding: 20px;
   border-radius: 8px;
   background-color: #f9f9f9;
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
 }
 
 .result p {

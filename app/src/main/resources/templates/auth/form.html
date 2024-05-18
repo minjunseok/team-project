@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset='UTF-8'>
     <title>moyeora login</title>
     <link href="/css/auth.css" rel="stylesheet"/>
+    <th:block th:replace="common/bootstrap :: bootstrap"></th:block>
 </head>
 <body>
 
@@ -11,28 +12,32 @@
     <a href="/home"><img class="logo" src="/img/moyeora-logo.png"></a>
 </div>
 
-<form id="loginForm" data-th-action="@{/auth/login}" method="post">
-    <div>
-        <label>
-            <input id="email" data-th-value="${email}" name="email" type="text" placeholder="email">
+<div class="login-form-wrap box-shadow shadow-sm p-3 mb-5 bg-body rounded">
+    <form id="loginForm" data-th-action="@{/auth/login}" method="post" >
+
+        <label for="email"></label>
+        <input id="email" data-th-value="${email}" name="email" type="text" placeholder="email">
+
+        <label for="password"></label>
+        <input id="password" name="password" type="password" placeholder="password" autocomplete="false">
+
+        <button type="submit" class="mt-4 mb-2" onclick="return checkForm()">로그인</button>
+
+
+        <label for="saveEmail" class="checkbox-label">
+            <input id="saveEmail" name="saveEmail" type="checkbox">
+            <span class="checkbox-on"></span>
+            이메일 저장
         </label>
-    </div>
-    <div>
-        <label>
-            <input id="password" name="password" type="password" placeholder="password" autocomplete="false">
-        </label>
-    </div>
-    <button type="submit" onclick="return checkForm()">로그인</button>
-    <label>
-        <input name="saveEmail" type="checkbox">이메일 저장
-    </label>
-    <div style="color:red;" data-th-if="${error}" data-th-text="${exception}"></div>
-    <div class="login-menu">
-        <a data-th-href="@{/auth/findEmail}">이메일 찾기</a>
-        <a data-th-href="@{/auth/findPassword}">비밀번호 찾기</a>
-        <a data-th-href="@{/user/form}">회원가입</a>
-    </div>
-</form>
+
+        <div style="color:red;" data-th-if="${error}" data-th-text="${exception}"></div>
+        <div class="login-menu">
+            <a data-th-href="@{/auth/findEmail}">이메일 찾기</a>
+            <a data-th-href="@{/auth/findPassword}">비밀번호 찾기</a>
+            <a data-th-href="@{/user/form}">회원가입</a>
+        </div>
+    </form>
+</div>
 
 
 <div class="social-login-icons">

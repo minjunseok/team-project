@@ -1,34 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>moyeora</title>
   <link href="/css/auth.css" rel="stylesheet"/>
+  <th:block th:replace="common/bootstrap :: bootstrap"></th:block>
 </head>
 <body>
 
 <div class="title">이메일 찾기</div>
+<div class="login-form-wrap box-shadow shadow-sm p-3 mb-5 bg-body rounded">
+  <form data-th-if="${email == null}" data-th-action="@{getEmail}" method="post">
+    <label for="name"></label>
+    <input id="name" name="name" type="text" placeholder="name">
 
-<form data-th-if="${email == null}" data-th-action="@{getEmail}" method="post">
-  <div>
-    <label>
-      <input id="name" name="name" type="text" placeholder="name">
-    </label>
-  </div>
-  <div>
-    <label>
-      <input id="phone" name="phone" type="text" placeholder="phone number : ex) 01012345678">
-    </label>
-  </div>
-  <button type="submit" onclick="return checkForm()">submit</button>
-</form>
+    <label for="phone"></label>
+    <input id="phone" name="phone" type="text" placeholder="phone number : ex) 01012345678">
+    <button type="submit" class="mt-4" onclick="return checkForm()">확인</button>
+  </form>
+</div>
 
-<div class="result" data-th-if="${email != null && email != 'none'}">
-  <p>가입한 이메일 : [[${email}]]</p>
+
+<div class="result box-shadow shadow-sm p-3 mb-5 bg-body rounded" data-th-if="${email != null && email != 'none'}">
+  <p>가입한 이메일 : [[${email]]</p>
   <a data-th-href="@{form}">로그인</a>
   <a data-th-href="@{findPassword}">비밀번호 찾기</a>
 </div>
-<div class="result" data-th-if="${email == 'none'}">
+<div class="result box-shadow shadow-sm p-3 mb-5 bg-body rounded" data-th-if="${email == 'none'}">
   <span>가입정보가 없습니다.</span>
   <a data-th-href="@{signIn}">회원가입</a>
 </div>

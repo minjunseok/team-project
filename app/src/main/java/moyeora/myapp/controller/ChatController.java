@@ -58,14 +58,14 @@ public class ChatController {
     }*/
 
     @GetMapping("gm")
-    public String gmForm(Model model, int schoolNo, @LoginUser User loginUser) {
+    public String gmForm(Model model, int schoolNo, int sender, @LoginUser User loginUser) {
         model.addAttribute("school", schoolService.get(schoolNo));
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("chatList", chatService.getGmList(schoolNo));
         return "chat/gm";
     }
 
-    @GetMapping("dm")
+/*    @GetMapping("dm")
     public String dmForm(Model model, int sender, int receiver) {
         DmRoom room = chatService.getDmRoom(sender,receiver);
         if (room == null) {
@@ -78,12 +78,27 @@ public class ChatController {
         model.addAttribute("room",room);
         model.addAttribute("chatList",chatService.getDmList(room.getNo()));
         return "/chat/dm";
+    }*/
+
+    @GetMapping("dm")
+    public String dmForm(Model model, int sender, int receiver, @LoginUser User loginUser) {
+        DmRoom room = chatService.getDmRoom(loginUser.getNo(), receiver);
+        if (room == null) {
+            room = new DmRoom(loginUser.getNo(), receiver);
+            chatService.addDmRoom(room);
+            room = chatService.getDmRoom(room.getNo());
+        }
+        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("receiver", userService.get(receiver));
+        model.addAttribute("room", room);
+        model.addAttribute("chatList", chatService.getDmList(room.getNo()));
+        return "/chat/dm";
     }
 
     @MessageMapping("/gm")
     public Gm publishGm(Gm gm) {
         operations.convertAndSend
-                ("/sub/gm/" + gm.getSchool(), gm);
+                ("/sub/gm/" + gm.getSchool().getNo(), gm);
         log.info("메세지 전송 성공");
         return gm;
     }

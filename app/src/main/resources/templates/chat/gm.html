@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <title>Hello WebSocket</title>
   <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
@@ -48,11 +48,12 @@
   </div>
 </div>
 
-<script>
+<script th:inline="javascript">
   var sc = [[${school}]];
   var user = [[${loginUser}]];
-  var chatList = [[${chatList}]];
+  var chat = [[${chatList}]];
 </script>
+<script src="/js/gm.js"></script>
 
 </body>
 </html>

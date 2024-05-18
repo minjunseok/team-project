@@ -1,13 +1,12 @@
-  var school = sc;
   var sender = user;
+  var receiver = receiverInfo;
   var chatList = chat;
+  var room = roomInfo;
   var photo = "";
-  console.log(school);
-  console.log(sender);
 
- var gmFilePath = "https://kr.object.ncloudstorage.com/moyeorastorage/gm/";
- var gmFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/gm/";
- var fileSize_40 = "?type=f&w=40&h=40";
+  var dmFilePath = "https://kr.object.ncloudstorage.com/moyeorastorage/dm/";
+  var dmFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/dm/";
+  var fileSize_40 = "?type=f&w=40&h=40";
 
   function connect() {
       stompClient.activate();
@@ -22,8 +21,8 @@
       console.log('Connected: ' + frame);
       loadChat(chatList);
 
-      stompClient.subscribe('/sub/gm/' + school.no, (gm) => {
-          showMessage(JSON.parse(gm.body));
+      stompClient.subscribe('/sub/dm/' + room.no, (dm) => {
+          showMessage(JSON.parse(dm.body));
       });
   };
 
@@ -58,12 +57,14 @@
   }
 
   function sendMessage() {
-      let gm = {
-          school : {no : school.no},
+      let dm = {
           sender : {no : sender.no, nickname : sender.nickname},
+          receiver : {no : receiver.no, nickname:receiver.nickname},
           message : $("#message").val(),
-          photo : ""
+          photo : "",
+          roomNo : room.no
       }
+      console.log(dm);
 
       let formData = new FormData();
       if(photo != "") {
@@ -71,66 +72,66 @@
         formData.append("photo", el);
         });
       }
-      formData.append("gm", new Blob([JSON.stringify(gm)], {type: "application/json"}));
+      formData.append("dm", new Blob([JSON.stringify(dm)], {type: "application/json"}));
 
       $.ajax({
         type: "POST",
-        url: "/addGm",
+        url: "/addDm",
         data: formData,
         contentType: false,
         processData: false,
         success: function (result) {
             console.log("success: " + result.message);
             stompClient.publish({
-            destination: "/pub/gm",
+            destination: "/pub/dm",
             body: JSON.stringify({
-              'school': {no : result.school.no},
-              'sender': {no : result.sender.no, nickname : sender.nickname},
+              'sender': {no : result.sender.no},
+              'receiver': {no : result.receiver.no},
               'message': result.message,
-              'photo': result.photo
+              'photo': result.photo,
+              'roomNo': room.no,
             })
           });
         },
         error: function () {
             console.log("error: ajax 전송 테스트");
-        }
+            }
       });
   }
 
-  function showMessage(gm) {
-      if(gm.sender.no == sender.no) {
-        if(gm.message != null && gm.message.length > 0) {
+  function showMessage(dm) {
+      if(dm.sender.no == sender.no) {
+        if(dm.message != null && dm.message.length > 0) {
           $("#conversation").append(
           "<div class='username sender'>" + sender.nickname + "</div>" +
-          "<div class = 'message-container sent-message'><div class = 'message-text'>" + gm.message +
+          "<div class = 'message-container sent-message'><div class = 'message-text'>" + dm.message +
           "</div></div>");
         }
-        if(gm.photo != null && gm.photo.length > 0) {
-          let filePath = (sender.photo.length > 0) ? gmFileCdnDomain + "user/" + sender.photo + fileSize_40 : "/img/user-icons-default.png";
+        if(dm.photo != null && dm.photo.length > 0) {
           $("#conversation").append(
           "<div class='username sender'>" + sender.nickname + "</div>" +
           "<div class = 'message-container sent-message'><div class = 'message-text'>" +
-          "<a href=" + gmFilePath + gm.photo + ">" +
-          "<img src=" + gmFileCdnDomain + gm.photo + fileSize_40 + "></a>"
-          + "</div></div>");
-        }
-      } else {
-        if(gm.message != null && gm.message.length > 0) {
-          $("#conversation").append(
-          "<div class='username receiver'>" + gm.sender.nickname + "</div>" +
-          "<div class = 'message-container received-message'><div class = 'message-text'>" + gm.message +
+          "<a href=" + dmFilePath + dm.photo + ">" +
+          "<img src=" + dmFileCdnDomain + dm.photo + fileSize_40 + "></a>" +
           "</div></div>");
         }
-        if(gm.photo != null && gm.photo.length > 0) {
+      } else {
+        if(dm.message != null && dm.message.length > 0) {
           $("#conversation").append(
-          "<div class='username receiver'>" + gm.sender.nickname + "</div>" +
+          "<div class='username receiver'>" + receiver.nickname + "</div>" +
+          "<div class = 'message-container received-message'><div class = 'message-text'>" + dm.message +
+          "</div></div>");
+        }
+        if(dm.photo != null && dm.photo.length > 0) {
+          $("#conversation").append(
+          "<div class='username receiver'>" + receiver.nickname + "</div>" +
           "<div class = 'message-container received-message'><div class = 'message-text'>" +
-          "<a href=" + gmFilePath + gm.photo + ">" +
-          "<img src=" + gmFileCdnDomain + gm.photo + fileSize_40 + "></a>"
-          + "</div></div>");
+          "<a href=" + dmFilePath + dm.photo + ">" +
+          "<img src=" + dmFileCdnDomain + dm.photo + fileSize_40 + "></a>" + "</div></div>");
         }
       }
-      $("#main-form")[0].reset();
+      $("#message").val("");
+      $("#photo").val("");
       $("#file-count").text(0);
   }
 
@@ -148,8 +149,9 @@
               $("#conversation").append(
               "<div class='username sender'>" + chatList[chat].sender.nickname + "</div>" +
               "<div class = 'message-container sent-message'><div class = 'message-text'>" +
-              "<a href=" + gmFilePath + chatList[chat].photo + ">" +
-              "<img src=" + gmFileCdnDomain + chatList[chat].photo + fileSize_40 + "></a>" + "</div></div>");
+              "<a href=" + dmFilePath + chatList[chat].photo + ">" +
+              "<img src=" + dmFileCdnDomain + chatList[chat].photo + fileSize_40 + "></a>" +
+              "</div></div>");
             }
           } else {
             if(chatList[chat].message.length > 0) {
@@ -162,8 +164,8 @@
               $("#conversation").append(
               "<div class='username receiver'>" + chatList[chat].sender.nickname + "</div>" +
               "<div class = 'message-container received-message'><div class = 'message-text'>" +
-              "<a href=" + gmFilePath + chatList[chat].photo + ">" +
-              "<img src=" + gmFileCdnDomain + chatList[chat].photo + fileSize_40 + "></a>" +
+              "<a href=" + dmFilePath + chatList[chat].photo + ">" +
+              "<img src=" + dmFileCdnDomain + chatList[chat].photo + fileSize_40 + "></a>" +
               "</div></div>");
             }
           }
@@ -176,7 +178,6 @@
     photo = $("#photo")[0].files;
     $("#message").val("");
     $("#file-count").text(photo.length);
-    console.log(photo);
   }
 
   function setMessage() {

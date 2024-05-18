@@ -1,11 +1,8 @@
 package moyeora.myapp.security;
 
 
-import java.io.IOException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.Authentication;
@@ -20,6 +17,7 @@ import java.io.IOException;
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
   private final Log log = LogFactory.getLog(CustomAuthenticationSuccessHandler.class);
+  private final UserService userService;
 
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -27,9 +25,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     CustomWebAuthenticationDetails customWebAuthenticationDetails = (CustomWebAuthenticationDetails) authentication.getDetails();
     String isSaveEmail = customWebAuthenticationDetails.getIsSaveEmail();
-    request.getSession().setAttribute("loginUser",((PrincipalDetails) authentication.getPrincipal()).getUser());
-
-    request.getSession().setAttribute("loginUser", ((PrincipalDetails) authentication.getPrincipal()).getUser());
+    request.getSession().setAttribute("loginUser", userService.get(((PrincipalDetails) authentication.getPrincipal()).getUser().getNo()));
 
     Cookie cookie;
     if (isSaveEmail != null && isSaveEmail.equals("on")) {
