@@ -12,12 +12,9 @@ ncp-secret.properties
 
 ncp-secret.storage.properties
 
-application.properties
-
 bootpay.properties
 
 email.properties
-
 
 oauth.properties
 
