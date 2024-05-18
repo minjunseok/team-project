@@ -25,6 +25,7 @@ tbody tr:hover {
 	min-width: 100%; /*최소 너비를 100%로 설정하여 내용이 적어도 전체 너비를 차지하도록 합니다.*/
 	max-width: none !important; /*최대 너비 설정 제거 */
 }
+
 .modal-dialog {
 	max-width: 750px; /* 또는 필요한 크기로 지정 */
 }
@@ -74,19 +75,24 @@ tbody tr:hover {
 /* 왼쪽 컨테이너 */
 .left-container {
 	/* float: left; */
-	width: 300px; /* 왼쪽 컨테이너의 너비 설정 */
+	width: 600px; /* 왼쪽 컨테이너의 너비 설정 */
 }
 
 .md-img {
 	padding: 8px;
 	border: 1px solid #cbbca7;
+	text-align: center;
 }
 
 #fixed-post .fix-img img {
-	width: 50px;
-	height: 50px;
+	width: 80px;
+	height: 80px;
 	border: 1px solid black;
-	border-radius: 70%;
+	border-radius: 30%;
+}
+
+.md-img figcaption {
+	font-size: 35px;
 }
 
 /* 회원 리스트 */
@@ -113,6 +119,11 @@ tbody tr:hover {
 }
 .left-container .userList li:last-of-type {
 	border-bottom: none;
+}
+
+.col img {
+	width: 80px;
+	height: 80px;
 }
 
 .left-container .userList .col {
@@ -188,7 +199,7 @@ tbody tr:hover {
 
 .left-container .md_container .createButton {
 	background-color: #9e896a;
-	width: 100%;
+	width: 80%;
 }
 
 .left-container .join_container {
@@ -210,26 +221,30 @@ tbody tr:hover {
 }
 
 #fix-hd {
-	height: 80px;
+	border-bottom: 1px solid;
+	height: 128px;
 }
 
 #fix-hd .fix-img {
-	height: 80px;
-	width: 120px;
+	height: 120px;
+	width: 160px;
 	padding-left: 48px;
 	padding-top: 24px;
 	overflow: hidden;
 }
 
 #fix-hd .fix-nick {
-	padding-right: 300px;
-	padding-top: 32px;
+	padding-right: 400px;
+	padding-top: 48px;
 }
 .fix-nick span {
 	background-color: #cbbca700;
 }
 
 #fix-hd2 {
+	padding-right: 24px;
+	padding-top: 48px;
+	text-align: center;
 	height: 100%;
 	background-color: #cbbca700;
 }
@@ -239,7 +254,7 @@ tbody tr:hover {
 }
 
 .fix-content {
-	padding-left: 24px;
+	padding-left: 32px;
 	padding-top: 24px;
 }
 
@@ -303,30 +318,34 @@ tbody tr:hover {
 }
 
 #list-hd {
-	height: 80px;
+	border-bottom: 1px solid;
+	height: 128px;
 }
 
 #list-hd .list-img {
-	height: 80px;
-	width: 120px;
+	height: 120px;
+	width: 160px;
 	padding-left: 48px;
 	padding-top: 24px;
 	overflow: hidden;
 }
 
 #list-hd .list-img img {
-	width: 50px;
-	height: 50px;
+	width: 80px;
+	height: 80px;
 	border: 1px solid black;
-	border-radius: 70%;
+	border-radius: 30%;
 }
 
 #list-hd .list-nick {
-	padding-right: 300px;
-	padding-top: 32px;
+	padding-right: 400px;
+	padding-top: 48px;
 }
 
 #list-hd2 {
+	padding-right: 44px;
+	padding-top: 48px;
+	text-align: center;
 	height: 100%;
 }
 
@@ -335,6 +354,6 @@ tbody tr:hover {
 }
 
 .list-content {
-	padding-left: 24px;
-	padding-top: 24px;
+	padding-left: 32px;
+	padding-top: 64px;
 }
