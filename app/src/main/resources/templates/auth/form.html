@@ -19,7 +19,7 @@
     </div>
     <div>
         <label>
-            <input id="password" name="password" type="password" placeholder="password">
+            <input id="password" name="password" type="password" placeholder="password" autocomplete="false">
         </label>
     </div>
     <button type="submit" onclick="return checkForm()">로그인</button>
@@ -28,8 +28,8 @@
     </label>
     <div style="color:red;" data-th-if="${error}" data-th-text="${exception}"></div>
     <div class="login-menu">
-        <a data-th-href="@{findEmail}">이메일 찾기</a>
-        <a data-th-href="@{findPassword}">비밀번호 찾기</a>
+        <a data-th-href="@{/auth/findEmail}">이메일 찾기</a>
+        <a data-th-href="@{/auth/findPassword}">비밀번호 찾기</a>
         <a data-th-href="@{/user/form}">회원가입</a>
     </div>
 </form>

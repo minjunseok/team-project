@@ -101,7 +101,7 @@ public class DefaultSchoolService implements SchoolService {
 
   @Override
   public School get(int schoolNo) {
-    return null;
+    return schoolDao.findBySchoolNo(schoolNo);
   }
 
 

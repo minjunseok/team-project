@@ -1,12 +1,15 @@
 package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.annotation.LoginUser;
+import moyeora.myapp.service.SchoolService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.service.impl.DefaultChatService;
 import moyeora.myapp.util.FileUploadHelper;
 import moyeora.myapp.vo.Dm;
 import moyeora.myapp.vo.DmRoom;
 import moyeora.myapp.vo.Gm;
+import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +32,7 @@ public class ChatController {
     private final DefaultChatService chatService;
     private final UserService userService;
     private final FileUploadHelper storageService;
+    private final SchoolService schoolService;
 
     @Value("${ncp.storage.bucket}")
     private String bucketname;
@@ -45,11 +49,19 @@ public class ChatController {
         return "/chat/test";
     }
 
-    @GetMapping("gm")
+/*    @GetMapping("gm")
     public String gmForm(Model model, int schoolNo, int sender) {
         model.addAttribute("schoolNo",schoolNo);
         model.addAttribute("sender",userService.getUserInfo(sender));
         model.addAttribute("chatList",chatService.getGmList(schoolNo));
+        return "chat/gm";
+    }*/
+
+    @GetMapping("gm")
+    public String gmForm(Model model, int schoolNo, @LoginUser User loginUser) {
+        model.addAttribute("school", schoolService.get(schoolNo));
+        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("chatList", chatService.getGmList(schoolNo));
         return "chat/gm";
     }
 
