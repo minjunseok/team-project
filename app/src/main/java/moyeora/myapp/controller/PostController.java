@@ -80,37 +80,35 @@ public class PostController {
             try {
 
 
-            // 메서드를 호출하여 글 고정을 하고 결과를 받아옵니다.
-            postService.fixedPost(post);
+                // 메서드를 호출하여 글 고정을 하고 결과를 받아옵니다.
+                postService.fixedPost(post);
 
-            // 성공적으로 고정을 등록했을 경우 응답을 생성합니다.
-            return AjaxResponse.builder().status("success").build();
+                // 성공적으로 고정을 등록했을 경우 응답을 생성합니다.
+                return AjaxResponse.builder().status("success").build();
 
-        } catch (Exception e) {
-            // 글 고정에 실패한 경우 예외를 처리하고 에러 응답을 생성합니다.
+            } catch (Exception e) {
+                // 글 고정에 실패한 경우 예외를 처리하고 에러 응답을 생성합니다.
 
-            return AjaxResponse.builder().status("error").message("게시글 고정에 실패하였습니다.").build();
+                return AjaxResponse.builder().status("error").message("게시글 고정에 실패하였습니다.").build();
+            }
+
+        } else {
+
+            return AjaxResponse.builder().status("error").message("권한이 없습니다.").build();
+
         }
 
-    } else {
-
-        return AjaxResponse.builder().status("error").message("권한이 없습니다.").build();
-
     }
-
-}
 
 
     @PostMapping("noticeFixedCancel")
     @ResponseBody
     public AjaxResponse noticeFixedCancel(Post post,
-                                    @LoginUser User loginUser) {
+                                          @LoginUser User loginUser) {
 
 
         int userNo = loginUser.getNo();
         int schoolNo = postService.findByPostSchoolNo(post.getNo());
-
-
 
 
         log.debug("schoolNo + @@@@@@@@@@@@@@@@@@@" + schoolNo);
@@ -144,100 +142,49 @@ public class PostController {
     }
 
 
-
-  @PostMapping("fixCancel")
-  @ResponseBody
-  public AjaxResponse fixedCancel(Post post,
+    @PostMapping("fixCancel")
+    @ResponseBody
+    public AjaxResponse fixedCancel(Post post,
                                     @LoginUser User loginUser) {
 
 
+        if (loginUser == null) {
+            return AjaxResponse.builder().status("error").message("로그인이 필요합니다.").build();
+        }
 
-      if (loginUser == null) {
-          return AjaxResponse.builder().status("error").message("로그인이 필요합니다.").build();
-      }
-
-      int userNo = loginUser.getNo();
-      int schoolNo = postService.findByPostSchoolNo(post.getNo());
-
+        int userNo = loginUser.getNo();
+        int schoolNo = postService.findByPostSchoolNo(post.getNo());
 
 
-
-      log.debug("schoolNo + @@@@@@@@@@@@@@@@@@@" + schoolNo);
-      log.debug("userNo + @@@@@@@@@@@@@@@@@@@@@" + userNo);
-      log.debug("sessionNo + @@@@@@@@@@@@@@@@@@@@@" + loginUser.getNo());
-
-
-      int levelNo = schoolUserService.findLevel(schoolNo, userNo);
-
-      log.debug("levelNo + @@@@@@@@@@@@@@@@@@@@@@@@" + levelNo);
-
-      if (levelNo == 3 || levelNo == 4) {
+        log.debug("schoolNo + @@@@@@@@@@@@@@@@@@@" + schoolNo);
+        log.debug("userNo + @@@@@@@@@@@@@@@@@@@@@" + userNo);
+        log.debug("sessionNo + @@@@@@@@@@@@@@@@@@@@@" + loginUser.getNo());
 
 
-          try {
+        int levelNo = schoolUserService.findLevel(schoolNo, userNo);
 
-              //메서드를 호출하여 글 고정 취소를 진행하고 결과를 받아옵니다.
-              postService.fixedCancel(post);
+        log.debug("levelNo + @@@@@@@@@@@@@@@@@@@@@@@@" + levelNo);
 
-              //
-              return AjaxResponse.builder().status("success").build();
-
-          } catch (Exception e) {
-              // 고정 취소에 실패한 경우 예외를 처리하고 에러 응답을 생성합니다.
-              return AjaxResponse.builder().status("error").message("게시글 고정해제 실패").build();
-          }
-      } else {
-
-          return AjaxResponse.builder().status("error").message("권한이 없습니다.").build();
-      }
-  }
+        if (levelNo == 3 || levelNo == 4) {
 
 
+            try {
 
+                //메서드를 호출하여 글 고정 취소를 진행하고 결과를 받아옵니다.
+                postService.fixedCancel(post);
 
+                //
+                return AjaxResponse.builder().status("success").build();
 
+            } catch (Exception e) {
+                // 고정 취소에 실패한 경우 예외를 처리하고 에러 응답을 생성합니다.
+                return AjaxResponse.builder().status("error").message("게시글 고정해제 실패").build();
+            }
+        } else {
 
-
-
-////공지게시판
-//  @PostMapping("noticeadd")
-//  public String addNotice(
-//          Post post,
-//          MultipartFile[] files,
-//          HttpSession session) throws Exception {
-//
-//    // 파일 업로드 및 AttachedFile 생성
-//    List<AttachedFile> attachedFiles = new ArrayList<>();
-//    for (MultipartFile file : files) {
-//      if (file.getSize() == 0) {
-//        continue;
-//      }
-//      String filename = fileUpload.upload(this.bucketName, this.uploadDir, file);
-//      // AttachedFile 객체 생성 후 파일 이름 설정
-//      AttachedFile attachedFile = new AttachedFile();
-//      attachedFile.setFileName(filename);
-//      attachedFiles.add(attachedFile);
-//    }
-//
-//
-//
-//
-//
-//    // 'created_at' 필드에 현재 시간 설정
-//    post.setCreatedAt(new Date()); // 이 코드는 java.util.Date를 import 해야 합니다.
-//
-//    // 나머지 처리 코드
-//    post.setCreatedAt(new Date());
-//    postService.addNotice(post);
-//
-//    return "redirect:noticelist?schoolNo=" + post.getSchoolNo();
-//  }
-
-
-
-
-
-
+            return AjaxResponse.builder().status("error").message("권한이 없습니다.").build();
+        }
+    }
 
 
     @GetMapping("noticelist")
@@ -292,7 +239,6 @@ public class PostController {
             HttpSession session) throws Exception {
 
 
-
         // 파일 업로드 및 AttachedFile 생성
         List<AttachedFile> attachedFiles = new ArrayList<>();
         for (MultipartFile file : files) {
@@ -332,8 +278,8 @@ public class PostController {
 
         int userNo = loginUser.getNo();
         // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
-        List<AttachedFile> attachedFiles = (List<AttachedFile>)session.getAttribute("attachedFiles");
-        schoolNo = (Integer)session.getAttribute("schoolNo");
+        List<AttachedFile> attachedFiles = (List<AttachedFile>) session.getAttribute("attachedFiles");
+        schoolNo = (Integer) session.getAttribute("schoolNo");
 
         // attachedFiles가 null이 아닌지 확인
         if (attachedFiles != null) {
@@ -363,41 +309,13 @@ public class PostController {
         log.debug("@@@@@@@@@@@@@ schoolNo 주입성공 = " + schoolNo);
 
 
-
         // 나머지 처리 코드
         log.debug("@@@@@@@ 주입만 완료된 post 객체 ===>>" + post);
         postService.add(post);
 
 
-
-        return "redirect:list2?schoolNo=" + schoolNo;
+        return "redirect:list?schoolNo=" + schoolNo;
     }
-
-
-//    @GetMapping("list")
-//    public void list(Model model,
-//                      HttpSession httpSession,
-//                      @AuthenticationPrincipal PrincipalDetails principalDetails,
-//                      @LoginUser User loginUser,
-//                     @RequestParam("schoolNo") int schoolNo
-//
-//
-//    ) {
-//
-//            System.out.println(postService.findBySchoolPostList(schoolNo));
-//            log.debug(postService.findBySchoolPostList(schoolNo));
-//            log.debug(schoolUserService.findBySchoolUserList(schoolNo));
-//            System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
-//            List<Post> posts = postService.findBySchoolPostList(schoolNo);
-//            Post post = postService.findByFixList(schoolNo);
-//
-//            System.out.print("@@@@@@@@@@@@@@@@@@@" + posts);
-//            model.addAttribute("schoolNo", schoolNo);
-//            model.addAttribute("postlist", post);
-//            model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
-//            model.addAttribute("fixlist", post);
-////        model.addAttribute("joined", schoolUserService.joinedSchoolUser(loginUser.getNo(), schoolNo));
-//        }
 
 
     @GetMapping("list")
@@ -440,14 +358,6 @@ public class PostController {
     }
 
 
-
-
-
-
-
-
-
-
     @GetMapping("view/{lNo}")
     @ResponseBody
     public Object findByPost(int no, @PathVariable String lNo) throws Exception {
@@ -465,7 +375,7 @@ public class PostController {
         System.out.println(attachedFiles);
         System.out.println(comments);
 
-        Map<String,Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         result.put("comments", comments);
         result.put("files", attachedFiles);
         result.put("post", post);
@@ -515,21 +425,20 @@ public class PostController {
             HttpSession session) throws Exception {
 
 
-        List<AttachedFile> attachedFiles = (List<AttachedFile>)session.getAttribute("attachedFiles");
+        List<AttachedFile> attachedFiles = (List<AttachedFile>) session.getAttribute("attachedFiles");
 
 
         log.debug("@@@@@@@@@@@@ 세션에서 가져온 schoolNo = " + session.getAttribute("schoolNo"));
 
-        schoolNo = (Integer)session.getAttribute("schoolNo");
+        schoolNo = (Integer) session.getAttribute("schoolNo");
 
         log.debug(" @@@@@@@@@@@@@@ 형변환 성공한 schoolNo = " + schoolNo);
 
         log.debug("@@@@@@@@@@@@ 세션에서 가져온 postNo = " + session.getAttribute("postNo"));
 
-        no = (Integer)session.getAttribute("postNo");
+        no = (Integer) session.getAttribute("postNo");
 
         log.debug(" @@@@@@@@@@@@@@ 형변환 성공한 postNo = " + no);
-
 
 
         ArrayList<AttachedFile> fileList = new ArrayList<>();
@@ -545,14 +454,14 @@ public class PostController {
         if (fileList.size() > 0) {
             post.setFileList(fileList);
         }
-        log.debug("변경된 서머노트 내용이 정상적으로 꽂혔을까요? = "  + post);
+        log.debug("변경된 서머노트 내용이 정상적으로 꽂혔을까요? = " + post);
 
         post.setSchoolNo(schoolNo);
 
-        log.debug("가져온 postNo가 정상적으로 꽂혔을까요? = "  + schoolNo);
+        log.debug("가져온 postNo가 정상적으로 꽂혔을까요? = " + schoolNo);
         post.setNo(no);
 
-        log.debug("가져온 postNo이 정상적으로 꽂혔을까요? = "  + no);
+        log.debug("가져온 postNo이 정상적으로 꽂혔을까요? = " + no);
 
         postService.update(post);
 
@@ -638,9 +547,6 @@ public class PostController {
     }
 
 
-
-
-
     @PostMapping("file/upload")
     @ResponseBody
     public AjaxResponse fileUpload(
@@ -648,7 +554,7 @@ public class PostController {
             HttpSession session,
             @LoginUser User loginUser,
             @RequestParam int schoolNo,
-            @RequestParam(value = "postNo" ,required = false) Integer no,
+            @RequestParam(value = "postNo", required = false) Integer no,
             Model model) throws Exception {
 
 //         FileUpoladHelper Object Storage에 저장한 파일의 이미지 이름을 보관할 컬렉션을 준비한다.
@@ -665,11 +571,11 @@ public class PostController {
 
         // 업로드한 파일 목록을 세션에 보관한다.
         ArrayList<AttachedFile> oldfileList = (ArrayList<AttachedFile>) session.getAttribute("attachedFiles");
-        session.setAttribute("schoolNo",schoolNo);
+        session.setAttribute("schoolNo", schoolNo);
 
         log.debug("schoolNo가 session 에 담겼을까요" + session.getAttribute("schoolNo"));
 
-        session.setAttribute("postNo",no);
+        session.setAttribute("postNo", no);
 
         log.debug("postNo가 session 에 담겼을까요" + session.getAttribute("postNo"));
 
