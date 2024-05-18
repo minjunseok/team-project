@@ -16,6 +16,7 @@
 			rel="stylesheet"
 			type="text/css"
 		/>
+
 		<link
 			href="/summernote/summernote.min.css"
 			rel="stylesheet"
@@ -187,38 +188,33 @@
 						<div
 							class="md_container"
 							th:if="${loginUser != null and accessLevel != null}"
-							data-th-if="${joined}"
 						>
-							<div
-								id="post_setting"
-								onclick="postForm()"
+							<!-- <div id="post_setting" onclick="postForm()"> -->
+							<button
+								type="button"
+								id="postAddBtn"
+								class="btn text-white createButton"
 							>
-								<button
-									type="button"
-									id="postAddBtn"
-									class="btn text-white createButton"
-								>
-									새 글 작성
-								</button>
-							</div>
+								새 글 작성
+							</button>
+							<!-- </div> -->
 						</div>
-					</div>
 
-					<div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>
+						<div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>
 
-					<!-- 스쿨에 가입하지 않은 경우에만 가입하기 버튼을 보여줌 -->
-					<div
-						class="join_container"
-						th:unless="${loginUser != null and accessLevel != null}"
-						data-th-unless="${joined}"
-					>
-						<button
-							id="joinButton"
-							class="btn text-white createButton"
-							type="button"
+						<!-- 스쿨에 가입하지 않은 경우에만 가입하기 버튼을 보여줌 -->
+						<div
+							class="join_container"
+							th:unless="${loginUser != null and accessLevel != null}"
 						>
-							가입하기
-						</button>
+							<button
+								id="joinButton"
+								class="btn text-white createButton"
+								type="button"
+							>
+								가입하기
+							</button>
+						</div>
 					</div>
 
 					<!-- 회원 리스트 -->
@@ -234,7 +230,6 @@
 								data-th-object="${schoolUser}"
 							>
 								<div class="col">
-									<span data-th-text="*{writer.photo}"> 사진 </span>
 									<img
 										th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + ${schoolUser.writer.photo}"
 										style="width: 50px; height: 50px"
@@ -255,7 +250,7 @@
 					<!-- 검색창 -->
 					<div class="searchBar">
 						<form
-							action="/post/search"
+							action="/search"
 							method="post"
 						>
 							<div class="searchBarContainer">
@@ -282,7 +277,6 @@
 								<i
 									id="postSearchForm"
 									class="bi bi-search"
-									type="button"
 								>
 								</i>
 							</div>
@@ -313,7 +307,6 @@
 										th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + ${post.writer.photo}"
 										style="width: 50px; height: 50px"
 									/>
-									사진
 								</div>
 								<div class="fix-nick">
 									<span data-th-text="*{writer.nickname}">닉네임</span>
@@ -327,30 +320,14 @@
 											<span data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</span>
 										</div>
 
-										<div class="dropdown">
+										<div th:if="${accessLevel == 4 or accessLevel == 5}">
 											<button
-												class="btn btn-secondary settingBtn"
-												type="button"
-												data-bs-toggle="dropdown"
-												aria-expanded="false"
+												class="unfix-button"
+												data-th-data-no="*{no}"
+												data-no="100"
 											>
-												...
+												고정 해제
 											</button>
-											<div
-												class="dropdown-menu"
-												aria-labelledby="dropdownMenuButton"
-											>
-												<button
-													class="dropdown-item"
-													type="button"
-												>
-													<!-- 체크박스가 표시되는 부분을 타임리프 조건문으로 감싸기 -->
-													<!--																								             th:if="${accessLevel == 4 and accessLevel == 5}"-->
-													<!--																								             <input type="checkbox" class="fix-checkbox" data-th-data-no="*{no}">			-->
-
-													공지 해제
-												</button>
-											</div>
 										</div>
 									</div>
 								</div>
@@ -375,20 +352,26 @@
 						class="table-responsive"
 					>
 						<div
-							data-th-each="post : ${postlists}"
+							data-th-each="post : ${postlist}"
 							data-th-object="${post}"
 							data-th-data-no="*{no}"
 							class="table"
 						>
 							<div
+								class="hidden-data"
+								th:data-user-no="${post.writer.no}"
+								style="display: none"
+							></div>
+
+							<div
 								id="list-hd"
 								class="d-flex justify-content-between"
 							>
-								<div
-									class="list-img"
-									data-th-text="*{writer.photo}"
-								>
-									사진
+								<div class="list-img">
+									<img
+										th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + ${post.writer.photo}"
+										style="width: 50px; height: 50px"
+									/>
 								</div>
 								<div class="list-nick">
 									<span data-th-text="*{writer.nickname}"> 닉네임 </span>
@@ -401,7 +384,6 @@
 									<div class="list-ca">
 										<span data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</span>
 									</div>
-
 									<div
 										class="dropdown"
 										data-th-data-no="${no}"
@@ -463,12 +445,6 @@
 							>
 								content
 							</div>
-							<div style="display: none">숨겨진 writer.no</div>
-							<div
-								class="hidden-data"
-								th:data-user-no="${post.writer.no}"
-								style="display: none"
-							></div>
 						</div>
 
 						<!--게시글 관련 모달 모음-->
@@ -952,6 +928,10 @@
 						<!--댓글 등록 자바스크립트-->
 
 						<script>
+							var selectedFixedPostNo = {
+								no: null,
+							};
+
 							var selectedPost = {
 								no: null,
 							};
@@ -1259,7 +1239,7 @@
 						<script>
 							var postNo = $(this).data('no');
 
-							let fixedPost = $('#fixed-post tbody');
+							let fixedPost = $('#fixed-post');
 
 							$('#confirmBtn').on('click', function () {
 								console.log('고정할 게시글의 번호 =' + postNo);
@@ -1267,7 +1247,7 @@
 								$('#confirmationModal').modal('hide');
 
 								// 해당 테이블에 글이 이미 있는지 확인
-								if ($('#fixed-post tbody tr').length > 0) {
+								if ($('#fixed-post').length > 0) {
 									// 이미 글이 있는 경우 경고 메시지 표시
 									alert('이미 고정글이 등록되어 있습니다. 한 게시글만 등록할 수 있습니다.');
 									return; // 동작 중지
@@ -1293,24 +1273,26 @@
 								});
 							});
 
-							// 체크박스 상단 고정 게시물 해제 이벤트 핸들러
-							$('#fixed-post').on('change', '.fix-checkbox', function () {
-								if ($(this).prop('checked')) {
-									no = $(this).data('no');
-									// 모달 표시
-									$('#unfixConfirmationModal').on('hidden.bs.modal', function () {
-										// 모달이 숨겨질 때 체크박스를 해제합니다.
-										$('.fix-checkbox').prop('checked', false);
-									});
-									$('#unfixConfirmationModal').modal('show');
-								}
+							// 고정 해제 버튼 클릭 이벤트 핸들러
+							$('#fixed-post').on('click', '.unfix-button', function () {
+								// 클릭한 버튼 요소(this)에서 data-no 속성을 가져와서 변수 no에 할당합니다.
+								var no = $(this).data('no');
+								selectedFixedPostNo.no = no;
+								console.log('이 게시글의 번호는 = ' + selectedFixedPostNo.no);
+								// 모달 표시
+								//        $('#unfixConfirmationModal').on('hidden.bs.modal', function () {
+								//            // 모달이 숨겨질 때 전역 변수 no 초기화
+								//            no = null;
+								//        });
+								$('#unfixConfirmationModal').modal('show');
 							});
 
 							// 게시글 고정 해제 모달에서 '예'를 선택한 경우
 							$('#confirmUnfixBtn').on('click', function () {
+								let no = selectedFixedPostNo.no;
+								console.log(no);
 								$('#unfixConfirmationModal').modal('hide');
 
-								// 카테고리 번호를 0으로 변경하여 서버에 전송
 								$.ajax({
 									url: 'fixCancel',
 									method: 'POST',
@@ -1318,11 +1300,12 @@
 									success: function (response) {
 										if (response.status === 'success') {
 											alert('해제되었습니다.');
+											refreshPage();
 										} else {
 											// 오류가 발생한 경우
 											alert('게시글 고정 해제에 실패했습니다.' + response.message);
+											refreshPage();
 										}
-										refreshPage();
 									},
 									error: function (xhr, status, error) {
 										alert('게시글 고정 해제 실패.');
@@ -1639,12 +1622,22 @@
 								$(document).on('click', '.dropdown-button, .comment-dropdown-toggle', function (event) {
 									event.stopPropagation(); // 이벤트 전파 중지
 
-									selectedPostUserNo.postUserNo = $(this).closest('tr').find('.hidden-data').attr('data-user-no');
-									var no = $(this).closest('tr').data('no');
-									let content = $(this).closest('tr').find('.school-post').html();
+									selectedPostUserNo.postUserNo = $(this)
+										.closest('#searchResult')
+										.find('.hidden-data')
+										.attr('data-user-no');
+									console.log('@@@1111@@@@' + selectedPostUserNo.postUserNo);
+									var no = $(this).closest('.table').data('no');
+									let content = $(this).closest('.table').find('.school-post').html();
+
+									console.log('로그인 유저 번호 ' + loginUserNo);
 
 									selectedPost.no = no; // 해당 게시글의 번호 가져오기
 									selectedPostContent.postContent = content;
+									console.log('글쓴이 유저 번호 ' + no);
+									console.log('글쓴이 유저 번호 ' + selectedPostUserNo.postUserNo);
+									console.log('글쓴이 유저 번호 ' + selectedPostUserNo.postUserNo);
+									console.log('작업에 필요한 해당 데이터 ' + selectedPostContent.postContent);
 
 									var dropdown = $(this).next('.dropdown-menu'); // 클릭된 버튼 다음에 오는 드롭다운 메뉴 선택
 
@@ -1808,6 +1801,7 @@
 											$('#searchResult').html(response);
 										},
 										error: function (xhr, status, error) {
+											alert('해당 검색 결과가 없습니다.');
 											console.error('검색 요청 실패:', error);
 										},
 									});
