@@ -322,16 +322,16 @@ public class PostController {
 
     @GetMapping("list")
     public void list(Model model,
-                     @RequestParam("schoolNo") int schoolNo,
-                     @AuthenticationPrincipal PrincipalDetails principalDetails,
-                     @LoginUser User loginUser) {
+                      @RequestParam("schoolNo") int schoolNo,
+                      @AuthenticationPrincipal PrincipalDetails principalDetails,
+                      @LoginUser User loginUser) {
 
         School school = schoolService.get(schoolNo); // schoolNo로 학교 정보를 가져오는 메서드 호출
         String schoolPhotoUrl = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/" + school.getPhoto();
         String schoolName = school.getName();
 
         if (loginUser != null) {
-            int memberCheck = schoolUserService.findByMemberCheck(schoolNo, loginUser.getNo());
+            int memberCheck = schoolUserService.findByMemberCheck(schoolNo,loginUser.getNo());
 
             if (memberCheck == 1) {
 
@@ -340,7 +340,6 @@ public class PostController {
                 // 회원이고 해당 학교의 회원인 경우
                 log.debug("@@@@@@@@@@@@@@@@ 회원이니까 모델을 전부다 넘긴다");
                 int accessLevel = schoolUserService.findLevel(schoolNo, userNo);
-                model.addAttribute("sender", loginUser);
                 model.addAttribute("accessLevel", accessLevel);
                 model.addAttribute("loginUser", loginUser);
             }
@@ -407,14 +406,41 @@ public class PostController {
                 model.addAttribute("sender", loginUser);
                 model.addAttribute("accessLevel", accessLevel);
                 model.addAttribute("loginUser", loginUser);
-            } else {
-                // 회원이지만 해당 학교의 회원이 아닌 경우
-                log.debug("@@@@@@@@@@@@@@@@ 넌 비회원이구나");
             }
-        } else {
-            // 비회원인 경우
-            log.debug("@@@@@@@@@@@@@@@@ 넌 로그인을 아예 안 했구나");
         }
+
+
+        if (filter.equals("0")) { // 내용으로 검색
+            List<Post> posts = postService.findBySchoolContent(schoolNo, keyword);
+            Post post = postService.findByFixList(schoolNo);
+            model.addAttribute("postlist", posts);
+            model.addAttribute("fixlist", post);
+        } else {                  // 작성자로 검색
+            List<Post> posts = postService.findBySchoolUserName(schoolNo, keyword);
+            Post post = postService.findByFixList(schoolNo);
+            model.addAttribute("postlist", posts);
+            model.addAttribute("fixlist", post);
+        }
+
+        log.debug("@@@@@@@" + schoolNo + keyword);
+        return "post/list";
+
+    }
+
+
+
+
+
+    // 검색창에 필터로 검색했을 때
+    @PostMapping("search")
+    @GetMapping("search")
+    public String searchPosts(
+            int schoolNo,
+            @RequestParam("keyword") String keyword,
+            @RequestParam("filter") String filter,
+            Model model) {
+
+
 
 
         if (filter.equals("0")) { // 내용으로 검색

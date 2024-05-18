@@ -49,19 +49,20 @@ public class SchoolUserController {
         try {
             // 로그인한 사용자 정보를 사용하여 실제 사용자 정보를 가져옵니다.
             User user = userService.getUserInfo(loginUser.getNo());
+            log.debug(user + "@@@@@@@@@");
             if (user == null) {
                 return "error: 유저를 찾을 수 없습니다.";
             }
 
             // 스쿨 유저 추가
             SchoolUser schoolUser = new SchoolUser();
-            schoolUser.setUserNo(loginUser.getNo()); // 로그인한 사용자의 번호를 사용
+            schoolUser.setUserNo(user.getNo()); // 로그인한 사용자의 번호를 사용
             schoolUser.setSchoolNo(schoolNo);
             schoolUser.setLevelNo(5); // 유저의 스쿨 레벨을 설정
 
             schoolUserService.addSchoolUser(user.getNo(), schoolNo, schoolUser.getLevelNo());
 
-            return "pending: 스쿨 가입이 신청이 완료되었습니다.";
+            return "success: 스쿨 가입이 완료되었습니다.";
         } catch (Exception e) {
             e.printStackTrace();
             return "error: 스쿨 가입 중 오류가 발생했습니다.";
