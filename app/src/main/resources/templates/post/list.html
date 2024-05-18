@@ -25,17 +25,20 @@
             border-collapse: collapse;
             width: 85%; /* 테이블 너비를 부모 요소에 맞게 조절될 수 있도록 합니다. */
             margin: 0 auto; /* 가운데 정렬 */
+
+
         }
         td, th {
             border: 1px solid #000;
             height: 30px;
             padding: 0 10px;
             text-align: center;
+            border: none;
+
         }
 
         /* 테이블 내부 요소 호버 효과 */
         tbody tr:hover {
-            background-color: #f5f5f5;
             cursor: pointer;
         }
 
@@ -45,7 +48,7 @@
             min-width: 100%; /* 최소 너비를 100%로 설정하여 내용이 적어도 전체 너비를 차지하도록 합니다. */
             max-width: none !important; /* 최대 너비 설정 제거 */
 
-}
+        }
 
         .modal-dialog {
             max-width: 750px; /* 또는 필요한 크기로 지정 */
@@ -58,7 +61,56 @@
             width: 100%; /* 테이블 영역만큼 너비 조절 */
             display: none;
         }
+
+        /* 1px 테두리 배경색과 같게 설정 */
+        .invisible-border {
+            border-left: 1px solid #fff; /* 배경색과 같게 */
+            border-right: 1px solid #fff;
+            border-top: 1px solid #fff;
+            border-bottom: 1px solid #fff;
+        }
+        /* 테두리 없애기 */
+        .no-border {
+            border-right: none;
+            border-left: none;
+            border-top: none;
+            border-bottom: none;
+        }
+        /* 테이블 외곽선 없애기 */
+        table.frame-void {
+            border: none;
+        }
+
+        .table-container {
+            margin-bottom: 20px; /* 테이블 간의 간격 조정 */
+
+        }
+        #commentsTable {
+            modal-content : #D2B48C;
+            color: #fff; /* 텍스트 색상 흰색으로 변경 */
+            background-color: rgb(158, 137, 106);
+
+
+
+        }
+        /*        }*/
+        /*        .modal-header, .modal-footer {*/
+        /*            background-color: #A0522D; *//* 조금 더 연한 갈색 */
+        /*        }*/
+        .btn-close, .btn-secondary {
+            background-color: #D2B48C; /* 중간 톤의 갈색 */
+            border: none;
+        }
+
+
+        .btn-close:hover, .btn-secondary:hover {
+            background-color: #A0522D; /* 호버 시 색상 변경 */
+            /* 텍스트 색상 흰색으로 변경 */
+            border-color: rgb(158, 137, 106);
+        }
+
     </style>
+
 
 
 
@@ -143,24 +195,14 @@
     </div>
 </form>
 
-<!--<div class="container" data-th-if="${joined}">-->
-<!--    <div class="row" style="width: 100px">-->
-<!--        <div class="col-md-2">-->
-<!--        </div>-->
-<!--        <div class="col-md-8" style="text-align:center;" id="">-->
-<!--            <div id="post_setting" onclick="postForm()" style="width: 120px">-->
-<!--                <button>새 글 작성</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 
-
-<!--</div>-->
 
 <!-- 로그인 유저 레벨의 따른 분기점을 가진 가입하기 버튼 -->
 <div th:unless="${loginUser != null and accessLevel != null}">
     <button id="joinButton">가입하기</button>
 </div>
+
+
 <div th:if="${loginUser != null and accessLevel != null}">
     <button id="postAddBtn">새 글 작성</button>
 </div>
@@ -205,8 +247,8 @@
             <td data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</td>
             <td>작업</td>
             <!-- 체크박스가 표시되는 부분을 타임리프 조건문으로 감싸기 -->
-            <td th:if="${accessLevel == 4 and accessLevel == 5}">
-                <input type="checkbox" class="fix-checkbox" data-th-data-no="*{no}" data-no="100">
+            <td th:if="${accessLevel == 4 or accessLevel == 5}">
+                <button class="unfix-button" data-th-data-no="*{no}" data-no="100">고정해제</button>
             </td>
         </tr>
         </tbody>
@@ -432,10 +474,11 @@
 <!--		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"-->
 <!--		        integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="-->
 <!--		        crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/summernote/summernote.min.js"></script>
-
 </body>
 
 
@@ -517,6 +560,11 @@
 <!--댓글 등록 자바스크립트-->
 
 <script>
+
+
+    var selectedFixedPostNo =  {
+        no: null
+    }
 
     var selectedPost = {
         no: null
@@ -969,62 +1017,60 @@
                 if (response.status === "success") {
 
                     alert('게시글이 고정되었습니다.');
-                        refreshPage()
+                    refreshPage()
                 } else {
-                // 오류가 발생한 경우
+                    // 오류가 발생한 경우
 
-                alert("게시글 고정에 실패했습니다." + response.message);
+                    alert("게시글 고정에 실패했습니다." + response.message);
 
                 }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('공지 등록 실패.');
+            },
+            error: function(xhr, status, error) {
+                alert('공지 등록 실패.');
 
-                        }
-                    });
+            }
+        });
 
-                });
-
-//    // 체크박스 클릭 이벤트 핸들러
-//    $("#searchResult").on('change', '.post-checkbox', function() {
-//        console.log('post-checkbox............');
-//        if ($(this).prop('checked')) {
-//            no = $(this).data('no');
-//
-//
-//            // 모달 표시
-//            $('#confirmationModal').on('hidden.bs.modal', function () {
-//                // 모달이 숨겨질 때 체크박스를 해제합니다.
-//                $('.post-checkbox').prop('checked', false);
-//            });
-//            $('#confirmationModal').modal('show');
-//        }
-//    });
-
-
-
-    // 체크박스 상단 고정 게시물 해제 이벤트 핸들러
-    $("#fixed-post").on('change', '.fix-checkbox', function() {
-        console.log('fix-checkbox............');
-        if ($(this).prop('checked')) {
-            no = $(this).data('no');
-            console.log('이 게시글의 번호는 =' + no);
-            // 모달 표시
-            $('#unfixConfirmationModal').on('hidden.bs.modal', function () {
-                // 모달이 숨겨질 때 체크박스를 해제합니다.
-                $('.fix-checkbox').prop('checked', false);
-            });
-            $('#unfixConfirmationModal').modal('show');
-        }
     });
 
+    //    // 체크박스 클릭 이벤트 핸들러
+    //    $("#searchResult").on('change', '.post-checkbox', function() {
+    //        console.log('post-checkbox............');
+    //        if ($(this).prop('checked')) {
+    //            no = $(this).data('no');
+    //
+    //
+    //            // 모달 표시
+    //            $('#confirmationModal').on('hidden.bs.modal', function () {
+    //                // 모달이 숨겨질 때 체크박스를 해제합니다.
+    //                $('.post-checkbox').prop('checked', false);
+    //            });
+    //            $('#confirmationModal').modal('show');
+    //        }
+    //    });
+
+
+
+    // 고정 해제 버튼 클릭 이벤트 핸들러
+    $("#fixed-post").on('click', '.unfix-button', function() {
+        // 클릭한 버튼 요소(this)에서 data-no 속성을 가져와서 변수 no에 할당합니다.
+        var no = $(this).data('no');
+        selectedFixedPostNo.no = no;
+        console.log('이 게시글의 번호는 = ' + selectedFixedPostNo.no);
+        // 모달 표시
+        //        $('#unfixConfirmationModal').on('hidden.bs.modal', function () {
+        //            // 모달이 숨겨질 때 전역 변수 no 초기화
+        //            no = null;
+        //        });
+        $('#unfixConfirmationModal').modal('show');
+    });
 
     // 게시글 고정 해제 모달에서 '예'를 선택한 경우
     $('#confirmUnfixBtn').on('click', function() {
+        let no = selectedFixedPostNo.no;
         console.log(no);
         $('#unfixConfirmationModal').modal('hide');
 
-        // 카테고리 번호를 0으로 변경하여 서버에 전송
         $.ajax({
             url: 'fixCancel',
             method: 'POST',
@@ -1032,30 +1078,23 @@
             success: function(response) {
                 if (response.status === "success") {
                     alert("해제되었습니다.");
-
-
+                    refreshPage();
                 } else {
                     // 오류가 발생한 경우
                     alert("게시글 고정 해제에 실패했습니다." + response.message);
+                    refreshPage();
                 }
-                refreshPage()
             },
             error: function(xhr, status, error) {
                 alert('게시글 고정 해제 실패.');
-
             }
         });
     });
 
+
     function refreshPage() {
         location.reload(); // 현재 페이지를 리로드합니다.
     }
-
-
-
-
-
-
 
 
 </script>
