@@ -19,24 +19,22 @@ tbody tr:hover {
 	cursor: pointer;
 }
 
- /* 드롭다운 요소 스타일 */
-        /* .dropdown-menu {
-            /* width: auto !important; 내부 내용에 맞게 자동으로 조절 */
-            /* min-width: 100%; 최소 너비를 100%로 설정하여 내용이 적어도 전체 너비를 차지하도록 합니다. */
-            /* max-width: none !important; 최대 너비 설정 제거 */ 
+/* 드롭다운 요소 스타일  */
+.dropdown-menu {
+	width: auto !important; /* 내부 내용에 맞게 자동으로 조절 */
+	min-width: 100%; /*최소 너비를 100%로 설정하여 내용이 적어도 전체 너비를 차지하도록 합니다.*/
+	max-width: none !important; /*최대 너비 설정 제거 */
+}
+.modal-dialog {
+	max-width: 750px; /* 또는 필요한 크기로 지정 */
+}
 
-						/*        .modal-dialog {*/
-/*            max-width: 750px; *//* 또는 필요한 크기로 지정 */
-/*        }*/
-
-/*        *//* 화살표 제거 */
-/*        .dropdown-toggle::after {*/
-
-/*            background-color: #f5f5dc; *//* 연한 갈색 */
-/*            width: 100%; *//* 테이블 영역만큼 너비 조절 */
-/*            display: none;*/
-/*        }*/
-
+/* 화살표 제거 */
+.dropdown-toggle::after {
+	background-color: #f5f5dc; /* 연한 갈색 */
+	width: 100%; /* 테이블 영역만큼 너비 조절 */
+	display: none;
+}
 
 .Stl {
 	background-color: #cbbca7;

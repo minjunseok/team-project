@@ -21,16 +21,16 @@ import java.util.List;
 @EnableScheduling
 @Controller
 @PropertySource({
-"file:${user.home}/config/oauth.properties",
-  "file:${user.home}/config/ncp-storage.properties",
-        "file:${user.home}/config/ncp-secret.properties",
-  "file:${user.home}/config/bootpay.properties",
-  "file:${user.home}/config/email.properties"})
+        "file:${user.home}/.config/oauth.properties",
+        "file:${user.home}/.config/ncp-storage.properties",
+        "file:${user.home}/.config/ncp-secret.properties",
+        "file:${user.home}/.config/bootpay.properties",
+        "file:${user.home}/.config/email.properties"})
 //        "classpath:ncp-storage.properties",
 //        "classpath:ncp-secret.properties",
 //        "classpath:bootpay.properties",
 //        "classpath:config/email.properties"
-        //"classpath:ncp-secret.properties",
+//"classpath:ncp-secret.properties",
 //        "file:${user.home}/config/ncp-storage.properties",
 //        "file:${user.home}/config/ncp-secret.properties",
 //        "file:${user.home}/config/bootpay.properties",
