@@ -447,6 +447,7 @@ public class PostController {
 
 
 
+
     @GetMapping("view/{lNo}")
     @ResponseBody
     public Object findByPost(int no, @PathVariable String lNo) throws Exception {
@@ -483,6 +484,8 @@ public class PostController {
             @RequestParam("keyword") String keyword,
             @RequestParam("filter") String filter,
             Model model) {
+
+
 
 
         if (filter.equals("0")) { // 내용으로 검색
@@ -527,20 +530,6 @@ public class PostController {
 
         log.debug(" @@@@@@@@@@@@@@ 형변환 성공한 postNo = " + no);
 
-
-
-//    User loginUser = (User) session.getAttribute("loginUser");
-//    if (loginUser == null) {
-//      throw new Exception("로그인하시기 바랍니다!");
-//    }
-//
-//    Post old = postService.get(post.getNo());
-//    if (old == null) {
-//      throw new Exception("번호가 유효하지 않습니다.");
-//
-//    } else if (old.getNo() != loginUser.getNo()) {
-//      throw new Exception("권한이 없습니다.");
-//    }
 
 
         ArrayList<AttachedFile> fileList = new ArrayList<>();
