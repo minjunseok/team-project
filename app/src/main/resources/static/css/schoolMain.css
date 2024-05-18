@@ -82,6 +82,13 @@ tbody tr:hover {
 	border: 1px solid #cbbca7;
 }
 
+#fixed-post .fix-img img {
+	width: 50px;
+	height: 50px;
+	border: 1px solid black;
+	border-radius: 70%;
+}
+
 /* 회원 리스트 */
 .left-container .userList {
 	margin-top: 50px;
@@ -209,14 +216,14 @@ tbody tr:hover {
 #fix-hd .fix-img {
 	height: 80px;
 	width: 120px;
-	padding-left: 24px;
+	padding-left: 48px;
 	padding-top: 24px;
 	overflow: hidden;
 }
 
 #fix-hd .fix-nick {
-	padding-right: 200px;
-	padding-top: 16px;
+	padding-right: 300px;
+	padding-top: 32px;
 }
 .fix-nick span {
 	background-color: #cbbca700;
@@ -302,14 +309,21 @@ tbody tr:hover {
 #list-hd .list-img {
 	height: 80px;
 	width: 120px;
-	padding-left: 24px;
+	padding-left: 48px;
 	padding-top: 24px;
 	overflow: hidden;
 }
 
+#list-hd .list-img img {
+	width: 50px;
+	height: 50px;
+	border: 1px solid black;
+	border-radius: 70%;
+}
+
 #list-hd .list-nick {
-	padding-right: 200px;
-	padding-top: 16px;
+	padding-right: 300px;
+	padding-top: 32px;
 }
 
 #list-hd2 {
