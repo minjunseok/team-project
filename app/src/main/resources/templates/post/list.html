@@ -140,18 +140,13 @@
 			<div class="Stl">
 				<a
 					class="btn btn-primary"
-					data-th-href="@{noticelist(schoolNo=${schoolNo})}"
-					href="noticelist.html"
-					role="button"
-					>공지 사항</a
-				>
-				<a
-					class="btn btn-primary"
 					target="_blank"
+					th:if="${loginUser != null and accessLevel != null}"
 					data-th-href="@{/gm(schoolNo=${schoolNo},sender=${sender.no})}"
 					role="button"
 					>채팅</a
 				>
+
 				<a
 					class="btn btn-primary"
 					target="_blank"
@@ -169,27 +164,22 @@
 			</div>
 			<div class="container">
 				<!-- 왼쪽 고정 요소 -->
+
 				<div class="left-container">
 					<div class="md-img">
 						<figure class="figure">
 							<img
-								src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/1dcdc4b5-7645-4143-82f6-0300c5927112?type=f&w=400&h=400"
+								th:src="${schoolPhotoUrl + '?type=f&w=300&h=300'}"
 								class="figure-img img-fluid rounded"
 								alt=""
 							/>
-							<figcaption
-								class="figure-caption"
-								style="text-align: center"
-							>
-								스쿨 이름 출력 되는 곳!
-							</figcaption>
+							<figcaption class="figure-caption">[[${schoolName}]]</figcaption>
 						</figure>
 
 						<div
 							class="md_container"
 							th:if="${loginUser != null and accessLevel != null}"
 						>
-							<!-- <div id="post_setting" onclick="postForm()"> -->
 							<button
 								type="button"
 								id="postAddBtn"
@@ -197,7 +187,6 @@
 							>
 								새 글 작성
 							</button>
-							<!-- </div> -->
 						</div>
 
 						<div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>
@@ -231,8 +220,12 @@
 							>
 								<div class="col">
 									<img
+										th:if="${schoolUser.writer.photo != null}"
 										th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + ${schoolUser.writer.photo}"
-										style="width: 50px; height: 50px"
+									/>
+									<img
+										th:unless="${schoolUser.writer.photo != null}"
+										th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/resources/static/img/default-photo.jpeg'"
 									/>
 								</div>
 								<div class="col">

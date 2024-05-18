@@ -6,12 +6,10 @@ import moyeora.myapp.dto.AjaxResponse;
 import moyeora.myapp.security.PrincipalDetails;
 import moyeora.myapp.service.CommentService;
 import moyeora.myapp.service.PostService;
+import moyeora.myapp.service.SchoolService;
 import moyeora.myapp.service.SchoolUserService;
 import moyeora.myapp.util.FileUpload;
-import moyeora.myapp.vo.AttachedFile;
-import moyeora.myapp.vo.Comment;
-import moyeora.myapp.vo.Post;
-import moyeora.myapp.vo.User;
+import moyeora.myapp.vo.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +32,7 @@ public class PostController {
     //  private static final Log log = LogFactory.getLog(PostController.class);
     private final PostService postService;
     private final FileUpload fileUpload;
+    private final SchoolService schoolService;
     private final SchoolUserService schoolUserService;
     private final CommentService commentService;
     private String uploadDir = "post/";
@@ -327,6 +326,9 @@ public class PostController {
                      @AuthenticationPrincipal PrincipalDetails principalDetails,
                      @LoginUser User loginUser) {
 
+        School school = schoolService.get(schoolNo); // schoolNo로 학교 정보를 가져오는 메서드 호출
+        String schoolPhotoUrl = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/" + school.getPhoto();
+        String schoolName = school.getName();
 
         if (loginUser != null) {
             int memberCheck = schoolUserService.findByMemberCheck(schoolNo, loginUser.getNo());
@@ -341,24 +343,19 @@ public class PostController {
                 model.addAttribute("sender", loginUser);
                 model.addAttribute("accessLevel", accessLevel);
                 model.addAttribute("loginUser", loginUser);
-            } else {
-                // 회원이지만 해당 학교의 회원이 아닌 경우
-                log.debug("@@@@@@@@@@@@@@@@ 넌 비회원이구나");
             }
-        } else {
-            // 비회원인 경우
-            log.debug("@@@@@@@@@@@@@@@@ 넌 로그인을 아예 안 했구나");
         }
 
         // 로그인 상태와 관계없이 공통으로 처리해야 할 부분
-        System.out.println(postService.findBySchoolPostList(schoolNo));
-        System.out.println(schoolUserService.findBySchoolUserList(schoolNo));
         List<Post> posts = postService.findBySchoolPostList(schoolNo);
         Post post = postService.findByFixList(schoolNo);
         model.addAttribute("schoolNo", schoolNo);
         model.addAttribute("postlist", posts);
         model.addAttribute("schoolUsers", schoolUserService.findBySchoolUserList(schoolNo));
         model.addAttribute("fixlist", post);
+        model.addAttribute("school", school);
+        model.addAttribute("schoolPhotoUrl", schoolPhotoUrl);
+        model.addAttribute("schoolName", schoolName);
     }
 
 
@@ -384,6 +381,57 @@ public class PostController {
         result.put("files", attachedFiles);
         result.put("post", post);
         return result;
+    }
+
+
+    // 검색창에 필터로 검색했을 때
+    @PostMapping("search")
+    @GetMapping("search")
+    public String searchPosts(
+            @RequestParam("schoolNo") int schoolNo,
+            @RequestParam("keyword") String keyword,
+            @RequestParam("filter") String filter,
+            @LoginUser User loginUser,
+            Model model) {
+
+        if (loginUser != null) {
+            int memberCheck = schoolUserService.findByMemberCheck(schoolNo, loginUser.getNo());
+
+            if (memberCheck == 1) {
+
+                int userNo = loginUser.getNo();
+
+                //  회원이고 해당 학교의 회원인 경우
+                log.debug("@@@@@@@@@@@@@@@@ 회원이니까 모델을 전부다 넘긴다");
+                int accessLevel = schoolUserService.findLevel(schoolNo, userNo);
+                model.addAttribute("sender", loginUser);
+                model.addAttribute("accessLevel", accessLevel);
+                model.addAttribute("loginUser", loginUser);
+            } else {
+                // 회원이지만 해당 학교의 회원이 아닌 경우
+                log.debug("@@@@@@@@@@@@@@@@ 넌 비회원이구나");
+            }
+        } else {
+            // 비회원인 경우
+            log.debug("@@@@@@@@@@@@@@@@ 넌 로그인을 아예 안 했구나");
+        }
+
+
+        if (filter.equals("0")) { // 내용으로 검색
+            List<Post> posts = postService.findBySchoolContent(schoolNo, keyword);
+            Post post = postService.findByFixList(schoolNo);
+            model.addAttribute("postlist", posts);
+            model.addAttribute("fixlist", post);
+        } else {                  // 작성자로 검색
+            List<Post> posts = postService.findBySchoolUserName(schoolNo, keyword);
+            Post post = postService.findByFixList(schoolNo);
+            model.addAttribute("postlist", posts);
+            model.addAttribute("fixlist", post);
+        }
+
+        log.debug("@@@@@@@" + schoolNo + keyword);
+        return "post/list";
+
     }
 
 
@@ -449,19 +497,6 @@ public class PostController {
             HttpSession session) throws Exception {
 
 
-//    User loginUser = (User) session.getAttribute("loginUser");
-//    if (loginUser == null) {
-//      throw new Exception("로그인하시기 바랍니다!");
-//    }
-//
-//    Post post = postService.get(no);
-//    if (post == null) {
-//      throw new Exception("번호가 유효하지 않습니다.");
-//
-//    } else if (post.getNo() != loginUser.getNo()) {
-//      throw new Exception("권한이 없습니다.");
-//    }
-//
         List<AttachedFile> files = postService.getAttachedFiles(no);
 
 
