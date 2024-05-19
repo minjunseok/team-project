@@ -4,6 +4,7 @@ package moyeora.myapp.service;
 import moyeora.myapp.vo.User;
 
 import java.util.List;
+
 public interface UserService {
 
   void add(User user);
@@ -35,5 +36,7 @@ public interface UserService {
 
   int passwordUpdate(User user);
 
-  User getUserInfo(int no);
+    User getUserInfo(int no);
+
+  public String getAddress(int userNo);
 }

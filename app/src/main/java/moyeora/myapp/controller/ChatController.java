@@ -129,8 +129,8 @@ public class ChatController {
     @PostMapping("addDm")
     @ResponseBody
     public Dm addDm(
-        @RequestPart(value = "dm") Dm dm,
-        @RequestParam(value = "photo",required = false) MultipartFile[] photos) throws Exception {
+            @RequestPart(value = "dm") Dm dm,
+            @RequestParam(value = "photo",required = false) MultipartFile[] photos) throws Exception {
         if (photos != null) {
             ArrayList<String> files = new ArrayList<>();
             for (MultipartFile file : photos) {

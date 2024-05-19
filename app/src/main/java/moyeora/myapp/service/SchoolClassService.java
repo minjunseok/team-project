@@ -3,13 +3,14 @@ package moyeora.myapp.service;
 import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
 import moyeora.myapp.dto.schoolclass.SchoolClassRequestDTO;
 import moyeora.myapp.vo.SchoolClass;
+import moyeora.myapp.vo.User;
 
 import java.util.List;
 
-public interface SchoolClassService {
+public interface  SchoolClassService {
 
   public List<SchoolClass> findBySchoolUser(int schoolNo);
-  public List<SchoolClass> findByDate(String date);
+  public List<SchoolClass> findByDate(String date, int userNo);
 
   public List<SchoolClass> findByUserAddress(String address);
 
@@ -26,5 +27,8 @@ public interface SchoolClassService {
   void memberDelete(SchoolClassRequestDTO schoolClassRequestDTO);
 
   void classDelete(ClassDeleteDTO classDeleteDTO);
+
+  List<SchoolClass> weekClass(String address, List<String> week);
+  int classUpdate(SchoolClass clazz);
 
 }

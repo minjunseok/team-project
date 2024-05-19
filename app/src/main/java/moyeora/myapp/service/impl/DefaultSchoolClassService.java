@@ -2,16 +2,15 @@ package moyeora.myapp.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.dao.AlertDao;
-import moyeora.myapp.dao.ClassUserDao;
-import moyeora.myapp.dao.SchoolClassDao;
-import moyeora.myapp.dao.SchoolMemberDao;
+import moyeora.myapp.dao.*;
 import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
 import moyeora.myapp.dto.schoolclass.SchoolClassRequestDTO;
 import moyeora.myapp.service.SchoolClassService;
 import moyeora.myapp.vo.SchoolClass;
+import moyeora.myapp.vo.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,10 +21,20 @@ public class DefaultSchoolClassService implements SchoolClassService {
   private final ClassUserDao classUserDao;
   private final SchoolMemberDao schoolMemberDao;
   private final AlertDao alertDao;
+  private final UserDao userDao;
 
   @Override
-  public List<SchoolClass> findByDate(String date) {
-    return schoolClassDao.findByDate(date);
+  public List<SchoolClass> findByDate(String date, int userNo) {
+    User user = userDao.findByNo(userNo);
+    String[] strs = user.getAddress().split(" ");
+    String str = "";
+    if(strs.length>2) {
+      for (int i = 0; i < 2; i++) {
+        str += strs[i];
+        str += " ";
+      }
+    }
+    return schoolClassDao.findByDate(date,str);
   }
 
   @Override
@@ -98,10 +107,7 @@ public class DefaultSchoolClassService implements SchoolClassService {
   @Override
   public void classDelete(ClassDeleteDTO classDeleteDTO) {
     SchoolClassRequestDTO schoolClassRequestDTO = new SchoolClassRequestDTO();
-//    System.out.println("===========================");
-//    System.out.println(schoolClassRequestDTO);
-//    System.out.println("===========================");
-//    classUserDao.memberDelete(schoolClassRequestDTO);
+
 
     System.out.println("@@@@@@@@@@@@");
     System.out.println(classDeleteDTO);
@@ -113,7 +119,30 @@ public class DefaultSchoolClassService implements SchoolClassService {
   }
 
   @Override
+  public int classUpdate(SchoolClass clazz) {
+    return schoolClassDao.classUpdate(clazz);
+  }
+
+  @Override
   public boolean isMember(int classNo, int userNo) {
     return classUserDao.countMember(classNo, userNo) == 1;
+  }
+
+  @Override
+  public List<SchoolClass> weekClass(String address, List<String> week) {
+    List<String> strarr = new ArrayList<>();
+    for(String date : week) {
+      strarr.add("'"+date+"'");
+    }
+    String[] strs = address.split(" ");
+    String str = "";
+    if(strs.length>2) {
+      for (int i = 0; i < 2; i++) {
+        str += strs[i];
+        str += " ";
+      }
+    }
+    String weekString = String.join(",", strarr);
+    return schoolClassDao.findByWeek(str,weekString);
   }
 }

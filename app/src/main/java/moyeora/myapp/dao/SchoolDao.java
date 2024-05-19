@@ -4,6 +4,7 @@ package moyeora.myapp.dao;
 
 import moyeora.myapp.dto.admin.school.AdminSchoolListResponseDTO;
 import moyeora.myapp.dto.school.admin.SchoolOpenRangeUpdateRequestDTO;
+import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
 import moyeora.myapp.vo.School;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -13,7 +14,7 @@ import java.util.List;
 @Mapper
 public interface SchoolDao {
 
-  public List<School> findHotSchool(int category);
+  public List<School> findHotSchool(int userNo);
 
   void add(School school);
 
@@ -52,6 +53,9 @@ public interface SchoolDao {
   int deleteSchool(int schoolNo);
 
   School findBySchoolNo(int schoolNo);
+
+  //해당 스쿨 gm 삭제
+  int deleteSchoolGm(int schoolNo);
 
 
 }

@@ -4,44 +4,47 @@ package moyeora.myapp.controller;
 import com.amazonaws.Response;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.annotation.LoginUser;
+import moyeora.myapp.dto.profile.FollowListRequestDTO;
+import moyeora.myapp.dto.profile.FollowListResponseDTO;
+import moyeora.myapp.dto.profile.FollowRequestDTO;
+import moyeora.myapp.dto.profile.ProfileResponseDTO;
 import moyeora.myapp.service.MyPageService;
 import moyeora.myapp.service.SchoolService;
 import moyeora.myapp.vo.Post;
+import moyeora.myapp.vo.School;
+import moyeora.myapp.vo.SchoolUser;
 import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/mypage")
 public class MyPageController {
   private final SchoolService schoolService;
   private final MyPageService myPageService;
   final static Log log = LogFactory.getLog(MyPageController.class);
 
-  @GetMapping("newpost")
-  @ResponseBody
-  public ResponseEntity<List<Post>> newPost() {
-    return ResponseEntity.ok(myPageService.findNewPost(1));
+  @GetMapping("mypost")
+  public void myPost(Model model) {
+    model.addAttribute("newPosts",myPageService.findNewPost(1));
+    model.addAttribute("schools",schoolService.findByUserNo(1).getSchools());
   }
 
-  @GetMapping("hotpost")
-  @ResponseBody
-  public ResponseEntity<List<Post>> hotPost() {
-    return ResponseEntity.ok(myPageService.findHotPost(1));
-  }
-
-
-  @GetMapping("followingpost")
-  @ResponseBody()
-  public ResponseEntity<List<Post>> followingPost( ) {
-    return ResponseEntity.ok(myPageService.findFollowPost(1));
+  @GetMapping("myProfile")
+  public void profile(Model model, @LoginUser User loginUser) {
+    //model.addAttribute("newPosts",myPageService.findNewPost(loginUser.getNo()));
+    SchoolUser schoolUser = schoolService.findByUserNo(loginUser.getNo());
+    if(schoolUser!=null) {
+      model.addAttribute("schools", schoolService.findByUserNo(loginUser.getNo()).getSchools());
+      model.addAttribute("userNo", loginUser.getNo());
+    }
   }
 
   @GetMapping("recommenduser")
@@ -50,12 +53,65 @@ public class MyPageController {
     return ResponseEntity.ok(null);
   }
 
-  @GetMapping("mypost")
-  public void myPost(Model model) {
-    model.addAttribute("newPosts",myPageService.findNewPost(1));
-    model.addAttribute("schools",schoolService.findByUserNo(1).getSchools());
+  @GetMapping("profile")
+  @ResponseBody
+  public ResponseEntity<ProfileResponseDTO> profile(int userNo, int page) {
+    return ResponseEntity.status(200).body(myPageService.getProfile(userNo, page));
   }
 
+  @GetMapping("test")
+  public void test() {
 
+  }
 
+  @GetMapping("modal/profile")
+  public void modal(@LoginUser User loginUser ,Model model) {
+    model.addAttribute("userNo", loginUser.getNo());
+
+  }
+
+  @GetMapping("followList")
+  @ResponseBody
+  public ResponseEntity<List<FollowListResponseDTO>> followList(@LoginUser User loginUser, FollowListRequestDTO followListRequestDTO) {
+    if(loginUser!=null && loginUser.getNo() > 0) {
+      System.out.println(loginUser.getNo()+"ss");
+      followListRequestDTO.setClickUserNo(loginUser.getNo());
+    }
+    return ResponseEntity.status(200).body(myPageService.followList(followListRequestDTO));
+  }
+
+  @PostMapping("addFollow")
+  @ResponseBody
+  public ResponseEntity<Integer> addFollow(@LoginUser User loginUser, @RequestBody FollowRequestDTO followRequestDTO) {
+    if(loginUser.getNo()==followRequestDTO.getFollowerUserNo()) {
+      return ResponseEntity.status(400).build();
+    }
+    followRequestDTO.setFollowingUserNo(loginUser.getNo());
+    return ResponseEntity.status(201).body(myPageService.addFollow(followRequestDTO));
+  }
+
+  @GetMapping("checkFollow")
+  @ResponseBody
+  public ResponseEntity<Integer> checkFollow(@LoginUser User loginUser, FollowRequestDTO followRequestDTO) {
+    followRequestDTO.setFollowingUserNo(loginUser.getNo());
+    return ResponseEntity.status(200).body(myPageService.checkFollow(followRequestDTO));
+  }
+
+  @GetMapping("likepost")
+  @ResponseBody
+  public ResponseEntity<ProfileResponseDTO> getLikePost(@LoginUser User loginUser, int page) {
+    return ResponseEntity.status(200).body(myPageService.getLikePost(loginUser.getNo(), page));
+  }
+
+  @GetMapping("followerpost")
+  @ResponseBody
+  public ResponseEntity<ProfileResponseDTO> getLFollowerPost(@LoginUser User loginUser, int page) {
+    return ResponseEntity.status(200).body(myPageService.getFollowerPost(loginUser.getNo(), page));
+  }
+
+  @GetMapping("schoolpost")
+  @ResponseBody
+  public ResponseEntity<ProfileResponseDTO> getSchoolPost(@LoginUser User loginUser, int page) {
+    return ResponseEntity.status(200).body(myPageService.getSchoolPost(loginUser.getNo(), page));
+  }
 }

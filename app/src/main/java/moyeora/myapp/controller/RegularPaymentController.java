@@ -34,16 +34,9 @@ public class RegularPaymentController {
       return ResponseEntity.status(400).build();
     }
     regularPaymentRequestDTO.setUserNo(loginUser.getNo());
-
     paymentService.purchase(regularPaymentRequestDTO);
     RegularPaymentResponseDTO regularPaymentResponseDTO = new RegularPaymentResponseDTO();
-    try {
-      paymentService.billingKeySave(regularPaymentRequestDTO);
-    } catch (Exception e) {
-      //환불 적용
-      regularPaymentResponseDTO.setMessage("결제에 실패하셨습니다");
-      return ResponseEntity.status(400).body(regularPaymentResponseDTO);
-    }
+    paymentService.billingKeySave(regularPaymentRequestDTO);
     regularPaymentResponseDTO.setMessage("결제에 성공하셨습니다");
     regularPaymentResponseDTO.setNextBillingDate(regularPaymentRequestDTO.getNextBillingDate());
     return ResponseEntity.status(201).body(regularPaymentResponseDTO);

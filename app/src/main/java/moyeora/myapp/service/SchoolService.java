@@ -14,7 +14,7 @@ public interface SchoolService {
 
   public List<String> findWeek();
 
-  public List<School> findHotSchool(int category);
+  public List<School> findHotSchool(int userNo);
 
   void add(School school,int userNo,int schoolUserNo);
 
