@@ -3,24 +3,19 @@ body {
     margin: 0 auto;
 }
 
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 .connect {
     display: none;
 }
 
-#main-content {
-    max-width: 940px;
-    padding: 2em 3em;
-    margin: 0 auto;
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-}
-
 .chat-title {
     background-color: #4CAF50;
-    width: 55%;
+    width: 100%;
     color: white;
     padding: 10px 20px;
     font-size: 18px;
@@ -31,24 +26,10 @@ body {
 }
 
 /* Center-align conversation-container */
-.conversation-container {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  margin: 0 auto;
-  width: 70%; /* Adjust width as needed */
 
-}
-
-/* Adjust width if needed */
-.conversation-group {
-  width: 80%; /* or any other width you prefer */
-}
 
 #conversation {
-    max-width: 500px;
     max-height: 500px;
-    padding: 2em 3em;
     background-color: #fff;
     border: 1px solid #e5e5e5;
     -webkit-border-radius: 5px;
@@ -57,56 +38,89 @@ body {
     overflow: auto;
 }
 
-/* Center-align form-container */
-.form-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px; /* Add some margin for spacing */
+.conversation-container .chat-wrap {
+    display: flex;
+    align-items: flex-start;
+    padding: 15px;
 }
 
-/* Adjust width if needed */
-.form-inline {
+.conversation-container .chat-wrap .contents-wrap {
+    width: calc(100% - 100px);
 }
 
-.message-container {
-    border-radius: 10px;
-    padding: 10px;
-    /*display: inline-block;*/
-    /*min-width: 70%;*/
-    max-width: 100%;
-    margin-bottom: 10px;
-    max-width: 100%;
+.conversation-container .chat-wrap .message-wrap {
+    display: flex;
+    align-items: flex-start;
 }
 
-.received-message {
-    background-color: #fff;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-    text-align: justify;
-    text-align-last: left;
+.conversation-container .chat-wrap .profile-wrap {
+    position: relative;
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #eee;
 }
 
-.sent-message {
-    background-color: #DCF8C6;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
-    text-align: justify;
-    text-align-last: right;
-}
-
-.message-text {
+.conversation-container .chat-wrap .message-text {
+    position: relative;
     display: inline-block;
-    font-size: 14px;
-    line-height: 1.5;
-    color: #333;
+    max-width: calc(100% - 150px);
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 10px;
 }
 
-.username {
-  margin-bottom: 5px;
+.conversation-container .chat-wrap .message-text::before {
+    position: absolute;
+    display: block;
+    top: 0;
+    font-size: 1.5rem;
 }
 
-.sender {
-  top: 0;
-  right: 0;
-  text-align-last: right;
+.conversation-container .chat-wrap .message-text::before {
+    position: absolute;
+    display: block;
+    top: 0;
+    font-size: 1.5rem;
+}
+
+.receiver-wrap .message-text{
+    margin-left: 20px;
+    background-color: #cbbca7;
+}
+
+.receiver-wrap .message-text::before{
+   left: -11px;
+   content: "◀";
+   color: #cbbca7;
+}
+
+.sender-wrap {
+    flex-direction: row-reverse;
+}
+
+.sender-wrap .message-text {
+     margin-right: 20px;
+     background-color: #DCF8C6;
+}
+
+.sender-wrap .message-text::before {
+     right: -11px;
+     content: "▶";
+     color: #DCF8C6;
+}
+
+.origin {
+    align-self: flex-end;
+}
+
+.sender-wrap .origin {
+    margin-right: 8px;
+}
+
+.receiver-wrap .origin {
+    margin-left: 8px;
 }
 
 .receiver {
@@ -118,9 +132,23 @@ body {
   color: #999;
 }
 
-.form-container {
-  display: flex;
-  justify-content: center;
+.chat-input-wrap {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.label-file {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    cursor: pointer;
+    border: 1px solid #cbbca7;;
+    border-radius: 20px;
+}
+
+.label-file:hover {
+    background-color: #cbbca7;
 }
 
 /* 입력 필드 스타일 */

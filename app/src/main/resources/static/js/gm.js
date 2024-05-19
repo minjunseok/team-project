@@ -110,40 +110,93 @@
       if(gm.sender.no == sender.no) {
         if(gm.message != null && gm.message.length > 0) {
           $("#conversation").append(
-          "<div class='username sender'>" + sender.nickname + "</div>" +
-          "<div class = 'message-container sent-message'><div class = 'message-text'>" + gm.message +
-          "</div></div>" +
-          "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>"
+          "<div class='chat-wrap sender-wrap'>" +
+         // "<div class='username sender'>" + sender.nickname + "</div>" +
+          "<div class = 'message-text'>" + gm.message +
+          "</div>" +
+          "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>" +
+          "</div>"
           );
         }
         if(gm.photo != null && gm.photo.length > 0) {
           let filePath = (sender.photo.length > 0) ? gmFileCdnDomain + "user/" + sender.photo + fileSize_40 : "/img/user-icons-default.png";
           $("#conversation").append(
-          "<div class='username sender'>" + sender.nickname + "</div>" +
+          "<div class='chat-wrap sender-wrap'>" +
+         // "<div class='username sender'>" + sender.nickname + "</div>" +
           "<div class = 'message-container sent-message'><div class = 'message-text'>" +
           "<a href=" + gmFilePath + gm.photo + ">" +
           "<img src=" + gmFileCdnDomain + gm.photo + fileSize_40 + "></a>" +
           "</div></div>" +
-          "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>"
+          "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>" +
+          "</div>"
           );
         }
       } else {
-        if(gm.message != null && gm.message.length > 0) {
+       /* if(gm.message != null && gm.message.length > 0) {
           $("#conversation").append(
           "<div class='username receiver'>" + gm.sender.nickname + "</div>" +
-          "<div class = 'message-container received-message'><div class = 'message-text'>" + gm.message +
-          "</div></div>" +
+          "<div class = 'message-text'>" + gm.message +
+          "</div>" +
           "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>"
           );
         }
         if(gm.photo != null && gm.photo.length > 0) {
           $("#conversation").append(
           "<div class='username receiver'>" + gm.sender.nickname + "</div>" +
-          "<div class = 'message-container received-message'><div class = 'message-text'>" +
+          "<div class = 'message-text'>" +
           "<a href=" + gmFilePath + gm.photo + ">" +
           "<img src=" + gmFileCdnDomain + gm.photo + fileSize_40 + "></a>" +
-          "</div></div>" +
+          "</div>" +
           "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>"
+          );
+        }*/
+
+        let uProfileImg = "<img class='uPhotoItem profile-wrap' src=" + userFileCdnDomain + gm.sender.photo + fileSize_40 + " onerror=profileImgError(this)>";
+        if(gm.message != null && gm.message.length > 0) {
+          $("#conversation").append(
+          "<div class='chat-wrap receiver-wrap'>" +
+              "<div class='profile-wrap'>" +
+                  "<a class='uProfileLink'>" +
+                      "<div class='uPhoto'>" +
+                          "<div class='uPhotoInner'>" +
+                            "<span class='uPhotoItem'>" + uProfileImg + "</span>" +
+                          "</div>" +
+                      "</div>" +
+                  "</a>" +
+              "</div>" +
+              "<div class='contents-wrap'>" +
+                  "<div class='username receiver'>" + gm.sender.nickname + "</div>" +
+                  "<div class='message-wrap'>" +
+                      "<div class = 'message-text'>" + gm.message + "</div>" +
+                      "<div class='origin'>" + "<span class='originText'>" + h + ":" + m + "</span>" + "</div>" +
+                  "</div>" +
+              "</div>" +
+          "</div>"
+          );
+        }
+        if(gm.photo != null && gm.photo.length > 0) {
+          $("#conversation").append(
+          "<div class='chat-wrap receiver-wrap'>" +
+              "<div class='profile-wrap'>" +
+                  "<a class='uProfileLink'>" +
+                      "<div class='uPhoto'>" +
+                          "<div class='uPhotoInner'>" +
+                            "<span class='uPhotoItem'>" + uProfileImg + "</span>" +
+                          "</div>" +
+                      "</div>" +
+                  "</a>" +
+              "</div>" +
+              "<div class='contents-wrap'>" +
+                  "<div class='username receiver'>" + gm.sender.nickname + "</div>" +
+                  "<div class='message-wrap'>" +
+                      "<div class = 'message-text'>" +
+                          "<a href=" + gmFilePath + gm.photo + ">" +
+                          "<img src=" + gmFileCdnDomain + gm.photo + fileSize_40 + "></a>" +
+                      "</div>" +
+                      "<div class='origin'>" + "<span class='originText'>" + h + ":" + m + "</span>" + "</div>" +
+                  "</div>" +
+              "</div>" +
+          "</div>"
           );
         }
       }
@@ -160,54 +213,77 @@
           if(chatList[chat].sender.no == sender.no) {
             if(chatList[chat].message.length > 0) {
               $("#conversation").append(
-              "<div class='username sender'>" + chatList[chat].sender.nickname + "</div>" +
-              "<div class = 'message-container sent-message'><div class = 'message-text'>" + chatList[chat].message +
-              "</div></div>" +
-              "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>"
+              "<div class='chat-wrap sender-wrap'>" +
+             // "<div class='username sender'>" + chatList[chat].sender.nickname + "</div>" +
+              "<div class = 'message-text'>" + chatList[chat].message +
+              "</div>" +
+              "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>" +
+              "</div>"
               );
             }
             if(chatList[chat].photo.length > 0) {
               $("#conversation").append(
-              "<div class='username sender'>" + chatList[chat].sender.nickname + "</div>" +
-              "<div class = 'message-container sent-message'><div class = 'message-text'>" +
-              "<a href=" + gmFilePath + chatList[chat].photo + ">" +
-              "<img src=" + gmFileCdnDomain + chatList[chat].photo + fileSize_40 + "></a>" +
-              "</div></div>" +
-              "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>"
+              "<div class='chat-wrap sender-wrap'>" +
+             // "<div class='username sender'>" + chatList[chat].sender.nickname + "</div>" +
+              "<div class = 'message-text'>" +
+
+
+              "<img src=" + gmFileCdnDomain + chatList[chat].photo + fileSize_40 + " data-link='" + gmFilePath + chatList[chat].photo  + "' onclick='clickFile(this)'>" +
+
+             /* "<a href=" + gmFilePath + chatList[chat].photo + ">" +
+              "<img src=" + gmFileCdnDomain + chatList[chat].photo + fileSize_40 + "></a>" +*/
+              "</div>" +
+              "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>" +
+              "</div>"
               );
             }
           } else {
-            let uProfileImg = "<img class='uPhotoItem' src=" + userFileCdnDomain + chatList[chat].sender.photo + fileSize_40 + " onerror=profileImgError(this)>";
+            let uProfileImg = "<img class='uPhotoItem profile-wrap' src=" + userFileCdnDomain + chatList[chat].sender.photo + fileSize_40 + " onerror=profileImgError(this)>";
             if(chatList[chat].message.length > 0) {
               $("#conversation").append(
-              "<a class='uProfileLink'>" +
-                  "<div class='uPhoto'>" +
-                      "<div class='uPhotoInner'>" +
-                        "<span class='uPhotoItem'>" + uProfileImg + "</span>" +
+              "<div class='chat-wrap receiver-wrap'>" +
+                  "<div class='profile-wrap'>" +
+                      "<a class='uProfileLink'>" +
+                          "<div class='uPhoto'>" +
+                              "<div class='uPhotoInner'>" +
+                                "<span class='uPhotoItem'>" + uProfileImg + "</span>" +
+                              "</div>" +
+                          "</div>" +
+                      "</a>" +
+                  "</div>" +
+                  "<div class='contents-wrap'>" +
+                      "<div class='username receiver'>" + chatList[chat].sender.nickname + "</div>" +
+                      "<div class='message-wrap'>" +
+                          "<div class = 'message-text'>" + chatList[chat].message + "</div>" +
+                          "<div class='origin'>" + "<span class='originText'>" + h + ":" + m + "</span>" + "</div>" +
                       "</div>" +
                   "</div>" +
-              "</a>" +
-              "<div class='username receiver'>" + chatList[chat].sender.nickname + "</div>" +
-              "<div class = 'message-container received-message'><div class = 'message-text'>" + chatList[chat].message +
-              "</div></div>" +
-              "<div class='origin'>" + "<span class='originText'>" + h + ":" + m + "</span>" + "</div>"
+              "</div>"
               );
             }
             if(chatList[chat].photo.length > 0) {
               $("#conversation").append(
-              "<a class='uProfileLink'>" +
-                  "<div class='uPhoto'>" +
-                      "<div class='uPhotoInner'>" +
-                        "<span class='uPhotoItem'>" + uProfileImg + "</span>" +
+              "<div class='chat-wrap receiver-wrap'>" +
+                  "<div class='profile-wrap'>" +
+                      "<a class='uProfileLink'>" +
+                          "<div class='uPhoto'>" +
+                              "<div class='uPhotoInner'>" +
+                                "<span class='uPhotoItem'>" + uProfileImg + "</span>" +
+                              "</div>" +
+                          "</div>" +
+                      "</a>" +
+                  "</div>" +
+                  "<div class='contents-wrap'>" +
+                      "<div class='username receiver'>" + chatList[chat].sender.nickname + "</div>" +
+                      "<div class='message-wrap'>" +
+                          "<div class = 'message-text'>" +
+                              "<a href=" + gmFilePath + chatList[chat].photo + ">" +
+                              "<img src=" + gmFileCdnDomain + chatList[chat].photo + fileSize_40 + "></a>" +
+                          "</div>" +
+                          "<div class='origin'>" + "<span class='originText'>" + h + ":" + m + "</span>" + "</div>" +
                       "</div>" +
                   "</div>" +
-              "</a>" +
-              "<div class='username receiver'>" + chatList[chat].sender.nickname + "</div>" +
-              "<div class = 'message-container received-message'><div class = 'message-text'>" +
-              "<a href=" + gmFilePath + chatList[chat].photo + ">" +
-              "<img src=" + gmFileCdnDomain + chatList[chat].photo + fileSize_40 + "></a>" +
-              "</div></div>" +
-              "<div class='origin'>" + "<span class='originText'>" + h + ":" + m + "</span>" + "</div>"
+              "</div>"
               );
             }
           }
@@ -231,6 +307,11 @@
 
   function profileImgError(obj) {
     $(obj).attr("src", "/img/모여라.png");
+  }
+
+  function clickFile(obj) {
+  console.log(obj)
+    window.open(obj.dataset.link, 'file_view', 'width=700px,height=800px,scrollbars=yes');
   }
 
   $(function () {

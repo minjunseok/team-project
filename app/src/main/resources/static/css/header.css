@@ -1,7 +1,16 @@
+
+
+
 .header {
     background-color: #ffffff;
     padding: 10px 20px;
 }
+
+.home-wrap .header {
+    background-color: transparent;
+    color: #ffffff;
+}
+
 
 .headerInner {
     position: relative;
@@ -42,6 +51,10 @@
 
 .mainMenu a:hover {
     color: #0066ff;
+}
+
+.home-wrap .header .mainMenu a {
+    color: #ffffff;
 }
 
 .headerWidgetArea > img {
@@ -151,9 +164,8 @@
     margin: 0;
 }
 
-.toggleContent li {
+.notificationItem {
     border-top: 1px solid #ccc;
-    /*border-radius: 5px;*/
 }
 
 .toggleContent ul li a {
@@ -184,6 +196,10 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: none;
     z-index: 1000;
+    width: 300px; /* Set a specific width */
+}
+
+#uChat {
     width: 300px; /* Set a specific width */
 }
 
@@ -242,6 +258,10 @@
 
 .notificationItem.unread {
     background-color: yellow;
+}
+
+.notificationItem.empty {
+    text-align: center;
 }
 
 /*.notificationLink {
@@ -382,4 +402,26 @@
 
 svg {
     pointer-events: none;
+}
+
+.home-wrap {
+    background: url(../img/bg1.jpg) no-repeat center fixed;
+    background-size: cover;
+    height: 100vh;
+    position : relative;
+
+}
+
+footer {
+    background-color:gray;
+    color:white;
+    padding:10px;
+    text-align:center;
+}
+
+.home-wrap footer {
+    background-color: transparent;
+    position : absolute;
+    bottom : 0;
+    text-align:center;
 }

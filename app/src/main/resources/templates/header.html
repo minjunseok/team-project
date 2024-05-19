@@ -66,14 +66,20 @@
                             </div>
                         </div>
                     </header>
-                    <div class="uChatWrap">
-                        <div class="uChatGroup">
-                            <span class="uChatWrap">내 채팅</span>
-                            <ul id="dmList" class="uChatList"></ul>
+                    <div class="notificationWrap">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" role="button" id="chatTabDm" data-type="dm" onclick="onclickChatTab(this)">내 채팅</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" role="button" id="chatTabGm" data-type="gm" onclick="onclickChatTab(this)">스쿨 채팅</a>
+                            </li>
+                        </ul>
+                        <div id="dmListWrap" class="uChatGroup">
+                            <ul id="dmList" class="notificationList"></ul>
                         </div>
-                        <div class="uChatGroup">
-                            <span>스쿨 채팅</span>
-                            <ul id="gmList" class="uChatList"></ul>
+                        <div id="gmListWrap" class="" style="display:none;">
+                            <ul id="gmList" class="notificationList"></ul>
                         </div>
                     </div>
                 </article>
@@ -85,6 +91,7 @@
                                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                     </svg>
                 </span>
+
                 <article id="uMenu" class="toggleContent">
                     <div class="list-group list-group-flush">
                         <a data-th-href="@{/auth/logout}" class="list-group-item list-group-item-action">로그아웃</a>
