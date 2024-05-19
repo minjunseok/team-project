@@ -136,6 +136,7 @@ body {
     display: flex;
     align-items: flex-start;
     margin-top: 10px;
+    position: relative;
 }
 
 .label-file {
@@ -184,6 +185,13 @@ body {
 /* Optionally, style the icon */
 .custom-file-upload i {
   margin-right: 5px;
+}
+
+.file-count-wrap {
+    width: 50px;
+    margin-left: 5px;
+    margin-top: 6px;
+    bottom: 0;
 }
 
 /* 전송 버튼 스타일 */
