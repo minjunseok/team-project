@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html
 	lang="en"
-	xmlns:th="http://www.w3.org/1999/xhtml">
+	xmlns:th="http://www.w3.org/1999/xhtml"
+>
 	<head>
 		<meta charset="UTF-8" />
 		<meta
 			name="viewport"
-			content="width=device-width, initial-scale=1.0"/>
+			content="width=device-width, initial-scale=1.0"
+		/>
 
 		<!--    민준 로컬 작업용 부트스트랩,서머노트 import-->
 		<link
@@ -143,21 +145,14 @@
 					role="button"
 					>공지 사항</a
 				>
-
-
-                <div
-                        class="md_container"
-                        th:if="${loginUser != null and accessLevel != null}"
-                >
 				<a
 					class="btn btn-primary"
 					target="_blank"
+					th:if="${loginUser != null and accessLevel != null}"
 					data-th-href="@{/gm(schoolNo=${schoolNo},sender=${sender.no})}"
 					role="button"
 					>채팅</a
 				>
-                    </div>
-
 
 				<a
 					class="btn btn-primary"
@@ -176,20 +171,16 @@
 			</div>
 			<div class="container">
 				<!-- 왼쪽 고정 요소 -->
+
 				<div class="left-container">
 					<div class="md-img">
 						<figure class="figure">
 							<img
-								src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/1dcdc4b5-7645-4143-82f6-0300c5927112?type=f&w=400&h=400"
+								th:src="${schoolPhotoUrl + '?type=f&w=300&h=300'}"
 								class="figure-img img-fluid rounded"
 								alt=""
 							/>
-							<figcaption
-								class="figure-caption"
-								style="text-align: center"
-							>
-								스쿨 이름 출력 되는 곳!
-							</figcaption>
+							<figcaption class="figure-caption">[[${schoolName}]]</figcaption>
 						</figure>
 
 						<div
@@ -238,8 +229,12 @@
 							>
 								<div class="col">
 									<img
+										th:if="${schoolUser.writer.photo != null}"
 										th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + ${schoolUser.writer.photo}"
-										style="width: 50px; height: 50px"
+									/>
+									<img
+										th:unless="${schoolUser.writer.photo != null}"
+										th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/resources/static/img/default-photo.jpeg'"
 									/>
 								</div>
 								<div class="col">
@@ -253,41 +248,42 @@
 					</div>
 				</div>
 
-<!--                <div class="center-container">-->
-<!--                    &lt;!&ndash; 검색창 &ndash;&gt;-->
-<!--                    <div class="searchBar">-->
-<!--                        <form id="postSearchForm" method="get">-->
-<!--                            <div class="searchBarContainer">-->
-<!--                                <select name="filter" style="background-color: #cbbca765">-->
-<!--                                    <option value="0">내용</option>-->
-<!--                                    <option value="1">작성자</option>-->
-<!--                                </select>-->
-<!--                                <input class="inputKeyword" name="keyword" type="text" placeholder="검색어를 입력하세요." />-->
-<!--                                <input id="schoolNo" name="schoolNo" type="hidden" value="${schoolNo}" />-->
-<!--                                &lt;!&ndash; schoolNo를 Integer로 선언 &ndash;&gt;-->
-<!--                                &lt;!&ndash; 검색 아이콘 &ndash;&gt;-->
-<!--                                <button type="submit" id="postSearchButton" class="bi bi-search"></button>-->
-<!--                            </div>-->
-<!--                        </form>-->
-<!--                    </div>-->
-<!--                </div>-->
 				<div class="center-container">
 					<!-- 검색창 -->
-                    <div class="searchBar">
-                        <form id="searchForm" method="get">
-                            <div class="searchBarContainer">
-                                <select name="filter" style="background-color: #cbbca765">
-                                    <option value="0">내용</option>
-                                    <option value="1">작성자</option>
-                                </select>
-                                <input class="inputKeyword" name="keyword" type="text" placeholder="검색어를 입력하세요."/>
-                                <input id="schoolNo" name="schoolNo" type="hidden" th:value="${schoolNo}"/>
-                                <!-- schoolNo를 Integer로 선언 -->
-                                <!-- 검색 아이콘 -->
-                                <i id="postSearchIcon" class="bi bi-search"></i>
-                            </div>
-                        </form>
-                    </div>
+					<div class="searchBar">
+						<form
+							action="/search"
+							method="post"
+						>
+							<div class="searchBarContainer">
+								<select
+									name="filter"
+									style="background-color: #cbbca765"
+								>
+									<option value="0">내용</option>
+									<option value="1">작성자</option>
+								</select>
+								<input
+									class="inputKeyword"
+									name="keyword"
+									type="text"
+									placeholder="검색어를 입력하세요."
+								/>
+								<input
+									id="schoolNo"
+									name="schoolNo"
+									type="hidden"
+									th:value="${schoolNo}"
+								/><!-- schoolNo를 Integer로 선언 -->
+								<!-- 검색 아이콘 -->
+								<i
+									id="postSearchForm"
+									class="bi bi-search"
+								>
+								</i>
+							</div>
+						</form>
+					</div>
 
 					<div>고정 게시글</div>
 
@@ -301,7 +297,7 @@
 						<div
 							data-th-each="post : ${fixlist}"
 							data-th-object="${post}"
-							data-no="*{no}"
+							data-th-data-no="*{no}"
 							class="table"
 						>
 							<div
@@ -384,14 +380,6 @@
 									<div class="list-ca">
 										<span data-th-text="${#dates.format(post.createdAt,'yyyy-MM-dd')}">작성일</span>
 									</div>
-
-
-                                    <div
-                                            th:if="${loginUser != null and accessLevel != null and accessLevel != 5}"
-                                    >
-                                        <!-- <div id="post_setting" onclick="postForm()"> -->
-
-
 									<div
 										class="dropdown"
 										data-th-data-no="${no}"
@@ -442,17 +430,8 @@
 												data-no="100"
 												>게시글 고정</a
 											>
-                                            <a
-                                                    class="dropdown-item"
-                                                    href="#"
-                                                    data-action="5"
-                                                    data-th-data-no="${no}"
-                                                    data-no="100"
-                                            >댓글 보기</a
-                                            >
 										</div>
 									</div>
-                                    </div>
 								</div>
 							</div>
 							<div
@@ -1263,12 +1242,12 @@
 
 								$('#confirmationModal').modal('hide');
 
-                                // 해당 테이블에 글이 이미 있는지 확인
-                                if ($('#fixed-post .table').length > 0) {  // 수정된 부분: .table 클래스가 있는지 검사
-                                    // 이미 글이 있는 경우 경고 메시지 표시
-                                    alert('이미 고정글이 등록되어 있습니다. 한 게시글만 등록할 수 있습니다.');
-                                    return; // 동작 중지
-                                }
+								// 해당 테이블에 글이 이미 있는지 확인
+								if ($('#fixed-post').length > 0) {
+									// 이미 글이 있는 경우 경고 메시지 표시
+									alert('이미 고정글이 등록되어 있습니다. 한 게시글만 등록할 수 있습니다.');
+									return; // 동작 중지
+								}
 
 								$.ajax({
 									url: 'fix',
@@ -1337,36 +1316,28 @@
 
 						<!--댓글 표시 모달-->
 						<script>
-
-//                            let currentModal = null;
-
-
-                            const postModal = new bootstrap.Modal('#postModal', {
+							const postModal = new bootstrap.Modal('#postModal', {
 								keyboard: false,
 							});
-//							// 클릭된 게시글 데이터의 상세 모달 표시 이벤트 핸들러
-//                            // 게시글 클릭 이벤트
-//                            $('#searchResult').on('click', '.table', function (event) {
-//                                // 드롭다운 버튼 클릭 이벤트가 발생하지 않았을 때만 실행
-//                                if ($(event.target).closest('.dropdown-toggle').length > 0) {
-//                                    return;
-//                                }
-//                                // 다른 모달이 열려 있으면 실행하지 않음
-//                                if (currentModal !== null) {
-//                                    return;
-//                                }
-//
-//
-//                                let no = $(this).data('no');
-//
-//                                console.log("게시글번호를 가져왔니?" + no);
-//                                console.log("스쿨no를 가져왔니?" + schoolNo);
-//
-//                                selectedPost.no = no;
-//                                setPostNo(no);
-//
-//                                showPostModal(no, schoolNo);
-//                            });
+							// 클릭된 게시글 데이터의 상세 모달 표시 이벤트 핸들러
+							$('#searchResult').on('click', 'tr', function (event) {
+								if ($(event.target).closest('td').find('input[type="checkbox"]').length > 0) {
+									// 체크박스가 있는 <th>를 클릭한 경우 댓글 상세조회 모달을 출력하지 않음
+									return;
+								}
+
+								if ($(event.target).closest('td').find('.dropdown-toggle').length > 0) {
+									return;
+								}
+
+								let schoolNo = document.querySelector('#searchResult > table').getAttribute('data-schoolno');
+								let no = $(this).data('no');
+
+								selectedPost.no = no;
+								setPostNo(no);
+
+								showPostModal(no, schoolNo);
+							});
 
 							// 클릭된 게시글 데이터를 모달로 표시하는 함수
 							function showPostModal(no, schoolNo) {
@@ -1383,13 +1354,10 @@
 
 										// 모달 창 띄우기
 										postModal.show();
-                                    currentModal = postModal;
 									})
 									.fail(function () {
 										console.log('실패!');
 									});
-
-
 								// 2) JSON으로 받은 객체를 가지고 모달 창을 띄워서 입력 폼에 값을 채운다.
 
 								function initModal(data) {
@@ -1482,19 +1450,11 @@
 									});
 								}
 							}
-                            // 모달이 닫힐 때 currentModal을 null로 설정
-                            $('#postModal').on('hidden.bs.modal', function () {
-                                currentModal = null;
-                            });
-
-
-                            $('#postModal').on('shown.bs.modal', function () {
+							$('#postModal').on('shown.bs.modal', function () {
 								// 모달창이 열릴 때마다 내부 컨텐츠에 맞게 모달의 너비를 조절합니다.
 								$(this).find('.modal-dialog').removeClass('modal-lg modal-xl').addClass('modal-dialog-centered');
 								$(this).find('.modal-content').css('height', 'auto');
 							});
-
-
 						</script>
 
 						<script>
@@ -1653,117 +1613,103 @@
 
 						<!--드롭다운 수정-->
 						<script>
-                            $(document).ready(function () {
-                                // 드롭다운 버튼을 클릭했을 때
-                                $(document).on('click', '.dropdown-button, .comment-dropdown-toggle', function (event) {
-                                    event.stopPropagation(); // 이벤트 전파 중지
+							$(document).ready(function () {
+								// 드롭다운 버튼을 클릭했을 때
+								$(document).on('click', '.dropdown-button, .comment-dropdown-toggle', function (event) {
+									event.stopPropagation(); // 이벤트 전파 중지
 
-                                    selectedPostUserNo.postUserNo = $(this)
-                                        .closest('.table')
-                                        .find('.hidden-data')
-                                        .attr('data-user-no');
-                                    console.log('@@@1111@@@@' + selectedPostUserNo.postUserNo);
-                                    var no = $(this).closest('.table').data('no');
-                                    let content = $(this).closest('.table').find('.list-content').html();
+									selectedPostUserNo.postUserNo = $(this)
+										.closest('#searchResult')
+										.find('.hidden-data')
+										.attr('data-user-no');
+									console.log('@@@1111@@@@' + selectedPostUserNo.postUserNo);
+									var no = $(this).closest('.table').data('no');
+									let content = $(this).closest('.table').find('.school-post').html();
 
-                                    console.log('로그인 유저 번호 ' + loginUserNo);
+									console.log('로그인 유저 번호 ' + loginUserNo);
 
-                                    selectedPost.no = no; // 해당 게시글의 번호 가져오기
-                                    selectedPostContent.postContent = content;
-                                    console.log('글쓴이 유저 번호 ' + no);
-                                    console.log('글쓴이 유저 번호 ' + selectedPostUserNo.postUserNo);
-                                    console.log('작업에 필요한 해당 데이터 ' + selectedPostContent.postContent);
+									selectedPost.no = no; // 해당 게시글의 번호 가져오기
+									selectedPostContent.postContent = content;
+									console.log('글쓴이 유저 번호 ' + no);
+									console.log('글쓴이 유저 번호 ' + selectedPostUserNo.postUserNo);
+									console.log('글쓴이 유저 번호 ' + selectedPostUserNo.postUserNo);
+									console.log('작업에 필요한 해당 데이터 ' + selectedPostContent.postContent);
 
-                                    var dropdown = $(this).next('.dropdown-menu'); // 클릭된 버튼 다음에 오는 드롭다운 메뉴 선택
+									var dropdown = $(this).next('.dropdown-menu'); // 클릭된 버튼 다음에 오는 드롭다운 메뉴 선택
 
-                                    // 현재 드롭다운 메뉴가 열려있는지 확인하여 토글링
-                                    if (dropdown.hasClass('show')) {
-                                        dropdown.removeClass('show'); // 열려있으면 닫기
-                                    } else {
-                                        $('.dropdown-menu').removeClass('show'); // 다른 드롭다운 메뉴는 닫기
-                                        dropdown.addClass('show'); // 클릭된 드롭다운 메뉴 열기
-                                    }
-                                });
+									// 현재 드롭다운 메뉴가 열려있는지 확인하여 토글링
+									if (dropdown.hasClass('show')) {
+										dropdown.removeClass('show'); // 열려있으면 닫기
+									} else {
+										$('.dropdown-menu').removeClass('show'); // 다른 드롭다운 메뉴는 닫기
+										dropdown.addClass('show'); // 클릭된 드롭다운 메뉴 열기
+									}
 
-                                // 문서의 클릭 이벤트를 감지하여 드롭다운 닫기
-                                $(document).on('click', function (event) {
-                                    $('.dropdown-menu').removeClass('show'); // 모든 드롭다운 메뉴 닫기
-                                });
+									// 클릭된 드롭다운 버튼의 게시글 번호 저장
+									// dropdown.data('postNo', selectedPost.no);
+								});
 
-                                $(document).on('click', '.dropdown-item', function (event) {
-                                    event.stopPropagation(); // 이벤트 전파 중지
-                                    event.preventDefault(); // 링크 기본 동작 방지
+								// 문서의 클릭 이벤트를 감지하여 드롭다운 닫기
+								$(document).on('click', function (event) {
+									$('.dropdown-menu').removeClass('show'); // 모든 드롭다운 메뉴 닫기
+								});
 
-                                    var actionIndex = $(this).data('action'); // 해당 항목의 작업 인덱스 가져오기
+								// 각 드롭다운 항목에 대한 클릭 이벤트 설정
+								$(document).on('click', '.dropdown-item', function (event) {
+									event.stopPropagation(); // 이벤트 전파 중지
+									event.preventDefault(); // 링크 기본 동작 방지
 
-                                    // postModal 닫기
-                                    $('#postModal').modal('hide');
+									var actionIndex = $(this).data('action'); // 해당 항목의 작업 인덱스 가져오기
 
-                                    switch (actionIndex) {
-                                        case 1:
-                                            if (loginUserNo === selectedPostUserNo.postUserNo) {
-                                                postNo = selectedPost.no;
-                                                console.log('case 1 게시글 삭제할 게시글 번호 =' + postNo);
-                                                setSchoolNo(schoolNo);
-                                                setPostNo(postNo);
-                                                deletePost(postNo, schoolNo);
-                                                break;
-                                            } else {
-                                                alert('삭제 권한이 없습니다.');
-                                                break;
-                                            }
+									switch (actionIndex) {
+										case 1:
+											if (loginUserNo === selectedPostUserNo.postUserNo) {
+												postNo = selectedPost.no;
+												console.log('case 1 게시글 삭제할 게시글 번호 =' + postNo);
+												setSchoolNo(schoolNo);
+												setPostNo(postNo);
+												deletePost(postNo, schoolNo);
+												break;
+											} else {
+												alert('삭제 권한이 없습니다.');
+												break;
+											}
 
-                                        case 2:
-                                            if (loginUserNo === selectedPostUserNo.postUserNo) {
-                                                postNo = selectedPost.no;
+										case 2:
+											if (loginUserNo === selectedPostUserNo.postUserNo) {
+												postNo = selectedPost.no;
 
-                                                let postContent = selectedPostContent.postContent;
+												let postContent = selectedPostContent.postContent;
 
+												setPostNo(postNo);
+												setSchoolNo(schoolNo);
+												setPostContent(postContent);
 
-                                                console.log("@@@@@@@@ postNo =" + postNo);
-                                                console.log("@@@@@@@@ schoolNo =" + schoolNo);
-                                                console.log("@@@@@@@@ Content =" + postContent);
+												postMd(postNo, schoolNo, postContent);
+												break;
+											} else {
+												alert('수정 권한이 없습니다.');
+												break;
+											}
+											break;
+										case 3:
+											copyUrlToClipboard();
 
-                                                setPostNo(postNo);
-                                                setSchoolNo(schoolNo);
-                                                setPostContent(postContent);
+											alert('URL복사가 들어갈 게시글 번호  = ' + selectedPost.no);
 
+											break;
+										case 4:
+											postNo = selectedPost.no;
+											setPostNo(postNo);
+											fixPost(postNo);
+											break;
+										default:
+											console.log('Unknown action');
+									}
 
-                                                postMd(postNo, schoolNo, postContent);
-                                                break;
-                                            } else {
-                                                alert('수정 권한이 없습니다.');
-                                                break;
-                                            }
-                                            break;
-                                        case 3:
-                                            copyUrlToClipboard();
-
-                                            alert('URL복사가 들어갈 게시글 번호  = ' + selectedPost.no);
-
-                                            break;
-                                        case 4:
-                                            postNo = selectedPost.no;
-                                            setPostNo(postNo);
-                                            fixPost(postNo);
-                                            break;
-                                        case 5:
-                                            no = selectedPost.no;
-
-                                            console.log("가져온 게시글 번호 = " + no);
-                                            console.log("가져온 게시글 번호 = " + schoolNo);
-
-                                            setPostNo(no);
-                                            setSchoolNo(schoolNo);
-                                            showPostModal(no, schoolNo)
-                                            break;
-                                        default:
-                                            console.log('Unknown action');
-                                    }
-
-                                    // 드롭다운 닫기
-                                    $(this).closest('.dropdown').removeClass('show');
-                                });
+									// 드롭다운 닫기
+									$(this).closest('.dropdown').removeClass('show');
+								});
 							});
 
 							function fixPost(postNo) {
@@ -1831,132 +1777,33 @@
 							});
 						</script>
 
-
-<!--스쿨 내 게시글 검색-->
-                        <script>
-                            $(document).ready(function () {
-                                $('#postSearchIcon').click(function () {
-                                    var content = $("input[name='keyword']").val();
-                                    var filter = $("select[name='filter']").val();
-
-                                    $.ajax({
-                                        type: 'GET',
-                                        url: '../test/search', // RestController로 요청을 보냅니다.
-                                        data: {
-                                            schoolNo: schoolNo,
-                                            keyword: content,
-                                            filter: filter,
-                                        },
-                                        success: function (response) {
-                                            // 받은 검색 결과로 페이지 업데이트
-                                            updatePage(response);
-                                        },
-                                        error: function (xhr, status, error) {
-                                            alert('검색 요청에 실패했습니다.');
-                                            console.error('검색 요청 실패:', error);
-                                        },
-                                    });
-                                });
-
-                                $('#postSearchForm').submit(function (event) {
-                                    event.preventDefault();
-                                    var content = $("input[name='keyword']").val();
-                                    var filter = $("select[name='filter']").val();
-                                    console.log("현재 저장된 학교번호 = " + schoolNo);
-
-                                    $.ajax({
-                                        type: 'GET',
-                                        url: '../test/search', // RestController로 요청을 보냅니다.
-                                        data: {
-                                            schoolNo: schoolNo,
-                                            keyword: content,
-                                            filter: filter,
-                                        },
-                                        success: function (response) {
-                                            // 받은 검색 결과로 페이지 업데이트
-                                            updatePage(response);
-                                        },
-                                        error: function (xhr, status, error) {
-                                            alert('검색 요청에 실패했습니다.');
-                                            console.error('검색 요청 실패:', error);
-                                        },
-                                    });
-                                });
-                            });
-
-                            function updatePage(response) {
-                                // 검색 결과를 받아와서 페이지를 업데이트하는 로직을 작성합니다.
-                                $('#searchResult').html(response);
-                            }
-                        </script>
-<!--						&lt;!&ndash;스쿨 내 게시글 검색&ndash;&gt;-->
-<!--						<script>-->
-<!--                            $(document).ready(function () {-->
-<!--                                $('#postSearchForm').submit(function (event) {-->
-<!--                                    event.preventDefault();-->
-<!--                                    var content = $("input[name='keyword']").val();-->
-<!--                                    var filter = $("select[name='filter']").val();-->
-<!--                                    var schoolNo = $("input[name='schoolNo']").val();-->
-<!--                                    $.ajax({-->
-<!--                                        type: 'GET',-->
-<!--                                        url: '../search/post', // 검색을 처리하는 컨트롤러의 엔드포인트-->
-<!--                                        data: {-->
-<!--                                            schoolNo: schoolNo,-->
-<!--                                            keyword: content,-->
-<!--                                            filter: filter,-->
-<!--                                        },-->
-<!--                                        success: function (response) {-->
-<!--                                            displaySearchResults(response); // 검색 결과를 화면에 표시하는 함수 호출-->
-<!--                                        },-->
-<!--                                        error: function (xhr, status, error) {-->
-<!--                                            alert('검색 요청에 실패했습니다.');-->
-<!--                                            console.error('검색 요청 실패:', error);-->
-<!--                                        },-->
-<!--                                    });-->
-
-
-
-<!--								});$(document).ready(function() {-->
-<!--                                    $('#postSearchIcon').click(function() { // 검색 아이콘을 클릭할 때-->
-<!--                                        var content = $("input[name='keyword']").val();-->
-<!--                                        var filter = $("select[name='filter']").val();-->
-<!--                                        var schoolNo = $("input[name='schoolNo']").val();-->
-<!--                                        $.ajax({-->
-<!--                                            type: 'GET',-->
-<!--                                            url: '../search/post',-->
-<!--                                            data: {-->
-<!--                                                schoolNo: schoolNo,-->
-<!--                                                keyword: content,-->
-<!--                                                filter: filter,-->
-<!--                                            },-->
-<!--                                            success: function(response) {-->
-<!--                                                $('#searchResult').html(response);-->
-<!--                                            },-->
-<!--                                            error: function(xhr, status, error) {-->
-<!--                                                alert('해당 검색 결과가 없습니다.');-->
-<!--                                                console.error('검색 요청 실패:', error);-->
-<!--                                            },-->
-<!--                                        });-->
-<!--                                    });-->
-<!--                                });-->
-<!--							});-->
-
-<!--                            // 검색 결과를 화면에 표시하는 함수-->
-<!--                            function displaySearchResults(posts) {-->
-<!--                                // 검색 결과를 담을 HTML 문자열-->
-<!--                                var html = '';-->
-<!--                                // 각 포스트에 대해 반복하여 HTML 생성-->
-<!--                                $.each(posts, function(index, post) {-->
-<!--                                    html += '<div class="post">';-->
-<!--                                    html += '<h2>' + post.title + '</h2>';-->
-<!--                                    html += '<p>' + post.content + '</p>';-->
-<!--                                    html += '</div>';-->
-<!--                                });-->
-<!--                                // 검색 결과를 #searchResult 요소에 삽입-->
-<!--                                $('#searchResult').html(html);-->
-<!--                            }-->
-
-<!--                        </script>-->
+						<!--스쿨 내 게시글 검색-->
+						<script>
+							$(document).ready(function () {
+								$('#postSearchForm').submit(function (event) {
+									event.preventDefault();
+									var content = $("input[name='keyword']").val();
+									var filter = $("select[name='filter']").val();
+									var schoolNo = $("input[name='schoolNo']").val();
+									$.ajax({
+										type: 'GET',
+										url: 'search',
+										data: {
+											schoolNo: schoolNo,
+											keyword: content,
+											filter: filter,
+										},
+										success: function (response) {
+											$('#searchResult').html(response);
+										},
+										error: function (xhr, status, error) {
+											alert('해당 검색 결과가 없습니다.');
+											console.error('검색 요청 실패:', error);
+										},
+									});
+								});
+							});
+						</script>
 					</div>
 				</div>
 				<div class="right-container">채팅영역</div>
