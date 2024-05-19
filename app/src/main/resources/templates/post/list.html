@@ -2012,7 +2012,7 @@
 
 			</div>
 		</div>
-		<div id="sChatWrap" class="right-container">채팅영역</div>
+		<div id="sChatWrap" class="right-container"></div>
 	</div>
 </div>
 <div data-th-replace="/mypage/modal/profile :: profile-modal">새 글 작성</div>
@@ -2036,12 +2036,11 @@
 <script src="/js/profile.js"></script>
 <script th:inline="javascript">
 	var loginUser = [[${loginUser}]];
-	var sc = [[${school}]];
 
 	function sChatLoad() {
 	    $.ajax({
 		  type: "GET",
-		  url: "/gm?schoolNo=" + sc.no,
+		  url: "/gm?schoolNo=" + [[${school.no}]],
 		  data: {},
 		  success: function (result) {
 		    console.log("updateAll success");

@@ -1,18 +1,18 @@
-var user = loginUser;
+let userInfo = loginUser;
 console.log("header.js");
-console.log(user);
+console.log(userInfo);
 
 function connect() {
   stompClient.activate();
 }
 
 const stompClient = new StompJs.Client({
-  brokerURL: 'ws://175.45.194.120:80/ws'
+  brokerURL: 'ws://localhost:8080/ws'
 });
 
 stompClient.onConnect = (frame) => {
   console.log('Connected: ' + frame);
-  stompClient.subscribe('/sub/user/' + user.no, (alert) => {
+  stompClient.subscribe('/sub/userInfo/' + userInfo.no, (alert) => {
     setAlert(JSON.parse(alert.body));
   });
 };
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
 
-  // Close notification if user clicks outside
+  // Close notification if userInfo clicks outside
   window.addEventListener("click", function(event) {
    if (event.target !== notificationToggle && !notificationContent.contains(event.target)) {
        notificationContent.style.display = "none";
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function loadAlert() {
   $.ajax({
     type: "GET",
-    url: "/alert/list?no=" + user.no,
+    url: "/alert/list?no=" + userInfo.no,
     data: {},
     success: function (response) {
       let alerts = response;
@@ -110,7 +110,7 @@ function loadAlert() {
 function loadChatGm() {
   $.ajax({
     type: "GET",
-    url: "/gmListOnlyLast?no=" + user.no,
+    url: "/gmListOnlyLast?no=" + userInfo.no,
     data: {},
     success: function (result) {
       console.log("gmListOnlyLast success");
@@ -122,7 +122,7 @@ function loadChatGm() {
 
         $("#gmList").append(
         uChatItem +
-            "<a class='chatLink' onclick=chatLink('" + result[key].school.no + "'," + user.no + ");>" +
+            "<a class='chatLink' onclick=chatLink('" + result[key].school.no + "'," + userInfo.no + ");>" +
                 "<div class='notificationThumbnail'><div class='thumbnailInner'><span class='thumbnailItem'>" + thumbnailImg + "</span></div></div>" +
                 "<dl class='notificationInfoBox'>" +
                     "<dd class='notificationInfo'>" +
@@ -146,7 +146,7 @@ function loadChatGm() {
 function loadChatDm() {
   $.ajax({
     type: "GET",
-    url: "/dmListOnlyLast?no=" + user.no,
+    url: "/dmListOnlyLast?no=" + userInfo.no,
     data: {},
     success: function (result) {
       console.log("dmListOnlyLast success");
@@ -159,7 +159,7 @@ function loadChatDm() {
 
         $("#dmList").append(
         uChatItem +
-           /* "<a class='chatLink' onclick=chatLink('" + result[key].school.no + "'," + user.no + ");>" +*/
+           /* "<a class='chatLink' onclick=chatLink('" + result[key].school.no + "'," + userInfo.no + ");>" +*/
             "<a class='chatLink'>" +
                 "<div class='notificationThumbnail'><div class='thumbnailInner'><span class='thumbnailItem'>" + thumbnailImg + "</span></div></div>" +
                 "<dl class='notificationInfoBox'>" +
@@ -199,7 +199,7 @@ function thumbnailImgError(obj) {
 function updateAlerts() {
   $.ajax({
     type: "GET",
-    url: "/alert/updateAll?no=" + user.no,
+    url: "/alert/updateAll?no=" + userInfo.no,
     data: {},
     success: function (result) {
       console.log("updateAll success");
@@ -228,7 +228,7 @@ function onclickChatTab(obj) {
 }
 
 $(function () {
-    if ( user != null ) {
+    if ( userInfo != null ) {
         connect();
         loadAlert();
         loadChatGm();

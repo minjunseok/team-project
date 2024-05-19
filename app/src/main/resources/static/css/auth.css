@@ -172,6 +172,7 @@ a:hover {
 .result p {
   margin: 0;
   font-size: 18px;
+  text-align: center;
 }
 
 .result span {
@@ -191,6 +192,10 @@ a:hover {
   border-radius: 4px;
   margin-right: 10px;
   transition: background-color 0.3s ease;
+}
+
+.result .btn-wrap {
+  text-align: center;
 }
 
 .result a:hover {

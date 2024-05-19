@@ -14,7 +14,7 @@
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
   enabled. Please enable
   Javascript and reload this page!</h2></noscript>
-<div class="container" id="main-content">
+<div class="" id="main-content">
   <div class="chat-title" id="title">School chat</div>
   <div class="connect">
     <div class="">
@@ -52,7 +52,7 @@
 
 <script th:inline="javascript">
   var sc = [[${school}]];
-  var user = [[${loginUser}]];
+  var userGm = [[${loginUser}]];
   var chat = [[${chatList}]];
 </script>
 <script src="/js/gm.js"></script>

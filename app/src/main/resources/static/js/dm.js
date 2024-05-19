@@ -1,14 +1,14 @@
-  var sender = user;
-  var receiver = receiverInfo;
-  var chatList = chat;
-  var room = roomInfo;
-  var photo = "";
+  let sender = user;
+  let receiver = receiverInfo;
+  let chatList = chat;
+  let room = roomInfo;
+  let photo = "";
 
-  var dmFilePath = "https://kr.object.ncloudstorage.com/moyeorastorage/dm/";
-  var dmFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/dm/";
-  var userFilePath = "https://kr.object.ncloudstorage.com/moyeorastorage/user/";
-  var userFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/";
-  var fileSize_40 = "?type=f&w=40&h=40";
+  let dmFilePath = "https://kr.object.ncloudstorage.com/moyeorastorage/dm/";
+  let dmFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/dm/";
+  let userFilePath = "https://kr.object.ncloudstorage.com/moyeorastorage/user/";
+  let userFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/";
+  let fileSize_40 = "?type=f&w=40&h=40";
 
   function connect() {
       stompClient.activate();

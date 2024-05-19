@@ -1,8 +1,6 @@
 package moyeora.myapp.controller;
 
 
-import com.amazonaws.Response;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.dto.profile.FollowListRequestDTO;
@@ -11,8 +9,6 @@ import moyeora.myapp.dto.profile.FollowRequestDTO;
 import moyeora.myapp.dto.profile.ProfileResponseDTO;
 import moyeora.myapp.service.MyPageService;
 import moyeora.myapp.service.SchoolService;
-import moyeora.myapp.vo.Post;
-import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
 import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
@@ -21,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -44,6 +42,7 @@ public class MyPageController {
     if(schoolUser!=null) {
       model.addAttribute("schools", schoolService.findByUserNo(loginUser.getNo()).getSchools());
       model.addAttribute("userNo", loginUser.getNo());
+      model.addAttribute("loginUser", loginUser);
     }
   }
 
