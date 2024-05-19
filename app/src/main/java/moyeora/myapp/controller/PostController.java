@@ -387,7 +387,7 @@ public class PostController {
     // 검색창에 필터로 검색했을 때
     @PostMapping("search")
     @GetMapping("search")
-    public String searchPosts(
+    public void searchPosts(
             @RequestParam("schoolNo") int schoolNo,
             @RequestParam("keyword") String keyword,
             @RequestParam("filter") String filter,
@@ -407,13 +407,7 @@ public class PostController {
                 model.addAttribute("sender", loginUser);
                 model.addAttribute("accessLevel", accessLevel);
                 model.addAttribute("loginUser", loginUser);
-            } else {
-                // 회원이지만 해당 학교의 회원이 아닌 경우
-                log.debug("@@@@@@@@@@@@@@@@ 넌 비회원이구나");
             }
-        } else {
-            // 비회원인 경우
-            log.debug("@@@@@@@@@@@@@@@@ 넌 로그인을 아예 안 했구나");
         }
 
 
@@ -429,8 +423,8 @@ public class PostController {
             model.addAttribute("fixlist", post);
         }
 
+        model.addAttribute("schoolNo", schoolNo); // schoolNo 모델에 추가
         log.debug("@@@@@@@" + schoolNo + keyword);
-        return "post/list";
 
     }
 
