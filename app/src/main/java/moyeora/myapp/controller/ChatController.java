@@ -58,7 +58,7 @@ public class ChatController {
     }
 
     @GetMapping("dm")
-    public String dmForm(Model model, int sender, int receiver, @LoginUser User loginUser) {
+    public String dmForm(Model model, int receiver, @LoginUser User loginUser) {
         DmRoom room = chatService.getDmRoom(loginUser.getNo(), receiver);
         if (room == null) {
             room = new DmRoom(loginUser.getNo(), receiver);

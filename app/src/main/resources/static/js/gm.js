@@ -1,7 +1,7 @@
-  var school = sc;
-  var sender = user;
-  var chatList = chat;
-  var photo = "";
+  let school = sc;
+  let sender = userGm;
+  let chatList = chat;
+  let photo = "";
   console.log(school);
   console.log(sender);
   console.log(chatList);
@@ -14,28 +14,28 @@
  var fileSize_40 = "?type=f&w=40&h=40";
 
   function connect() {
-      stompClient.activate();
+      stompClientGm.activate();
   }
 
-  const stompClient = new StompJs.Client({
-      brokerURL: 'ws://175.45.194.120:80/ws'
+  const stompClientGm = new StompJs.Client({
+      brokerURL: 'ws://localhost:8080/ws'
   });
 
-  stompClient.onConnect = (frame) => {
+  stompClientGm.onConnect = (frame) => {
       setConnected(true);
       console.log('Connected: ' + frame);
       loadChat(chatList);
 
-      stompClient.subscribe('/sub/gm/' + school.no, (gm) => {
+      stompClientGm.subscribe('/sub/gm/' + school.no, (gm) => {
           showMessage(JSON.parse(gm.body));
       });
   };
 
-  stompClient.onWebSocketError = (error) => {
+  stompClientGm.onWebSocketError = (error) => {
       console.error('Error with websocket', error);
   };
 
-  stompClient.onStompError = (frame) => {
+  stompClientGm.onStompError = (frame) => {
       console.error('Broker reported error: ' + frame.headers['message']);
       console.error('Additional details: ' + frame.body);
   };
@@ -52,11 +52,11 @@
   }
 
   function connect() {
-      stompClient.activate();
+      stompClientGm.activate();
   }
 
   function disconnect() {
-      stompClient.deactivate();
+      stompClientGm.deactivate();
       setConnected(false);
       console.log("Disconnected");
   }
@@ -85,7 +85,7 @@
         processData: false,
         success: function (result) {
             console.log(result.sendDate);
-            stompClient.publish({
+            stompClientGm.publish({
             destination: "/pub/gm",
             body: JSON.stringify({
               'school': {no : result.school.no},

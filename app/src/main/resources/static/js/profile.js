@@ -1,6 +1,7 @@
 let page = 0;
 let profileUserNo;
 let flag=false
+let user;
 
 $('.modal-body').on('scroll', function() {
 
@@ -245,6 +246,10 @@ $(document).on('click', '.like-click', function(){
 
 $(document).on('click','.btn-close', function(){
     $('.modal-backdrop').remove();
+})
+
+$(document).on('click','#uChatWrap', function(){
+    window.open("/dm?receiver=" + profileUserNo, "chatDm", 'width=700px,height=800px,scrollbars=yes');
 })
 
 
