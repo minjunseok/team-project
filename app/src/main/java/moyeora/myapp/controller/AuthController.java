@@ -9,6 +9,8 @@ import moyeora.myapp.service.UserService;
 import moyeora.myapp.service.impl.DefaultMailService;
 import moyeora.myapp.util.FileUpload;
 import moyeora.myapp.vo.User;
+import org.apache.juli.logging.Log;
+import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,7 @@ import java.util.Random;
 @RequestMapping("/auth")
 public class AuthController {
 
+  private static final Log log = LogFactory.getLog(AuthController.class);
   private final UserService userService;
   private final DefaultMailService mailService;
   private final RedisUtil redisUtil;
@@ -140,6 +143,9 @@ public class AuthController {
       email = (String)redisUtil.getData(authId+"_e");
       String oldPassword = userService.get(email).getPassword();
       String newPassword = createCode();
+      log.debug("oldPassword = " + oldPassword);
+      log.debug("newPassword = " + newPassword);
+      log.debug("newPassword(encode) = " + passwordEncoderConfig.passwordEncoder().encode(newPassword));
       User user = new User();
       user.setEmail(email);
       user.setPassword(passwordEncoderConfig.passwordEncoder().encode(newPassword));
