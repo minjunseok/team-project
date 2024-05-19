@@ -1,11 +1,11 @@
 let page2 = 0;
 let profileUserNo2;
 let flag=false;
-$(document).on('scroll', function() {
+$(window).on('scroll', function() {
 
-  if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
-        if(page>=1) {
-         profile(profileUserNo);
+  if($(window).scrollTop() + $(window).innerHeight() >= $(window)[0].scrollHeight) {
+        if(page2>=1) {
+         profile(profileUserNo2);
         }
       }
 })

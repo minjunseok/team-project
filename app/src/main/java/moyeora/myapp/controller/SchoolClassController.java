@@ -14,6 +14,7 @@ import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,14 +42,14 @@ public class SchoolClassController {
 
   @GetMapping("list")
   @ResponseBody
-  public Object viewOfDate(String date) {
+  public Object viewOfDate(String date, @LoginUser User loginUser) {
     if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
-      return schoolClassService.findByDate(date);
+      return schoolClassService.findByDate(date, loginUser.getNo());
     } else {
       LocalDateTime currentTime = LocalDateTime.now();
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 날짜 형식 지정
       date = currentTime.format(formatter);
-      return schoolClassService.findByDate(date);
+      return schoolClassService.findByDate(date, loginUser.getNo());
     }
   }
 
@@ -186,4 +187,6 @@ public class SchoolClassController {
     return jsonResult;
 
   }
+
+
 }

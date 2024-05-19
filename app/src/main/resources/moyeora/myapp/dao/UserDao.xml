@@ -101,7 +101,8 @@
       name,
       nickname,
       photo,
-      created_at
+      created_at,
+      address
     from
     users
     where

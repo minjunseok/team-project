@@ -36,4 +36,6 @@ public interface UserService {
   int passwordUpdate(User user);
 
   User getUserInfo(int no);
+
+  public String getAddress(int userNo);
 }
