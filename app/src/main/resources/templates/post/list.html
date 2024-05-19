@@ -10,7 +10,7 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0"
 	/>
-
+	<th:block th:replace="common/headCommon :: headerFragment"></th:block>
 	<!--    민준 로컬 작업용 부트스트랩,서머노트 import-->
 	<link
 			href="/css/bootstrap.min.css"
@@ -2012,7 +2012,7 @@
 
 			</div>
 		</div>
-		<div class="right-container">채팅영역</div>
+		<div id="sChatWrap" class="right-container">채팅영역</div>
 	</div>
 </div>
 <div data-th-replace="/mypage/modal/profile :: profile-modal">새 글 작성</div>
@@ -2034,5 +2034,26 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/admin/js/moment.js"></script>
 <script src="/js/profile.js"></script>
+<script th:inline="javascript">
+	var loginUser = [[${loginUser}]];
+	var sc = [[${school}]];
+
+	function sChatLoad() {
+	    $.ajax({
+		  type: "GET",
+		  url: "/gm?schoolNo=" + sc.no,
+		  data: {},
+		  success: function (result) {
+		    console.log("updateAll success");
+		    $("#sChatWrap").html(result);
+		  }
+	    })
+	}
+
+	$(function () {
+		sChatLoad();
+	});
+</script>
+<script src="/js/header.js"></script>
 </body>
 </html>

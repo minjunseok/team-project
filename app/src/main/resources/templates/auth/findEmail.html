@@ -8,9 +8,10 @@
 </head>
 <body>
 
-<div class="title">이메일 찾기</div>
-<div class="login-form-wrap box-shadow shadow-sm p-3 mb-5 bg-body rounded">
-  <form data-th-if="${email == null}" data-th-action="@{getEmail}" method="post">
+
+<div data-th-if="${email == null}" class="login-form-wrap result rounded">
+  <div class="title">이메일 찾기</div>
+  <form  data-th-action="@{getEmail}" method="post">
     <label for="name"></label>
     <input id="name" name="name" type="text" placeholder="name">
 
@@ -21,12 +22,13 @@
 </div>
 
 
-<div class="result box-shadow shadow-sm p-3 mb-5 bg-body rounded" data-th-if="${email != null && email != 'none'}">
+<div class="login-form-wrap result rounded" data-th-if="${email != null && email != 'none'}">
   <p>가입한 이메일 : [[${email}]]</p>
   <a data-th-href="@{form}">로그인</a>
   <a data-th-href="@{findPassword}">비밀번호 찾기</a>
 </div>
-<div class="result box-shadow shadow-sm p-3 mb-5 bg-body rounded" data-th-if="${email == 'none'}">
+
+<div class="login-form-wrap result rounded" data-th-if="${email == 'none'}">
   <span>가입정보가 없습니다.</span>
   <a data-th-href="@{signIn}">회원가입</a>
 </div>

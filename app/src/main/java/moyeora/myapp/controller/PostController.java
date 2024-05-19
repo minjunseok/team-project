@@ -342,6 +342,7 @@ public class PostController {
                 int accessLevel = schoolUserService.findLevel(schoolNo, userNo);
                 model.addAttribute("sender", loginUser);
                 model.addAttribute("accessLevel", accessLevel);
+                model.addAttribute("school", school);
                 model.addAttribute("loginUser", loginUser);
             }
         }
