@@ -12,27 +12,59 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     <style>
         .form-section {
-            margin-bottom: 20px; /* 각 섹션의 아래쪽 간격 조정 */
-        }
-        h3 {
+            width: 100%;        }
+        h5 {
             text-align: center;
         }
         .school-visibility {
             margin-top: 20px;
         }
-         /* 가운데 정렬 스타일 */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* 전체 페이지에 스크롤바가 생기지 않도록 설정 */
+        }
+
+        .outer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* 뷰포트 높이를 채우도록 설정 */
+            overflow: auto; /* 컨테이너에 스크롤바 추가 */
+            padding: 20px; /* 패딩 추가 */
+            box-sizing: border-box; /* 패딩과 테두리를 포함한 크기 설정 */
+        }
+
         .centered {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             flex-direction: column;
-            border: 4px solid  #9E896A;
+            border: 4px solid #9E896A;
             padding: 3rem;
             border-radius: 1rem;
-            width: 600px;
-            margin: 20px auto;
+            width: 100%; /* 너비를 반응형으로 설정 */
+            max-width: 600px; /* 최대 너비 설정 */
+            max-height: 100%; /* 최대 높이를 설정 */
+            box-sizing: border-box; /* 테두리와 패딩을 요소의 총 너비와 높이에 포함 */
+            overflow: auto; /* 내부 내용이 넘칠 때 스크롤바 추가 */
         }
+
+        #school_image {
+            width: 100%;
+            height: 160px;
+            background-color: #f0f0f0; /* 사진이 없을 때의 배경 색상 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #school_image img {
+            height: 100%;
+            object-fit: cover;
+        }
+
         /* 오른쪽 정렬 스타일 */
         .right-aligned {
             display: flex;
@@ -62,26 +94,66 @@
             color: #fff;
             border-color: rgb(158, 137, 106);
         }
-    
+
+
+
+        .checkbox-container {
+          cursor: pointer;
+          display: inline-block;
+          position: relative;
+        }
+
+        .checkbox-container.checked .checkbox-image {
+           opacity: 1; /* 체크된 상태일 때 이미지를 더 진하게 만듭니다. */
+
+        }
+
+        .checkbox-container.checked::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0.5; /* 선택사항: 투명도 조절 */
+          border-radius: 5px; /* 선택사항: 둥근 경계를 위해 추가 */
+          z-index: 1; /* 이미지 위로 표시 */
+        }
+
+
+        .checkbox-container {
+          display: inline-block;
+          text-align: center;
+          margin-right: 20px; /* 사진과 사진 사이의 간격 조절 */
+        }
+
+        .checkbox-container .checkbox-image {
+          display: block;
+          opacity: 0.5; /* 체크되지 않은 상태일 때 이미지를 반투명하게 만듭니다. */
+          margin-bottom: 5px; /* 사진 아래에 이름과의 간격 조절 */
+        }
+
+
     </style>
 </head>
 <body class="p-3 m-0 border-0 bd-example m-0 border-0">
-<div class="centered">
-    <form onsubmit="return validateForm()" action="add" data-th-action="@{add}" enctype='multipart/form-data'
-          method='post' id="form1"
-          class="was-validated"
-          novalidate="">
-        <div id="div1" style="display: inline-block;" class="form-section">
-            <label class="form-label" for="name"></label>
-            <h3 style="margin-left: 80px;">스쿨 이름</h3>
-            <input type="text" name="name" id="name" class="form-control" required="">
-        </div>
-        <button type="button" id="signupBtn" class="btn btn-warning">중복 확인</button>
-        <div style="max-width:300px;" class="form-section">
-            <h3>스쿨 사진</h3>
-             <input type="file" id="image" name="file" accept="image/*" class="form-control" onchange="setThumbnail(event);" required/>
-            <div id="school_image"></div>
-            <script>
+<div class="outer-container">
+    <div class="centered">
+        <form onsubmit="return validateForm()" action="add" data-th-action="@{add}" enctype='multipart/form-data'
+              method='post' id="form1"
+              class="was-validated"
+              novalidate="">
+            <div id="div1" style="display: inline-block;" class="form-section">
+                <label class="form-label" for="name"></label>
+                <h5>스쿨 이름</h5>
+                <input type="text" name="name" id="name" class="form-control" required="">
+            </div>
+            <button type="button" id="signupBtn" class="btn btn-warning">중복 확인</button>
+            <div style="max-width:300px;" class="form-section">
+                <h5>스쿨 사진</h5>
+                <input type="file" id="image" name="file" accept="image/*" class="form-control" onchange="setThumbnail(event);" required/>
+                <div id="school_image"></div>
+                <script>
                     function setThumbnail(event) {
                         var existingImage = document.querySelector("div#school_image img");
                         if (existingImage) {
@@ -97,51 +169,46 @@
                         };
                         reader.readAsDataURL(event.target.files[0]);
                     }
-            </script>
-        </div>
-        <div style="max-width: 300px;" class="form-section">
-            <h3>스쿨 설명</h3>
-             <textarea class="form-control" id="validationTextarea" name='content' placeholder="스쿨 소개"  required></textarea>
-            <div class="invalid-feedback"></div>
-        </div>
-        <div class="form-section right-aligned">
-            <h3>관심사 선택</h3>
-        </div>
-        <div class="text-center">
-          <tbody class="text-center">
-            <tr data-th-each="tag : ${tags}">
-              <td>
-                <div class="checkbox-container">
-                      <img class="checkbox-image" th:src="@{'/img/tag/tag' + ${tag.no} + '.png'}" alt="no image" height='50px' width="50px">
-                      <span data-th-text="${tag.name}"></span>
-                      <input data-th-checkbox="true"  data-th-value="${tag.no}" name="tagNums" type="checkbox" style="display: none;">
-                </div>
-              </td>
-              <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
-                <br>
-              </data-th-block>
-            </tr>
-          </tbody>
-        </div>
-        <div class="school-visibility form-section right-aligned">
-            <h3>스쿨 공개 여부</h3>
-        </div>
-        <!-- <div class="form-section form-section right-aligned">
-            <input class="form-check-input" type="radio" name="openRange" id="flexRadioDefault1" value="0" checked>
-            <label class="form-check-label" for="flexRadioDefault1">비공개</label>
-            <input class="form-check-input" type="radio" name="openRange" id="flexRadioDefault2" value="1">
-            <label class="form-check-label" for="flexRadioDefault2">공개</label>
-        </div> -->
-        <div class="open-container right-aligned">
-            <input id="closed" name="openRange" type="radio" value="0" checked>
-            <label  for="closed">비공개</label>
-            <input id="open" name="openRange" type="radio" value="1">
-            <label  for="open">공개</label>
-        </div>
-        <div class="school-visibility form-section right-aligned ">
-        <button type="submit" class="btn btn-warning right-aligned">개설 하기</button>
-        </div>
-    </form>
+                </script>
+            </div>
+            <div style="max-width: 300px;" class="form-section">
+                <h5>스쿨 설명</h5>
+                <textarea class="form-control" id="validationTextarea" name='content' placeholder="스쿨 소개"  required></textarea>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-section right-aligned">
+                <h5>관심사 선택</h5>
+            </div>
+            <div class="text-center">
+                <tbody class="text-center">
+                <tr data-th-each="tag : ${tags}">
+                    <td>
+                        <div class="checkbox-container">
+                            <img class="checkbox-image" th:src="@{'/img/tag/tag' + ${tag.no} + '.png'}" alt="no image" height='50px' width="50px">
+                            <span data-th-text="${tag.name}"></span>
+                            <input data-th-checkbox="true"  data-th-value="${tag.no}" name="tagNums" type="checkbox" style="display: none;">
+                        </div>
+                    </td>
+                    <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+                        <br>
+                    </data-th-block>
+                </tr>
+                </tbody>
+            </div>
+            <div class="school-visibility form-section right-aligned">
+                <h5>스쿨 공개 여부</h5>
+            </div>
+            <div class="open-container right-aligned">
+                <input id="closed" name="openRange" type="radio" value="0" checked>
+                <label for="closed">비공개</label>
+                <input id="open" name="openRange" type="radio" value="1">
+                <label for="open">공개</label>
+            </div>
+            <div class="school-visibility form-section right-aligned ">
+                <button type="submit" class="btn btn-warning right-aligned">개설 하기</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 
