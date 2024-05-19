@@ -268,7 +268,7 @@
     WHERE
         p.content LIKE '%${keyword}%'
     ORDER BY
-        like_count DESC;
+    p.created_at desc;
 </select>
 
 
@@ -301,7 +301,7 @@
     WHERE
     u.nickname LIKE '%${keyword}%'
     ORDER BY
-    like_count DESC;
+    p.created_at desc;
 </select>
 
 
