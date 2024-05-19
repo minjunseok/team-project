@@ -4,40 +4,23 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.security.config.PasswordEncoderConfig;
 import moyeora.myapp.security.util.RedisUtil;
+import moyeora.myapp.service.TagService;
 import moyeora.myapp.service.UserService;
 import moyeora.myapp.service.impl.DefaultMailService;
+import moyeora.myapp.util.FileUpload;
 import moyeora.myapp.vo.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import moyeora.myapp.service.TagService;
-import moyeora.myapp.util.FileUpload;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.mail.MessagingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Random;
-import javax.mail.MessagingException;
-import lombok.RequiredArgsConstructor;
-import moyeora.myapp.security.config.PasswordEncoderConfig;
-import moyeora.myapp.service.TagService;
-import moyeora.myapp.service.impl.DefaultMailService;
-import moyeora.myapp.service.UserService;
-import moyeora.myapp.security.util.RedisUtil;
-import moyeora.myapp.util.FileUpload;
-import moyeora.myapp.vo.User;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Controller
@@ -134,7 +117,7 @@ public class AuthController {
       model.addAttribute("status","sent");
       redisUtil.setDataExpire(authId+"_e", email,60 * 5L);
     }
-    return "/auth/findPassword";
+    return "auth/findPassword";
   }
 
   private String doSend(String email, String subject, String code, String authId, String template)
