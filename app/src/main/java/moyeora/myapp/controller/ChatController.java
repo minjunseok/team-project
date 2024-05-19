@@ -120,7 +120,15 @@ public class ChatController {
             }
         }
         chatService.saveDm(dm);
+        User sender = userService.getUserInfo(dm.getSender().getNo());
+        User receiver = userService.getUserInfo(dm.getReceiver().getNo());
+        System.out.println("sender" + sender.toString());
+        System.out.println("receiver" + receiver.toString());
         dm = chatService.getDm(dm.getNo());
+        dm.setReceiver(receiver);
+        dm.setSender(sender);
+        System.out.println("dm" + dm);
+
         return dm;
     }
 

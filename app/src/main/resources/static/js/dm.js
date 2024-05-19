@@ -87,37 +87,32 @@
             stompClient.publish({
             destination: "/pub/dm",
             body: JSON.stringify({
-              'sender': {no : result.sender.no},
-              'receiver': {no : result.receiver.no},
+              'sender': {no : result.sender.no, nickname : result.sender.nickname, photo : result.sender.photo},
+              'receiver': {no : result.receiver.no, nickname : result.receiver.nickname, photo : result.receiver.photo},
               'message': result.message,
               'photo': result.photo,
               'roomNo': room.no,
+              'sendDate': result.sendDate
             })
           });
         },
         error: function () {
             console.log("error: ajax 전송 테스트");
-            }
+        }
       });
   }
 
   function showMessage(dm) {
-      /*let d = dm.sendDate.substring(0, 10);
+      let d = dm.sendDate.substring(0, 10);
       let h = dm.sendDate.substring(11, 13);
-      let m = dm.sendDate.substring(14, 16);*/
+      let m = dm.sendDate.substring(14, 16);
         console.log(dm)
-      if(dm.sender.no == sender.no) {
+      if(dm.receiver.no != sender.no) {
         if(dm.message != null && dm.message.length > 0) {
           $("#conversation").append(
-         /* "<div class='chat-wrap sender-wrap'>" +
+          "<div class='chat-wrap sender-wrap'>" +
             "<div class = 'message-text'>" + dm.message + "</div>" +
             "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>" +
-          "</div>"*/
-
-
-          "<div class='chat-wrap sender-wrap'>" +
-            "<div class = 'message-text'>" + chatList[chat].message + "</div>" +
-            //"<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>" +
            "</div>"
           );
         }
@@ -128,7 +123,7 @@
                   "<a href=" + dmFilePath + dm.photo + ">" +
                   "<img src=" + dmFileCdnDomain + dm.photo + fileSize_40 + "></a>" +
               "</div>" +
-             // "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>" +
+              "<div class='origin'>" + "<span class='originText'>" +h + ":" + m + "</span>" + "</div>" +
           "</div>");
         }
       } else {
@@ -136,10 +131,6 @@
 
         if(dm.message != null && dm.message.length > 0) {
           $("#conversation").append(
-         /* "<div class='username receiver'>" + receiver.nickname + "</div>" +
-          "<div class = 'message-container received-message'><div class = 'message-text'>" + dm.message +
-          "</div></div>"*/
-
           "<div class='chat-wrap receiver-wrap'>" +
             "<div class='profile-wrap'>" +
                 "<a class='uProfileLink'>" +
@@ -154,7 +145,7 @@
                 "<div class='username receiver'>" + dm.receiver.nickname + "</div>" +
                 "<div class='message-wrap'>" +
                     "<div class = 'message-text'>" + dm.message + "</div>" +
-                    //"<div class='origin'>" + "<span class='originText'>" + h + ":" + m + "</span>" + "</div>" +
+                    "<div class='origin'>" + "<span class='originText'>" + h + ":" + m + "</span>" + "</div>" +
                 "</div>" +
             "</div>" +
           "</div>"
@@ -163,11 +154,6 @@
         }
         if(dm.photo != null && dm.photo.length > 0) {
           $("#conversation").append(
-          /*"<div class='username receiver'>" + receiver.nickname + "</div>" +
-          "<div class = 'message-container received-message'><div class = 'message-text'>" +
-          "<a href=" + dmFilePath + dm.photo + ">" +
-          "<img src=" + dmFileCdnDomain + dm.photo + fileSize_40 + "></a>" + "</div></div>"*/
-
           "<div class='chat-wrap receiver-wrap'>" +
             "<div class='profile-wrap'>" +
                 "<a class='uProfileLink'>" +
@@ -185,7 +171,7 @@
                         "<a href=" + dmFilePath + dm.photo + ">" +
                         "<img src=" + dmFileCdnDomain + dm.photo + fileSize_40 + "></a>" +
                     "</div>" +
-                    //"<div class='origin'>" + "<span class='originText'>" + h + ":" + m + "</span>" + "</div>" +
+                    "<div class='origin'>" + "<span class='originText'>" + h + ":" + m + "</span>" + "</div>" +
                 "</div>" +
             "</div>" +
           "</div>"
@@ -197,6 +183,7 @@
       $("#message").val("");
       $("#photo").val("");
       $("#file-count").text(0);
+      $('#conversation').scrollTop($('#conversation')[0].scrollHeight);
   }
 
   function loadChat(chatList) {
@@ -238,8 +225,7 @@
               );
             }
           } else {
-           // let uProfileImg = "<img class='uPhotoItem profile-wrap' src=" + userFileCdnDomain + chatList[chat].sender.photo + fileSize_40 + " onerror=profileImgError(this)>";
-              let uProfileImg = "사진"
+            let uProfileImg = "<img class='uPhotoItem profile-wrap' src=" + userFileCdnDomain + chatList[chat].receiver.photo + fileSize_40 + " onerror=profileImgError(this)>";
             if(chatList[chat].message.length > 0) {
               $("#conversation").append(
               /*"<div class='username receiver'>" + chatList[chat].sender.nickname + "</div>" +

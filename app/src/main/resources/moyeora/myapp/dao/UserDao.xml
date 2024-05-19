@@ -2,6 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="moyeora.myapp.dao.UserDao">
   <resultMap id="UserMap" type="User">
     <id column="user_no" property="no"/>

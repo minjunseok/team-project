@@ -4,7 +4,6 @@
   let photo = "";
   console.log(school);
   console.log(sender);
-  console.log(chatList);
 
  var gmFilePath = "https://kr.object.ncloudstorage.com/moyeorastorage/gm/";
  var gmFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/gm/";
@@ -28,6 +27,7 @@
 
       stompClientGm.subscribe('/sub/gm/' + school.no, (gm) => {
           showMessage(JSON.parse(gm.body));
+          console.log("subscribe");
       });
   };
 
@@ -84,12 +84,11 @@
         contentType: false,
         processData: false,
         success: function (result) {
-            console.log(result.sendDate);
             stompClientGm.publish({
             destination: "/pub/gm",
             body: JSON.stringify({
-              'school': {no : result.school.no},
-              'sender': {no : result.sender.no, nickname : sender.nickname},
+              'school': {no : school.no, name : school.name, photo : school.photo },
+              'sender': {no : result.sender.no, nickname : sender.nickname, photo : sender.photo, name : sender.name},
               'message': result.message,
               'photo': result.photo,
               'sendDate': result.sendDate
@@ -200,8 +199,10 @@
           );
         }
       }
-      $("#main-form")[0].reset();
+      $("#message").val("");
+      $("#photo").val("");
       $("#file-count").text(0);
+      $('#conversation').scrollTop($('#conversation')[0].scrollHeight);
   }
 
   function loadChat(chatList) {
