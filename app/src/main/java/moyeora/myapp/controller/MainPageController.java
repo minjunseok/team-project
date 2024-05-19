@@ -1,6 +1,5 @@
 package moyeora.myapp.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.service.SchoolClassService;
@@ -12,7 +11,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,7 +29,8 @@ public class MainPageController {
   private final SchoolClassService schoolClassService;
   private final UserService userService;
   final static Log log = LogFactory.getLog(MainPageController.class);
-  @GetMapping("")
+
+    @GetMapping("")
   public ModelAndView index(ModelAndView model, @LoginUser User loginUser) {
       if(loginUser==null || loginUser.getNo() < 1) {
           model.setViewName("/auth/form");
@@ -50,6 +49,7 @@ public class MainPageController {
     model.addObject("weeks", schoolService.findWeek());
     //해당 날짜의 약속 정보를 전부 가져오기 , 지역 정보 추가해야함
     model.addObject("hotSchools", schoolService.findHotSchool(loginUser.getNo()));
+        model.addObject("loginUser", loginUser);
     model.setViewName("/index");
     return model;
   }

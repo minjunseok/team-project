@@ -49,36 +49,13 @@ public class ChatController {
         return "/chat/test";
     }
 
-/*    @GetMapping("gm")
-    public String gmForm(Model model, int schoolNo, int sender) {
-        model.addAttribute("schoolNo",schoolNo);
-        model.addAttribute("sender",userService.getUserInfo(sender));
-        model.addAttribute("chatList",chatService.getGmList(schoolNo));
-        return "chat/gm";
-    }*/
-
     @GetMapping("gm")
-    public String gmForm(Model model, int schoolNo, int sender, @LoginUser User loginUser) {
+    public String gmForm(Model model, int schoolNo, @LoginUser User loginUser) {
         model.addAttribute("school", schoolService.get(schoolNo));
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("chatList", chatService.getGmList(schoolNo));
         return "chat/gm";
     }
-
-/*    @GetMapping("dm")
-    public String dmForm(Model model, int sender, int receiver) {
-        DmRoom room = chatService.getDmRoom(sender,receiver);
-        if (room == null) {
-            room = new DmRoom(sender,receiver);
-            chatService.addDmRoom(room);
-            room = chatService.getDmRoom(room.getNo());
-        }
-        model.addAttribute("sender",userService.get(sender));
-        model.addAttribute("receiver",userService.get(receiver));
-        model.addAttribute("room",room);
-        model.addAttribute("chatList",chatService.getDmList(room.getNo()));
-        return "/chat/dm";
-    }*/
 
     @GetMapping("dm")
     public String dmForm(Model model, int sender, int receiver, @LoginUser User loginUser) {
