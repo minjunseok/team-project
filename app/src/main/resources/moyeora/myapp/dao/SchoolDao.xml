@@ -35,14 +35,19 @@
   </delete>
   <select id="findHotSchool" resultMap="SchoolMap" parameterType="int">
     select
+    DISTINCT
     s.school_no,
     s.name,
     s.photo,
     (select count(*) from school_users u where s.school_no = u.school_no) as now_member_count
     from
     schools as s
+    inner join school_tags st on s.school_no = st.school_no
+    inner join user_tags ut on st.tag_no = ut.tag_no
+    where ut.user_no = #{userNo}
     order by
     now_member_count desc
+    limit 3;
   </select>
 
   <select id="findBySchoolName" resultMap="SchoolMap" parameterType="String">

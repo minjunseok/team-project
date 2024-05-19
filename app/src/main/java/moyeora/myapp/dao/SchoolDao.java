@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper
 public interface SchoolDao {
 
-  public List<School> findHotSchool(int category);
+  public List<School> findHotSchool(int userNo);
 
   void add(School school);
 

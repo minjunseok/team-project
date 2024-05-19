@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface SchoolClassDao {
-  public List<SchoolClass> findByDate(@Param("date") String date);
+  public List<SchoolClass> findByDate(String date,String str);
 
   public List<SchoolClass> findByUserAddress(String address);
 
@@ -23,4 +23,6 @@ public interface SchoolClassDao {
   SchoolClass findByNo(int classNo);
 
   void classDelete(ClassDeleteDTO classDeleteDTO);
+
+  List<SchoolClass> findByWeek(String address,String weekString);
 }

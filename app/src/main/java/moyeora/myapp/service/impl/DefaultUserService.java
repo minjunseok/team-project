@@ -1,6 +1,7 @@
 package moyeora.myapp.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import moyeora.myapp.annotation.LoginUser;
 import moyeora.myapp.dao.TagDao;
 import moyeora.myapp.dao.UserDao;
 import moyeora.myapp.dao.UserTagDao;
@@ -124,5 +125,10 @@ public class DefaultUserService implements UserService {
     @Override
     public User findByEmail(String email) {
         return userDao.findByEmail(email);
+    }
+
+    @Override
+    public String getAddress(int userNo) {
+        return userDao.findByNo(userNo).getAddress();
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public interface SchoolClassService {
 
   public List<SchoolClass> findBySchoolUser(int schoolNo);
-  public List<SchoolClass> findByDate(String date);
+  public List<SchoolClass> findByDate(String date, int userNo);
 
   public List<SchoolClass> findByUserAddress(String address);
 
@@ -27,4 +27,5 @@ public interface SchoolClassService {
 
   void classDelete(ClassDeleteDTO classDeleteDTO);
 
+  List<SchoolClass> weekClass(String address, List<String> week);
 }
