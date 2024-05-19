@@ -306,7 +306,7 @@
   }
 
   function profileImgError(obj) {
-    $(obj).attr("src", "/img/모여라.png");
+    $(obj).attr("src", "/img/moyeoraLogo2.png");
   }
 
   function clickFile(obj) {
