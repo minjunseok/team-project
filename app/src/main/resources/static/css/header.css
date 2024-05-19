@@ -1,12 +1,12 @@
 
 
 
-.header {
+.header-wrap {
     background-color: #ffffff;
     padding: 10px 20px;
 }
 
-.home-wrap .header {
+.home-wrap .header-wrap {
     background-color: transparent;
     color: #ffffff;
 }
@@ -53,7 +53,7 @@
     color: #0066ff;
 }
 
-.home-wrap .header .mainMenu a {
+.home-wrap .header-wrap .mainMenu a {
     color: #ffffff;
 }
 
