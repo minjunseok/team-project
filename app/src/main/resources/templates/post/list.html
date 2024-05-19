@@ -1107,9 +1107,13 @@
 
                             //댓글 삭제 부분
                             function deleteComment(commentNo) {
-                                alert('댓글삭제입니다 = ' + commentNo);
-                                selectedCommentNo.no = commentNo;
+                                console.log("@@@@@@@@@@@@로그인 유저 번호" + loginUserNo);
+                                console.log("@@@@@@@@@@@@댓글 글쓴이 번호" + selectedCommentUserNo.no);
 
+                                if(loginUserNo !== selectedCommentUserNo.no) {
+                                    alert('권한이 없습니다');
+                                    return;
+                                }
                                 $('#postModal').modal('hide');
                                 $('#commentDeleteModal').modal('show');
                             }
@@ -1154,11 +1158,20 @@
 
                             // 수정을 위한 모달창 호출 함수
                             function editComment(commentNo) {
+                                console.log("@@@@@@@@@@@@로그인 유저 번호" + loginUserNo);
+                                console.log("@@@@@@@@@@@@댓글 글쓴이 번호" + selectedCommentUserNo.no);
+
+                                if(loginUserNo !== selectedCommentUserNo.no) {
+                                    alert('권한이 없습니다');
+                                    return;
+                                }
                                 alert('댓글수정입니다 = ' + commentNo);
                                 selectedCommentNo.no = commentNo;
                                 $('#postModal').modal('hide');
                                 $('#commentUpdateModal1').modal('show');
                             }
+
+
 
                             $(document).on('click', '#commentUpdateCancel', function () {
                                 // 모달 닫기
@@ -1177,6 +1190,7 @@
                             $(document).on('click', '#commentUpdateYes', function () {
                                 // 모달 닫기
                                 $('#commentUpdateModal2').modal('hide');
+
 
                                 var commentNo = selectedCommentNo.no;
                                 var content = selectedCommentContent.content;
@@ -1206,7 +1220,11 @@
                                     // 클릭된 행의 commentNo를 가져옴
                                     var commentNo = clickedRow.find('td:eq(4)').text();
 
+                                    console.log("댓글번호" + commentNo);
+
                                     selectedCommentUserNo.no = clickedRow.find('td:eq(5)').text();
+
+                                    console.log("댓글작성자번호" + selectedCommentUserNo.no);
 
                                     // 클릭된 드롭다운 항목의 클래스에 따라 작업을 분기하여 처리
                                     if ($(this).hasClass('editComment')) {
@@ -1218,6 +1236,7 @@
                                     event.preventDefault();
                                 });
                             });
+
                         </script>
                         <!--댓글 수정 관련-->
 
