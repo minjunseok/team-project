@@ -2,107 +2,216 @@
 <html lang="en" xmlns:th="//www.thymeleaf.org">
 
 <head>
-  <th:block th:replace="common/headCommon :: headerFragment"></th:block>
-  <th:block th:replace="common/bootstrap :: bootstrap"></th:block>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="/profile/css/libs.min.css">
+  <link rel="stylesheet" href="/profile/css/socialv.css?v=4.0.0">
+  <link rel="stylesheet" href="/profile/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="/profile/vendor/remixicon/fonts/remixicon.css">
+  <link rel="stylesheet" href="/profile/vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
+  <link rel="stylesheet" href="/profile/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin/>
-  <title>moyeora</title>
+  <style>
+    .scroll-container {
+        display: flex;
+        overflow-x: auto;
+        padding: 20px;
+        white-space: nowrap;
+    }
+    .scroll-container .event-post {
+        flex: 0 0 auto;
+        margin-right: 20px;
+    }
+    .event-post img {
+        width: 200px;
+        height: 200px;
+    }
+  </style>
 </head>
 <body>
+<input type="hidden" data-th-value="${address}" id=address>
+<div data-th-replace="header :: header">헤더</div>
+<div class="container">
+  <div ><a style="text-alien : right " data-th-href="@{school/form}">스쿨개설</a></div>
+  <form th:action="@{/school/search}" method="get">
+    <input type="text" name="name">
+    <button type="submit">검색</button>
+  </form>
+  <hr>
+  <div class="row">
+    <h3>내 스쿨 목록</h3><br>
+    <div class="scroll-container">
+      <div data-th-each="school : ${schools}" data-th-object="${school}" class="event-post position-relative text-center card-body">
+        <input type="hidden" data-th-value="*{no}">
+        <a data-th-href="@{/post/list(schoolNo=*{no})}">
+          <img data-th-if="${school.photo==null}" data-th-src='/img/default-school-photo.jpeg' alt="gallary-image" class="img-fluid rounded">
+          <img  data-th-if="${school.photo!=null}" data-th-src="@{'https://kr.object.ncloudstorage.com/moyeorastorage/school/' + ${school.photo}}" alt="gallary-image" class="img-fluid rounded">
+        </a>
+        <div class="card-body p-2">
+          <h5 data-th-text="*{name}"></h5>
+        </div>
+      </div>
+    </div>
 
-<div data-th-replace="header :: header">header</div>
-
-<div data-th-each="school : ${schools}" data-th-object="${school}">
-  <input type="hidden" data-th-value="*{no}">
-  <a style="height:30px;" data-th-href="@{post/list(schoolNo=*{no})}" data-th-text="*{name}"></a>
-  <div><a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/school/' + ${school.photo}}"></a><img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/' + ${school.photo}(type=f,w=40,h=40)}"></div>
-</div>
-<div ><a style="text-alien : right " data-th-href="@{school/form}">스쿨개설</a></div>
-
-<form th:action="@{/school/search}" method="get">
-  <input type="text" name="name">
-  <button type="submit">검색</button>
-</form>
-
-
-
-<!--  <th:block th:each="page:${#numbers.sequence(startPage,endPage)}">-->
-<!--    <a th:if="${page != nowPage}" th:href="@{/board/list(page=${page-1}, searchKeyword=${param.searchKeyword})}" th:text ="${page}"></a>-->
-<!--    <strong th:if="${page==nowPage}" th:text ="${page}" style="color:red"></strong>-->
-
-<!--  </th:block>-->
-
-
-<a style = "cursor: pointer" data-th-each="week : ${weeks}" data-th-onclick="@{'dataList(\'' + ${week} + '\')'}" data-th-text="${week}  "></a>
-<ol id = "byDate" data-th-each="schoolClasses : ${schoolClasses}" data-th-object="${schoolClasses}">
-  <li data-th-text="*{name}"></li>
-  <li data-th-text="*{photo}"></li>
-  <li data-th-text="*{nowMemberCount} +  '/'  + *{member}"></li>
-</ol>
-<!--<ol id="byDate" data-th-if="${schoolClasses.isEmpty()}">-->
-</ol>
-<div id="map" style="width:500px;height:400px;">맵</div>
-
-<div data-th-each="hotSchool : ${hotSchools}" data-th-object="${hotSchool}">
-  <input type="hidden" data-th-value="*{no}">
-  <!--  <div data-th-text="*{name}" data-th-onclick="goToSchool(${no})" style="cursor: pointer;"></div>-->
-  <div data-th-text="*{name}"></div>
-  <div>
-    <img data-th-if="*{photo}"
-         data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/' + *{photo}(type=f,w=160,h=160)}"
-         height='160px'>
-    <img data-th-unless="*{photo}" height='160px' src='/img/default-school-photo.jpeg'>
   </div>
-  <div data-th-text="*{nowMemberCount}"></div>
 </div>
+<br>
+<div class="container">
+  <hr>
+  <div class="row">
+    <h3>내 주변 클래스</h3><br><br><br>
+    <div class="col-12 text-center">
+      <div class="card">
+        <div class="card-body p-0">
+          <div class="user-tabing">
+            <ul class="nav nav-pills d-flex align-items-center justify-content-center profile-feed-items p-0 m-0">
+              <li class="nav-item col-12 col-md-1 p-0" data-th-each="week : ${weeks}" data-th-onclick="@{'dataList(\'' + ${week} + '\')'}">
+                <a data-th-text="${#strings.substring(week, 5)}" class="nav-link my-posts" href="#pills-timeline-tab" data-bs-toggle="pill" data-bs-target="#timeline" role="button">05-18</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div id="map" style="width:450px;height:450px;">맵</div>
+    </div>
+    <div class="col-6">
+      <div class="card" style="height:450px; overflow-y: auto;">
+        <div class="card-header d-flex justify-content-between">
+          <div class="header-title">
+          </div>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-3">사진</div>
+            <div class="col-lg-3">이름</div>
+            <div class="col-lg-3">약속시간</div>
+            <div class="col-lg-2">인원</div>
+          </div>
+        </div>
+        </div>
+        <div class="card-body">
+          <ul class="iq-timeline ms-1" id="class-box">
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <hr>
+  <div class="row">
+    <h3>내 관심사 핫 스쿨</h3><br>
+    <div class="scroll-container">
+      <div data-th-each="hotSchool : ${hotSchools}" data-th-object="${hotSchool}" class="event-post position-relative text-center card-body col-lg-4">
+        <input type="hidden" data-th-value="*{no}">
+        <a data-th-href="@{/post/list(schoolNo=*{no})}">
+          <img data-th-if="*{photo}"
+               data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/' + *{photo}(type=f,w=160,h=160)}"
+               height='160px'>
+          <img data-th-unless="*{photo}" height='160px' src='/img/default-school-photo.jpeg'>
+        </a>
+        <div class="card-body p-2">
+          <h5 data-th-text="*{name}"></h5>
+          인원<h6 data-th-text="*{nowMemberCount}"></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="/profile/js/libs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!-- slider JavaScript -->
+<script src="/profile/js/slider.js"></script>
+<!-- masonry JavaScript -->
+<script src="/profile/js/masonry.pkgd.min.js"></script>
+<!-- SweetAlert JavaScript -->
+<script src="/profile/js/enchanter.js"></script>
+<!-- SweetAlert JavaScript -->
+<script src="/profile/js/sweetalert.js"></script>
+<!-- app JavaScript -->
+<script src="/profile/js/charts/weather-chart.js"></script>
+<script src="/profile/js/app.js"></script>
+<script src="/profile/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+<script src="/profile/js/lottie.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/admin/js/moment.js"></script>
 
 <script>
   let map;
   let mapOption;
   let mapContainer;
     const dataList = (week) => {
+      let oldmap = map;
       map = new kakao.maps.Map(mapContainer, mapOption);
-      axios.get("school_class/list?date="+week)
+      axios.get("/schoolclass/list?date="+week)
       .then(e => {
-         $("#byDate").empty();
-        var geocoder = new kakao.maps.services.Geocoder();
+         $("#class-box").empty();
+        let geocoder = new kakao.maps.services.Geocoder();
+        let classhtml = ''
         for(let data of e.data) {
-          $("#byDate").append("<li>" + data.name +"</li>")
-          $("#byDate").append("<li>" + data.photo +"</li>")
-          $("#byDate").append("<li>" + data.nowMemberCount + "/" + data.member + "</li>")
-          geocoder.addressSearch(""+data.location+"", function(result,status) {
-            console.log("adsasddasasdasd")
+              let html = '';
+              console.log(data);
+              html += '<li style="cursor:pointer">'
+              html += '<div class="timeline-dots"></div>'
+              html += '<div class="container d-flex align-items-center justify-content-between">'
+              html += '<img src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/schoolclass/'+data.photo+'?type=f&w=40&h=40" class="rounded-circle" style="width : 40px; height : 40px;">'
+              html += '<div class="col-lg-4"><h6 class="mb-1 text-center">'+data.name+'</h6></div>'
+              html += '<div class="col-lg-2">'+moment(data.startAt).format('HH시mm분')+'</div>'
+              html += '<div class="col-lg-2">'+data.nowMemberCount+'/'+data.member+'</div>'
+              html += '</div>'
+              html += '<div class="d-inline-block w-100"></div></li>'
+          geocoder.addressSearch(""+data.locationDetail+"", function(result,status) {
             if(status ==kakao.maps.services.Status.OK) {
-              var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                      var marker = new kakao.maps.Marker({
+              let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                      let marker = new kakao.maps.Marker({
                           map: map,
                           position: coords
                       });
-                      var infowindow = new kakao.maps.InfoWindow({
-                          content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+                      let infowindow = new kakao.maps.InfoWindow({
+                          content: '<a>'+data.name+'</a>'
                       });
-                      infowindow.open(map, marker);
-                      map.setCenter(coords);
+
+                      kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+                      kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+                      kakao.maps.event.addListener(marker, 'click', function() {
+                           alert('dddd');
+                      });
                         }
                       })
-
+            classhtml += html;
         }
+        $('#class-box').append(classhtml)
       })
     }
 
-  var geocoder = new kakao.maps.services.Geocoder();
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
 
 
+var geocoder = new kakao.maps.services.Geocoder();
+const address = document.getElementById('address').value
   mapContainer = document.getElementById('map')
-  geocoder.addressSearch('서울특별시 서초구 방배로 93', function(result, status) {
-      console.log("테스트");
+  geocoder.addressSearch(address, function(result, status) {
        if (status === kakao.maps.services.Status.OK) {
           mapOption = {
           center: new kakao.maps.LatLng(result[0].y, result[0].x),
-          level: 6
+          level: 4
       };
       map = new kakao.maps.Map(mapContainer, mapOption);
 
@@ -117,13 +226,52 @@
       // schoolNo를 사용하여 해당 학교 페이지로 이동
       window.location.href = '/school/detail?schoolNo=' + schoolNo; // 적절한 URL로 수정
   }
-</script>
+function weekClass() {
+   axios.get("/index/weekClass")
+  .then((e)=> {
+     $("#class-box").empty();
+        let geocoder = new kakao.maps.services.Geocoder();
+        let classhtml = ''
+        for(let data of e.data) {
+              console.log(data);
+              classhtml += '<li style="cursor:pointer">'
+              classhtml += '<div class="timeline-dots"></div>'
+              classhtml += '<div class="container d-flex align-items-center justify-content-between">'
+              classhtml += '<img src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/schoolclass/'+data.photo+'?type=f&w=40&h=40" class="rounded-circle" class="rounded-circle" style="width : 40px; height : 40px;">'
+              classhtml += '<div class="col-lg-4"><h6 class="mb-1 text-center">'+data.name+'</h6></div>'
+              classhtml += '<div class="col-lg-2">'+moment(data.startAt).format('HH시mm분')+'</div>'
+              classhtml += '<div class="col-lg-2">'+data.nowMemberCount+'/'+data.member+'</div>'
+              classhtml += '</div>'
+              classhtml += '<div class="d-inline-block w-100"></div></li>'
+          geocoder.addressSearch(""+data.locationDetail+"", function(result,status) {
+            if(status ==kakao.maps.services.Status.OK) {
+              let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                      let marker = new kakao.maps.Marker({
+                          map: map,
+                          position: coords
+                      });
+                      let infowindow = new kakao.maps.InfoWindow({
+                          content: '<a>'+data.name+'</a>'
+                      });
 
+                      kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+                      kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+                        }
+                      })
+
+        }
+        $('#class-box').append(classhtml)
+
+
+
+  })
+}
+weekClass();
+</script>
 <script th:inline="javascript">
   var loginUser = [[${loginUser}]];
   var alertList = [[${alerts}]];
 </script>
 <script src="/js/header.js"></script>
-
 </body>
 </html>

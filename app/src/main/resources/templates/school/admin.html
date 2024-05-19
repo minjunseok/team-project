@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
   <meta charset='UTF-8'>
-  <title>비트캠프 데브옵스 5기</title>
+  <title>모여라</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
         integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -12,137 +12,315 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <!-- 공통 헤더 적용 첨부 -->
-  <link rel="stylesheet" href="/static/admin/css/header.css"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
-        rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
+
+  <style>
+    /* 공통 스타일 */
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      margin-top: 50px;
+      margin-bottom: 30px;
+
+    }
+    .menu-item {
+      margin-top: 20px;
+      cursor: pointer;
+      padding: 15px 0;
+      color: #fff;
+      border-radius: 30px;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    .menu-item:hover {
+      transform: scale(1.1);
+    }
+    .item {
+      background-color: rgb(158, 137, 106);
+    }
+
+    /* 모달 스타일 */
+    .modal-header {
+      background-color: rgb(158, 137, 106);
+      color: #fff;
+      border-bottom: none;
+    }
+
+    .modal-content {
+      background-color: #f8f9fa;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+
+    }
+
+    .modal-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+
+    }
+
+    .modal-title {
+      font-weight: bold;
+    }
+
+    /* 테이블 스타일 */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      color: black;
+    }
+
+    /* 버튼 스타일 */
+    .btn {
+      border-radius: 20px;
+      padding: 8px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-outline-danger {
+      color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .btn-outline-danger:hover {
+      background-color: #dc3545;
+      color: #fff;
+    }
+
+    .btn-outline-success {
+      color: #28a745;
+      border-color: #28a745;
+    }
+
+    .btn-outline-success:hover {
+      background-color: #28a745;
+      color: #fff;
+    }
+
+    .btn-close {
+      color: #fff;
+      opacity: 1;
+      font-size: 22px;
+    }
+
+  /* 체크된 라디오 버튼 스타일 */
+  .btn-group > input[type="radio"]:checked + label.custom-btn {
+    background-color: rgb(158, 137, 106);
+    color: white;
+    border-color: rgb(158, 137, 106);
+
+  }
+
+  /* 마우스를 올렸을 때 스타일 */
+  .btn-group > input[type="radio"]:hover + label.custom-btn {
+    border-color: rgb(158, 137, 106);
+    background-color: rgba(158, 137, 106, 0.1); /* 마우스를 올렸을 때 배경색 지정 */
+    color: black;
+  }
+
+  /* 버튼이 눌렸을 때 스타일 */
+  .btn-group > input[type="radio"]:active + label.custom-btn {
+    border-color: rgb(158, 137, 106);
+    background-color: rgba(158, 137, 106, 0.3); /* 버튼이 눌렸을 때 배경색 지정 */
+    color: black;
+  }
+
+  /* 기본 스타일 */
+  .custom-btn {
+    color: rgb(158, 137, 106); /* 버튼 내 텍스트 색상 */
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  h5 {
+    text-align: center;
+  }
+  
+  .centered {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .checkbox-container {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+
+.checkbox-container.checked .checkbox-image {
+   opacity: 1; /* 체크된 상태일 때 이미지를 더 진하게 만듭니다. */
+
+}
+
+.checkbox-container.checked::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5; /* 선택사항: 투명도 조절 */
+  border-radius: 5px; /* 선택사항: 둥근 경계를 위해 추가 */
+  z-index: 1; /* 이미지 위로 표시 */
+}
+
+
+.checkbox-container {
+  display: inline-block;
+  text-align: center;
+  margin-right: 20px; /* 사진과 사진 사이의 간격 조절 */
+}
+
+.checkbox-container .checkbox-image {
+  display: block;
+  opacity: 0.5; /* 체크되지 않은 상태일 때 이미지를 반투명하게 만듭니다. */
+  margin-bottom: 5px; /* 사진 아래에 이름과의 간격 조절 */
+}
+  
+  
+  
+
+  </style>
+
 </head>
 <body>
 
-<!--<div data-th-replace="header :: header">머리말</div>-->
-
 <div class="container">
   <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 text-center">
+      <div class="menu-item item" id="school_setting" onclick="schoolForm()">스쿨 정보 수정</div>
+      <div class="menu-item item" id="user_setting" onclick="modal1()">회원 관리</div>
+      <div class="menu-item item" id="submit_setting" onclick="modal2()">블랙리스트 관리</div>
+      <div class="menu-item item" id="black_setting" onclick="modal3()">가입 승인 관리</div>
+      <div class="menu-item item" id="private_setting" onclick="modal4()">공개 여부</div>
+      <div class="menu-item item" id="school_delete" onclick="schoolDeleteForm()">스쿨 삭제</div>
     </div>
-    <div class="col-md-8" style="text-align:center;" id="">
-      <div id="school_setting" onclick="schoolForm()">스쿨 정보 수정</div>
-      <div id="user_setting" onclick="modal1()">회원 관리</div>
-      <div id="submit_setting" onclick="modal2()">블랙리스트 관리</div>
-      <div id="black_setting" onclick="modal3()">가입 승인 관리</div>
-      <div id="private_setting" onclick="modal4()">공개여부</div>
-      <div id="school_statistics" onclick="modal5()">스쿨 통계</div>
-      <div id="school_delete" onclick="schoolDeleteForm()">스쿨 삭제</div>
-      <!-- modal member list -->
-      <div class="modal" id="member">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">회원 관리</h5>
-              <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-              <table>
-                <thead>
-                <tr>
-                  <th>사진</th>
-                  <th>닉네임</th>
-                  <th>등급</th>
-                  <th>부 매니저 관리</th>
-                  <th>블랙리스트 추가</th>
-                </tr>
-                </thead>
-                <tbody id="member-list">
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="submit">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">회원 관리</h5>
-              <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-              <table>
-                <thead>
-                <tr>
-                  <th>사진</th>
-                  <th>닉네임</th>
-                  <th>버튼</th>
-                </tr>
-                </thead>
-                <tbody id="submit-list">
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="black">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">회원 관리</h5>
-              <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-              <table>
-                <thead>
-                <tr>
-                  <th>사진</th>
-                  <th>닉네임</th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody id="black-list">
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal" id="openClosed">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">회원 관리</h5>
-              <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-              <table>
-                <tbody id="openClosed-check">
-                <input class="openClosed" name="openClosed" id="open" type="radio" value=1>공개
-                <input class="openClosed" name="openClosed" id="closed" type="radio" value=0>비공개
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div data-th-replace="school/modal/school :: school-modal">스쿨 변경</div>
-
-      <div data-th-replace="school/modal/delete :: school-modal">스쿨 삭제</div>
-
-    </div>
-
-
-  </div>
-  <div class="col-md-2" style="text-align:center;">
+    <div class="col-md-2"></div>
   </div>
 </div>
+
+<div class="modal fade" id="member">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">회원 관리</h5>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+      </div>
+      <div class="modal-body">
+        <table>
+          <thead>
+          <tr>
+            <th>사진</th>
+            <th>닉네임</th>
+            <th>등급</th>
+            <th>부 매니저 관리</th>
+            <th>블랙리스트 추가</th>
+          </tr>
+          </thead>
+          <tbody id="member-list">
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
+<div class="modal fade" id="submit">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">가입 승인 관리</h5>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+      </div>
+      <div class="modal-body">
+        <table>
+          <thead>
+          <tr>
+            <th>사진</th>
+            <th>닉네임</th>
+            <th>승인/거절</th>
+          </tr>
+          </thead>
+          <tbody id="submit-list">
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="black">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">블랙리스트 관리</h5>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+      </div>
+      <div class="modal-body">
+        <table>
+          <thead>
+          <tr>
+            <th>사진</th>
+            <th>닉네임</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody id="black-list">
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="openClosed">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">공개여부</h5>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+      </div>
+      <div class="modal-body">
+        <div class="btn-group" role="group" aria-label="공개여부">
+          <input class="btn-check openClosed" type="radio" name="openClosed" id="open" value="1">
+          <label class="btn btn-outline-primary custom-btn" for="open">공개</label>
+        </div>
+        <div class="btn-group" role="group" aria-label="공개여부">
+          <input class="btn-check openClosed" type="radio" name="openClosed" id="closed" value="0">
+          <label class="btn btn-outline-primary custom-btn" for="closed">비공개</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-th-replace="school/modal/school :: school-modal">스쿨 변경</div>
+<div data-th-replace="school/modal/delete :: school-modal">스쿨 삭제</div>
 
 <script>
   const modal1 = () => {
@@ -165,31 +343,42 @@
       myModal.show();
   }
 
+
   $(document).on('click', '.auth', function() {
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const schoolNo = params.get('schoolNo');
-    const userNo = $(this).parent().parent().find(".userNo").val()
-    const button = this;
-    $(".auth").prop('disabled', true)
-    axios.post("admin/levelUpdate", {
-      userNo,
-      schoolNo
-    })
-    .then((e) => {
-      if(e.status===200) {
-        console.log(userNo)
-        if(e.data===2) {
-           $(button).text("부 매니저 임명")
-        } else if(e.data===3) {
-           $(button).text("권한 해지")
+      const queryString = window.location.search;
+      const params = new URLSearchParams(queryString);
+      const schoolNo = params.get('schoolNo');
+      const userNo = $(this).parent().parent().find(".userNo").val();
+      const button = this;
+      $(".auth").prop('disabled', true);
+
+      const level = 3;
+
+      // 요청 헤더에 인증 정보를 포함하여 POST 요청을 보냅니다.
+      axios.post("http://localhost:8080/school/admin/levelUpdate", {
+        userNo,
+        schoolNo,
+        level
+      }, {
+        withCredentials: true // 인증 정보를 포함하여 요청을 보냅니다.
+      })
+      .then((response) => {
+        if(response.status === 200) {
+          console.log(userNo);
+          if(response.data === 2) {
+             $(button).text("부 매니저 임명");
+          } else if(response.data === 3) {
+             $(button).text("권한 해지");
+          }
+          setTimeout(() => {
+            $(".auth").prop('disabled', false);
+          });
         }
-        setTimeout(() => {
-          $(".auth").prop('disabled', false)
-      }, 2000);
-      }
-    })
-  })
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
 
   $(document).on('click', '.black', function() {
     const queryString = window.location.search;
@@ -224,20 +413,31 @@
   })
 
   $(document).on('click', '.approve', function() {
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const schoolNo = params.get('schoolNo');
-    const userNo = $(this).parent().parent().find(".userNo").val()
-    axios.post("admin/sub/approve", {
-      userNo,
-      schoolNo
-    })
-    .then((e)=> {
-      if(e.status===200) {
-        $(this).parent().parent().empty();
-      }
-    })
-  })
+      const queryString = window.location.search;
+      const params = new URLSearchParams(queryString);
+      const schoolNo = params.get('schoolNo');
+      const userNo = $(this).parent().parent().find(".userNo").val();
+      const levelNo = 2; // level을 정의합니다.
+
+      axios.post("admin/sub/approve", {
+          userNo,
+          schoolNo,
+          level_no: levelNo // level을 level_no로 변경하여 POST 요청에 포함합니다.
+      })
+      .then((response) => {
+          if(response.status === 200) {
+              $(this).parent().parent().empty();
+              console.log('사용자가 성공적으로 승인되었습니다.');
+              console.log(userNo);
+              console.log(schoolNo);
+              console.log(levelNo);
+          }
+      })
+      .catch((error) => {
+          console.error('사용자 승인 중 오류 발생:', error);
+          console.log(levelNo);
+      });
+  });
 
   $(document).on('click', '.reject', function() {
     const queryString = window.location.search;
@@ -246,7 +446,7 @@
     const userNo = $(this).parent().parent().find(".userNo").val()
     axios.post("admin/sub/reject", {
       userNo,
-      schoolNo
+      schoolNo,
     })
     .then((e)=> {
       if(e.status===200) {
@@ -260,11 +460,18 @@
       const params = new URLSearchParams(queryString);
       const schoolNo = params.get('schoolNo');
       const openRange = $(this).val()
+
       axios.post("admin/openClosed", {
         schoolNo,
         openRange
-      })
+      }).then(() => {
+        console.log(openRange);
+        openClosedCheck(); // 값 변경 후에 openClosedCheck 함수 호출하여 라디오 버튼 업데이트
+      }).catch((error) => {
+        console.error('Error:', error);
+      });
   })
+
 
   function userList() {
     const queryString = window.location.search;
@@ -272,13 +479,14 @@
     const schoolNo = params.get('schoolNo');
       axios.get("admin/userList?schoolNo="+schoolNo)
       .then((e) => {
+        console.log(e.data);
         $("#member-list").empty()
         for(let d of e.data) {
           let text = ""
           text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-          text += "<th>"+d.member.photo+"</th>"
+          text += "<td><img src='https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/" + d.member.photo + "?type=f&w=80&h=80' alt='사진'></td>";
           text += "<th>"+d.member.nickname+"</th>"
-          text += "<th>"+d.level.name+"</th>"
+          text += "<th>"+d.level.levelName+"</th>"
           if(d.levelNo===3) {
             text += "<th><button class='btn btn-outline-danger btn-sm auth'>권한 해지</button></th>"
           } else if(d.levelNo===2) {
@@ -288,8 +496,7 @@
          $("#member-list").append(text)
         }
       })
-
-  }
+    }
 
   function blackList() {
     const queryString = window.location.search;
@@ -301,14 +508,13 @@
         for(let d of e.data) {
           let text = ""
           text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-          text += "<th>"+d.member.photo+"</th>"
+          text += "<td><img src='https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/" + d.member.photo + "?type=f&w=80&h=80' alt='사진'></td>";
           text += "<th>"+d.member.nickname+"</th>"
           text += "<th><button class='btn btn-outline-success btn-sm unlock'>블랙리스트 해지</button></th></tr>"
          $("#black-list").append(text)
         }
       })
-
-  }
+    }
 
   function submitList() {
     const queryString = window.location.search;
@@ -320,23 +526,23 @@
         for(let d of e.data) {
           let text = ""
           text += "<tr><input type=hidden class='userNo' value="+d.userNo+">"
-          text += "<th>"+d.member.photo+"</th>"
+          text += "<td><img src='https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/" + d.member.photo + "?type=f&w=80&h=80' alt='사진'></td>";
           text += "<th>"+d.member.nickname+"</th>"
-          text += "<th><button class='btn btn-outline-success btn-sm approve'>승인</button></th>"
-          text += "<th><button class='btn btn-outline-danger btn-sm reject'>거절</button></th></tr>"
+          text += "<th><button class='btn btn-outline-success btn-sm approve'>승인</button>"
+          text += "<button class='btn btn-outline-danger btn-sm reject'>거절</button></th></tr>"
          $("#submit-list").append(text)
         }
       })
-
-  }
+    }
 
   function openClosedCheck() {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
     const schoolNo = params.get('schoolNo');
+
     axios.get("admin/openClosedCheck?schoolNo="+schoolNo)
-    .then((e) => {
-      const openRange = e.data.openRange
+    .then((response) => {
+      const openRange = response.data.openRange
       if(openRange===1) {
         $("#open").prop("checked", true)
       } else if(openRange===0) {
@@ -351,8 +557,12 @@
           submitList();
           openClosedCheck();
   });
-
-
 </script>
+
+
+
+
+
+
 </body>
 </html>

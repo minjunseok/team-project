@@ -46,29 +46,30 @@
   </insert>
 
   <select id="findBy" resultMap="UserMap" parameterType="int">
-    select
-    u.name,
-    u.address,
-    u.phone,
-    u.email,
-    u.nickname,
-    u.birth,
-    u.gender,
-    u.grade,
-    u.created_at,
-    u.profile,
-    u.manner_point,
-    u.photo,
-    u.address_detail,
-    ut.user_no,
-    ut.tag_no
-    from
-    users as u
-    inner join
-    user_tags as ut on u.user_no = ut.user_no
-    where
-    u.user_no =#{no};
+      select
+          u.user_no,
+          u.name,
+          u.address,
+          u.phone,
+          u.email,
+          u.nickname,
+          u.birth,
+          u.gender,
+          u.grade,
+          u.created_at,
+          u.profile,
+          u.manner_point,
+          u.photo,
+          u.address_detail,
+          ut.tag_no
+      from
+          users as u
+      inner join
+          user_tags as ut on u.user_no = ut.user_no
+      where
+          u.user_no =#{no};
   </select>
+
 
   <insert id="add2" parameterType="list">
     insert into member_tags(user_no,tag_no)
@@ -76,9 +77,10 @@
   </insert>
 
   <insert id="save" parameterType="User" useGeneratedKeys="true" keyColumn="user_no" keyProperty="no">
-    insert into users(name,email,phone,provider,provider_id,role,created_at)
-    values(#{name},#{email},#{phone},#{provider},#{providerId},#{role},NOW())
-  </insert>
+      insert into
+      users(name,address,phone,email,nickname,birth,gender,created_at,profile,photo,address_detail,provider,provider_id,role)
+      values(#{name},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},NOW(),#{profile},#{photo},#{addressDetail},#{provider},#{providerId},#{role})
+    </insert>
 
   <delete id="delete" parameterType="int">
     delete from users where user_no=#{value}
@@ -101,42 +103,51 @@
       name,
       nickname,
       photo,
-      created_at
+      created_at,
+      address
     from
     users
     where
-    user_no=#{value}
+    user_no=#{no}
   </select>
 
   <select id="findByEmail" resultMap="UserMap" parameterType="string">
-    select
-        *
-    from
-    users
-    where
-      email=#{value}
-  </select>
+      select
+      user_no,
+      email,
+      password,
+      name
+      from
+      users
+      where
+          email=#{email}
+    </select>
 
-  <update id="update" parameterType="User">
-    update users set
-    email=#{email},
-    nickname=#{nickname},
-    phone=#{phone},
-    address=#{address},
-    photo=#{photo}
-    profile=#{profile}
-    <if test="password != ''">
-      , password=#{password}
-    </if>
-    where
-    user_no=#{no}
-  </update>
+   <update id="update" parameterType="User">
+   update users set
+       address=#{address},
+       phone=#{phone},
+       nickname=#{nickname},
+       birth=#{birth},
+       photo=#{photo},
+       profile=#{profile},
+       address_detail=#{addressDetail}
+   where
+       user_no=#{no};
+      </update>
 
   <update id="updatePassword" parameterType="User">
     update users set
     password=#{password}
     where
     email=#{email}
+  </update>
+
+  <update id="passwordUpdate" parameterType="User">
+  update users set
+      password = #{password}
+  where
+      user_no=#{no}
   </update>
 
   <select id="findByNameAndPhone" resultType="string">
@@ -270,5 +281,151 @@
     users
     group by local
     order by ctn desc
+  </select>
+
+  <resultMap id="ProfileMap" type="moyeora.myapp.dto.profile.ProfileResponseDTO">
+    <id column="user_no" property="userNo"/>
+    <result column="photo" property="photo"/>
+    <result column="name" property="name"/>
+    <result column="nickname" property="nickname"/>
+    <result column="email" property="email"/>
+    <result column="grade" property="grade"/>
+    <result column="post_count" property="postCount"/>
+    <result column="follower_count" property="followerCount"/>
+    <result column="following_count" property="followingCount"/>
+    <collection property="posts" ofType="moyeora.myapp.dto.profile.ProfilePostResponseDTO">
+      <id column="post_no" property="postNo"/>
+      <result column="content" property="content"/>
+      <result column="created_at" property="createdAt"/>
+      <result column="like_count" property="likeCount"/>
+      <result column="comment_count" property="commentCount"/>
+      <collection property="comments" ofType="moyeora.myapp.dto.profile.ProfileCommentResponseDTO">
+        <id column="comment_no" property="commentNo"/>
+        <result column="comment_content" property="commentContent"/>
+        <result column="comment_created_at" property="commentCreatedAt"/>
+        <association property="commentUser" javaType="moyeora.myapp.dto.profile.ProfileCommentUserResponseDTO">
+          <id column="comment_user_no" property="commentUserNo"/>
+          <result column="comment_user_email" property="commentUserEmail"/>
+          <result column="comment_user_nickname" property="commentUserNickname"/>
+          <result column="comment_user_photo" property="commentUserPhoto"/>
+        </association>
+      </collection>
+    </collection>
+  </resultMap>
+
+  <select id="findAllPostsByUserNo" resultMap="ProfileMap">
+    select
+    u.user_no user_no,
+    u.photo photo,
+    u.name name,
+    u.nickname nickname,
+    u.email email,
+    u.grade grade,
+    (select count(*) from follows where follower_user_no = #{userNo}) follower_count,
+    (select count(*) from follows where following_user_no = #{userNo}) following_count,
+    (select count(*) from posts where user_no = #{userNo}) post_count,
+    p.post_no post_no,
+    p.content content,
+    p.created_at created_at,
+    (select count(*) from likes l where l.post_no = p.post_no) like_count,
+    (select count(*) from comments c2 where c2.post_no=p.post_no) comment_count,
+    c.comment_no comment_no,
+    c.content comment_content,
+    c.created_at comment_created_at,
+    u2.user_no comment_user_no,
+    u2.email comment_user_email,
+    u2.nickname comment_user_nickname,
+    u2.photo comment_user_photo
+    from users u
+    left outer join (select * from posts where user_no = #{userNo} limit #{limit} offset #{offset}) p on u.user_no = p.user_no
+    left outer join comments c on p.post_no = c.post_no
+    left outer join users u2 on c.user_no = u2.user_no
+    where u.user_no = #{userNo}
+    order by p.created_at desc, c.created_at desc
+  </select>
+
+  <select id="findSchoolPostByUserNo" resultMap="ProfileMap">
+    select
+    DISTINCT
+    u.user_no user_no,
+    u.photo photo,
+    u.name name,
+    u.nickname nickname,
+    u.email email,
+    p.post_no post_no,
+    p.content content,
+    p.created_at created_at,
+    (select count(*) from likes l where l.post_no = p.post_no) like_count,
+    (select count(*) from comments c2 where c2.post_no=p.post_no) comment_count,
+    c.comment_no comment_no,
+    c.content comment_content,
+    c.created_at comment_created_at,
+    u2.user_no comment_user_no,
+    u2.email comment_user_email,
+    u2.nickname comment_user_nickname,
+    u2.photo comment_user_photo
+    from users u
+    left outer join (select * from posts limit 5 offset 0) p on u.user_no = p.user_no
+    left outer join comments c on p.post_no = c.post_no
+    left outer join users u2 on c.user_no = u2.user_no
+    where p.school_no in (select school_no from school_users where user_no=#{userNo})
+    order by p.created_at desc, c.created_at desc;
+  </select>
+
+  <select id="findFollowerPostByUserNo" resultMap="ProfileMap">
+    select
+    DISTINCT
+    u.user_no user_no,
+    u.photo photo,
+    u.name name,
+    u.nickname nickname,
+    u.email email,
+    p.post_no post_no,
+    p.content content,
+    p.created_at created_at,
+    (select count(*) from likes l where l.post_no = p.post_no) like_count,
+    (select count(*) from comments c2 where c2.post_no=p.post_no) comment_count,
+    c.comment_no comment_no,
+    c.content comment_content,
+    c.created_at comment_created_at,
+    u2.user_no comment_user_no,
+    u2.email comment_user_email,
+    u2.nickname comment_user_nickname,
+    u2.photo comment_user_photo
+    from users u
+    left outer join (select * from posts limit 5 offset 0) p on u.user_no = p.user_no
+    left outer join comments c on p.post_no = c.post_no
+    left outer join users u2 on c.user_no = u2.user_no
+    where u.user_no in (select follower_user_no from follows where following_user_no=#{userNo})
+    order by p.created_at desc, c.created_at desc;
+  </select>
+
+  <select id="findLikePostByUserNo" resultMap="ProfileMap">
+    select
+    DISTINCT
+    u.user_no user_no,
+    u.photo photo,
+    u.name name,
+    u.nickname nickname,
+    u.email email,
+    p.post_no post_no,
+    p.content content,
+    p.created_at created_at,
+    (select count(*) from likes l where l.post_no = p.post_no) like_count,
+    (select count(*) from comments c2 where c2.post_no=p.post_no) comment_count,
+    c.comment_no comment_no,
+    c.content comment_content,
+    c.created_at comment_created_at,
+    u2.user_no comment_user_no,
+    u2.email comment_user_email,
+    u2.nickname comment_user_nickname,
+    u2.photo comment_user_photo
+    from users u
+    left outer join (select * from posts limit 5 offset 0) p on u.user_no = p.user_no
+    left outer join comments c on p.post_no = c.post_no
+    left outer join users u2 on c.user_no = u2.user_no
+    inner join school_tags st on p.school_no = st.school_no
+    where st.tag_no in (select tag_no from user_tags where user_no=#{userNo})
+    order by like_count desc;
   </select>
 </mapper>

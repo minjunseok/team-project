@@ -17,8 +17,8 @@ public class DefaultSchoolMemberService implements SchoolMemberService {
 
 
   @Override
-  public List<SchoolMember> list(int schoolNo) {
-    return schoolMemberDao.findAllBySchoolNo(schoolNo);
+  public List<SchoolMember> list(int classNo) {
+    return schoolMemberDao.findByClassMember(classNo);
   }
 
 

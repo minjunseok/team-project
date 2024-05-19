@@ -6,6 +6,7 @@ import moyeora.myapp.dto.admin.statistics.AdminUserBirthResponseDTO;
 import moyeora.myapp.dto.admin.statistics.AdminUserGenderResponseDTO;
 import moyeora.myapp.dto.admin.statistics.AdminUserLocalResponseDTO;
 import moyeora.myapp.dto.admin.user.AdminUserListResponseDTO;
+import moyeora.myapp.dto.profile.ProfileResponseDTO;
 import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -66,5 +67,13 @@ public interface UserDao {
     public List<User> findAllNoMaster(int limit);
 
     public int passwordUpdate(User user);
+
+    ProfileResponseDTO findAllPostsByUserNo(int userNo, int limit, int offset);
+
+    ProfileResponseDTO findFollowerPostByUserNo(int userNo, int limit, int offset);
+
+    ProfileResponseDTO findLikePostByUserNo(int userNo, int limit, int offset);
+
+    ProfileResponseDTO findSchoolPostByUserNo(int userNo, int limit, int offset);
 
 }

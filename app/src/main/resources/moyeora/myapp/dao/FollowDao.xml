@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moyeora.myapp.dao.FollowDao">
+
+    <select id="findFollowingByUserNo" resultType="moyeora.myapp.dto.profile.FollowListResponseDTO">
+        select
+        DISTINCT
+        u.user_no userNo,
+        u.photo photo,
+        u.name name,
+        u.nickname nickname,
+        (select COUNT(*)
+        from follows
+        where follower_user_no  = u.user_no
+        group by follower_user_no) followerCount
+        from
+        follows f
+        right outer join users u on f.following_user_no = u.user_no
+        where
+        user_no in (select follower_user_no from follows where following_user_no=#{userNo});
+    </select>
+
+    <select id="findFollowerByUserNo" resultType="moyeora.myapp.dto.profile.FollowListResponseDTO">
+        select
+        DISTINCT
+        u.user_no userNo,
+        u.photo photo,
+        u.name name,
+        u.nickname nickname,
+        (select COUNT(*)
+        from follows
+        where follower_user_no  = u.user_no
+        group by follower_user_no) followerCount
+        from
+        follows f
+        right outer join users u on f.follower_user_no = u.user_no
+        where
+        u.user_no in (select following_user_no from follows where follower_user_no=#{userNo});
+    </select>
+
+    <select id="checkFollow" resultType="int">
+        select
+         count(*)
+        from
+         follows
+        where
+         follower_user_no = #{followerUserNo}
+        and following_user_no = #{followingUserNo}
+    </select>
+
+    <delete id="deleteFollow">
+        delete
+        from
+         follows
+        where
+        follower_user_no = #{followerUserNo}
+        and following_user_no = #{followingUserNo}
+    </delete>
+
+    <insert id="addFollow">
+        insert into follows(following_user_no, follower_user_no)
+        values(#{followingUserNo}, #{followerUserNo})
+    </insert>
+</mapper>

@@ -46,7 +46,7 @@
 
 
 
-    <select id="findByDate" resultMap="ClassMap" parameterType="String">
+    <select id="findByDate" resultMap="ClassMap">
         select
         class_no,
         (select count(*) from class_users as u where c.class_no = u.class_no) as now_member_count,
@@ -61,11 +61,28 @@
         school_classes as c
         where
         date_format(start_at, '%Y-%m-%d') = '${date}'
+        and location_detail like '%${str}%'
+        order by start_at asc
     </select>
 
-  <select id="findByUserAddress" resultMap="ClassMap" parameterType="String">
-
-  </select>
+    <select id="findByWeek" resultMap="ClassMap">
+            select
+            class_no,
+            (select count(*) from class_users as u where c.class_no = u.class_no) as now_member_count,
+            name,
+            content,
+            location,
+            location_detail,
+            start_at,
+            member,
+            photo
+            from
+            school_classes as c
+            where
+            date_format(start_at, '%Y-%m-%d') in (${weekString})
+            and location_detail like '%${address}%'
+            order by start_at asc
+    </select>
 
 <insert id="add" parameterType="SchoolClass"
     useGeneratedKeys="true" keyColumn="class_no" keyProperty="no">
@@ -130,5 +147,27 @@ where
 
 </delete>
 
+    <delete id="deleteAllSchoolClass" parameterType="int">
+        DELETE FROM school_classes WHERE school_no=#{value}
+    </delete>
 
+<update id="classUpdate">
+update school_classes set
+    school_no=#{schoolNo},
+    name=#{name},
+    start_at=#{startAt},
+    ended_at=#{endedAt},
+    content=#{content},
+    photo=#{photo},
+    location=#{location},
+    location_detail=#{locationDetail}
+where
+    user_no = #{userNo}
+    and
+    class_no = #{no}
+  </update>
+
+    <delete id="deleteAllSchoolClassUser" parameterType="int">
+        DELETE FROM class_users WHERE school_no=#{value}
+    </delete>
 </mapper>

@@ -5,7 +5,6 @@
 <mapper namespace="moyeora.myapp.dao.PostDao">
 
   <resultMap id="PostMap" type="Post">
-
     <id column="post_no" property="no"/>
     <result column="school_no" property="schoolNo"/>
     <result column="user_no" property="userNo"/>
@@ -55,14 +54,13 @@
     useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
     insert into posts(content, school_no, user_no, created_at)
     values(#{content}, #{schoolNo}, #{userNo}, NOW())
-<!--    values(#{content}, 1, 1, NOW())-->
 </insert>
 
 
     <insert id="addNotice" parameterType="Post"
         useGeneratedKeys="true" keyColumn="post_no" keyProperty="no">
         insert into posts(content, school_no, user_no, created_at, category_no)
-        values(#{content}, 1, #{userNo}, NOW(), 1)
+        values(#{content}, #{schoolNo}, #{userNo}, NOW(), 1)
     </insert>
 
 
@@ -94,6 +92,15 @@
         UPDATE posts set
 
         category_no=0
+
+        where
+        post_no=#{no}
+    </update>
+
+    <update id="noticeFixedCancel" parameterType="Post">
+        UPDATE posts set
+
+        category_no=1
 
         where
         post_no=#{no}
@@ -181,7 +188,7 @@
   </select>
   <select id="findByUser" resultMap="PostMap" parameterType="int">
     SELECT
-    u.user_no,
+    u.user_no user_no,
     u.name AS user_name,
     p.post_no,
     s.school_no,
@@ -199,6 +206,8 @@
     INNER JOIN schools s ON s.school_no = p.school_no
     INNER JOIN users u ON p.user_no = u.user_no
     LEFT OUTER JOIN files f ON p.post_no = f.post_no
+    LEFT OUTER JOIN comments c ON p.post_no = c.post_no
+    INNER JOIN users u2 ON c.user_no = u2.user_no
     where p.user_no=#{no}
     order by p.created_at desc;
   </select>
@@ -267,35 +276,33 @@
 
 <!-- 작성자 이름으로 게시글 검색 -->
 <select id="findBySchoolUserName" resultMap="PostMap">
-   SELECT
-        u.user_no,
-        u.nickname,
-        u.photo,
-        p.post_no,
-        s.school_no,
-        p.created_at,
-        (SELECT COUNT(*) FROM likes AS l WHERE l.post_no = p.post_no) AS like_count,
-        (SELECT COUNT(*) FROM comments AS c WHERE c.post_no = p.post_no) AS comment_count,
-        s.name AS school_name,
-        s.photo AS school_photo,
-        p.content,
-        f.path,
-        f.name,
-        f.post_no
+    SELECT
+    u.user_no,
+    u.nickname,
+    u.photo,
+    p.post_no,
+    s.school_no,
+    p.created_at,
+    (SELECT COUNT(*) FROM likes AS l WHERE l.post_no = p.post_no) AS like_count,
+    (SELECT COUNT(*) FROM comments AS c WHERE c.post_no = p.post_no) AS comment_count,
+    s.name AS school_name,
+    s.photo AS school_photo,
+    p.content,
+    f.path,
+    f.name,
+    f.post_no
     FROM
-        posts p
-	INNER JOIN
-		school_users su ON su.school_no = p.school_no
+    posts p
     INNER JOIN
-        schools s ON s.school_no = su.school_no
+    schools s ON s.school_no = p.school_no
     INNER JOIN
-        users u ON su.user_no = u.user_no
+    users u ON p.user_no = u.user_no
     LEFT OUTER JOIN
-        files f ON p.post_no = f.post_no
+    files f ON p.post_no = f.post_no
     WHERE
-        u.nickname LIKE '%${keyword}%'
+    u.nickname LIKE '%${keyword}%'
     ORDER BY
-        like_count DESC;
+    like_count DESC;
 </select>
 
 
@@ -337,7 +344,7 @@
       p.school_no school_no,
       u.nickname,
       p.post_no post_no,
-      u.photo,
+      u.photo photo,
       p.content,
       p.created_at
 
@@ -425,6 +432,7 @@
 
     SELECT DISTINCT
 
+    p.user_no user_no,
     p.school_no school_no,
     u.nickname,
     p.post_no,
@@ -451,6 +459,12 @@
 
 
   </select>
+
+
+    <delete id="deleteAllSchoolPost" parameterType="int">
+        DELETE from posts
+        WHERE school_no = #{value}
+    </delete>
 
 
 </mapper>
