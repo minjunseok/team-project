@@ -14,12 +14,11 @@ body {
 }
 
 .chat-title {
-    background-color: #4CAF50;
+    background-color: #cbbca7;
     width: 100%;
     color: white;
     padding: 10px 20px;
     font-size: 18px;
-    font-weight: bold;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     margin: 0 auto;
@@ -30,7 +29,7 @@ body {
 
 #conversation {
     max-height: 500px;
-    background-color: #fff;
+    background-color: #f5f5f5;
     border: 1px solid #e5e5e5;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -87,13 +86,13 @@ body {
 
 .receiver-wrap .message-text{
     margin-left: 20px;
-    background-color: #cbbca7;
+    background-color: #cbbca788;
 }
 
 .receiver-wrap .message-text::before{
    left: -11px;
    content: "◀";
-   color: #cbbca7;
+   color: #cbbca788;
 }
 
 .sender-wrap {
@@ -102,13 +101,13 @@ body {
 
 .sender-wrap .message-text {
      margin-right: 20px;
-     background-color: #DCF8C6;
+     background-color: #fff;
 }
 
 .sender-wrap .message-text::before {
      right: -11px;
      content: "▶";
-     color: #DCF8C6;
+     color: #fff;
 }
 
 .origin {
@@ -196,7 +195,7 @@ body {
 
 /* 전송 버튼 스타일 */
 .send-button {
-  background-color: #4CAF50;
+  background-color: #cbbca7;
   color: white;
   border: none;
   border-radius: 20px;
@@ -208,5 +207,6 @@ body {
 
 /* 전송 버튼 호버 효과 */
 .send-button:hover {
-  background-color: #45a049;
+  color: block;
+  background-color: #cbbca788;
 }

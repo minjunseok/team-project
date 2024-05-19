@@ -143,12 +143,9 @@ public class AuthController {
       email = (String)redisUtil.getData(authId+"_e");
       String oldPassword = userService.get(email).getPassword();
       String newPassword = createCode();
-      log.debug("oldPassword = " + oldPassword);
-      log.debug("newPassword = " + newPassword);
-      log.debug("newPassword(encode) = " + passwordEncoderConfig.passwordEncoder().encode(newPassword));
       User user = new User();
       user.setEmail(email);
-      user.setPassword(passwordEncoderConfig.passwordEncoder().encode(newPassword));
+      user.setPassword(newPassword);
       if (userService.updatePassword(user) < 1) {
         throw new Exception("비밀번호 변경 오류");
       }
