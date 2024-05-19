@@ -7,7 +7,7 @@ import moyeora.myapp.vo.User;
 
 import java.util.List;
 
-public interface SchoolClassService {
+public interface  SchoolClassService {
 
   public List<SchoolClass> findBySchoolUser(int schoolNo);
   public List<SchoolClass> findByDate(String date);

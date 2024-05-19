@@ -5,7 +5,7 @@
 
 <mapper namespace="moyeora.myapp.dao.CommentDao">
   <resultMap id="CommentMap" type="Comment">
-    <id column="comment_no" property="no"/>
+    <id column="comment_no" property="commentNo"/>
     <result column="content" property="content"/>
     <result column="created_at" property="createdAt"/>
     <result column="user_no" property="userNo"/>
@@ -29,12 +29,23 @@
     </association>
   </resultMap>
 
-  <insert id="add" parameterType="Comment"
-          useGeneratedKeys="true" keyColumn="comment_no" keyProperty="no">
+  <insert id="addComment" parameterType="Comment"
+          useGeneratedKeys="true" keyColumn="comment_no" keyProperty="commentNo">
     insert into comments(content, created_at, user_no, post_no)
     values(#{content}, NOW() , #{userNo}, #{postNo})
   </insert>
 
+  <delete id="delete" parameterType="int">
+    delete from comments
+    where comment_no = #{commentNo};
+  </delete>
+
+  <update id="update" parameterType="Comment">
+    update comments set
+    content=#{content}
+    where
+    comment_no=#{commentNo};
+  </update>
 
   <select id="findByComment" resultMap="CommentMap">
     SELECT distinct
