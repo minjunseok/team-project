@@ -161,7 +161,7 @@ public class AuthController {
         redisUtil.deleteData(authId+"_e");
       }
     }
-    return "/auth/findPassword";
+    return "auth/findPassword";
   }
 
   private String createAuthId(String email) throws NoSuchAlgorithmException { // 이메일로 항상 유지되는 키값으로 사용할것.
