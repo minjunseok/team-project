@@ -43,7 +43,7 @@
             <id column="user_no" property="no"/>
             <result column="name" property="name"/>
             <result column="nickname" property="nickname"/>
-            <result column="photo" property="photo"/>
+            <result column="receiverPhoto" property="photo"/>
         </association>
     </resultMap>
 
@@ -168,7 +168,7 @@
             u.user_no,
             u.name,
             u.nickname,
-            u.photo
+            u.photo receiverPhoto
         from
             dm d inner join users u on d.user_no=u.user_no
         where
@@ -184,7 +184,7 @@
             u.user_no,
             u.name,
             u.nickname,
-            u.photo
+            u.photo receiverPhoto
         from
             dm d inner join users u on d.user_no2=u.user_no
         where
