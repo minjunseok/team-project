@@ -43,7 +43,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     } else if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
       oAuth2UserInfo = new GoogleOAuth2UserInfo(oAuth2User.getAttributes());
     } else {
-      throw new OAuth2AuthenticationException(new OAuth2Error("OAuth2Error"),"요청하신 로그인 서비스는 지원되지 않습니다.");
+
+      throw new OAuth2AuthenticationException(new OAuth2Error("[로그인 에러] 요청하신 로그인 서비스는 지원되지 않습니다."),"This address is already being used.");
 
 
     }
@@ -65,7 +66,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             .role(role)
             .build();
       } else {
-        throw new OAuth2AuthenticationException(new OAuth2Error("OAuth2Error"),"이미 가입된 이메일입니다.");
+
+        throw new OAuth2AuthenticationException(new OAuth2Error("이미 가입된 이메일입니다."),"This address is already being used.");
+
+
       }
 
       try {

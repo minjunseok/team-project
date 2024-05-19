@@ -32,10 +32,12 @@ public class FileUploadHelper implements InitializingBean, FileUpload {
   private static final Log log = LogFactory.getLog(FileUploadHelper.class);
 
   public FileUploadHelper(
+
     @Value("${ncp.storage.endpoint}") String endPoint,
     @Value("${ncp.storage.region}") String regionName,
     @Value("${ncp.accesskey}") String accessKey,
     @Value("${ncp.secretkey}") String secretKey) {
+
     this.endPoint = endPoint;
     this.regionName = regionName;
     this.accessKey = accessKey;

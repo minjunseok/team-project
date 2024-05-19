@@ -50,6 +50,7 @@
     limit 3;
   </select>
 
+
   <select id="findBySchoolName" resultMap="SchoolMap" parameterType="String">
     select
     school_no,
@@ -134,8 +135,8 @@
       open_range=#{openRange}
     where
       school_no=#{schoolNo}
-
   </update>
+
 
   <select id="findAllByPageSize" resultMap="SchoolMap">
     select
@@ -199,7 +200,12 @@
 
 
   <delete id="deleteSchool" parameterType="int">
-    DELETE FROM schools WHERE school_no = #{value};
+    DELETE FROM schools WHERE school_no = #{value}
+  </delete>
+
+  <delete id="deleteSchoolGm" parameterType="int">
+    DELETE FROM gm
+    WHERE school_no = #{value}
   </delete>
 
 </mapper>

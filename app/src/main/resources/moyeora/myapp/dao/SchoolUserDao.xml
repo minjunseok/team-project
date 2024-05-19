@@ -74,13 +74,12 @@
   <select id="findBySchoolUserList" resultMap="SchoolUserMap">
 
     select
-
-
-    su.school_no school_no,
-    u.nickname,
-    u.photo,
-    l.name level_Name,
-    su.created_at
+        su.school_no school_no,
+        su.user_no user_no,
+        u.nickname,
+        u.photo,
+        l.name level_Name,
+        su.created_at
 
 
     from
@@ -165,21 +164,20 @@
     school_no = #{schoolNo}
   </update>
 
+
+  <update id="disableForeignKeyChecks">
+    SET FOREIGN_KEY_CHECKS=0;
+  </update>
+
   <delete id="deleteMember">
-    <![CDATA[
-      SET FOREIGN_KEY_CHECKS=0;
-    ]]>
-    delete
-    from
-    school_users
-    where
-    user_no = #{userNo}
-    and
-    school_no = #{schoolNo}
-    <![CDATA[
-      SET FOREIGN_KEY_CHECKS=1;
-    ]]>
+    delete from school_users where user_no = #{userNo} and school_no = #{schoolNo}
   </delete>
+
+  <update id="enableForeignKeyChecks">
+    SET FOREIGN_KEY_CHECKS=1;
+  </update>
+
+
 
   <select id="findAdmin" resultType="int">
     select
@@ -193,6 +191,7 @@
     and
     level_no = 4
   </select>
+
   <select id="findSubAdmin" resultType="int">
     select
     count(*)
@@ -209,13 +208,14 @@
   </select>
 
 
+
   <delete id="deleteSchoolUsers" parameterType="int">
-    DELETE FROM school_users WHERE school_no = #{value};
+    DELETE FROM school_users
+    WHERE school_no = #{value}
   </delete>
 
 
-  <select id="findyBySchoolLevelNo" resultType="int">
-
+  <select id="findBySchoolLevelNo" resultType="int">
     <!--  세션유저의 user_no를 받아 권한이 매니저인가 부매니저인가 묻는 쿼리문-->
     SELECT DISTINCT
 
@@ -260,4 +260,16 @@
     and
       level_no=4;
   </select>
+
+<!--스쿨에 가입된 유저의 레벨을 찾음-->
+
+  <select id="findByMemberCheck" resultType="int">
+<!--count(*)를 사용하면 school_users 데이터 값이 있으면 1, 없으면 0으로 찾아서 값을 넘겨줌-->
+  SELECT count(*)
+  FROM school_users
+  WHERE school_no = #{schoolNo}
+  AND user_no = #{userNo};
+
+  </select>
+
 </mapper>

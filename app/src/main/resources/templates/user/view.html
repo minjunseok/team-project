@@ -8,7 +8,13 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-  <title>모여라 </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <link href="/css/user.css" rel="stylesheet"/>
+    <title>모여라 </title>
+  
 </head>
 <body>
 
@@ -108,35 +114,119 @@
       element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
   }
 </script>
+<div class="logo-container">
+    <a href="/home"><img class="logo" src="/img/moyeora-logo.png"></a>
+</div>
 
-
-<h1>회원 관리 시스템</h1>
 
 <h2>회원 정보 수정</h2>
+<br>
 
-<form action="update" data-th-action="@{update}" data-th-object="${user}" enctype='multipart/form-data' method='post'>
-  <div>
-    사진:
-    <a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + *{photo}}" data-th-if="*{photo}">
-      <img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/' + *{photo}(type=f,w=80,h=80)}"></a><br>
-    <a data-th-unless="*{photo}" href='/img/default-photo.jpeg'>
-      <img height='80px' src='/img/default-photo.jpeg'></a><br>
-    <input name='file' type='file'>
-  </div>
+<form action="update" data-th-action="@{update}" data-th-object="${user}"
+      enctype='multipart/form-data' method='post' class="was-validated justify-content-center" novalidate>
 
-  <div>
-    매너온도: <input data-th-value='*{mannerPoint}' disabled name='mannerPoint' type='text' value="50">
-  </div>
+        <div class="form-group row justify-content-center">
+          
+            <div class="col-md-8">
+            <a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + *{photo}}" data-th-if="*{photo}">
+              <img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/' + *{photo}(type=f,w=80,h=80)}"></a><br>
+            <a data-th-unless="*{photo}" href='/img/default-photo.jpeg'>
+              <img height='80px' src='/img/default-photo.jpeg'></a><br>
+            <input name='file' type='file' class="form-control customInputBox-color">
+          </div>
+        
+          <div class="col-md-8">
+            이메일: <input data-th-value='*{email}' disabled name='email' type='text' value="hong@test.com"
+                    class="form-control customInputBox-color">
+          </div>
+        
+            <br>
+          <div class="col-md-8">
+            <input disabled name='pwd' placeholder="비밀번호"  type='password' class="form-control customInputBox-color">
+              <br>
+            <button id="btn1" type="button">변경하기</button>
+          </div>
+        
+          <div class="col-md-8">
+            닉네임:<input data-th-value="*{nickname}" name='nickname' type='text'   class="form-control customInputBox-color">
+          </div>
+        
+          <div class="col-md-8">
+            이름:<input data-th-value="*{name}" disabled name='name' type='text' class="form-control customInputBox-color">
+          </div>
+        
+          <div class="col-md-8">
+            생년월일: <input data-th-value="*{birth}" name='birth' readonly
+                     class="form-control customInputBox-color" type="text">
+          </div>
+        
+          <div class="col-md-8">
+            전화번호: <input data-th-value="*{phone}" name='phone' placeholder="전화번호" type='text' class="form-control customInputBox-color">
+          </div>
+        
+          <div class="col-md-8">
+              주소:
+            <input data-th-value="*{address}" id="address" name="address" placeholder="주소" type="text" class="form-control customInputBox-color">
+            <input data-th-value="*{addressDetail}" id="addressDetail" name="addressDetail" placeholder="상세주소" type="text" class="form-control customInputBox-color">
+            <br>
+              <button onclick="sample2_execDaumPostcode()" type="button" >우편번호 찾기</button>
+          </div>
+        
+          <div class="col-md-8">
+            <div>
+              <label for="profile">프로필:</label>
+              <textarea id="profile" name="profile" class="form-control customInputBox-color">[[*{profile}]]</textarea>
+            </div>
+          </div>
+        
+          <div class="col-md-8">
+            가입일 <input data-th-value="${#dates.format(user.createdAt,'yyyy-MM-dd')}" disabled type='text'
+                    class="form-control customInputBox-color">
+          </div>
+        
+          <br>
+          
+          <div class="col-md-3 gender-container">
+          <input id="male" data-th-checked="*{gender == 0}" disabled type="radio" value="0">
+          <label for="male">남자</label>
+          <input id="female" data-th-checked="*{gender == 1}" disabled type="radio" value="1">
+          <label for="female">여자</label>
+         </div>
+        
+          <div>
+            <h2>관심사</h2>
+          </div>
+          
+          
+          <div class="text-center">
+              <tbody class="text-center">
+                <tr data-th-each="tag : ${tags}">
+                  <td>
+                    <div class="checkbox-container">
+                          <img class="checkbox-image" th:src="@{'/img/tag/tag' + ${tag.no} + '.png'}" alt="no image" height='50px' width="50px">
+                          <span data-th-text="${tag.name}"></span>
+                          <input data-th-checkbox="true" data-th-checked="${userTagMap[tag.no] != null}"  data-th-value="${tag.no}" name="tagNums" type="checkbox"
+                                 style="display: none;">
+                    </div>
+                  </td>
+                  <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
+                    <br>
+                  </data-th-block>
+                </tr>
+              </tbody>
+          </div>
+          <br>
+        
+          <div class="text-center">
+            <button type="submit" class="submit-button btn-lg">회원 정보 수정</button>
+          </div>
+        </div>
+    
+    </form>
 
-  <div>
-    이메일: <input data-th-value='*{email}' disabled name='email' type='text' value="hong@test.com">
-  </div>
 
-  <div>
-    비밀번호:
-    <input disabled name='pwd' placeholder="비밀번호" size="20" type='password'>
-    <button id="btn1" type="button">변경하기</button>
-    <div class="modal" id="myModal" tabindex="-1">
+
+<div class="modal" id="myModal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -144,140 +234,142 @@
             <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
           </div>
           <div class="modal-body">
-            <form action="pwdUpdate" data-th-action="@{pwdUpdate}" data-th-object="${user}" enctype='multipart/form-data' method='post'>
-              <div>
-                비밀번호: <input id="pwd" name='pwd' onchange="check_pwd()" placeholder="비밀번호" required size="20" type='password'>
-              </div>
-              <small> *대소문자 특수기호 가능</small>
-              <div>
-                비밀번호 확인: <input id="pwd2" name="pwd2" onchange="check_pwd()" placeholder="비밀번호 확인"  type="password">&nbsp;<span id="check"></span>
-              </div>
+            
+            <form id="passwordUpdate" action="passwordUpdate" data-th-action="@{passwordUpdate}"
+                  data-th-object="${user}" enctype='multipart/form-data' method='post'>
+                
+                  <div class="form-group row justify-content-center">
+                    <div class="col-md-8">
+                        <input id="pwd" name='password' onchange="check_pwd()" placeholder="6자 이상, 16자 이하, 특수기호를 사용해야합니다" required  class="form-control"
+                           type='password'>
+                    </div>
+                  <br>
+                      <div class="col-md-8">
+                        <input id="pwd2" name="pwd2" onchange="check_pwd()" placeholder="비밀번호 확인"  type="password"
+                                        class="form-control" required>&nbsp;
+                          <span id="check"></span>
+                      </div>
+                  </div>
+            
+                <div class="modal-footer">
+                  <button class="submit-button" type="button" onclick="addEvent();">변경하기</button>
+                </div>
             </form>
-            <div class="modal-footer">
-              <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">닫기</button>
-              <button class="btn btn-primary" type="submit">변경하기</button>
-            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div>
-    닉네임: <input data-th-value="*{nickname}" name='nickname' type='text' value="21">
-  </div>
-
-  <div>
-    이름: <input data-th-value="*{name}" disabled name='name' type='text' value="홍길동">
-  </div>
-
-  <div>
-    생년월일: <input data-th-value="*{birth}" name='birth' readonly type='date'>
-  </div>
-
-  <div>
-    전화번호: <input data-th-value="*{phone}" name='phone' placeholder="전화번호" type='text'>
-  </div>
-
-  <div>
-    주소지:
-    <input onclick="sample2_execDaumPostcode()" type="button" value="우편번호 찾기"><br>
-    <input data-th-value="*{address}" id="address" name="address" placeholder="주소" type="text"><br>
-    <input data-th-value="*{addressDetail}" id="addressDetail" name="addressDetail" placeholder="상세주소" type="text">
-  </div>
-
-  <div>
-    자기소개:
-    <div>
-      <label for="profile">프로필:</label>
-      <textarea id="profile" name="profile">[[*{profile}]]</textarea>
-    </div>
-  </div>
-
-  <div>
-    가입일: <input data-th-value="${#dates.format(user.createdAt,'yyyy-MM-dd')}" disabled type='text' value="2024-03-27">
-  </div>
-
-  <div>
-    <label>
-      <input data-th-checked="*{gender == 0}" disabled type="radio" value="0"> 남자
-    </label>
-    <label>
-      <input data-th-checked="*{gender == 1}" disabled type="radio" value="1"> 여자
-    </label>
-  </div>
-
-  <div>
-    <h2>관심사</h2>
-  </div>
-
-  <tbody>
-    <tr data-th-each="tag : ${tags}">
-      <td>
-        <input data-th-checkbox="true" data-th-checked="${userTagMap[tag.no] != null}" data-th-value="${tag.no}" name="tagNums" type="checkbox">
-      </td>
-      <td>
-        <span data-th-text="${tag.name}">1</span>
-      </td>
-      <data-th-block data-th-if="${tag.no == 0 or tag.no % 4 ==0}">
-        <br>
-      </data-th-block>
-    </tr>
-  </tbody>
-
-  <div>
-    <button>변경</button>
-  </div>
-</form>
-
-
 
 
 
 <script>
+   $(document).ready(function() {
+  // 페이지 로드 시 실행될 코드
+  $('.checkbox-container input[type="checkbox"]').each(function() {
+    // 각 체크박스의 상태를 확인하여 checked 클래스를 추가
+    if ($(this).prop('checked')) {
+      $(this).closest('.checkbox-container').addClass('checked');
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@");
+    }
+  });
+});
+
+// 체크박스를 클릭했을 때의 동작
+$('.checkbox-container').click(function() {
+  var checkbox = $(this).find('input[type="checkbox"]');
+  checkbox.prop('checked', !checkbox.prop('checked'));
+  $(this).toggleClass('checked', checkbox.prop('checked'));
+  console.log("@@@@@@@@@@@@@@@@@@@@@@@@@");
+});
+
+</script>
+
+
+
+<script>
+   
+    let myModal;
+    
     document.querySelector("#btn1").onclick = function() {
-        const myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
+         myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
          myModal.show();
     };
+    
+     function closeModal() {
+            myModal.hide();
+        };
+    
+    function addEvent() {
+    
+      var password = $('#pwd').val();
+       console.log(password);
+            $.ajax({
+                    type : "POST",
+                    url : 'passwordUpdate',
+                    data : {
+                        password : password
+                    },
+                    processData:false,
+                    contentType:false
+            }).done(function(result) {
+                closeModal();
+                Swal.fire({
+                    icon: 'success',
+                    title: '비밀 번호 변경!'
+                });
+           });
+    }
+  
+  
 </script>
 
 <script>
   function check_pwd() {
-    var pwd = document.getElementById('pwd').value; // pwd라는 id를 가진 요소의 값
+    var pwd = document.getElementById('pwd').value; //pwd라는 이름을 가진 id 참조
     var SC = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
     var check_SC = 0;
 
-    // 비밀번호 길이 확인
+
     if (pwd.length < 6 || pwd.length > 16) {
-      window.alert('비밀번호는 6자 이상, 16자 이하이어야 합니다.');
-      document.getElementById('pwd').value = ''; // 입력이 맞지 않으면 비밀번호 초기화
+        Swal.fire({
+                icon: 'error',
+                title: '비밀번호는 6자 이상, 16자 이하, 특수기호를 사용해야합니다',
+                text: '다시 시도해주세요.'
+            });
+      document.getElementById('pwd').value = ''; //입력이 맞지않으면 비밀번호 초기화
     }
 
-    // 특수문자 포함 여부 확인
     for (var i = 0; i < pwd.length; i++) {
       if (SC.test(pwd)) {
-        check_SC = 1; // 특수문자가 들어간 경우 1로 설정
+        check_SC = 1; //특수기호가 들어갔는지 확인한다 들어갔으면 1로 리턴
         break;
       }
     }
 
     if (check_SC === 0) {
-      window.alert('특수문자가 포함되지 않았습니다.'); // 특수문자가 포함되지 않으면 경고
-      document.getElementById('pwd').value = ''; // 입력이 맞지 않으면 비밀번호 초기화
+         Swal.fire({
+                    icon: 'error',
+                    title: '특수문자가 들어가 있지 않습니다',
+                    text: '다시 시도해주세요.'
+         });
+      document.getElementById('pwd').value = ''; // 입력이 맞지않으면 비밀번호 초기화
     }
 
-    // 비밀번호 일치 여부 확인
-    if (document.getElementById('pwd').value !== '' && document.getElementById('pwd2').value !== '') {
-      if (document.getElementById('pwd').value === document.getElementById('pwd2').value) {
-        document.getElementById('check').innerHTML = '일치합니다.';
+    if (document.getElementById('pwd').value != '' && document.getElementById('pwd2').value != '') {
+      if (document.getElementById('pwd').value == document.getElementById('pwd2').value) {
+        document.getElementById('check').innerHTML = '일치합니다'
         document.getElementById('check').style.color = 'green';
-      } else {
+      }
+      else {
+        document.getElementById('pwd2').value = ''; // 입력이 맞지않으면 비밀번호 초기화
         document.getElementById('check').innerHTML = '비밀번호가 일치하지 않습니다.';
         document.getElementById('check').style.color = 'red';
       }
     }
   }
 </script>
+
+
 
 
 

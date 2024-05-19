@@ -3,6 +3,7 @@ package moyeora.myapp.dao;
 
 import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
 import moyeora.myapp.vo.SchoolClass;
+import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,4 +26,9 @@ public interface SchoolClassDao {
   void classDelete(ClassDeleteDTO classDeleteDTO);
 
   List<SchoolClass> findByWeek(String address,String weekString);
+  int classUpdate(SchoolClass clazz);
+  // 해당스쿨의 클래스를 다 지움
+  int deleteAllSchoolClass(int schoolNo);
+
+  int deleteAllSchoolClassUser(int schoolNo);
 }

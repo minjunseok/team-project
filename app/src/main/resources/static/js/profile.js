@@ -1,5 +1,6 @@
 let page = 0;
 let profileUserNo;
+let flag=false
 
 $('.modal-body').on('scroll', function() {
 
@@ -173,6 +174,12 @@ const profile = (u) => {
 
 $(document).on('click', '.user-img', function(){
   profileUserNo = $(this).prev().val()
+  if(flag===false) {
+        const myModal = new bootstrap.Modal(document.getElementById('profile-modal'), {
+        })
+        myModal.show();
+        flag===true;
+    }
   page = 0;
   profile(profileUserNo);
 })

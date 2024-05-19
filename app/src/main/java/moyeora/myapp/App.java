@@ -1,7 +1,6 @@
 package moyeora.myapp;
 
 
-
 import moyeora.myapp.annotation.LoginUserArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -13,8 +12,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import java.util.List;
 
+import java.util.List;
 
 
 @SpringBootApplication
@@ -22,33 +21,42 @@ import java.util.List;
 @EnableScheduling
 @Controller
 @PropertySource({
-  "file:${user.home}/config/ncp-storage.properties",
+        "file:${user.home}/config/oauth.properties",
+        "file:${user.home}/config/ncp-storage.properties",
         "file:${user.home}/config/ncp-secret.properties",
-  "file:${user.home}/config/bootpay.properties",
-  "file:${user.home}/config/email.properties",
-        "file:${user.home}/config/oauth.properties"
-})
+        "file:${user.home}/config/bootpay.properties",
+        "file:${user.home}/config/email.properties"})
+//        "classpath:ncp-storage.properties",
+//        "classpath:ncp-secret.properties",
+//        "classpath:bootpay.properties",
+//        "classpath:config/email.properties"
+//"classpath:ncp-secret.properties",
+//        "file:${user.home}/config/ncp-storage.properties",
+//        "file:${user.home}/config/ncp-secret.properties",
+//        "file:${user.home}/config/bootpay.properties",
+//        "file:${user.home}/config/email.properties",
+//        "file:${user.home}/config/oauth.properties"
 public class App implements WebMvcConfigurer {
 
-  @Autowired
-  LoginUserArgumentResolver loginUserArgumentResolver;
+    @Autowired
+    LoginUserArgumentResolver loginUserArgumentResolver;
 
-  public static void main(String[] args) throws Exception {
-    System.out.println("과제관리 시스템 서버 실행!");
+    public static void main(String[] args) throws Exception {
+        System.out.println("과제관리 시스템 서버 실행!");
 
-    SpringApplication.run(App.class, args);
-  }
+        SpringApplication.run(App.class, args);
+    }
 
-  @GetMapping("/home")
-  public void home() {
-  }
+    @GetMapping("/home")
+    public void home() {
+    }
 
-  @GetMapping("/about")
-  public void about() {
-  }
+    @GetMapping("/about")
+    public void about() {
+    }
 
-  @Override
-  public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-    resolvers.add(loginUserArgumentResolver);
-  }
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(loginUserArgumentResolver);
+    }
 }

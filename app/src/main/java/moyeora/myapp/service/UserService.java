@@ -4,11 +4,12 @@ package moyeora.myapp.service;
 import moyeora.myapp.vo.User;
 
 import java.util.List;
+
 public interface UserService {
 
-  void add(User user);
+    void add(User user);
 
-  void save(User user);
+    void save(User user);
 
     User get(int no);
 
@@ -18,13 +19,13 @@ public interface UserService {
 
     String getEmail(String name, String phone);
 
-  int updatePassword(User user);
+    int updatePassword(User user);
 
     void delete(int no);
 
-  User findOAuth2User(String email, String provider);
+    User findOAuth2User(String email, String provider);
 
-  User findByEmail(String email);
+    User findByEmail(String email);
 
     List<String> findEmailByUserList(List<Integer> userList);
 
@@ -33,9 +34,9 @@ public interface UserService {
     int update(User user);
 
 
-  int passwordUpdate(User user);
+    int passwordUpdate(User user);
 
-  User getUserInfo(int no);
+    User getUserInfo(int no);
 
   public String getAddress(int userNo);
 }
