@@ -248,44 +248,23 @@
 					</div>
 				</div>
 
-				<div class="center-container">
-					<!-- 검색창 -->
-					<div class="searchBar">
-						<form
-							action="/search"
-							method="post"
-						>
-							<div class="searchBarContainer">
-								<select
-									name="filter"
-									style="background-color: #cbbca765"
-								>
-									<option value="0">내용</option>
-									<option value="1">작성자</option>
-								</select>
-								<input
-									class="inputKeyword"
-									name="keyword"
-									type="text"
-									placeholder="검색어를 입력하세요."
-								/>
-								<input
-									id="schoolNo"
-									name="schoolNo"
-									type="hidden"
-									th:value="${schoolNo}"
-								/><!-- schoolNo를 Integer로 선언 -->
-								<!-- 검색 아이콘 -->
-								<i
-									id="postSearchForm"
-									class="bi bi-search"
-								>
-								</i>
-							</div>
-						</form>
-					</div>
+                <div class="center-container">
+                    <!-- 검색창 -->
+                    <div class="searchBar">
+                        <div class="searchBarContainer">
+                            <select name="filter" id="filter" style="background-color: #cbbca765">
+                                <option value="0">내용</option>
+                                <option value="1">작성자</option>
+                            </select>
+                            <input class="inputKeyword" name="keyword" id="keyword" type="text" placeholder="검색어를 입력하세요." />
+                            <input id="schoolNo" name="schoolNo" type="hidden" value="1" /> <!-- schoolNo를 필요에 맞게 설정 -->
+                            <!-- 검색 아이콘 -->
+                            <i id="postSearchForm" class="bi bi-search" style="cursor: pointer;"></i>
+                        </div>
+                    </div>
 
-					<div>고정 게시글</div>
+
+                    <div>고정 게시글</div>
 
 					<!-- 고정 게시글 -->
 					<div
@@ -1947,6 +1926,57 @@
                                                     }
 
                                                 </script>
+
+                        <script>
+                            $(document).ready(function() {
+                                $('#postSearchForm').click(function() {
+                                    const filter = $('#filter').val();
+                                    const keyword = $('#keyword').val();
+                                    const schoolNo = $('#schoolNo').val();
+
+                                    $.ajax({
+                                        url: '/search',
+                                        type: 'GET',
+                                        data: {
+                                            schoolNo: schoolNo,
+                                            keyword: keyword,
+                                            filter: filter
+                                        },
+                                        success: function(data) {
+                                            $('#searchResult').empty();
+                                            data.forEach(post => {
+                                                const postHtml = `
+                                <div class="table">
+                                    <div class="hidden-data" style="display: none" data-user-no="${post.writer.no}"></div>
+                                    <div id="list-hd" class="d-flex justify-content-between">
+                                        <div class="list-img">
+                                            <img src="https://kr.object.ncloudstorage.com/moyeorastorage/user/${post.writer.photo}" />
+                                        </div>
+                                        <div class="list-nick">
+                                            <span>${post.writer.nickname}</span>
+                                        </div>
+                                        <div id="list-hd2" class="d-flex justify-content-between">
+                                            <div class="list-ca">
+                                                <span>${new Date(post.createdAt).toLocaleDateString()}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="list-content" data-no="${post.no}">
+                                        ${post.content}
+                                    </div>
+                                </div>
+                            `;
+                                                $('#searchResult').append(postHtml);
+                                            });
+                                        }
+                                    });
+                                });
+                            });
+
+
+
+                        </script>
+
 					</div>
 				</div>
 				<div class="right-container">채팅영역</div>
