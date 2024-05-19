@@ -5,6 +5,7 @@
 >
 	<head>
 		<meta charset="UTF-8" />
+        <title>비트캠프 데브옵스 5기</title>
 		<meta
 			name="viewport"
 			content="width=device-width, initial-scale=1.0"
@@ -29,12 +30,10 @@
 			type="ima"
 		/>
 
-		<!-- sweetalert2 -->
-		<link
-			rel="stylesheet"
-			href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"
-		/>
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
+
+
+
 
 		<!-- Bootstrap CSS -->
 		<link
@@ -134,17 +133,14 @@
 	</head>
 
 	<body>
+
+
+
+
 		<div data-th-replace="header :: header"></div>
 		<div class="root">
 			<!-- 스쿨 상단 목록 -->
 			<div class="Stl">
-				<a
-					class="btn btn-primary"
-					data-th-href="@{noticelist(schoolNo=${schoolNo})}"
-					href="noticelist.html"
-					role="button"
-					>공지 사항</a
-				>
 				<a
 					class="btn btn-primary"
 					target="_blank"
@@ -851,7 +847,8 @@
 						<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 						<script src="/js/bootstrap.bundle.min.js"></script>
 						<script src="/summernote/summernote.min.js"></script>
-
+                        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 						<script
 							src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js"
 							integrity="sha512-vuLOE4Fh9lfxaN9n81Vl1HwrqMYz9WKoNmsHNC7Hz7OWX4k4O7FjCyQ1tQ82RJExao+Fas40RLiS5PCfVRGgnQ=="
@@ -860,6 +857,8 @@
 						></script>
 
 						<!--loginUser 모델 객체에서 필요한 데이터 추출-->
+
+
 						<script type="text/javascript">
 							function setLoginUser() {
 								loginUser = loginUser;
