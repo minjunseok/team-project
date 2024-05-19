@@ -16,7 +16,10 @@ public interface PostDao {
   List<Post> findByNotice(int schoolNo);
 
 
+
   Post findByFixList(int schoolNo);
+
+  int noticeFixedCancel(Post post);
 
   int fixedPost(Post post);
 

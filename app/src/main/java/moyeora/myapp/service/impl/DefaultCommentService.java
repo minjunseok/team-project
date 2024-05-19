@@ -24,12 +24,23 @@ public class DefaultCommentService implements CommentService {
 
   @Transactional
   @Override
-  public void add(Comment comment) {
+  public void addComment(Comment comment) {
 
     commentDao.addComment(comment);
 
   }
 
+  @Transactional
+  @Override
+  public void update(Comment comment) {
+
+    commentDao.update(comment);
+  }
+
+  @Override
+  public void delete(int commentNo) {
+    commentDao.delete(commentNo);
+  }
 
 //  @Override
 //  @Transactional

@@ -40,7 +40,7 @@
   <insert id="addSchoolUser" parameterType="SchoolUser">
   INSERT INTO
     school_users (user_no, school_no, level_no, created_at)
-    values (#{userNo}, #{schoolNo}, 5, NOW())
+    values (#{userNo}, #{schoolNo}, #{levelNo}, NOW())
   </insert>
 
 
@@ -74,13 +74,11 @@
   <select id="findBySchoolUserList" resultMap="SchoolUserMap">
 
     select
-
-
-    su.school_no school_no,
-    u.nickname,
-    u.photo,
-    l.name level_Name,
-    su.created_at
+        su.school_no school_no,
+        u.nickname,
+        u.photo,
+        l.name level_Name,
+        su.created_at
 
 
     from
@@ -209,14 +207,14 @@
   </select>
 
 
+
   <delete id="deleteSchoolUsers" parameterType="int">
     DELETE FROM school_users
     WHERE school_no = #{value}
   </delete>
 
 
-  <select id="findyBySchoolLevelNo" resultType="int">
-
+  <select id="findBySchoolLevelNo" resultType="int">
     <!--  세션유저의 user_no를 받아 권한이 매니저인가 부매니저인가 묻는 쿼리문-->
     SELECT DISTINCT
 
@@ -236,6 +234,18 @@
 
     AND su.level_no IN (3, 4)
     AND user_no =#{userNo};
+  </select>
+
+
+<!--스쿨에 가입된 유저의 레벨을 찾음-->
+
+  <select id="findByMemberCheck" resultType="int">
+<!--count(*)를 사용하면 school_users 데이터 값이 있으면 1, 없으면 0으로 찾아서 값을 넘겨줌-->
+  SELECT count(*)
+  FROM school_users
+  WHERE school_no = #{schoolNo}
+  AND user_no = #{userNo};
+
   </select>
 
 

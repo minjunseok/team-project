@@ -1,11 +1,14 @@
+
 package moyeora.myapp.security.oauth.userInfo;
+
 
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-@RequiredArgsConstructor
+
 public class NaverOAuth2UserInfo implements OAuth2UserInfo {
+
 
   private Map<String, Object> attributes; // oauth2User.getAttributes()
 

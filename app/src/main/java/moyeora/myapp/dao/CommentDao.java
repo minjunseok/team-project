@@ -11,4 +11,8 @@ List<Comment> findByComment(int no);
 
 void addComment (Comment comment);
 
+void update (Comment comment);
+
+void delete (int commentNo);
+
 }
