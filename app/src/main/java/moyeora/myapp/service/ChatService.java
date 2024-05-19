@@ -5,6 +5,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.List;
 
+
 public interface ChatService {
 
     List<ChatMessage> findChatMessageBySchoolNo(int schoolNo);

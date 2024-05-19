@@ -46,29 +46,30 @@
   </insert>
 
   <select id="findBy" resultMap="UserMap" parameterType="int">
-    select
-    u.name,
-    u.address,
-    u.phone,
-    u.email,
-    u.nickname,
-    u.birth,
-    u.gender,
-    u.grade,
-    u.created_at,
-    u.profile,
-    u.manner_point,
-    u.photo,
-    u.address_detail,
-    ut.user_no,
-    ut.tag_no
-    from
-    users as u
-    inner join
-    user_tags as ut on u.user_no = ut.user_no
-    where
-    u.user_no =#{no};
+      select
+          u.user_no,
+          u.name,
+          u.address,
+          u.phone,
+          u.email,
+          u.nickname,
+          u.birth,
+          u.gender,
+          u.grade,
+          u.created_at,
+          u.profile,
+          u.manner_point,
+          u.photo,
+          u.address_detail,
+          ut.tag_no
+      from
+          users as u
+      inner join
+          user_tags as ut on u.user_no = ut.user_no
+      where
+          u.user_no =#{no};
   </select>
+
 
   <insert id="add2" parameterType="list">
     insert into member_tags(user_no,tag_no)
@@ -76,9 +77,10 @@
   </insert>
 
   <insert id="save" parameterType="User" useGeneratedKeys="true" keyColumn="user_no" keyProperty="no">
-    insert into users(name,email,phone,provider,provider_id,role,created_at)
-    values(#{name},#{email},#{phone},#{provider},#{providerId},#{role},NOW())
-  </insert>
+      insert into
+      users(name,address,phone,email,nickname,birth,gender,created_at,profile,photo,address_detail,provider,provider_id,role)
+      values(#{name},#{address},#{phone},#{email},#{nickname},#{birth},#{gender},NOW(),#{profile},#{photo},#{addressDetail},#{provider},#{providerId},#{role})
+    </insert>
 
   <delete id="delete" parameterType="int">
     delete from users where user_no=#{value}
@@ -106,38 +108,46 @@
     from
     users
     where
-    user_no=#{value}
+    user_no=#{no}
   </select>
 
   <select id="findByEmail" resultMap="UserMap" parameterType="string">
-    select
-        *
-    from
-    users
-    where
-      email=#{value}
-  </select>
+      select
+      user_no,
+      email,
+      password,
+      name
+      from
+      users
+      where
+          email=#{email}
+    </select>
 
-  <update id="update" parameterType="User">
-    update users set
-    email=#{email},
-    nickname=#{nickname},
-    phone=#{phone},
-    address=#{address},
-    photo=#{photo}
-    profile=#{profile}
-    <if test="password != ''">
-      , password=#{password}
-    </if>
-    where
-    user_no=#{no}
-  </update>
+   <update id="update" parameterType="User">
+   update users set
+       address=#{address},
+       phone=#{phone},
+       nickname=#{nickname},
+       birth=#{birth},
+       photo=#{photo},
+       profile=#{profile},
+       address_detail=#{addressDetail}
+   where
+       user_no=#{no};
+      </update>
 
   <update id="updatePassword" parameterType="User">
     update users set
     password=#{password}
     where
     email=#{email}
+  </update>
+
+  <update id="passwordUpdate" parameterType="User">
+  update users set
+      password = #{password}
+  where
+      user_no=#{no}
   </update>
 
   <select id="findByNameAndPhone" resultType="string">

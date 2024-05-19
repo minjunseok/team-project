@@ -1,27 +1,62 @@
-<!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8"/>
-    <title>test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학교 설정</title>
+    <!-- 부트스트랩 CDN 링크 추가 -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 추가적인 CSS 스타일링 */
+        header {
+            background-color: #2c3e50;
+            padding: 20px 0;
+            color: #fff;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 0;
+        }
+        .menu-item {
+            margin-top:40px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            padding: 15px 0;
+            color: #fff;
+            border-radius: 30px;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        .menu-item:hover {
+            transform: scale(1.1);
+        }
+        .item {
+            background-color: rgb(158, 137, 106);
+        }
+
+    </style>
 </head>
 <body>
-
-
-<div class="mb-3">
-    <label for="school_photo" class="form-label">스쿨 사진</label>
-    <!-- 스쿨 사진 표시 -->
-    <div>
-        <a data-th-href="@{'https://kr.object.ncloudstorage.com/moyeorastorage/school' + *{photo}}"
-           data-th-if="*{photo}">
-            <img data-th-src="@{'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school' + *{photo}(type=f,w=80,h=80)}"
-                 height="80px"></a><br>
-        <a data-th-unless="*{photo}" href='/img/default-school-photo.jpeg'>
-            <img height='80px' src='/img/default-school-photo.jpeg'></a>
+<header>
+    <h1>학교 설정</h1>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 text-center">
+            <div class="menu-item item" onclick="schoolForm()">스쿨 정보 수정</div>
+            <div class="menu-item item" onclick="modal1()">회원 관리</div>
+            <div class="menu-item item" onclick="modal2()">블랙리스트 관리</div>
+            <div class="menu-item item" onclick="modal3()">가입 승인 관리</div>
+            <div class="menu-item item" onclick="modal4()">공개여부</div>
+            <div class="menu-item item" onclick="schoolDeleteForm()">스쿨 삭제</div>
+            <!-- 모달 추가 -->
+        </div>
+        <div class="col-md-2"></div>
     </div>
-    <!-- 사진 변경을 위한 파일 업로드 -->
-    <input id="school_photo" name='file' type='file'>
 </div>
-
-
+<!-- 부트스트랩 JS 및 추가적인 JS 파일 링크 추가 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

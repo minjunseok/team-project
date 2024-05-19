@@ -9,4 +9,5 @@ import lombok.Setter;
 public class Tag {
   private int no;
   private String name;
+  private String photo;
 }

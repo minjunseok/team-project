@@ -1,3 +1,4 @@
+
 package moyeora.myapp.security.oauth.userInfo;
 
 import lombok.RequiredArgsConstructor;
@@ -5,11 +6,11 @@ import lombok.RequiredArgsConstructor;
 import java.util.Map;
 
 @RequiredArgsConstructor
+
 public class GoogleOAuth2UserInfo implements OAuth2UserInfo {
 
 
   private Map<String, Object> attributes;
-
   public GoogleOAuth2UserInfo(Map<String, Object> attributes) {
     this.attributes = attributes;
   }
@@ -33,4 +34,6 @@ public class GoogleOAuth2UserInfo implements OAuth2UserInfo {
   public String getUsername() {
     return (String) attributes.get("name");
   }
+
+
 }
