@@ -1,5 +1,4 @@
 let userInfo = loginUser;
-console.log("header.js");
 console.log(userInfo);
 
 function connect() {

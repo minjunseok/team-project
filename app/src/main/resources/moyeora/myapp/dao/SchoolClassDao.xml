@@ -35,7 +35,7 @@
     </association>
 
     <association property="level" javaType="Level">
-            <id column="level_no" property="no"/>
+            <id column="level_no" property="levelNo"/>
             <result column="level_name" property="levelName"/>
     </association>
 
