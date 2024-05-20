@@ -50,7 +50,7 @@ public class MainPageController {
     //해당 날짜의 약속 정보를 전부 가져오기 , 지역 정보 추가해야함
     model.addObject("hotSchools", schoolService.findHotSchool(loginUser.getNo()));
         model.addObject("loginUser", loginUser);
-    model.setViewName("/index");
+        model.setViewName("index");
     return model;
   }
 
