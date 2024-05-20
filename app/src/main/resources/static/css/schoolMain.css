@@ -31,7 +31,7 @@ tbody tr:hover {
 }
 
 /* 화살표 제거 */
-.dropdown-toggle::after {
+.dropdown-toggle {
 	background-color: #f5f5dc; /* 연한 갈색 */
 	width: 100%; /* 테이블 영역만큼 너비 조절 */
 	display: none;
@@ -208,6 +208,11 @@ tbody tr:hover {
 .left-container .md_container .createButton {
 	background-color: #9e896a;
 	width: 80%;
+}
+
+.left-container .wait_container .createButton {
+	background-color: #9E896A;
+	width: 100%;
 }
 
 .left-container .join_container {

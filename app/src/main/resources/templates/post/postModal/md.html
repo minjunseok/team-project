@@ -21,17 +21,16 @@
 										<textarea data-th-text="${content}" id="summernoteContent"
 										          name='content'></textarea>
 								</div>
-
-								<div>
 										<!-- 공지로 등록하는 체크박스 -->
 										<!-- gradeMd = 체크박스는 관리자만 보이게 설정 -->
 										<!-- gradeMdLabel = 공지로등록이라는 텍스트는 관리자만 보이게 설정 -->
-                                    <button class="btn btn-primary">변경</button>
-								</div>
+                            <div>
+                                    <button>변경</button>
+                            </div>
 						</form>
 				</div>
 		</div>
-
+</div>
 
 
 
@@ -39,6 +38,7 @@
             $(document).ready(function() {
                 // "변경" 버튼 클릭 시 폼 제출 처리
                 $("#btn_md_submit").click(function() {
+                    console.log("@@@@@@등록 누름!");
                     // 모달 내의 폼 데이터를 가져옵니다.
                     var formData = new FormData($("#mdPostModal form")[0]);
 
@@ -71,7 +71,7 @@
 
         </script>
 
-</div>
+
 </body>
 </html>
 
