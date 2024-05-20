@@ -331,6 +331,8 @@ public class PostController {
         String schoolName = school.getName();
 
         if (loginUser != null) {
+            model.addAttribute("sender", loginUser);
+            model.addAttribute("loginUser", loginUser);
             int memberCheck = schoolUserService.findByMemberCheck(schoolNo, loginUser.getNo());
 
             if (memberCheck == 1) {
@@ -340,10 +342,10 @@ public class PostController {
                 // 회원이고 해당 학교의 회원인 경우
                 log.debug("@@@@@@@@@@@@@@@@ 회원이니까 모델을 전부다 넘긴다");
                 int accessLevel = schoolUserService.findLevel(schoolNo, userNo);
-                model.addAttribute("sender", loginUser);
+
                 model.addAttribute("accessLevel", accessLevel);
                 model.addAttribute("school", school);
-                model.addAttribute("loginUser", loginUser);
+
             }
         }
 

@@ -203,6 +203,9 @@
 		<!-- 왼쪽 고정 요소 -->
 
 		<div class="left-container">
+
+
+
 			<div class="md-img">
 				<figure class="figure">
 					<img
@@ -215,7 +218,7 @@
 
 				<div
 						class="md_container"
-						th:if="${loginUser != null and accessLevel != null}"
+						th:if="${loginUser != null and accessLevel != null and accessLevel != 5}"
 				>
 					<!-- <div id="post_setting" onclick="postForm()"> -->
 					<button
@@ -230,19 +233,31 @@
 
 				<div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>
 
-				<!-- 스쿨에 가입하지 않은 경우에만 가입하기 버튼을 보여줌 -->
-				<div
-						class="join_container"
-						th:unless="${loginUser != null and accessLevel != null}"
-				>
-					<button
-							id="joinButton"
-							class="btn text-white createButton"
-							type="button"
-					>
-						가입하기
-					</button>
-				</div>
+                <div
+                        class="wait_container"
+                        th:unless="${loginUser == null and accessLevel == 5}">
+                    <button
+                            type="button"
+                            id="watiButton"
+                            class="btn text-white createButton">
+
+                        가입 대기
+                    </button>
+                </div>
+
+
+                <!-- 스쿨에 가입하지 않은 경우에만 가입하기 버튼을 보여줌 -->
+                <div
+                        class="join_container"
+                        th:if="${loginUser != null and accessLevel == null}">
+                    <button
+                            type="button"
+                            id = "joinButton"
+                            class="btn text-black createButton">
+                        가입 하기
+                    </button>
+                </div>
+
 			</div>
 
 			<!-- 회원 리스트 -->
@@ -2234,7 +2249,48 @@
 
 
 
-				</script>
+				</script><!--스쿨에 가입하지 않은 유저 가입하기 처리-->
+
+                <script>
+                    // join 함수
+                    function join(schoolNo) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/schoolUser/addSchoolUser',
+                            data: { schoolNo: schoolNo },
+                            success: function (response) {
+                                Swal.fire({
+                                    title: '가입 완료',
+                                    text: '가입 신청이 완료되었습니다.',
+                                    icon: 'success',
+                                    confirmButtonText: '확인',
+                                }).then(() => {
+                                    console.log('가입 성공');
+                                    location.reload(); // 페이지 리로드
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                Swal.fire({
+                                    title: '가입 실패',
+                                    text: '가입에 실패했습니다. 다시 시도해 주세요.',
+                                    icon: 'error',
+                                    confirmButtonText: '확인',
+                                });
+                                console.error('가입 요청 실패:', error);
+                            },
+                        });
+                    }
+
+                    $(document).ready(function () {
+                        // 가입 버튼 클릭 이벤트
+                        $('#joinButton').click(function () {
+                            const searchParam = window.location.search.replace('?', '');
+                            const { schoolNo } = window.Qs.parse(searchParam);
+                            console.log(schoolNo);
+                            join(schoolNo);
+                        });
+                    });
+                </script>
 
 			</div>
 		</div>
@@ -2244,7 +2300,7 @@
 <script th:inline="javascript">
     var loginUser = [[${loginUser}]];
 </script>
-<script src="/js/header.js"></script>
+<script src="/static/js/header.js"></script>
 
 
 
