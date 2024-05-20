@@ -59,14 +59,16 @@ tbody tr:hover {
 }
 
 .container {
-	margin: 0;
-	padding: 16px;
-	max-width: 100%;
-	display: flex;
-	gap: 16px;
+	margin: 0 !important;
+	padding: 16px !important;
+	max-width: 100% !important;
+	display: flex !important;
+	gap: 16px !important;
 }
 
 .right-container {
+	border: 1px solid #CBBCA7 !important;
+	width: 500px !important;
 	padding-left: 8px;
 	border: 1px solid #cbbca7;
 	width: 30%;
@@ -151,6 +153,10 @@ tbody tr:hover {
 }
 
 .center-container {
+	margin: 0 24px !important;
+	padding: 0 16px;
+	border: 1px solid #CBBCA7;
+	background-color: #aa977e3f;
 	border: 1px solid #cbbca7;
 	background-color: #aa977e3f;
 }
