@@ -13,8 +13,7 @@
 	<th:block th:replace="common/headCommon :: headerFragment"></th:block>
 	<!--    민준 로컬 작업용 부트스트랩,서머노트 import-->
 
-  
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js"
@@ -22,6 +21,27 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
     ></script>
+    <script src="/static/profile/js/libs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- slider JavaScript -->
+<script src="/static/profile/js/slider.js"></script>
+    <!-- masonry JavaScript -->
+<script src="/static/profile/js/masonry.pkgd.min.js"></script>
+    <!-- SweetAlert JavaScript -->
+<script src="/static/profile/js/enchanter.js"></script>
+    <!-- SweetAlert JavaScript -->
+<script src="/static/profile/js/sweetalert.js"></script>
+    <!-- app JavaScript -->
+<script src="/static/profile/js/charts/weather-chart.js"></script>
+<script src="/static/profile/js/app.js"></script>
+<!--    <script src="/static/js/header.js"></script>-->
+<script src="/static/profile/js/lottie.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/static/admin/js/moment.js"></script>
+<script src="/static/js/profile.js"></script>
+<!--<script th:inline="javascript">-->
+ 
+ 
 
 	<!-- 웹 타이틀 옆 작은 이미지 설정 -->
 	<link
@@ -114,6 +134,10 @@
 			href="/static/admin/css/header.css"
 	/>
 
+
+
+
+
 	<link
 			rel="preconnect"
 			href="https://fonts.googleapis.com"
@@ -196,6 +220,7 @@
 						class="md_container"
 						th:if="${loginUser != null and accessLevel != null and accessLevel != 5}"
 				>
+					<!-- <div id="post_setting" onclick="postForm()"> -->
 					<button
 							type="button"
 							id="postAddBtn"
@@ -340,6 +365,7 @@
 							data-th-utext="*{content}"
 							data-th-data-no="*{no}"
 					>
+						<!--																		th:utext="*{content}"-->
 						content
 					</div>
 				</div>
@@ -864,13 +890,12 @@
 
 
                 <script>
-                    var loginUser = [[${loginUser}]];
-                        console.log("@@@@1234123412@@@" + loginUser);
+                    var loginUser = '[[${loginUser != null ? loginUser : "null"}]]';
 
                     function sChatLoad() {
                     $.ajax({
                     type: "GET",
-                    url: "/gm?schoolNo=" + [[${school.no}]],
+                    url: "/gm?schoolNo=" + schoolNo,
                     data: {},
                     success: function (result) {
                     console.log("updateAll success");
@@ -2269,50 +2294,13 @@
 
 			</div>
 		</div>
-		<div
-                id="sChatWrap"
-                class="right-container"
-        ></div>
-            </div>
-        </div>
-        <div data-th-replace="/mypage/modal/profile :: profile-modal">새 글 작성</div>
-        <script src="/profile/js/libs.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<!-- slider JavaScript -->
-        <script src="/profile/js/slider.js"></script>
-<!-- masonry JavaScript -->
-        <script src="/profile/js/masonry.pkgd.min.js"></script>
-<!-- SweetAlert JavaScript -->
-        <script src="/profile/js/enchanter.js"></script>
-<!-- SweetAlert JavaScript -->
-        <script src="/profile/js/sweetalert.js"></script>
-<!-- app JavaScript -->
-        <script src="/profile/js/charts/weather-chart.js"></script>
-        <script src="/profile/js/app.js"></script>
-        <script src="/profile/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
-        <script src="/profile/js/lottie.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="/admin/js/moment.js"></script>
-        <script src="/js/profile.js"></script>
-        <script th:inline="javascript">
-            var loginUser = [[${loginUser}]];
+		<div id="sChatWrap" class="right-container"></div>
+	</div>
+</div>
 
-            function sChatLoad() {
-                $.ajax({
-                  type: "GET",
-                  url: "/gm?schoolNo=" + [[${school.no}]],
-                  data: {},
-                  success: function (result) {
-                    console.log("updateAll success");
-                    $("#sChatWrap").html(result);
-                  }
-                })
-            }
+<script src="/static/js/header.js"></script>
 
-            $(function () {
-                sChatLoad();
-            });
-        </script>
-        <script src="/js/header.js"></script>
-    </body>
+
+
+</body>
 </html>

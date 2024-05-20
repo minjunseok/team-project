@@ -157,8 +157,10 @@ tbody tr:hover {
 	padding: 0 16px;
 	border: 1px solid #CBBCA7;
 	background-color: #aa977e3f;
-	border: 1px solid #cbbca7;
-	background-color: #aa977e3f;
+}
+.right-container {
+	border: 1px solid #CBBCA7 !important;
+	width: 500px !important;
 }
 
 /* 검색창 스타일 */
