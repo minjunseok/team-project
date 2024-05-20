@@ -12,7 +12,8 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     <style>
         .form-section {
-            width: 100%;        }
+            width: 100%;
+        }
         h5 {
             text-align: center;
         }
@@ -87,8 +88,9 @@
         cursor: pointer;
         margin-right: 50px;
         margin-left: 20px;
-        /* white-space: nowrap; 텍스트가 넘칠 경우 줄바꿈 방지 */
+        white-space: nowrap; /* 텍스트가 넘칠 경우 줄바꿈 방지 */
         }
+
         .open-container input[type="radio"]:checked + label {
             background-color: rgb(158, 137, 106);
             color: #fff;
@@ -97,42 +99,41 @@
 
 
 
-        .checkbox-container {
-          cursor: pointer;
-          display: inline-block;
-          position: relative;
-        }
+    .checkbox-container {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+    }
 
-        .checkbox-container.checked .checkbox-image {
-           opacity: 1; /* 체크된 상태일 때 이미지를 더 진하게 만듭니다. */
+.checkbox-container.checked .checkbox-image {
+   opacity: 1; /* 체크된 상태일 때 이미지를 더 진하게 만듭니다. */
 
-        }
+}
 
-        .checkbox-container.checked::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          opacity: 0.5; /* 선택사항: 투명도 조절 */
-          border-radius: 5px; /* 선택사항: 둥근 경계를 위해 추가 */
-          z-index: 1; /* 이미지 위로 표시 */
-        }
+.checkbox-container.checked::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5; /* 선택사항: 투명도 조절 */
+  border-radius: 5px; /* 선택사항: 둥근 경계를 위해 추가 */
+  z-index: 1; /* 이미지 위로 표시 */
+}
 
 
-        .checkbox-container {
-          display: inline-block;
-          text-align: center;
-          margin-right: 20px; /* 사진과 사진 사이의 간격 조절 */
-        }
+.checkbox-container {
+  display: inline-block;
+  text-align: center;
+  margin-right: 20px; /* 사진과 사진 사이의 간격 조절 */
+}
 
-        .checkbox-container .checkbox-image {
-          display: block;
-          opacity: 0.5; /* 체크되지 않은 상태일 때 이미지를 반투명하게 만듭니다. */
-          margin-bottom: 5px; /* 사진 아래에 이름과의 간격 조절 */
-        }
-
+.checkbox-container .checkbox-image {
+  display: block;
+  opacity: 0.5; /* 체크되지 않은 상태일 때 이미지를 반투명하게 만듭니다. */
+  margin-bottom: 5px; /* 사진 아래에 이름과의 간격 조절 */
+}
 
     </style>
 </head>
@@ -148,7 +149,7 @@
                 <h5>스쿨 이름</h5>
                 <input type="text" name="name" id="name" class="form-control" required="">
             </div>
-            <button type="button" id="signupBtn" class="btn btn-warning">중복 확인</button>
+            <button type="button" id="signupBtn" class="btn btn-warning right-aligned">중복 확인</button>
             <div style="max-width:300px;" class="form-section">
                 <h5>스쿨 사진</h5>
                 <input type="file" id="image" name="file" accept="image/*" class="form-control" onchange="setThumbnail(event);" required/>
@@ -214,6 +215,10 @@
 
 
 <script>
+
+
+
+
     var signupBtn = 0; // 스쿨명 중복 체크 여부를 나타내는 변수
     function validateForm() {
         var fileInput = document.getElementById('image');
@@ -233,6 +238,7 @@
                 break;
             }
         }
+
         if (!isChecked) {
             Swal.fire({
               icon: 'warning',
@@ -241,6 +247,7 @@
             });
             return false;
         }
+
         // 스쿨명이 사용 가능한지 확인 (signupBtn이 1인 경우 사용 가능함을 의미)
         if (signupBtn !== 1) {
             Swal.fire({
@@ -331,6 +338,13 @@
             }
         });
     });
+document.querySelectorAll('.checkbox-container').forEach(function(container) {
+    container.addEventListener('click', function() {
+        this.classList.toggle('checked');
+        var checkbox = this.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+    });
+});
 </script>
 </body>
 </html>
