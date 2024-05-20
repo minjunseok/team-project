@@ -79,6 +79,7 @@ public class DefaultPostService implements PostService {
     @Override
     public int delete(int no, int schoolNo) {
 //    attachedFileDao.deleteAll(no);
+//        postDao.commentDelete(no);
         return postDao.delete(no, schoolNo);
     }
 
