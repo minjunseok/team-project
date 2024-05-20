@@ -34,7 +34,7 @@
     <!-- app JavaScript -->
 <script src="/static/profile/js/charts/weather-chart.js"></script>
 <script src="/static/profile/js/app.js"></script>
-    <script src="/static/js/header.js"></script>
+<!--    <script src="/static/js/header.js"></script>-->
 <script src="/static/profile/js/lottie.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/static/admin/js/moment.js"></script>
@@ -2241,7 +2241,10 @@
 		<div id="sChatWrap" class="right-container"></div>
 	</div>
 </div>
-
+<script th:inline="javascript">
+    var loginUser = [[${loginUser}]];
+</script>
+<script src="/js/header.js"></script>
 
 
 
