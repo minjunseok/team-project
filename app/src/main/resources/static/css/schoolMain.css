@@ -347,8 +347,9 @@ tbody tr:hover {
 }
 
 #list-hd .list-nick {
-	padding-right: 400px;
-	padding-top: 48px;
+  margin-right: 80px;
+  width: 250px;
+  padding-top: 48px;
 }
 
 #list-hd2 {
