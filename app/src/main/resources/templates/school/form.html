@@ -350,5 +350,9 @@ document.querySelectorAll('.checkbox-container').forEach(function(container) {
     });
 });
 </script>
+<script th:inline="javascript">
+    var loginUser = [[${loginUser}]];
+</script>
+<script src="/js/header.js"></script>
 </body>
 </html>
