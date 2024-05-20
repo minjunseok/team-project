@@ -14,7 +14,6 @@ import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,9 +35,9 @@ public class SchoolClassController {
   private final SchoolClassService schoolClassService;
   private final FileUpload fileUpload;
   private final SchoolMemberService schoolMemberService;
-
   private final String uploadDir =  "schoolclass/";
   @Value("${ncp.storage.bucket}") private String bucket;
+
 
   @GetMapping("list")
   @ResponseBody
@@ -80,7 +79,7 @@ public class SchoolClassController {
                   LocalDateTime endedAt2,
                   ZoneId zoneId,
                   @LoginUser User loginUser,
-                  int schoolNo
+                    int schoolNo
   ) throws Exception{
 
     System.out.println("1111111111111111111111111111111111");
@@ -109,6 +108,7 @@ public class SchoolClassController {
     System.out.println("=========classcontrollr.endeddate==========>    " + endedAtDate);
 
     System.out.println("=======classcontroller============>    " + clazz);
+
 
     JsonResult jsonResult = new JsonResult();
     jsonResult.setStatus("success");
