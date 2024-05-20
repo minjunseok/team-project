@@ -19,7 +19,10 @@ stompClient.onConnect = (frame) => {
 
 function setAlert(alert) {
   console.log(alert);
-  const li = "<li class='notificationItem'><a class='notificationLink' onclick='updateAlert(\"" + alert.redirectPath + "\"," + alert.alertNo + ")'>" + alert.name + "<div>" + alert.content +"</div></a></li>";
+  let dateTime = alerts[key].createdAt.substring(0, 10) + " " + alerts[key].createdAt.substring(12, 16);
+  let thumbnailImg = alerts[key].photo != null && alerts[key].photo.length > 0 ? "<img class='thumbnailItem' src=" + alerts[key].filePath + alerts[key].photo + " onerror=thumbnailImgError(this)>" : "";
+  let notificationItem = alert.isRead == "1" ? "<li class='notificationItem'>" : "<li class='notificationItem unread'>";
+  const li = '<li class="notificationItem"><a class="notificationLink" onclick="updateAlert(\'' + alert.redirectPath + '\',' + alert.alertNo + ')">' + alert.name + '<div>' + alert.content +'</div></a></li>';
   $(li).prependTo("#notificationList");
 }
 
