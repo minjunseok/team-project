@@ -24,7 +24,6 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* 전체 페이지에 스크롤바가 생기지 않도록 설정 */
         }
 
         .outer-container {
@@ -136,8 +135,13 @@
 }
 
     </style>
+    <th:block th:replace="common/headCommon :: headerFragment"></th:block>
+
 </head>
+
 <body class="p-3 m-0 border-0 bd-example m-0 border-0">
+<div data-th-replace="header :: header"></div>
+
 <div class="outer-container">
     <div class="centered">
         <form onsubmit="return validateForm()" action="add" data-th-action="@{add}" enctype='multipart/form-data'
