@@ -1358,35 +1358,10 @@
 				<!--댓글 표시 모달-->
 				<script>
 
-					//                            let currentModal = null;
-
-
                     const postModal = new bootstrap.Modal('#postModal', {
                         keyboard: false,
                     });
-                    //							// 클릭된 게시글 데이터의 상세 모달 표시 이벤트 핸들러
-                    //                            // 게시글 클릭 이벤트
-                    //                            $('#searchResult').on('click', '.table', function (event) {
-                    //                                // 드롭다운 버튼 클릭 이벤트가 발생하지 않았을 때만 실행
-                    //                                if ($(event.target).closest('.dropdown-toggle').length > 0) {
-                    //                                    return;
-                    //                                }
-                    //                                // 다른 모달이 열려 있으면 실행하지 않음
-                    //                                if (currentModal !== null) {
-                    //                                    return;
-                    //                                }
-                    //
-                    //
-                    //                                let no = $(this).data('no');
-                    //
-                    //                                console.log("게시글번호를 가져왔니?" + no);
-                    //                                console.log("스쿨no를 가져왔니?" + schoolNo);
-                    //
-                    //                                selectedPost.no = no;
-                    //                                setPostNo(no);
-                    //
-                    //                                showPostModal(no, schoolNo);
-                    //                            });
+
 
                     // 클릭된 게시글 데이터를 모달로 표시하는 함수
                     function showPostModal(no, schoolNo) {
