@@ -93,14 +93,12 @@
     </style>
 
 
-
-
+<th:block th:replace="common/headCommon :: headerFragment"></th:block>
 </head>
 <body>
 
-<div class="logo-container">
-    <a href="/home"><img class="logo" src="/img/moyeora-logo.png"></a>
-</div>
+
+<div data-th-replace="header :: header"></div>
 
 <div id='calendar'></div>
 
@@ -1276,7 +1274,10 @@
 </script>
 
 
-
+<script th:inline="javascript">
+    loginUser = [[${loginUser}]];
+</script>
+<script src="/js/header.js"></script>
 
 
 

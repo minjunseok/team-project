@@ -8,13 +8,10 @@ import moyeora.myapp.dto.schoolclass.SchoolClassRequestDTO;
 import moyeora.myapp.service.SchoolClassService;
 import moyeora.myapp.service.SchoolMemberService;
 import moyeora.myapp.util.FileUpload;
-import moyeora.myapp.vo.JsonResult;
-import moyeora.myapp.vo.SchoolClass;
-import moyeora.myapp.vo.User;
+import moyeora.myapp.vo.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,9 +33,11 @@ public class SchoolClassController {
   private final SchoolClassService schoolClassService;
   private final FileUpload fileUpload;
   private final SchoolMemberService schoolMemberService;
-
+  private final Gm gm;
+  private final NonotificationService nonotificationService;
   private final String uploadDir =  "schoolclass/";
   @Value("${ncp.storage.bucket}") private String bucket;
+
 
   @GetMapping("list")
   @ResponseBody
@@ -109,6 +108,16 @@ public class SchoolClassController {
     System.out.println("=========classcontrollr.endeddate==========>    " + endedAtDate);
 
     System.out.println("=======classcontroller============>    " + clazz);
+
+
+    Alert alert = new Alert();
+    alert.setUserNo(gm.getSender().getNo()); // 알림 수신자 번호
+    alert.setName("알림 타이틀"); // 알림 타이틀 문구
+    alert.setContent("타이틀 밑에 영역에 넣을 상세 내용"); // 알림 내용 문구
+    alert.setPhoto("알림 썸네일에 들어갈 사진 경로(NCD 사용 기준)"); // 파일명
+    alert.setType(1); // 알림 타입 1.좋아요 2.댓글 3.팔로잉
+    alert.setRedirectPath("/realCalendar?schoolNo=class.schoolNo"); // 리다이렉트경로 지정
+    notificationService.add(alert);
 
     JsonResult jsonResult = new JsonResult();
     jsonResult.setStatus("success");
