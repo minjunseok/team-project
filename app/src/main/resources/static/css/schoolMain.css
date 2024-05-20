@@ -31,9 +31,8 @@ tbody tr:hover {
 }
 
 /* 화살표 제거 */
-.dropdown-toggle::after {
+.dropdown-toggle {
 	background-color: #f5f5dc; /* 연한 갈색 */
-	width: 100%; /* 테이블 영역만큼 너비 조절 */
 	display: none;
 }
 
@@ -346,8 +345,9 @@ tbody tr:hover {
 }
 
 #list-hd .list-nick {
-	padding-right: 400px;
-	padding-top: 48px;
+  margin-right: 80px;
+  width: 250px;
+  padding-top: 48px;
 }
 
 #list-hd2 {
@@ -364,4 +364,8 @@ tbody tr:hover {
 .list-content {
 	padding-left: 32px;
 	padding-top: 64px;
+}
+
+.md-img .modal-content {
+  width: 700px;
 }
