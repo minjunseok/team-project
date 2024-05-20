@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset='UTF-8'>
   <title>모여라</title>
@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 
+  <th:block th:replace="common/headCommon :: headerFragment"></th:block>
 
   <style>
     /* 공통 스타일 */
@@ -205,6 +206,7 @@
 
 </head>
 <body>
+<div data-th-replace="header :: header"></div>
 
 <div class="container">
   <div class="row">
@@ -559,10 +561,10 @@
   });
 </script>
 
-
-
-
-
+<script th:inline="javascript">
+  var loginUser = [[${loginUser}]];
+</script>
+<script src="/js/header.js"></script>
 
 </body>
 </html>
