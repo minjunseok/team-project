@@ -1874,7 +1874,7 @@
 
                             switch (actionIndex) {
                                 case 1:
-                                    if (loginUserNo === selectedPostUserNo.postUserNo) {
+                                    if (loginUserNo === selectedPostUserNo.postUserNo || (accessLevel == 4 || accessLevel == 5)) {
                                         postNo = selectedPost.no;
                                         console.log('case 1 게시글 삭제할 게시글 번호 =' + postNo);
                                         setSchoolNo(schoolNo);
@@ -1926,6 +1926,15 @@
 
                                     break;
                                 case 4:
+                                    if(accessLevel != 4 || accessLevel != 5) {
+                                        Swal.fire({
+                                            title: '실패',
+                                            text: '권한이 없습니다.',
+                                            icon: 'error',
+                                            confirmButtonText: '확인',
+                                        });
+                                        break;
+                                    }
                                     postNo = selectedPost.no;
                                     setPostNo(postNo);
                                     fixPost(postNo);
