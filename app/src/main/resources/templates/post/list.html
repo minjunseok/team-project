@@ -177,13 +177,6 @@
 	<div class="Stl">
 		<a
 				class="btn btn-primary"
-				data-th-href="@{noticelist(schoolNo=${schoolNo})}"
-				href="noticelist.html"
-				role="button"
-		>공지 사항</a
-		>
-		<a
-				class="btn btn-primary"
 				target="_blank"
 				th:if="${loginUser != null and accessLevel != null}"
 				data-th-href="@{/gm(schoolNo=${schoolNo},sender=${sender.no})}"
