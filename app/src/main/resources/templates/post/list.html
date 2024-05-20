@@ -175,14 +175,7 @@
 <div class="root">
 	<!-- 스쿨 상단 목록 -->
 	<div class="Stl">
-		<a
-				class="btn btn-primary"
-				target="_blank"
-				th:if="${loginUser != null and accessLevel != null}"
-				data-th-href="@{/gm(schoolNo=${schoolNo},sender=${sender.no})}"
-				role="button"
-		>채팅</a
-		>
+
 
 		<a
 				class="btn btn-primary"
@@ -317,13 +310,13 @@
 								</div>
 
 								<div th:if="${accessLevel == 4 or accessLevel == 5}">
-									<button
-											class="unfix-button"
-											data-th-data-no="*{no}"
-											data-no="100"
-									>
-										고정 해제
-									</button>
+                                    <button
+                                            class="unfix-button btn btn-secondary"
+                                            data-th-data-no="*{no}"
+                                            data-no="100"
+                                    >
+                                        고정 해제
+                                    </button>
 								</div>
 							</div>
 						</div>
