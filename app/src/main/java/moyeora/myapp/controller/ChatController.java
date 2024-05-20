@@ -156,6 +156,8 @@ public class ChatController {
         List<Dm> list = chatService.getDmListOnlyLast(no);
         String ncdPath = this.bucketname + "/" + this.endpoint;
         for (Dm dm : list) {
+            User receiver = userService.getUserInfo(dm.getReceiver().getNo());
+            dm.setReceiver(receiver);
             dm.setFilePath(ncdPath + "/" + dmUploadDir);
         }
         return list;
