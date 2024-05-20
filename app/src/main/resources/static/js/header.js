@@ -1,5 +1,5 @@
 let userInfo = loginUser;
-console.log("header.js");
+//console.log("header.js");
 console.log(userInfo);
 
 function connect() {
@@ -152,7 +152,7 @@ function loadChatDm() {
       console.log("dmListOnlyLast success");
       console.log(result);
       for(key in result) {
-        console.log(result[key].message)
+//        console.log(result[key].message)
         let thumbnailImg = "<img class='thumbnailItem' src=" + result[key].filePath + result[key].photo + " onerror=thumbnailImgError(this)>";
         let uChatItem = result[key].isRead == "1" ? "<li class='notificationItem'>" : "<li class='notificationItem unread'>";
         let msg = ( result[key].message != null && result[key].message != "" && result[key].message.length > 0 ) ? result[key].message : "사진을 보냈습니다.";
