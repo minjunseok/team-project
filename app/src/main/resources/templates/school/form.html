@@ -24,7 +24,6 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* 전체 페이지에 스크롤바가 생기지 않도록 설정 */
         }
 
         .outer-container {
@@ -136,8 +135,13 @@
 }
 
     </style>
+    <th:block th:replace="common/headCommon :: headerFragment"></th:block>
+
 </head>
+
 <body class="p-3 m-0 border-0 bd-example m-0 border-0">
+<div data-th-replace="header :: header"></div>
+
 <div class="outer-container">
     <div class="centered">
         <form onsubmit="return validateForm()" action="add" data-th-action="@{add}" enctype='multipart/form-data'
@@ -257,6 +261,9 @@
             });
             return false;
         }
+
+
+
         document.querySelector("#form1").onsubmit = () => {
           // submit 타입의 버튼을 클릭하면 onsubmit 으로 등록한 함수가 호출된다.
           // 여기에서 입력 폼 값을 검증하는 일을 한다.
@@ -291,6 +298,10 @@
         });
         return true;
     }
+
+
+
+    
     // 아이디 체크여부 확인 (아이디 중복일 경우 = 0 , 중복이 아닐경우 = 1 )
     $("#signupBtn").click(function() {
         var schoolName = $("#name").val();
@@ -338,13 +349,17 @@
             }
         });
     });
-document.querySelectorAll('.checkbox-container').forEach(function(container) {
-    container.addEventListener('click', function() {
-        this.classList.toggle('checked');
-        var checkbox = this.querySelector('input[type="checkbox"]');
-        checkbox.checked = !checkbox.checked;
+    document.querySelectorAll('.checkbox-container').forEach(function(container) {
+        container.addEventListener('click', function() {
+            this.classList.toggle('checked');
+            var checkbox = this.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+        });
     });
-});
 </script>
+<script th:inline="javascript">
+    var loginUser = [[${loginUser}]];
+</script>
+<script src="/js/header.js"></script>
 </body>
 </html>
