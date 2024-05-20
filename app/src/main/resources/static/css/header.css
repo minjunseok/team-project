@@ -257,7 +257,7 @@
 }
 
 .notificationItem.unread {
-    background-color: yellow;
+    background-color: #cbbca799;
 }
 
 .notificationItem.empty {
@@ -273,7 +273,7 @@
 }*/
 
 .notificationLink:hover{
-    background-color: #cbbca788;
+    background-color: #cbbca722;
 }
 
 .notificationThumbnail {
