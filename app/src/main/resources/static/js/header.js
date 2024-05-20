@@ -12,14 +12,14 @@ const stompClient = new StompJs.Client({
 
 stompClient.onConnect = (frame) => {
   console.log('Connected: ' + frame);
-  stompClient.subscribe('/sub/userInfo/' + userInfo.no, (alert) => {
+  stompClient.subscribe('/sub/user/' + userInfo.no, (alert) => {
     setAlert(JSON.parse(alert.body));
   });
 };
 
 function setAlert(alert) {
   console.log(alert);
-  const li = "<li class='notificationItem'><a class='notificationLink' onclick=updateAlert('" + alert.redirectPath + "'," + alert.alertNo + ");>" + alert.name + "</a></li>"
+  const li = "<li class='notificationItem'><a class='notificationLink' onclick='updateAlert(\"" + alert.redirectPath + "\"," + alert.alertNo + ")'>" + alert.name + "<div>" + alert.content +"</div></a></li>";
   $(li).prependTo("#notificationList");
 }
 
@@ -152,7 +152,6 @@ function loadChatDm() {
       console.log("dmListOnlyLast success");
       console.log(result);
       for(key in result) {
-        console.log(result[key].message)
         let thumbnailImg = "<img class='thumbnailItem' src=" + result[key].filePath + result[key].photo + " onerror=thumbnailImgError(this)>";
         let uChatItem = result[key].isRead == "1" ? "<li class='notificationItem'>" : "<li class='notificationItem unread'>";
         let msg = ( result[key].message != null && result[key].message != "" && result[key].message.length > 0 ) ? result[key].message : "사진을 보냈습니다.";
