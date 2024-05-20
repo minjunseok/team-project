@@ -206,60 +206,61 @@
 
 
 
-			<div class="md-img">
-				<figure class="figure">
-					<img
-							th:src="${schoolPhotoUrl + '?type=f&w=300&h=300'}"
-							class="figure-img img-fluid rounded"
-							alt=""
-					/>
-					<figcaption class="figure-caption">[[${schoolName}]]</figcaption>
-				</figure>
+            <div class="md-img">
+                <figure class="figure">
+                    <img
+                            th:src="${schoolPhotoUrl + '?type=f&w=300&h=300'}"
+                            class="figure-img img-fluid rounded"
+                            alt=""
+                    />
+                    <figcaption class="figure-caption">[[${schoolName}]]</figcaption>
+                </figure>
 
-				<div
-						class="md_container"
+                <div
+                        class="md_container"
                         th:if="${accessLevel == 2 or accessLevel == 3 or accessLevel == 4}"
-
                 >
-					<!-- <div id="post_setting" onclick="postForm()"> -->
-					<button
-							type="button"
-							id="postAddBtn"
-							class="btn text-white createButton"
-					>
-						새 글 작성
-					</button>
-					<!-- </div> -->
-				</div>
+                    <!-- <div id="post_setting" onclick="postForm()"> -->
+                    <button
+                            type="button"
+                            id="postAddBtn"
+                            class="btn text-white createButton"
+                    >
+                        새 글 작성
+                    </button>
+                    <!-- </div> -->
+                </div>
 
-				<div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>
+                <div data-th-replace="post/postModal/form :: postAdd-modal">새 글 작성</div>
 
                 <div
                         class="wait_container"
-                        th:unless="${loginUser == null and accessLevel == 5}">
+                        th:if="${loginUser != null and accessLevel == 5}"
+                >
                     <button
                             type="button"
                             id="waitButton"
-                            class="btn text-white createButton">
-
+                            class="btn text-white createButton"
+                    >
                         가입 대기
                     </button>
                 </div>
 
-
                 <!-- 스쿨에 가입하지 않은 경우에만 가입하기 버튼을 보여줌 -->
                 <div
                         class="join_container"
-                        th:if="${loginUser != null and accessLevel == null}">
+                        th:if="${accessLevel == null}"
+                >
                     <button
                             type="button"
-                            id = "joinButton"
-                            class="btn text-black createButton">
+                            id="joinButton"
+                            class="btn text-black createButton"
+                    >
                         가입 하기
                     </button>
                 </div>
+            </div>
 
-			</div>
 
 			<!-- 회원 리스트 -->
 			<div class="userList">
