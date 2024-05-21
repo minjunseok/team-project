@@ -69,7 +69,7 @@ public class ChatController {
         model.addAttribute("receiver", userService.get(receiver));
         model.addAttribute("room", room);
         model.addAttribute("chatList", chatService.getDmList(room.getNo()));
-        return "/chat/dm";
+        return "chat/dm";
     }
 
     @MessageMapping("/gm")
