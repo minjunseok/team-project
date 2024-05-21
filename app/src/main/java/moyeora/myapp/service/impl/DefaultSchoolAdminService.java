@@ -84,11 +84,6 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + tagNum);
       }
 
-//      SchoolUser schoolUser = new SchoolUser();
-//      schoolUser.setSchoolNo(school.getNo());
-      //SchoolUser schoolUser = new SchoolUser();
-      //schoolUser.setLevelNo(4);
-
       if (school.getName() == null || school.getName().isEmpty()) {
         throw new IllegalArgumentException("스쿨명을 입력하세요.");
       }
