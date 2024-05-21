@@ -69,7 +69,7 @@ public class ChatController {
         model.addAttribute("receiver", userService.get(receiver));
         model.addAttribute("room", room);
         model.addAttribute("chatList", chatService.getDmList(room.getNo()));
-        return "/chat/dm";
+        return "chat/dm";
     }
 
     @MessageMapping("/gm")
@@ -156,6 +156,8 @@ public class ChatController {
         List<Dm> list = chatService.getDmListOnlyLast(no);
         String ncdPath = this.bucketname + "/" + this.endpoint;
         for (Dm dm : list) {
+            User receiver = userService.getUserInfo(dm.getReceiver().getNo());
+            dm.setReceiver(receiver);
             dm.setFilePath(ncdPath + "/" + dmUploadDir);
         }
         return list;

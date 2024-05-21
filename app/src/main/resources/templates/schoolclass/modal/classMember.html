@@ -3,6 +3,50 @@
 <head>
     <meta charset='utf-8'/>
 
+    /* Modal styles */
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .modal-title {
+            font-weight: bold;
+        }
+
+        .modal-body {
+            background-color: #f8f9fa;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        td img {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
 
 
 </head>
@@ -18,7 +62,7 @@
             <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
           </div>
               <div class="modal-body">
-                    <table>
+                     <table class="table table-bordered">
                         <thead>
                             <tr>
                             <th>사진</th>

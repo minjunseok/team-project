@@ -4,6 +4,7 @@
   let photo = "";
   console.log(school);
   console.log(sender);
+  console.log(chatList);
 
  var gmFilePath = "https://kr.object.ncloudstorage.com/moyeorastorage/gm/";
  var gmFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/gm/";

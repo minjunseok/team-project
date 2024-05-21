@@ -65,7 +65,7 @@ public class SecurityConfig {
                 )
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
-                        .logoutSuccessUrl("/")
+                        .logoutSuccessUrl("/auth/form")
                         .invalidateHttpSession(true))
                 .formLogin(form -> form
                         .loginPage("/auth/form")

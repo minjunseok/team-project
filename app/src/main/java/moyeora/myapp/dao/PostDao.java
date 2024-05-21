@@ -71,4 +71,7 @@ public interface PostDao {
 
   int deleteAllSchoolPost(int schoolNo);
 
+  int deleteAllSchoolComments(int schoolNo);
+
+
 }
