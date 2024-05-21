@@ -18,7 +18,7 @@
   }
 
   const stompClientGm = new StompJs.Client({
-      brokerURL: 'ws://localhost:8080/ws'
+      brokerURL: 'ws://175.45.194.120/ws'
   });
 
   stompClientGm.onConnect = (frame) => {
