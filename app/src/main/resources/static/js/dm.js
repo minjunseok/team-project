@@ -60,8 +60,8 @@
 
   function sendMessage() {
       let dm = {
-          sender : {no : sender.no, nickname : sender.nickname},
-          receiver : {no : receiver.no, nickname:receiver.nickname},
+          sender : {no : sender.no, nickname : sender.nickname, photo : sender.photo},
+          receiver : {no : receiver.no, nickname:receiver.nickname, photo:receiver.photo},
           message : $("#message").val(),
           photo : "",
           roomNo : room.no
@@ -83,11 +83,10 @@
         processData: false,
         success: function (result) {
             console.log("success: " + result.message);
-
             stompClient.publish({
             destination: "/pub/dm",
             body: JSON.stringify({
-              'sender': {no : result.sender.no, nickname : result.sender.nickname, photo : result.sender.photo},
+              'sender': {no : sender.no, nickname : sender.nickname, photo : sender.photo},
               'receiver': {no : result.receiver.no, nickname : result.receiver.nickname, photo : result.receiver.photo},
               'message': result.message,
               'photo': result.photo,

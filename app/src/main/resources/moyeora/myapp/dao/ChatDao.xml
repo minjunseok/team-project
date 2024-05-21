@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="moyeora.myapp.dao.ChatDao">
 
@@ -33,6 +33,7 @@
         <result column="created_at" property="sendDate"/>
         <result column="room_no" property="roomNo"/>
         <result column="is_read" property="isRead"/>
+        <result column="user_no_dm" property="userNoDm"/>
         <association property="sender" javaType="User">
             <id column="user_no" property="no"/>
             <result column="name" property="name"/>
@@ -62,73 +63,73 @@
 
     <select id="getGm" resultMap="gmMap" parameterType="int">
         select
-            g.gm_no,
-            g.message,
-            g.photo,
-            g.created_at,
-            g.is_read,
-            u.user_no,
-            u.name,
-            u.nickname,
-            u.photo user_photo,
-            sc.school_no,
-            sc.name school_name,
-            sc.photo school_photo,
-            sc.open_range
+        g.gm_no,
+        g.message,
+        g.photo,
+        g.created_at,
+        g.is_read,
+        u.user_no,
+        u.name,
+        u.nickname,
+        u.photo user_photo,
+        sc.school_no,
+        sc.name school_name,
+        sc.photo school_photo,
+        sc.open_range
         from
-            gm g inner join users u on g.user_no=u.user_no
-            inner join schools sc
+        gm g inner join users u on g.user_no=u.user_no
+        inner join schools sc
         where
-            g.gm_no = #{value}
+        g.gm_no = #{value}
     </select>
 
     <select id="findGmListBySchoolNo" resultMap="gmMap" parameterType="int">
         select
-            g.gm_no,
-            g.message,
-            g.photo,
-            g.created_at,
-            g.is_read,
-            u.user_no,
-            u.name,
-            u.nickname,
-            u.photo user_photo,
-            sc.school_no,
-            sc.name school_name,
-            sc.photo school_photo,
-            sc.open_range
+        g.gm_no,
+        g.message,
+        g.photo,
+        g.created_at,
+        g.is_read,
+        u.user_no,
+        u.name,
+        u.nickname,
+        u.photo user_photo,
+        sc.school_no,
+        sc.name school_name,
+        sc.photo school_photo,
+        sc.open_range
         from
-            gm g inner join users u on g.user_no=u.user_no
-            inner join schools sc on g.school_no=sc.school_no
+        gm g inner join users u on g.user_no=u.user_no
+        inner join schools sc on g.school_no=sc.school_no
         where
-            g.school_no = #{value}
+        g.school_no = #{value}
     </select>
 
     <select id="getGmListOnlyLast" resultMap="gmMap" parameterType="int">
         select
-            g.gm_no,
-            g.message,
-            g.photo,
-            g.created_at,
-            g.is_read,
-            u.user_no,
-            u.name,
-            u.nickname,
-            u.photo user_photo,
-            sc.school_no,
-            sc.name school_name,
-            sc.photo school_photo,
-            sc.open_range
+        g.gm_no,
+        g.message,
+        g.photo,
+        g.created_at,
+        g.is_read,
+        u.user_no,
+        u.name,
+        u.nickname,
+        u.photo user_photo,
+        sc.school_no,
+        sc.name school_name,
+        sc.photo school_photo,
+        sc.open_range
         from
-            gm g
-            inner join schools sc on sc.school_no=g.school_no
-            inner join school_users su on g.school_no=su.school_no
-            inner join users u on su.user_no=u.user_no
+        gm g
+        inner join schools sc on sc.school_no=g.school_no
+        inner join school_users su on g.school_no=su.school_no
+        inner join users u on su.user_no=u.user_no
         JOIN (
-            select
-            max(gm_no) as 'max_no'
-            FROM gm
-            group by school_no
+        select
+        max(gm_no) as 'max_no'
+        FROM gm
+        group by school_no
         ) sq on (g.gm_no  = sq.max_no)
         where su.user_no = #{value}
     </select>
@@ -141,102 +142,109 @@
 
     <select id="getDm" resultMap="dmMap" parameterType="int">
         select
-            d.dm_no,
-            d.message,
-            d.created_at,
-            d.photo,
-            d.room_no,
-            d.is_read,
-            u.user_no,
-            u.name,
-            u.nickname,
-            u.photo
+        d.dm_no,
+        d.message,
+        d.created_at,
+        d.photo,
+        d.room_no,
+        d.is_read,
+        u.user_no,
+        u.name,
+        u.nickname,
+        u.photo
         from
-            dm d inner join users u on d.user_no=u.user_no
+        dm d inner join users u on d.user_no=u.user_no
         where
-            d.dm_no=#{value}
+        d.dm_no=#{value}
     </select>
 
     <select id="findDmListBySenderAndReceiver" resultMap="dmMap" parameterType="int">
         select
-            d.dm_no,
-            d.message,
-            d.created_at,
-            d.photo,
-            d.room_no,
-            d.is_read,
-            u.user_no,
-            u.name,
-            u.nickname,
-            u.photo receiverPhoto
+        d.dm_no,
+        d.message,
+        d.created_at,
+        d.photo,
+        d.room_no,
+        d.is_read,
+        u.user_no,
+        u.name,
+        u.nickname,
+        u.photo receiverPhoto
         from
-            dm d inner join users u on d.user_no=u.user_no
+        dm d inner join users u on d.user_no=u.user_no
         where
-            (user_no2 = #{sender} and user_no = #{receiver}) or (user_no2 = #{receiver} and user_no = #{sender})
+        (user_no2 = #{sender} and user_no = #{receiver}) or (user_no2 = #{receiver} and user_no = #{sender})
         union
         select
-            d.dm_no,
-            d.message,
-            d.created_at,
-            d.photo,
-            d.room_no,
-            d.is_read,
-            u.user_no,
-            u.name,
-            u.nickname,
-            u.photo receiverPhoto
+        d.dm_no,
+        d.message,
+        d.created_at,
+        d.photo,
+        d.room_no,
+        d.is_read,
+        u.user_no,
+        u.name,
+        u.nickname,
+        u.photo receiverPhoto
         from
-            dm d inner join users u on d.user_no2=u.user_no
+        dm d inner join users u on d.user_no2=u.user_no
         where
-            (user_no2 = #{sender} and user_no = #{receiver}) or (user_no2 = #{receiver} and user_no = #{sender})
+        (user_no2 = #{sender} and user_no = #{receiver}) or (user_no2 = #{receiver} and user_no = #{sender})
     </select>
 
     <select id="findDmListByRoomNo" resultMap="dmMap" parameterType="int">
         select
-            d.dm_no,
-            d.message,
-            d.created_at,
-            d.photo,
-            d.room_no,
-            d.is_read,
-            u.user_no,
-            u.name,
-            u.nickname,
-            u.photo
+        d.dm_no,
+        d.message,
+        d.created_at,
+        d.photo,
+        d.room_no,
+        d.is_read,
+        u.user_no,
+        u.name,
+        u.nickname,
+        u.photo
         from
-            dm d inner join users u on d.user_no=u.user_no
+        dm d inner join users u on d.user_no=u.user_no
         where
-            room_no = #{value}
+        room_no = #{value}
         union
         select
-            d.dm_no,
-            d.message,
-            d.created_at,
-            d.photo,
-            d.room_no,
-            d.is_read,
-            u.user_no,
-            u.name,
-            u.nickname,
-            u.photo
+        d.dm_no,
+        d.message,
+        d.created_at,
+        d.photo,
+        d.room_no,
+        d.is_read,
+        u.user_no,
+        u.name,
+        u.nickname,
+        u.photo
         from
-            dm d inner join users u on d.user_no2=u.user_no
+        dm d inner join users u on d.user_no2=u.user_no
         where
-            room_no = #{value}
+        room_no = #{value}
     </select>
 
     <select id="getDmListOnlyLast" resultMap="dmMap" parameterType="int">
         select
-            *
+        d.dm_no,
+        d.message,
+        d.created_at,
+        d.photo,
+        d.room_no,
+        d.is_read,
+        d.user_no,
+        d.user_no2 user_no_dm
         from (
-            select *
-            from dm
-            where (room_no, dm_no) in (
-                select room_no, MAX(dm_no) as dm_no
-                from dm
-                where user_no=#{value} or user_no2=#{value}
-                group by room_no
-            )
+        select *
+        from dm
+        where (room_no, dm_no) in (
+        select room_no, MAX(dm_no) as dm_no
+        from dm
+        where user_no=#{value} or user_no2=#{value}
+        group by room_no
+        )
         order by dm_no desc) d
         group by d.room_no;
     </select>
@@ -249,19 +257,19 @@
 
     <select id="findDmRoomByNo" resultMap="dmRoomMap" parameterType="int">
         select
-            *
+        *
         from
-            dm_room
+        dm_room
         where
-            room_no = #{value}
+        room_no = #{value}
     </select>
 
     <select id="findDmRoomByUserNo" resultMap="dmRoomMap" parameterType="int">
         select
-            *
+        *
         from
-            dm_room
+        dm_room
         where
-            (user_no = #{user1} and user_no2 = #{user2}) or (user_no = #{user2} and user_no2 = #{user1})
+        (user_no = #{user1} and user_no2 = #{user2}) or (user_no = #{user2} and user_no2 = #{user1})
     </select>
 </mapper>
