@@ -12,6 +12,9 @@
         <result column="photo" property="photo"/>
         <result column="created_at" property="sendDate"/>
         <result column="is_read" property="isRead"/>
+        <result column="is_read" property="isRead"/>
+        <result column="is_read" property="isRead"/>
+        <result column="is_read" property="isRead"/>
         <association property="sender" javaType="User">
             <id column="user_no" property="no"/>
             <result column="name" property="name"/>
@@ -35,10 +38,10 @@
         <result column="is_read" property="isRead"/>
         <result column="user_no_dm" property="userNoDm"/>
         <association property="sender" javaType="User">
-            <id column="user_no" property="no"/>
-            <result column="name" property="name"/>
-            <result column="nickname" property="nickname"/>
-            <result column="photo" property="photo"/>
+            <id column="senderNo" property="no"/>
+            <result column="senderName" property="name"/>
+            <result column="senderNickname" property="nickname"/>
+            <result column="senderPhoto" property="photo"/>
         </association>
         <association property="receiver" javaType="User">
             <id column="user_no" property="no"/>
@@ -194,36 +197,25 @@
 
     <select id="findDmListByRoomNo" resultMap="dmMap" parameterType="int">
         select
-        d.dm_no,
-        d.message,
-        d.created_at,
-        d.photo,
-        d.room_no,
-        d.is_read,
-        u.user_no,
-        u.name,
-        u.nickname,
-        u.photo
+            d.dm_no,
+            d.message,
+            d.created_at,
+            d.photo,
+            d.room_no,
+            d.is_read,
+            u.user_no,
+            u.name,
+            u.nickname,
+            u.photo,
+            (select user_no from users where user_no = d.user_no2) as senderNo,
+            (select name from users where user_no = d.user_no2) as senderName,
+            (select nickname from users where user_no = d.user_no2) as senderNickname,
+            (select photo from users where user_no = d.user_no2) as senderPhoto
         from
-        dm d inner join users u on d.user_no=u.user_no
+            dm d inner join users u on d.user_no=u.user_no
         where
-        room_no = #{value}
-        union
-        select
-        d.dm_no,
-        d.message,
-        d.created_at,
-        d.photo,
-        d.room_no,
-        d.is_read,
-        u.user_no,
-        u.name,
-        u.nickname,
-        u.photo
-        from
-        dm d inner join users u on d.user_no2=u.user_no
-        where
-        room_no = #{value}
+            room_no = #{value}
+
     </select>
 
     <select id="getDmListOnlyLast" resultMap="dmMap" parameterType="int">

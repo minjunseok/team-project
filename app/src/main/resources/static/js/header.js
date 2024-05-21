@@ -1,4 +1,5 @@
 let userInfo = loginUser;
+
 console.log(userInfo);
 
 function connect() {
@@ -6,7 +7,7 @@ function connect() {
 }
 
 const stompClient = new StompJs.Client({
-  brokerURL: 'ws://localhost:8080/ws'
+  brokerURL: 'ws://175.45.194.120/ws'
 });
 
 stompClient.onConnect = (frame) => {
@@ -145,7 +146,6 @@ function loadChatGm() {
     url: "/gmListOnlyLast?no=" + userInfo.no,
     data: {},
     success: function (result) {
-    console.log(result)
       let schoolFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/";
       let fileSize_40 = "?type=f&w=40&h=40";
       for(key in result) {
@@ -191,7 +191,6 @@ function loadChatDm() {
 
         $("#dmList").append(
         uChatItem +
-           /* "<a class='chatLink' onclick=chatLink('" + result[key].school.no + "'," + userInfo.no + ");>" +*/
             "<a class='chatLink' onclick=chatDmLink('" + result[key].receiver.no + "');>" +
                 "<div class='notificationThumbnail'><div class='thumbnailInner'><span class='thumbnailItem'>" + thumbnailImg + "</span></div></div>" +
                 "<dl class='notificationInfoBox'>" +
@@ -266,12 +265,26 @@ function onclickChatTab(obj) {
     }
 }
 
+function setProfilePhoto() {
+    let userFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/";
+    let fileSize_40 = "?type=f&w=40&h=40";
+    let img = "<img class='iconImg' src=" + userFileCdnDomain + userInfo.photo + fileSize_40 + " onerror=headerProfileImgError(this)>";
+
+    document.getElementById('uMenuToggle').innerHTML = '';
+    document.getElementById('uMenuToggle').innerHTML = img;
+}
+
+function headerProfileImgError(obj) {
+    $(obj).attr("src", "/img/moyeoraLogo2.png");
+}
+
 $(function () {
     if ( userInfo != null ) {
         connect();
         loadAlert();
         loadChatGm();
         loadChatDm();
+        setProfilePhoto();
     }
     $( "#readAll" ).click(() => updateAlerts());
 });
