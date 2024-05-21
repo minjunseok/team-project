@@ -54,7 +54,10 @@ public class MyPageController {
 
   @GetMapping("profile")
   @ResponseBody
-  public ResponseEntity<ProfileResponseDTO> profile(int userNo, int page) {
+  public ResponseEntity<ProfileResponseDTO> profile(@LoginUser User loginUser, @RequestParam(defaultValue = "0") int userNo, int page) {
+    if (userNo == 0) {
+      userNo = loginUser.getNo();
+    }
     return ResponseEntity.status(200).body(myPageService.getProfile(userNo, page));
   }
 

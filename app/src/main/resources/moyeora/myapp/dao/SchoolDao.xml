@@ -55,10 +55,10 @@
     select
     school_no,
     name,
-    content
+    photo
     from
     schools
-    where name like #{name}
+    where name like '%${name}%'
   </select>
 
   <select id="findByNo" resultMap="SchoolMap">

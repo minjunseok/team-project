@@ -1,6 +1,6 @@
-let page2 = 0;
-let profileUserNo2;
-let flag=false;
+let page2 = 0
+let profileUserNo2
+let flag2=false
 $(window).on('scroll', function() {
 
   if($(window).scrollTop() + $(window).innerHeight() >= $(window)[0].scrollHeight) {
@@ -63,8 +63,11 @@ $(document).on('click', '#following-click2', function(){
 })
 
 const profile2 = (u) => {
-  profileUserNo2 = u;
-
+  if(u=='undefined' || u==null) {
+    profileUserNo2=0;
+  } else {
+    profileUserNo2 = u
+  }
   axios.get("/mypage/profile?userNo="+profileUserNo2+"&page="+(++page2))
   .then((e)=>{
 
@@ -166,6 +169,10 @@ const profile2 = (u) => {
 
     }
     $("#post-body2").append(posthtml);
+    $(".my-posts").addClass('active')
+    $(".my-school-posts").removeClass('active')
+    $(".my-follower-posts").removeClass('active')
+    $(".my-hot-posts").removeClass('active')
   })
   .catch((e)=>{
     page--;
@@ -174,11 +181,11 @@ const profile2 = (u) => {
 
 $(document).on('click', '.user-img', function(){
   profileUserNo2 = $(this).prev().val()
-  if(flag===false) {
+  if(flag2===false) {
       const myModal = new bootstrap.Modal(document.getElementById('profile-modal'), {
       })
       myModal.show();
-      flag===true;
+      flag2===true;
   }
 })
 
@@ -257,6 +264,11 @@ $(document).on('click', '.my-school-posts', function(){
 
         }
         $("#post-body2").append(posthtml);
+
+        $(".my-posts").removeClass('active')
+        $(".my-school-posts").addClass('active')
+        $(".my-follower-posts").removeClass('active')
+        $(".my-hot-posts").removeClass('active')
       })
       .catch((e)=>{
         page--;
@@ -339,6 +351,10 @@ $(document).on('click', '.my-follower-posts', function(){
 
         }
         $("#post-body2").append(posthtml);
+         $(".my-posts").removeClass('active')
+            $(".my-school-posts").removeClass('active')
+            $(".my-follower-posts").addClass('active')
+            $(".my-hot-posts").removeClass('active')
       })
       .catch((e)=>{
         page--;
@@ -422,6 +438,10 @@ $(document).on('click', '.my-hot-posts', function(){
 
     }
     $("#post-body2").append(posthtml);
+    $(".my-posts").removeClass('active')
+    $(".my-school-posts").removeClass('active')
+    $(".my-follower-posts").removeClass('active')
+    $(".my-hot-posts").addClass('active')
   })
   .catch((e)=>{
     page--;

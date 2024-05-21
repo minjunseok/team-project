@@ -16,9 +16,9 @@
     <title>모여라 </title>
   
 </head>
+<th:block th:replace="common/headCommon :: headerFragment"></th:block>
 <body>
 
-<!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
 <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
   <img alt="닫기 버튼" id="btnCloseLayer"
        onclick="closeDaumPostcode()" src="//t1.daumcdn.net/postcode/resource/images/close.png"
@@ -114,10 +114,8 @@
       element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
   }
 </script>
-<div class="logo-container">
-    <a href="/home"><img class="logo" src="/img/moyeora-logo.png"></a>
-</div>
 
+<div data-th-replace="header :: header"></div>
 
 <h2>회원 정보 수정</h2>
 <br>
