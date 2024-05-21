@@ -159,23 +159,12 @@
 			href="/static/css/schoolMain.css"
 			rel="stylesheet"
 	/>
-<<<<<<< HEAD
 
-
-=======
-<<<<<<< HEAD
->>>>>>> 8c41a5f2d607d0b8ec81e3ffbd62a126a64a884b
 	<link rel="shortcut icon" href="/static/profile/images/favicon.ico" />
 	<link rel="stylesheet" href="/static/profile/css/socialv.css?v=4.0.0">
 	<link rel="stylesheet" href="/static/profile/vendor/@fortawesome/fontawesome-free/css/all.min.css">
 	<link rel="stylesheet" href="/static/profile/vendor/remixicon/fonts/remixicon.css">
 
-<<<<<<< HEAD
-
-
-
-=======
-=======
 	<link rel="shortcut icon" href="/profile/images/favicon.ico" />
 	<link rel="stylesheet" href="/profile/css/libs.min.css">
 	<link rel="stylesheet" href="/profile/css/socialv.css?v=4.0.0">
@@ -201,8 +190,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/admin/js/moment.js"></script>
     <script src="/js/profile.js"></script>
->>>>>>> 12dd44724edfbbb533c99cf057c0ec24cfd54a38
->>>>>>> 8c41a5f2d607d0b8ec81e3ffbd62a126a64a884b
 </head>
 
 <body>
@@ -907,9 +894,6 @@
                         });
                     }
 
-//                    $(function () {
-//                    sChatLoad();
-//                    });
                 </script>
 
 				<script type="text/javascript">
@@ -1519,19 +1503,9 @@
 				<!--댓글 표시 모달-->
 				<script>
 
-<<<<<<< HEAD
-
-
                     const postModal = new bootstrap.Modal('#postModal', {
                         keyboard: false,
                     });
-                   
-=======
-                    const postModal = new bootstrap.Modal('#postModal', {
-                        keyboard: false,
-                    });
-
->>>>>>> 12dd44724edfbbb533c99cf057c0ec24cfd54a38
 
                     // 클릭된 게시글 데이터를 모달로 표시하는 함수
                     function showPostModal(no, schoolNo) {
@@ -1885,167 +1859,7 @@
                         });
                     });
                 </script>
-                <!--서머노트 활용 스쿨 게시글 수정-->
-
-<!--                <script>-->
-
-<!--                    $(document).ready(function () {-->
-<!--                       -->
-<!--                </script>-->
-<!--				<script>-->
-<!--                    $(document).on('click', '#postAddBtn', function () {-->
-<!--                        if (accessLevel === 5) {-->
-<!--                            Swal.fire({-->
-<!--                                title: '실패',-->
-<!--                                text: '현재 가입 대기중입니다.',-->
-<!--                                icon: 'error',-->
-<!--                                confirmButtonText: '확인',-->
-
-<!--                            });-->
-<!--                        }-->
-
-<!--                        postForm();-->
-<!--                    });-->
-
-
-<!--                    function postForm() {-->
-<!--                        console.log("작성창열림");-->
-<!--                        var schoolNo = getSchoolNoFromUrl();-->
-
-<!--                        $('#post_add_modal').modal('show');-->
-
-
-<!--                    // Summernote 에디터를 초기화합니다.-->
-<!--                    $('#summernote').summernote({-->
-<!--                        height: 300,-->
-<!--                        width: '100%',-->
-<!--                        callbacks: {-->
-<!--                            onInit: function () {-->
-<!--                                console.log("schoolNo" + schoolNo);-->
-<!--                                console.log('Summernote 생성됨!');-->
-<!--                            },-->
-
-<!--                            onImageUpload: function (files) {-->
-<!--                                let data = new FormData();-->
-<!--                                for (const file of files) {-->
-<!--                                    data.append('files', file);-->
-<!--                                }-->
-<!--                                // schoolNo도 함께 전송합니다.-->
-<!--                                data.append('schoolNo', schoolNo);-->
-
-<!--                                $.ajax({-->
-<!--                                    url: 'file/upload', // 파일 업로드 처리를 하는 엔드포인트 URL-->
-<!--                                    type: 'POST',-->
-<!--                                    dataType: 'json',-->
-<!--                                    contentType: false,-->
-<!--                                    processData: false,-->
-<!--                                    data: data,-->
-<!--                                })-->
-<!--                                    .done(function (response) {-->
-<!--                                    if (response.status === 'error') {-->
-<!--                                        console.log("게시글 작성 실패")-->
-<!--//                                        Swal.fire({-->
-<!--//                                            title: '실패',-->
-<!--//                                            text: '파일 업로드에 실패했습니다. ',-->
-<!--//                                            icon: 'error',-->
-<!--//                                            confirmButtonText: '확인',-->
-<!--//                                        });-->
-<!--                                        return;-->
-<!--                                    }-->
-<!--                                    if (response.data.length === 0) {-->
-<!--                                        console.log("게시글 작성 실패")-->
-<!--//                                        Swal.fire({-->
-<!--//                                            title: '실패',-->
-<!--//                                            text: '파일 업로드에 실패했습니다. ' + response.message,-->
-<!--//                                            icon: 'error',-->
-<!--//                                            confirmButtonText: '확인',-->
-<!--//                                        });-->
-<!--//                                        return;-->
-<!--                                    }-->
-<!--                                    // 서버에서 받은 업로드 파일 이름을 가지고 <img> 태그를 설정합니다.-->
-<!--                                    for (const attachedFile of response.data) {-->
-<!--                                        $('#summernote').summernote(-->
-<!--                                            'insertImage',-->
-<!--                                            'https://kr.object.ncloudstorage.com/moyeorastorage/post/' + attachedFile.filePath-->
-<!--                                        );-->
-<!--                                    }-->
-<!--                                })-->
-<!--                                    .fail(function (xhr, status, error) {-->
-<!--                                    console.log('AJAX 에러: ', status, error);-->
-<!--                                    Swal.fire({-->
-<!--                                        title: '실패',-->
-<!--                                        text: '파일 업로드에 실패했습니다. ' ,-->
-<!--                                        icon: 'error',-->
-<!--                                        confirmButtonText: '확인',-->
-<!--                                    });-->
-<!--                                });-->
-<!--                            },-->
-<!--                        },-->
-<!--                    });-->
-<!--                    }-->
-
-<!--                    $(document).on('click', '#submitBtn', function() {-->
-<!--                        ('#summernote').summernote({-->
-<!--                            height: 300,-->
-<!--                            width: '100%',-->
-<!--                            callbacks: {-->
-<!--                                onInit: function () {-->
-<!--                                    console.log("schoolNo" + schoolNo);-->
-<!--                                    console.log('Summernote 생성됨!');-->
-<!--                                },-->
-
-<!--                                onImageUpload: function (files) {-->
-<!--                                    let data = new FormData();-->
-<!--                                    for (const file of files) {-->
-<!--                                        data.append('files', file);-->
-<!--                                    }-->
-<!--                                    // schoolNo도 함께 전송합니다.-->
-<!--                                    data.append('schoolNo', schoolNo);-->
-
-<!--                                    $.ajax({-->
-<!--                                        url: 'file/upload', // 파일 업로드 처리를 하는 엔드포인트 URL-->
-<!--                                        type: 'POST',-->
-<!--                                        dataType: 'json',-->
-<!--                                        contentType: false,-->
-<!--                                        processData: false,-->
-<!--                                        data: data,-->
-<!--                                    })-->
-<!--                                        .done(function (response) {-->
-<!--                                        if (response.status === 'error' || response.data.length === 0) {-->
-<!--                                            Swal.fire({-->
-<!--                                                title: '실패',-->
-<!--                                                text: '파일 업로드에 실패했습니다. ' + (response.message || ''),-->
-<!--                                                icon: 'error',-->
-<!--                                                confirmButtonText: '확인',-->
-<!--                                            });-->
-<!--                                            return;-->
-<!--                                        }-->
-<!--                                        // 서버에서 받은 업로드 파일 이름을 가지고 <img> 태그를 설정합니다.-->
-<!--                                        for (const attachedFile of response.data) {-->
-<!--                                            $('#summernote').summernote(-->
-<!--                                                'insertImage',-->
-<!--                                                'https://kr.object.ncloudstorage.com/moyeorastorage/post/' + attachedFile.filePath-->
-<!--                                            );-->
-<!--                                        }-->
-<!--                                    })-->
-<!--                                        .fail(function (xhr, status, error) {-->
-<!--                                        Swal.fire({-->
-<!--                                            title: '실패',-->
-<!--                                            text: '파일 업로드에 실패했습니다.',-->
-<!--                                            icon: 'error',-->
-<!--                                            confirmButtonText: '확인',-->
-<!--                                        });-->
-<!--                                    });-->
-<!--                                },-->
-<!--                            },-->
-<!--                        });-->
-<!--                    });-->
-
-
-<!--                </script>-->
-
-
-
+                
 				<script>
 					function deletePost(postNo, schoolNo) {
                         $('#postDeleteModal').modal('show');
@@ -2476,16 +2290,8 @@
 		<div id="sChatWrap" class="right-container"></div>
 	</div>
 </div>
-<<<<<<< HEAD
-=======
-<div data-th-replace="/mypage/modal/profile :: profile-modal">새 글 작성</div>
-<<<<<<< HEAD
-=======
 
-<script th:inline="javascript">
-	var loginUser = [[${loginUser}]];
->>>>>>> 12dd44724edfbbb533c99cf057c0ec24cfd54a38
->>>>>>> 8c41a5f2d607d0b8ec81e3ffbd62a126a64a884b
+<div data-th-replace="/mypage/modal/profile :: profile-modal">새 글 작성</div>
 
 
 <script th:inline="javascript">
