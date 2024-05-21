@@ -186,7 +186,7 @@ function loadChatDm() {
       let fileSize_40 = "?type=f&w=40&h=40";
       for(key in result) {
         if( result[key].receiver.no == userInfo.no ) continue;
-        
+
         let thumbnailImg = "<img class='thumbnailItem' src=" + userFileCdnDomain + result[key].receiver.photo + fileSize_40 + " onerror=thumbnailImgError(this)>";
         let uChatItem = result[key].isRead == "1" ? "<li class='notificationItem'>" : "<li class='notificationItem '>";
         let msg = ( result[key].message != null && result[key].message != "" && result[key].message.length > 0 ) ? result[key].message : "사진을 보냈습니다.";
