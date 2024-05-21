@@ -198,6 +198,14 @@ tbody tr:hover {
 	height: 35px;
 }
 
+.left-container .note-editable {
+	text-align: left !important;
+}
+
+.btnpost {
+	text-align: center;
+}
+
 .left-container .md_container .join_container {
 	padding: 10% 15%;
 	margin-left: auto;
