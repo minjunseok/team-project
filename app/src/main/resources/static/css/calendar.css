@@ -150,3 +150,42 @@ button {
     width: 100%;
     height: 300px;
 }
+
+.classMember-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #96918B;
+    color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.classMember-table th, .classMember-table td {
+    padding: 15px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.classMember-table th {
+    background-color: #96918B;
+    color: white;
+}
+
+.classMember-table tr:nth-child(even) {
+    background-color: #96918B;
+}
+
+.classMember-table tr:hover {
+    background-color: #96918B;
+}
+
+.classMember-table td img {
+    border-radius: 50%;
+    margin-right: 10px;
+    height: 80px;
+    width: 80px;
+}

@@ -27,7 +27,9 @@ tbody tr:hover {
 }
 
 .modal-dialog {
-	max-width: 750px; /* 또는 필요한 크기로 지정 */
+	height: 600px !important;
+	margin-top: 200px !important;
+	max-width: 700px !important; /* 또는 필요한 크기로 지정 */
 }
 
 /* 화살표 제거 */
@@ -67,7 +69,7 @@ tbody tr:hover {
 }
 
 .right-container {
-	border: 1px solid #CBBCA7 !important;
+	border: 1px solid #cbbca7 !important;
 	width: 500px !important;
 	padding-left: 8px;
 	border: 1px solid #cbbca7;
@@ -76,11 +78,12 @@ tbody tr:hover {
 
 /* 왼쪽 컨테이너 */
 .left-container {
-	/* float: left; */
-	width: 600px; /* 왼쪽 컨테이너의 너비 설정 */
+	margin-left: 32px;
+	width: 100%; /* 왼쪽 컨테이너의 너비 설정 */
 }
 
 .md-img {
+	width: 400px;
 	padding: 8px;
 	border: 1px solid #cbbca7;
 	text-align: center;
@@ -153,18 +156,19 @@ tbody tr:hover {
 }
 
 .center-container {
-	margin: 0 24px !important;
-	padding: 0 16px;
-	border: 1px solid #CBBCA7;
+	width: 100% !important;
+	margin-right: 300px !important;
+	border: 1px solid #cbbca7;
 	background-color: #aa977e3f;
 }
 .right-container {
-	border: 1px solid #CBBCA7 !important;
+	border: 1px solid #cbbca7 !important;
 	width: 500px !important;
 }
 
 /* 검색창 스타일 */
 .searchBar {
+	width: 1000px;
 	padding-bottom: 16px;
 }
 
@@ -194,6 +198,14 @@ tbody tr:hover {
 	height: 35px;
 }
 
+.left-container .note-editable {
+	text-align: left !important;
+}
+
+.btnpost {
+	text-align: center;
+}
+
 .left-container .md_container .join_container {
 	padding: 10% 15%;
 	margin-left: auto;
@@ -210,6 +222,14 @@ tbody tr:hover {
 	width: 80%;
 }
 
+.left-container .wait_container {
+	margin: 0 auto;
+}
+
+.left-container .wait_container .createButton {
+	background-color: #9e896a;
+	width: 100%;
+}
 
 .left-container .join_container {
 	margin: 0 auto;
@@ -251,7 +271,7 @@ tbody tr:hover {
 }
 
 #fix-hd2 {
-	padding-right: 24px;
+	padding-right: 80px;
 	padding-top: 48px;
 	text-align: center;
 	height: 100%;
@@ -347,9 +367,9 @@ tbody tr:hover {
 }
 
 #list-hd .list-nick {
-  margin-right: 80px;
-  width: 250px;
-  padding-top: 48px;
+	margin-right: 80px;
+	width: 250px;
+	padding-top: 48px;
 }
 
 #list-hd2 {
