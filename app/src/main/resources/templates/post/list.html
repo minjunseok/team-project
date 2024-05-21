@@ -263,41 +263,7 @@
 
 
 			<!-- 회원 리스트 -->
-			<div class="userList">
-				<ul>
-					<li>
-						<div class="col">프로필 사진</div>
-						<div class="col">닉네임</div>
-						<div class="col">회원 등급</div>
-					</li>
-					<li
-							data-th-each="schoolUser : ${schoolUsers}"
-							data-th-object="${schoolUser}"
-					>
-						<div class="col">
-							<input type="hidden" data-th-value="*{userNo}" class="user-hidden-no">
-							<img
-									th:if="${schoolUser.writer.photo != null}"
-									th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/user/' + ${schoolUser.writer.photo}"
-									class="user-img"
-									style="cursor:pointer"
-							/>
-							<img
-									th:unless="${schoolUser.writer.photo != null}"
-									th:src="'https://kr.object.ncloudstorage.com/moyeorastorage/resources/static/img/default-photo.jpeg'"
-									class="user-img"
-									style="cursor:pointer"
-							/>
-						</div>
-						<div class="col">
-							<span data-th-text="*{writer.nickname}"> 작성자 </span>
-						</div>
-						<div class="col">
-							<span data-th-text="*{level.levelName}"> 회원 등급 </span>
-						</div>
-					</li>
-				</ul>
-			</div>
+			
 		</div>
 
 		<div class="center-container">
