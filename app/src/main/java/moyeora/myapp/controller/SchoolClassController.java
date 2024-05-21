@@ -56,8 +56,7 @@ public class SchoolClassController {
   public void form(Model model,@LoginUser User loginUser) throws Exception {
 //    model.addAttribute("schoolMembers",schoolMemberService.list(schoolNo));
     model.addAttribute("loginUser",loginUser.getNo());
-    System.out.println("=====classcontorller.schoolMember==============>    " + schoolMemberService);
-//    System.out.println("realCalendar@@@@@@@@" + schoolNo);
+    //    System.out.println("realCalendar@@@@@@@@" + schoolNo);
 
   }
 
