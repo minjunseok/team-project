@@ -1,6 +1,6 @@
 let page2 = 0;
 let profileUserNo2;
-let flag=false;
+let flag2=false;
 $(window).on('scroll', function() {
 
   if($(window).scrollTop() + $(window).innerHeight() >= $(window)[0].scrollHeight) {
@@ -174,11 +174,11 @@ const profile2 = (u) => {
 
 $(document).on('click', '.user-img', function(){
   profileUserNo2 = $(this).prev().val()
-  if(flag===false) {
+  if(flag2===false) {
       const myModal = new bootstrap.Modal(document.getElementById('profile-modal'), {
       })
       myModal.show();
-      flag===true;
+      flag2===true;
   }
 })
 
