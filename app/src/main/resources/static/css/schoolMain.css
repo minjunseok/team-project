@@ -78,7 +78,6 @@ tbody tr:hover {
 .right-container {
 	border: 1px solid #cbbca7 !important;
 	width: 500px !important;
-	padding-left: 8px;
 	border: 1px solid #cbbca7;
 	width: 30%;
 }
@@ -90,6 +89,7 @@ tbody tr:hover {
 }
 
 .md-img {
+	width: 300px !important;
 	padding: 8px;
 	border: 1px solid #cbbca7;
 	text-align: center;
@@ -169,7 +169,7 @@ tbody tr:hover {
 }
 .right-container {
 	border: 1px solid #cbbca7 !important;
-	width: 500px !important;
+	width: 400px !important;
 }
 
 /* 검색창 스타일 */
