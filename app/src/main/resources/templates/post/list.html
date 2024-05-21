@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html
 		lang="en"
-		xmlns:th="http://www.w3.org/1999/xhtml"
->
+		xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 
 	<meta charset="UTF-8" />
@@ -21,8 +20,16 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
     ></script>
-    <script src="/static/profile/js/libs.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- sweetalert2 -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
     <!-- slider JavaScript -->
 <script src="/static/profile/js/slider.js"></script>
     <!-- masonry JavaScript -->
@@ -36,12 +43,12 @@
 <script src="/static/profile/js/app.js"></script>
 <!--    <script src="/static/js/header.js"></script>-->
 <script src="/static/profile/js/lottie.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script src="/static/admin/js/moment.js"></script>
 <script src="/static/js/profile.js"></script>
 <!--<script th:inline="javascript">-->
- 
- 
+
+
 
 	<!-- 웹 타이틀 옆 작은 이미지 설정 -->
 	<link
@@ -50,12 +57,7 @@
 			type="ima"
 	/>
 
-	<!-- sweetalert2 -->
-	<link
-			rel="stylesheet"
-			href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"
-	/>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
 
 	<!-- Bootstrap CSS -->
 	<link
@@ -160,7 +162,6 @@
 
 
 	<link rel="shortcut icon" href="/static/profile/images/favicon.ico" />
-	<link rel="stylesheet" href="/static/profile/css/libs.min.css">
 	<link rel="stylesheet" href="/static/profile/css/socialv.css?v=4.0.0">
 	<link rel="stylesheet" href="/static/profile/vendor/@fortawesome/fontawesome-free/css/all.min.css">
 	<link rel="stylesheet" href="/static/profile/vendor/remixicon/fonts/remixicon.css">
@@ -849,25 +850,32 @@
 
 				<!--loginUser 모델 객체에서 필요한 데이터 추출-->
 
-
                 <script>
 
+                    // 페이지가 로드될 때 실행될 함수 정의
+                    $(document).ready(function() {
+                        // sChatLoad 함수 호출
 
-                    function sChatLoad() {
-                    $.ajax({
-                    type: "GET",
-                    url: "/gm?schoolNo=" + schoolNo,
-                    data: {},
-                    success: function (result) {
-                    console.log("updateAll success");
-                    $("#sChatWrap").html(result);
-                    }
-                    })
-                    }
 
-                    $(function () {
-                    sChatLoad();
+                        sChatLoad();
                     });
+
+                    // sChatLoad 함수 정의
+                    function sChatLoad() {
+                        $.ajax({
+                            type: "GET",
+                            url: "/gm?schoolNo=" + [[${school.no}]],
+                            data: {},
+                            success: function (result) {
+                                console.log("updateAll success");
+                                $("#sChatWrap").html(result);
+                            }
+                        });
+                    }
+
+//                    $(function () {
+//                    sChatLoad();
+//                    });
                 </script>
 
 				<script type="text/javascript">
@@ -909,6 +917,8 @@
                         console.log('로그인된 사용자 정보가 없습니다.');
                     }
 				</script>
+
+
 
 				<script type="text/javascript">
 					document.addEventListener('DOMContentLoaded', function () {
@@ -1235,7 +1245,7 @@
                                         confirmButtonText: '확인',
                                     }).then(function () {
                                         // 댓글 수정이 성공적으로 완료된 후 입력창 초기화
-                                        $('#commentUpdateInput').val('');
+                                        $('#commentUpdateInput').val();
                                     });
                                 } else {
                                     // 오류가 발생한 경우
@@ -2219,7 +2229,7 @@
                             width: '100%',
                             callbacks: {
                                 onInit: function () {
-                                    $('#summernoteContent').summernote('code', content); // 수정된 부분
+                                    $('#summernoteContent').summernote('code',content); // 수정된 부분
                                 },
                                 onImageUpload: function (files) {
                                     let data = new FormData();
@@ -2427,10 +2437,10 @@
 </div>
 
 
-<!--<script th:inline="javascript">-->
-<!--    var loginUser = [[${loginUser}]];-->
-<!--</script>-->
-<!--<script src="/static/js/header.js"></script>-->
+<script th:inline="javascript">
+    var loginUser = [[${loginUser}]];
+</script>
+<script src="/static/js/header.js"></script>
 
 
 
