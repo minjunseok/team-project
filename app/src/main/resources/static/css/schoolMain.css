@@ -31,7 +31,7 @@ tbody tr:hover {
 }
 
 /* 화살표 제거 */
-.dropdown-toggle::after {
+.dropdown-toggle {
 	background-color: #f5f5dc; /* 연한 갈색 */
 	width: 100%; /* 테이블 영역만큼 너비 조절 */
 	display: none;
@@ -59,14 +59,16 @@ tbody tr:hover {
 }
 
 .container {
-	margin: 0;
-	padding: 16px;
-	max-width: 100%;
-	display: flex;
-	gap: 16px;
+	margin: 0 !important;
+	padding: 16px !important;
+	max-width: 100% !important;
+	display: flex !important;
+	gap: 16px !important;
 }
 
 .right-container {
+	border: 1px solid #CBBCA7 !important;
+	width: 500px !important;
 	padding-left: 8px;
 	border: 1px solid #cbbca7;
 	width: 30%;
@@ -151,8 +153,14 @@ tbody tr:hover {
 }
 
 .center-container {
-	border: 1px solid #cbbca7;
+	margin: 0 24px !important;
+	padding: 0 16px;
+	border: 1px solid #CBBCA7;
 	background-color: #aa977e3f;
+}
+.right-container {
+	border: 1px solid #CBBCA7 !important;
+	width: 500px !important;
 }
 
 /* 검색창 스타일 */
@@ -201,6 +209,7 @@ tbody tr:hover {
 	background-color: #9e896a;
 	width: 80%;
 }
+
 
 .left-container .join_container {
 	margin: 0 auto;
@@ -338,8 +347,9 @@ tbody tr:hover {
 }
 
 #list-hd .list-nick {
-	padding-right: 400px;
-	padding-top: 48px;
+  margin-right: 80px;
+  width: 250px;
+  padding-top: 48px;
 }
 
 #list-hd2 {
