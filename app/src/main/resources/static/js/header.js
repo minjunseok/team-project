@@ -246,11 +246,11 @@ function updateAlerts() {
 }
 
 function chatLink(schoolNo, sender) {
-    window.open("/gm?schoolNo=" + schoolNo + "&sender=" + sender, 'gm', 'width=700px,height=800px,scrollbars=yes');
+    window.open("/gm?schoolNo=" + schoolNo + "&sender=" + sender, 'gm', 'width=600px,height=610px,scrollbars=yes');
 }
 
 function chatDmLink(receiver) {
-    window.open("/dm?receiver=" + receiver, "dm", 'width=700px,height=800px,scrollbars=yes');
+    window.open("/dm?receiver=" + receiver, "dm", 'width=600px,height=610px,scrollbars=yes');
 }
 
 function onclickChatTab(obj) {
