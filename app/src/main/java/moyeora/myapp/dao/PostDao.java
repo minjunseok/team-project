@@ -15,7 +15,7 @@ public interface PostDao {
 
   List<Post> findByNotice(int schoolNo);
 
-
+  int commentDelete(int no);
 
   Post findByFixList(int schoolNo);
 

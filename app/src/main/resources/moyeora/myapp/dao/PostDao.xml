@@ -70,6 +70,12 @@
     where post_no = #{no} and school_no = #{schoolNo}
 </delete>
 
+    <delete id="commentDelete" parameterType="int">
+        delete from comments
+        where post_no = #{no}
+    </delete>
+
+
 
     <update id="update" parameterType="Post">
       update posts set
