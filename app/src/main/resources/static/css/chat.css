@@ -1,217 +1,216 @@
 body {
-    background-color: #f5f5f5;
-    margin: 0 auto;
+	background-color: #f5f5f5;
+	margin: 0 auto;
 }
 
 #main-content {
-    width: 500px;
+	width: 400px;
 }
 
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
 }
 
 .connect {
-    display: none;
+	display: none;
 }
 
 .chat-title {
-    background-color: #cbbca7;
-    width: 100%;
-    color: white;
-    padding: 10px 20px;
-    font-size: 18px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    margin: 0 auto;
+	background-color: #cbbca7;
+	width: 100%;
+	color: white;
+	padding: 10px 20px;
+	font-size: 18px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	margin: 0 auto;
 }
 
 /* Center-align conversation-container */
 
-
 #conversation {
-    height: 500px;
-    background-color: #f5f5f5;
-    border: 1px solid #e5e5e5;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    overflow: auto;
+	height: 500px;
+	background-color: #f5f5f5;
+	border: 1px solid #e5e5e5;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	overflow: auto;
 }
 
 .conversation-container .chat-wrap {
-    display: flex;
-    align-items: flex-start;
-    padding: 15px;
+	display: flex;
+	align-items: flex-start;
+	padding: 15px;
 }
 
 .conversation-container .chat-wrap .contents-wrap {
-    width: calc(100% - 100px);
+	width: calc(100% - 100px);
 }
 
 .conversation-container .chat-wrap .message-wrap {
-    display: flex;
-    align-items: flex-start;
+	display: flex;
+	align-items: flex-start;
 }
 
 .conversation-container .chat-wrap .profile-wrap {
-    position: relative;
-    overflow: hidden;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #eee;
+	position: relative;
+	overflow: hidden;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: #eee;
 }
 
 .conversation-container .chat-wrap .message-text {
-    position: relative;
-    display: inline-block;
-    max-width: calc(100% - 100px);
-    padding: 10px;
-    font-size: 13px;
-    border-radius: 10px;
-    word-break: break-all;
+	position: relative;
+	display: inline-block;
+	max-width: calc(100% - 100px);
+	padding: 10px;
+	font-size: 13px;
+	border-radius: 10px;
+	word-break: break-all;
 }
 
 .conversation-container .chat-wrap .message-text::before {
-    position: absolute;
-    display: block;
-    top: 0;
-    font-size: 1.5rem;
+	position: absolute;
+	display: block;
+	top: 0;
+	font-size: 1.5rem;
 }
 
 .conversation-container .chat-wrap .message-text::before {
-    position: absolute;
-    display: block;
-    top: 0;
-    font-size: 1.5rem;
+	position: absolute;
+	display: block;
+	top: 0;
+	font-size: 1.5rem;
 }
 
-.receiver-wrap .message-text{
-    margin-left: 20px;
-    background-color: #cbbca788;
+.receiver-wrap .message-text {
+	margin-left: 20px;
+	background-color: #cbbca788;
 }
 
-.receiver-wrap .message-text::before{
-   left: -11px;
-   content: "◀";
-   color: #cbbca788;
+.receiver-wrap .message-text::before {
+	left: -11px;
+	content: '◀';
+	color: #cbbca788;
 }
 
 .sender-wrap {
-    flex-direction: row-reverse;
+	flex-direction: row-reverse;
 }
 
 .sender-wrap .message-text {
-     margin-right: 20px;
-     background-color: #fff;
+	margin-right: 20px;
+	background-color: #fff;
 }
 
 .sender-wrap .message-text::before {
-     right: -11px;
-     content: "▶";
-     color: #fff;
+	right: -11px;
+	content: '▶';
+	color: #fff;
 }
 
 .origin {
-    align-self: flex-end;
+	align-self: flex-end;
 }
 
 .sender-wrap .origin {
-    margin-right: 8px;
+	margin-right: 8px;
 }
 
 .receiver-wrap .origin {
-    margin-left: 8px;
+	margin-left: 8px;
 }
 
 .receiver {
 }
 
 .time-stamp {
-  display: inline-block;
-  font-size: 12px;
-  color: #999;
+	display: inline-block;
+	font-size: 12px;
+	color: #999;
 }
 
 .chat-input-wrap {
-    display: flex;
-    align-items: flex-start;
-    margin-top: 10px;
-    position: relative;
+	display: flex;
+	align-items: flex-start;
+	margin-top: 10px;
+	position: relative;
 }
 
 .label-file {
-    display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    cursor: pointer;
-    border: 1px solid #cbbca7;;
-    border-radius: 20px;
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	cursor: pointer;
+	border: 1px solid #cbbca7;
+	border-radius: 20px;
 }
 
 .label-file:hover {
-    background-color: #cbbca7;
+	background-color: #cbbca7;
 }
 
 /* 입력 필드 스타일 */
 .input-field {
-  width: calc(100% - 20px);
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  outline: none;
-  transition: border-color 0.3s ease;
+	width: calc(100% - 20px);
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 20px;
+	outline: none;
+	transition: border-color 0.3s ease;
 }
 
 /* 입력 필드에 포커스가 됐을 때 테두리 색상 변경 */
 .input-field:focus {
-  border-color: #4CAF50;
+	border-color: #4caf50;
 }
 
 /* Style the custom file input */
 .custom-file-upload {
-  display: inline-block;
-  padding: 6px 12px;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f7f7f7;
-  color: #333;
+	display: inline-block;
+	padding: 6px 12px;
+	cursor: pointer;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #f7f7f7;
+	color: #333;
 }
 
 .custom-file-upload:hover {
-  background-color: #e0e0e0;
+	background-color: #e0e0e0;
 }
 
 /* Optionally, style the icon */
 .custom-file-upload i {
-  margin-right: 5px;
+	margin-right: 5px;
 }
 
 .file-count-wrap {
-    width: 50px;
-    margin-left: 5px;
-    margin-top: 6px;
-    bottom: 0;
+	width: 50px;
+	margin-left: 5px;
+	margin-top: 6px;
+	bottom: 0;
 }
 
 /* 전송 버튼 스타일 */
 .send-button {
-  background-color: #cbbca7;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 5px 10px;
-  margin-left: 10px;
-  cursor: pointer;
-  /*transition: background-color 0.1s ease;*/
+	background-color: #cbbca7;
+	color: white;
+	border: none;
+	border-radius: 20px;
+	padding: 5px 10px;
+	margin-left: 10px;
+	cursor: pointer;
+	/*transition: background-color 0.1s ease;*/
 }
 
 /* 전송 버튼 호버 효과 */
 .send-button:hover {
-  color: block;
-  background-color: #cbbca788;
+	color: block;
+	background-color: #cbbca788;
 }
