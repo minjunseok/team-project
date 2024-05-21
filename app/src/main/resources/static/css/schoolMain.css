@@ -362,12 +362,13 @@ tbody tr:hover {
 
 #list-hd2 {
 	padding-right: 44px;
-	padding-top: 48px;
+	padding-top: 36px;
 	text-align: center;
 	height: 100%;
 }
 
 #list-hd2 .list-ca {
+	width: 200px;
 	padding-right: 100px;
 }
 
