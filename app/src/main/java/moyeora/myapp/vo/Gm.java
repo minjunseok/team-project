@@ -17,7 +17,7 @@ public class Gm implements Serializable {
     private User sender;
     private String message;
     private String photo;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp sendDate;
     private String filePath;
     private int isRead;

@@ -27,6 +27,8 @@ tbody tr:hover {
 }
 
 .modal-dialog {
+	height: 600px !important;
+	margin-top: 200px !important;
 	max-width: 700px !important; /* 또는 필요한 크기로 지정 */
 }
 
@@ -160,7 +162,7 @@ tbody tr:hover {
 	background-color: #aa977e3f;
 }
 .right-container {
-	border: 1px solid #CBBCA7 !important;
+	border: 1px solid #cbbca7 !important;
 	width: 500px !important;
 }
 
@@ -210,6 +212,15 @@ tbody tr:hover {
 .left-container .md_container .createButton {
 	background-color: #9e896a;
 	width: 80%;
+}
+
+.left-container .wait_container {
+	margin: 0 auto;
+}
+
+.left-container .wait_container .createButton {
+	background-color: #9e896a;
+	width: 100%;
 }
 
 .left-container .join_container {

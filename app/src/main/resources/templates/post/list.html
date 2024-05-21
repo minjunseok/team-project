@@ -2232,5 +2232,9 @@
 				window.open('/gm?schoolNo=' + schoolNo + '&sender=' + sender, 'gm', 'width=600px,height=610px,scrollbars=yes');
 			}
 		</script>
+		<script th:inline="javascript">
+			var loginUser = [[${loginUser}]];
+		</script>
+		<script src="/js/header.js"></script>
 	</body>
 </html>
