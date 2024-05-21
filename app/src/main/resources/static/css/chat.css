@@ -67,7 +67,7 @@ body {
 .conversation-container .chat-wrap .message-text {
 	position: relative;
 	display: inline-block;
-	max-width: calc(100% - 100px);
+	/*max-width: calc(100% - 100px);*/
 	padding: 10px;
 	font-size: 13px;
 	border-radius: 10px;
