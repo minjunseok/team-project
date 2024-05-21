@@ -17,7 +17,7 @@ public class Dm implements Serializable {
     private User receiver;
     private String message;
     private String photo;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp sendDate;
     private int roomNo;
     private String filePath;
