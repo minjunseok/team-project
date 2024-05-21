@@ -473,6 +473,11 @@
     </delete>
 
 
+    <delete id="deleteAllSchoolComments" parameterType="int">
+        DELETE from comments
+        WHERE post_no IN (SELECT post_no FROM posts WHERE school_no = #{value})
+    </delete>
+
 </mapper>
 
 <!--  <collection property="fileList" ofType="AttachedFile">-->

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.*;
 import moyeora.myapp.dto.school.admin.SchoolMemberUpdateRequestDTO;
 import moyeora.myapp.dto.school.admin.SchoolOpenRangeUpdateRequestDTO;
-import moyeora.myapp.dto.schoolclass.ClassDeleteDTO;
 import moyeora.myapp.service.SchoolAdminService;
 import moyeora.myapp.vo.School;
 import moyeora.myapp.vo.SchoolUser;
@@ -85,11 +84,6 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + tagNum);
       }
 
-//      SchoolUser schoolUser = new SchoolUser();
-//      schoolUser.setSchoolNo(school.getNo());
-      //SchoolUser schoolUser = new SchoolUser();
-      //schoolUser.setLevelNo(4);
-
       if (school.getName() == null || school.getName().isEmpty()) {
         throw new IllegalArgumentException("스쿨명을 입력하세요.");
       }
@@ -118,6 +112,9 @@ public class DefaultSchoolAdminService implements SchoolAdminService {
 
     // 해당 스쿨 클래스 삭제
     rowsAffected += schoolClassDao.deleteAllSchoolClass(schoolNo);
+
+    // 해당 스쿨 댓글 삭제
+    rowsAffected += postDao.deleteAllSchoolComments(schoolNo);
 
     // 해당 스쿨 포스트 삭제
     rowsAffected += postDao.deleteAllSchoolPost(schoolNo);
