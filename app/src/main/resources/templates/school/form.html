@@ -298,6 +298,7 @@
         });
         return true;
     }
+
     // 아이디 체크여부 확인 (아이디 중복일 경우 = 0 , 중복이 아닐경우 = 1 )
     $("#signupBtn").click(function() {
         var schoolName = $("#name").val();
@@ -345,13 +346,18 @@
             }
         });
     });
-document.querySelectorAll('.checkbox-container').forEach(function(container) {
-    container.addEventListener('click', function() {
-        this.classList.toggle('checked');
-        var checkbox = this.querySelector('input[type="checkbox"]');
-        checkbox.checked = !checkbox.checked;
+    document.querySelectorAll('.checkbox-container').forEach(function(container) {
+        container.addEventListener('click', function() {
+            this.classList.toggle('checked');
+            var checkbox = this.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+        });
     });
-});
 </script>
+
+<script th:inline="javascript">
+    var loginUser = [[${loginUser}]];
+</script>
+<script src="/js/header.js"></script>
 </body>
 </html>

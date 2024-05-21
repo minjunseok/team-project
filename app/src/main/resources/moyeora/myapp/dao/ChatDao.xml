@@ -99,9 +99,9 @@
             sc.open_range
         from
             gm g inner join users u on g.user_no=u.user_no
-            inner join schools sc
+            inner join schools sc on g.school_no=sc.school_no
         where
-            sc.school_no = #{value}
+            g.school_no = #{value}
     </select>
 
     <select id="getGmListOnlyLast" resultMap="gmMap" parameterType="int">

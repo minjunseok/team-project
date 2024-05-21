@@ -1,56 +1,32 @@
 <!DOCTYPE html>
-<meta charset="UTF-8" />
-<html lang="en">
-	<head>
-		<meta
-			name="form"
-			content="width=device-width, initial-scale=1.0"
-		/>
-		<title>새 글 작성</title>
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0"
-		/>
-	</head>
-	<body>
-		<div
-			class="modal"
-			id="post_add_modal"
-			data-th-fragment="postAdd-modal"
-		>
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<form
-						id="postAddForm"
-						action="add"
-						data-th-action="@{add}"
-						enctype="multipart/form-data"
-						method="post"
-					>
-						<input
-							type="hidden"
-							name="schoolNo"
-							data-th-value="${schoolNo}"
-						/>
-						<div>
-							<!-- Summernote 에디터 -->
-							<textarea
-								id="summernote"
-								name="content"
-							></textarea>
-						</div>
-						<div class="btnarea">
-							<button
-								type="button"
-								id="submitBtn"
-								class="btn btn-primary"
-							>
-								등록
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</body>
+<meta charset='UTF-8'>
+<html lang='en'>
+<head>
+    <meta name="form" content="width=device-width, initial-scale=1.0">
+    <title>새 글 작성</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+</head>
+<body>
+
+
+<div class="modal" id="post_add_modal" data-th-fragment="postAdd-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="postAddForm" action="add" data-th-action="@{add}" enctype="multipart/form-data" method="post">
+                <input type="hidden" name="schoolNo" data-th-value="${schoolNo}">
+                <div>
+                    <!-- Summernote 에디터 -->
+                    <textarea id="summernote" name="content"></textarea>
+                </div>
+                <div>
+                    <button type="button" id="submitBtn" class="btn btn-primary">등록</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
 </html>
