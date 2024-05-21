@@ -30,15 +30,15 @@ public class DefaultNotificationService {
     @Value("${ncp.storage.endpoint}")
     private String endpoint;
 
-    private final String NCD_PATH = bucketname + "/" + endpoint;
-    private final HashMap<Integer, String> BUCKET_PATH = new HashMap<Integer, String>() {{
-        put(1, NCD_PATH + "/school");
-        put(2, NCD_PATH + "/school");
-        put(3, NCD_PATH + "/user");
-    }};
 
     @Transactional
     public Alert add(Alert alert) throws Exception {
+        String NCD_PATH = this.bucketname + "/" + this.endpoint;
+        HashMap<Integer, String> BUCKET_PATH = new HashMap<>() {{
+            put(1, NCD_PATH + "/school");
+            put(2, NCD_PATH + "/school");
+            put(3, NCD_PATH + "/user");
+        }};
         alert.setFilePath(BUCKET_PATH.get(alert.getType()));
         alertDao.addAlert(alert);
         operations.convertAndSend("/sub/user/" + alert.getUserNo(), alert);
