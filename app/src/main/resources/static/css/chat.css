@@ -191,12 +191,17 @@ body {
 }
 
 .file-count-wrap {
+    display: flex;
 	width: 50px;
 	margin-left: 5px;
+	margin-right: 5px;
 	margin-top: 6px;
 	bottom: 0;
 }
 
+.file-count-wrap > span {
+	padding-right: 5px;
+}
 /* 전송 버튼 스타일 */
 .send-button {
 	background-color: #cbbca7;
