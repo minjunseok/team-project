@@ -7,7 +7,7 @@ function connect() {
 }
 
 const stompClient = new StompJs.Client({
-  brokerURL: 'ws://175.45.194.120/ws'
+  brokerURL: 'ws://localhost:8080/ws'
 });
 
 stompClient.onConnect = (frame) => {
