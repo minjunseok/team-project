@@ -1,67 +1,39 @@
 <!DOCTYPE html>
-<meta charset="UTF-8" />
-<html lang="en">
-	<head>
-		<meta
-			name="md"
-			content="width=device-width, initial-scale=1.0"
-		/>
-		<title>게시글 수정</title>
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0"
-		/>
-	</head>
-	<body>
-		<div
-			class="modal"
-			id="mdPostModal"
-			data-th-fragment="mdPostModal"
-		>
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<form
-						id="mdPostForm"
-						action="update"
-						enctype="multipart/form-data"
-						method="post"
-					>
-						<input
-							type="hidden"
-							name="schoolNo"
-							data-th-value="${schoolNo}"
-						/>
-						<input
-							type="hidden"
-							name="content"
-							data-th-value="${content}"
-						/>
-						<input
-							type="hidden"
-							name="postNo"
-							data-th-value="${postNo}"
-						/>
+<meta charset='UTF-8'>
+<html lang='en'>
+<head>
+    <meta name="md" content="width=device-width, initial-scale=1.0">
+    <title>게시글 수정</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-						<div>
-							<!-- Summernote 에디터 -->
-							<textarea
-								id="summernoteContent"
-								name="content"
-								data-th-text="${content}"
-							></textarea>
-						</div>
-						<div class="btnarea">
-							<button
-								type="button"
-								id="btn_md_submit"
-								class="btn btn-primary"
-							>
-								변경
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</body>
+</head>
+<body>
+
+<div class="modal" id="mdPostModal" data-th-fragment="mdPostModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="mdPostForm" action="update" enctype="multipart/form-data" method="post">
+                <input type="hidden" name="schoolNo" data-th-value="${schoolNo}">
+                <input type="hidden" name="content" data-th-value="${content}">
+                <input type="hidden" name="postNo" data-th-value="${postNo}">
+                <div>
+                    <!-- Summernote 에디터 -->
+                    <textarea id="summernoteContent" name="content" data-th-text="${content}"></textarea>
+                </div>
+                <div>
+                    <button type="button" id="btn_md_submit" class="btn btn-primary">변경</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</body>
 </html>
+
+
