@@ -7,6 +7,7 @@ import moyeora.myapp.vo.Alert;
 import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.List;
 public class NotificationController {
 
     private static final Log log = LogFactory.getLog(NotificationController.class);
+    private final SimpMessageSendingOperations operations;
     private final DefaultNotificationService notificationService;
 
     @GetMapping("")

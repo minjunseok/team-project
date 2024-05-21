@@ -5,10 +5,14 @@
     <meta name="md" content="width=device-width, initial-scale=1.0">
     <title>게시글 수정</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 12dd44724edfbbb533c99cf057c0ec24cfd54a38
 </head>
 <body>
 
+<<<<<<< HEAD
 <div class="modal" id="mdPostModal" data-th-fragment="mdPostModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -26,6 +30,82 @@
             </form>
         </div>
     </div>
+=======
+<div class="modal" id="post_md_modal" data-th-fragment="postMd-modal">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<form action="update" data-th-action="@{update}" data-th-object="${post}"
+						      enctype='multipart/form-data' method='post'>
+								<!-- postNo, schoolNo의 값을 넘기기 위해 히든으로 설정 -->
+
+								<div>
+										<!-- Summernote 에디터 -->
+										<textarea data-th-text="${content}" id="summernoteContent"
+										          name='content'></textarea>
+								</div>
+
+								<div>
+<<<<<<< HEAD
+										<!-- 공지로 등록하는 체크박스 -->
+										<!-- gradeMd = 체크박스는 관리자만 보이게 설정 -->
+										<!-- gradeMdLabel = 공지로등록이라는 텍스트는 관리자만 보이게 설정 -->
+=======
+
+>>>>>>> 12dd44724edfbbb533c99cf057c0ec24cfd54a38
+										<button>변경</button>
+								</div>
+						</form>
+				</div>
+		</div>
+
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 12dd44724edfbbb533c99cf057c0ec24cfd54a38
+
+		<script>
+            $(document).ready(function() {
+                // "변경" 버튼 클릭 시 폼 제출 처리
+                $("#btn_md_submit").click(function() {
+                    // 모달 내의 폼 데이터를 가져옵니다.
+                    var formData = new FormData($("#mdPostModal form")[0]);
+
+                    console.log("@@@@@@등록 누름!", btn_md_submit);
+
+                    // AJAX를 사용하여 폼 데이터를 서버로 제출합니다.
+                    $.ajax({
+                        type: "POST", // POST 요청
+                        url: "update",   // 데이터를 제출할 URL
+                        data: formData, // 폼 데이터
+                        contentType: false, // 컨텐츠 타입을 false로 설정하여 기본값을 사용합니다.
+                        processData: false, // processData를 false로 설정하여 데이터를 자동 처리하지 않도록 합니다.
+
+                        // 요청이 성공하면 수행할 작업을 정의합니다.
+                        success: function(response) {
+                            // 필요한 경우 성공 메시지를 표시합니다.
+                            alert('게시글이 변경되었습니다.');
+                            // 모달을 닫습니다.
+                            $("#mdPostModal").modal("hide");
+                        },
+                        // 요청이 실패하면 수행할 작업을 정의합니다.
+                        error: function(xhr, status, error) {
+                            // 필요한 경우 실패 메시지를 표시합니다.
+                            alert('게시글 변경에 실패했습니다.');
+                        }
+                    });
+                });
+            });
+
+
+        </script>
+<<<<<<< HEAD
+=======
+
+</div>
+>>>>>>> 12dd44724edfbbb533c99cf057c0ec24cfd54a38
+
+>>>>>>> 8c41a5f2d607d0b8ec81e3ffbd62a126a64a884b
 </div>
 
 

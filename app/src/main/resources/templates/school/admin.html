@@ -14,7 +14,9 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+  <th:block th:replace="common/headCommon :: headerFragment"></th:block>
 
+  <th:block th:replace="common/headCommon :: headerFragment"></th:block>
 
   <style>
     /* 공통 스타일 */
@@ -560,6 +562,16 @@
           openClosedCheck();
   });
 </script>
+<<<<<<< HEAD
+
+=======
+>>>>>>> 12dd44724edfbbb533c99cf057c0ec24cfd54a38
+<script th:inline="javascript">
+  var loginUser = [[${loginUser}]];
+</script>
+<script src="/js/header.js"></script>
+<<<<<<< HEAD
+=======
 
 <script th:inline="javascript">
   var loginUser = [[${loginUser}]];
@@ -568,7 +580,7 @@
 
 
 
-
+>>>>>>> 12dd44724edfbbb533c99cf057c0ec24cfd54a38
 
 </body>
 </html>
