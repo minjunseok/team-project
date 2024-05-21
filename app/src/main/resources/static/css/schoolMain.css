@@ -27,7 +27,16 @@ tbody tr:hover {
 }
 
 .modal-dialog {
-	max-width: 750px; /* 또는 필요한 크기로 지정 */
+	max-width: 700px !important; /* 또는 필요한 크기로 지정 */
+}
+
+.modal-dialog .note-editor {
+	width: 700px;
+	text-align: left !important;
+}
+
+.modal-dialog .btnarea {
+	text-align: center;
 }
 
 /* 화살표 제거 */
@@ -67,7 +76,7 @@ tbody tr:hover {
 }
 
 .right-container {
-	border: 1px solid #CBBCA7 !important;
+	border: 1px solid #cbbca7 !important;
 	width: 500px !important;
 	padding-left: 8px;
 	border: 1px solid #cbbca7;
@@ -155,11 +164,11 @@ tbody tr:hover {
 .center-container {
 	margin: 0 24px !important;
 	padding: 0 16px;
-	border: 1px solid #CBBCA7;
+	border: 1px solid #cbbca7;
 	background-color: #aa977e3f;
 }
 .right-container {
-	border: 1px solid #CBBCA7 !important;
+	border: 1px solid #cbbca7 !important;
 	width: 500px !important;
 }
 
@@ -209,7 +218,6 @@ tbody tr:hover {
 	background-color: #9e896a;
 	width: 80%;
 }
-
 
 .left-container .join_container {
 	margin: 0 auto;
@@ -347,9 +355,9 @@ tbody tr:hover {
 }
 
 #list-hd .list-nick {
-  margin-right: 80px;
-  width: 250px;
-  padding-top: 48px;
+	margin-right: 80px;
+	width: 250px;
+	padding-top: 48px;
 }
 
 #list-hd2 {
