@@ -123,6 +123,22 @@ const payment1 = (name) => {
         billingKey : data.billing_key,
         method : data.method
       })
+      .then((e)=> {
+        Swal.fire({
+          title: 구독이 완료되었습니다",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "네"
+        })
+        .then((e)=> {
+            if (e.isConfirmed) {
+                location.href = '/index'
+            }
+
+        })
+
+      }
     });
 }
 </script>
