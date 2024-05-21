@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset='UTF-8'>
   <title>모여라</title>
@@ -202,9 +202,11 @@
   
 
   </style>
+  <th:block th:replace="common/headCommon :: headerFragment"></th:block>
 
 </head>
 <body>
+<div data-th-replace="header :: header"></div>
 
 <div class="container">
   <div class="row">
@@ -559,6 +561,10 @@
   });
 </script>
 
+<script th:inline="javascript">
+  var loginUser = [[${loginUser}]];
+</script>
+<script src="/static/js/header.js"></script>
 
 
 
