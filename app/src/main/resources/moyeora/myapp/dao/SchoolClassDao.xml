@@ -49,6 +49,7 @@
     <select id="findByDate" resultMap="ClassMap">
         select
         class_no,
+        school_no,
         (select count(*) from class_users as u where c.class_no = u.class_no) as now_member_count,
         name,
         content,
@@ -68,6 +69,7 @@
     <select id="findByWeek" resultMap="ClassMap">
             select
             class_no,
+            school_no,
             (select count(*) from class_users as u where c.class_no = u.class_no) as now_member_count,
             name,
             content,

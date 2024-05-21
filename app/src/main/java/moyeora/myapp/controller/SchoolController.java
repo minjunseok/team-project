@@ -94,10 +94,11 @@ public class SchoolController implements InitializingBean {
   }
 
   @GetMapping("search")
-  public void search(Model model,
+  @ResponseBody
+  public List<School> search(Model model,
       @RequestParam String name) {
     System.out.println(name);
-    model.addAttribute("name", schoolService.findBySchoolName(name));
+    return schoolService.findBySchoolName(name);
   }
 
   @GetMapping("schoolUserLevel")
