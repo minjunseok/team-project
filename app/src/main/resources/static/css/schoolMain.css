@@ -27,7 +27,7 @@ tbody tr:hover {
 }
 
 .modal-dialog {
-	max-width: 750px; /* 또는 필요한 크기로 지정 */
+	max-width: 700px !important; /* 또는 필요한 크기로 지정 */
 }
 
 /* 화살표 제거 */
