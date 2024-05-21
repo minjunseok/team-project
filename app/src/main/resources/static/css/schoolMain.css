@@ -214,6 +214,15 @@ tbody tr:hover {
 	width: 80%;
 }
 
+.left-container .wait_container {
+	margin: 0 auto;
+}
+
+.left-container .wait_container .createButton {
+	background-color: #9e896a;
+	width: 100%;
+}
+
 .left-container .join_container {
 	margin: 0 auto;
 }
