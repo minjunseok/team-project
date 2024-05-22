@@ -177,7 +177,7 @@
 					th:if="${loginUser != null and accessLevel != null}"
 					th:attr="onclick='gmOpen(' + ${schoolNo} + ',' + ${sender.no} + ')'"
 					role="button"
-					>채팅</a
+					>스쿨 채팅</a
 				>
 
 				<a
@@ -185,14 +185,14 @@
 					target="_blank"
 					data-th-href="@{/schoolclass/realCalendar(schoolNo=${schoolNo})}"
 					role="button"
-					>스쿨 일정</a
+					>스쿨 클래스</a
 				>
 				<a
 					class="btn btn-primary"
 					target="_blank"
 					data-th-href="@{/school/admin(schoolNo=${schoolNo})}"
 					role="button"
-					>스쿨 관리</a
+					>스쿨 매니저 관리</a
 				>
 			</div>
 			<div class="container">

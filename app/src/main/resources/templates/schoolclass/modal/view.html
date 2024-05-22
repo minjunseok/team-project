@@ -1,305 +1,373 @@
 <!DOCTYPE html>
-<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset='utf-8'/>
+<html
+	lang="en"
+	xmlns:th="http://www.w3.org/1999/xhtml"
+>
+	<head>
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		<div
+			class="modal"
+			data-th-fragment="viewModal"
+			id="viewModal"
+			tabindex="-1"
+		>
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title text-center">클래스 상세보기</h5>
+						<button
+							aria-label="Close"
+							class="btn-close"
+							data-bs-dismiss="modal"
+							type="button"
+						></button>
+					</div>
 
+					<div class="modal-body">
+						<div class="form-group row">
+							<div class="col-md-4 .style1">
+								제목:
+								<input
+									data-th-value="${name}"
+									id="name"
+									class="form-control customInputBox-color"
+								/>
+							</div>
 
+							<div class="col-md-4">
+								작성자:
+								<span
+									data-th-text="${nickname}"
+									id="nickname"
+									class="form-control customInputBox-color"
+								></span>
+							</div>
 
-</head>
-<body>
+							<div class="col-md-4">
+								등급:
+								<span
+									data-th-text="${levelName}"
+									id="levelName"
+									class="form-control customInputBox-color"
+								></span>
+							</div>
+						</div>
 
+						<div class="card">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-md-4 img-container">
+										사진: <img id="photo" />
+										<input
+											name="file"
+											type="file"
+											id="updateFile"
+											class="form-control customInputBox-color"
+										/>
+									</div>
 
-<div class="modal" data-th-fragment="viewModal" id="viewModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-center">일정 상세보기</h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
+									<div class="col-md-8">
+										내용:
+										<textarea
+											data-th-text="${content}"
+											id="content"
+											class="form-control customInputBox-color large-textarea"
+										></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
 
-            
-            <div class="modal-body">
+						<div class="card">
+							<div class="card-body">
+								<div class="row justify-content-center">
+									<div class="col-md-6">
+										<button
+											id="classMemberBtn"
+											type="button"
+											class="btn-lg"
+										>
+											참여 멤버:
+											<span
+												id="memberRatio"
+												class="member-ratio"
+											></span>
+										</button>
+									</div>
 
-                  <div class="form-group row">
-                        <div class="col-md-4 .style1">
-                        제목: <input data-th-value="${name}" id="name" class="form-control customInputBox-color">
-                        </div>
-                        
-                        <div class="col-md-4">
-                        작성자: <span data-th-text="${nickname}" id="nickname"
-                                   class="form-control customInputBox-color"></span>
-                        </div>
-                        
-                        <div class="col-md-4">
-                        등급: <span data-th-text="${levelName}" id="levelName"
-                                 class="form-control customInputBox-color"></span>
-                        </div>
-                  </div>
-                    
-                  <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4 img-container">
-                                    사진: <img id="photo">
-                                    <input name="file" type="file" id="updateFile" class="form-control customInputBox-color">
-                                </div>
-                                
-                                <div class="col-md-8">
-                                    내용: <textarea data-th-text="${content}" id="content"
-                                                  class="form-control customInputBox-color large-textarea"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                  </div>
-                    
-                  <div class="card">
-                        <div class="card-body">
-                           <div class="row justify-content-center">
-                                <div class="col-md-6">
-                                    <button id="classMemberBtn" type="button" class="btn-lg">참여 멤버: <span id="memberRatio"  class="member-ratio"></span></button>
-                                </div>
-                               
-                                <div class="col-md-6">
-                                    <button class="btn btn-success item-hidden" id="submitButton" type="button">참가하기</button>
-                                    <button class="btn btn-secondary item-hidden" id="cancelButton" type="button">참가 취소하기</button>
-                                </div>
-                            </div>
-                        </div>
-                  </div>
-                    
-                   <div class="card">
-                        <div class="card-body">
-                           <div class="row justify-content-center">
-                                <div class="col-md-6">
-                                    모임일: <input th:value="${startAt}"  id="startAt3"
-                                                    type="datetime-local" class="form-control customInputBox-color">
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    마감일: <input th:value="${endedAt}"  id="endedAt3" type="datetime-local" class="form-control customInputBox-color">
-                                </div>
-                           </div>
-                        </div>
-                    </div>
-                   
-                    
-                    <div class="col-md-4">
-                        상세주소: <input data-th-text="${locationDetail}" id="locationDetail2" class="form-control customInputBox-color">
-                    </div>
-    
-    
-                    <div class="map_wrap">
-                        <div id="map2" style="width:100%;height:100%;"></div>
-                        <div class="bg_white" id="menu_wrap">
-                            <div class="option">
-                                <div>
-                                    <form onsubmit="searchPlaces2(); return false;">
-                                        키워드 : <input  id="keyword2" size="15" type="text" >
-                                        <button type="submit">검색하기</button>
-                                    </form>
-                                </div>
-                            </div>
-                            <hr>
-    
-                            <ul id="placesList2"></ul>
-                            <div id="pagination2"></div>
-                        </div>
-                    </div>
-                
-                    <div class="card">
-                        <div class="card-body">
-                           <div class="row justify-content-center">
-                               <div class="col-md-6">
-                                    <button class="btn btn-danger item-hidden" id="deleteEvent">삭제하기</button>
-                               </div>
-                               
-                                <div class="col-md-6">
-                                    <button class="btn btn-primary item-hidden" id="classUpdateBtn">수정하기</button>
-                                </div>
-                           </div>
-                        </div>
-                    </div>
-            </div>
-        </div>
-    </div>
- 
-<div data-th-replace="schoolclass/modal/classMember :: classMemberModal">클래스 참여자 목록 모달</div>
+									<div class="col-md-6">
+										<button
+											class="btn btn-success item-hidden"
+											id="submitButton"
+											type="button"
+										>
+											참가하기
+										</button>
+										<button
+											class="btn btn-secondary item-hidden"
+											id="cancelButton"
+											type="button"
+										>
+											참가 취소하기
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
 
-    <script>
-        var memberRatioSpan = document.getElementById('memberRatio');
+						<div class="card">
+							<div class="card-body">
+								<div class="row justify-content-center">
+									<div class="col-md-6">
+										모임일:
+										<input
+											th:value="${startAt}"
+											id="startAt3"
+											type="datetime-local"
+											class="form-control customInputBox-color"
+										/>
+									</div>
 
-        // 버튼 내에 memberRatio 값을 설정하는 함수
-        function updateMemberRatio(memberRatio) {
-            memberRatioSpan.textContent = memberRatio;
-        }
-       
-    </script>
-    
-    <script>
-        var submitButton = document.getElementById('submitButton');
-        
+									<div class="col-md-6">
+										마감일:
+										<input
+											th:value="${endedAt}"
+											id="endedAt3"
+											type="datetime-local"
+											class="form-control customInputBox-color"
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
 
-        // 클릭 이벤트에 대한 핸들러를 추가합니다.
+						<div class="col-md-4">
+							상세주소:
+							<input
+								data-th-text="${locationDetail}"
+								id="locationDetail2"
+								class="form-control customInputBox-color"
+							/>
+						</div>
 
-        $("#submitButton").click(function() {
+						<div class="map_wrap">
+							<div
+								id="map2"
+								style="width: 100%; height: 100%"
+							></div>
+							<div
+								class="bg_white"
+								id="menu_wrap"
+							>
+								<div class="option">
+									<div>
+										<form onsubmit="searchPlaces2(); return false;">
+											키워드 :
+											<input
+												id="keyword2"
+												size="15"
+												type="text"
+											/>
+											<button type="submit">검색하기</button>
+										</form>
+									</div>
+								</div>
+								<hr />
 
-          axios({
-            method: 'POST',
-            url: '/schoolclass/insert',
-            data: {
-                classNo: classNo,
-                schoolNo: schoolNo
-            },
-            responseType:'json'
-          })
-            .then(function (response) {
-            
-         nowMemberCount = nowMemberCount;
-         let totalMembers = member;
-        
-        console.log(nowMemberCount);
-        console.log(totalMembers);
+								<ul id="placesList2"></ul>
+								<div id="pagination2"></div>
+							</div>
+						</div>
 
-    // 버튼 내의 .member-ratio 클래스를 가진 span 요소를 찾습니다.
-    let spanElement = document.querySelector('.btn-lg .member-ratio');
+						<div class="card">
+							<div class="card-body">
+								<div class="row justify-content-center">
+									<div class="col-md-6">
+										<button
+											class="btn btn-danger item-hidden"
+											id="deleteEvent"
+										>
+											삭제하기
+										</button>
+									</div>
 
-    // 현재 멤버 수와 총 멤버 수를 사용하여 멤버 비율을 계산합니다.
-    let count = Number(nowMemberCount) + 1; // 현재 멤버 수를 1 증가시킵니다.
-    let memberRatio = count + '/' + totalMembers;
+									<div class="col-md-6">
+										<button
+											class="btn btn-primary item-hidden"
+											id="classUpdateBtn"
+										>
+											수정하기
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-    // 버튼 내의 .member-ratio 클래스를 가진 span 요소에 멤버 비율을 표시합니다.
-   
-        if (spanElement) {
-            spanElement.innerText = memberRatio;
-        }
-    
-        // 각 변수의 값을 콘솔에 출력합니다.
-        console.log("현재 멤버 수:", nowMemberCount);
-        console.log("총 멤버 수:", totalMembers);
-        console.log("멤버 비율:", memberRatio);
-    
-        // Cancel 버튼은 보이고 Submit 버튼은 숨깁니다.
-        $('#cancelButton').removeClass("item-hidden");
-        $('#submitButton').addClass("item-hidden");
-       
-    })
-                .catch(function (error) {
-                    console.error('에러 발생:', error);
-                });
-              console.log(classNo);
-              console.log(schoolNo);
-                // 폼을 제출하지 않도록 합니다.
-                event.preventDefault();
-            });
+			<div data-th-replace="schoolclass/modal/classMember :: classMemberModal">클래스 참여자 목록 모달</div>
 
-    </script>
+			<script>
+				var memberRatioSpan = document.getElementById('memberRatio');
 
+				// 버튼 내에 memberRatio 값을 설정하는 함수
+				function updateMemberRatio(memberRatio) {
+					memberRatioSpan.textContent = memberRatio;
+				}
+			</script>
 
-    <script>
+			<script>
+				var submitButton = document.getElementById('submitButton');
 
-        $("#cancelButton").click(function() {
+				// 클릭 이벤트에 대한 핸들러를 추가합니다.
 
-          axios({
-            method: 'POST',
-            url: '/schoolclass/memberDelete',
-            data: {
-                classNo: classNo,
-                schoolNo: schoolNo
-            },
-            responseType:'json'
-          })
-            .then(function (response) {
-                lnowMemberCount = nowMemberCount;
-                let totalMembers = member;
-        
-                console.log(nowMemberCount);
-                console.log(totalMembers);
+				$('#submitButton').click(function () {
+					axios({
+						method: 'POST',
+						url: '/schoolclass/insert',
+						data: {
+							classNo: classNo,
+							schoolNo: schoolNo,
+						},
+						responseType: 'json',
+					})
+						.then(function (response) {
+							nowMemberCount = nowMemberCount;
+							let totalMembers = member;
 
-                // 버튼 내의 .member-ratio 클래스를 가진 span 요소를 찾습니다.
-                let spanElement = document.querySelector('.btn-lg .member-ratio');
-            
-                // 현재 멤버 수와 총 멤버 수를 사용하여 멤버 비율을 계산합니다.
-                let count = Number(nowMemberCount) - 1;
-               // count가 1일 때는 멤버 비율을 그대로 유지합니다.
-                let memberRatio = count === 0 ? nowMemberCount + '/' + totalMembers : count + '/' + totalMembers;
+							console.log(nowMemberCount);
+							console.log(totalMembers);
 
-            
-                // 버튼 내의 .member-ratio 클래스를 가진 span 요소에 멤버 비율을 표시합니다.
-                if (spanElement) {
-                    spanElement.innerText = memberRatio;
-                }
-            
-                // 각 변수의 값을 콘솔에 출력합니다.
-                console.log("현재 멤버 수:", nowMemberCount);
-                console.log("총 멤버 수:", totalMembers);
-                console.log("멤버 비율:", memberRatio);
-                
-                $('#cancelButton').addClass("item-hidden");
-                $('#submitButton').removeClass("item-hidden");
-            })
-            .catch(function (error) {
-                console.error('에러 발생:', error);
-            });
-          console.log(classNo);
-          console.log(schoolNo);
-            // 폼을 제출하지 않도록 합니다.
-            event.preventDefault();
-        });
+							// 버튼 내의 .member-ratio 클래스를 가진 span 요소를 찾습니다.
+							let spanElement = document.querySelector('.btn-lg .member-ratio');
 
-    </script>
+							// 현재 멤버 수와 총 멤버 수를 사용하여 멤버 비율을 계산합니다.
+							let count = Number(nowMemberCount) + 1; // 현재 멤버 수를 1 증가시킵니다.
+							let memberRatio = count + '/' + totalMembers;
 
-    <script>
-        let viewModal;
+							// 버튼 내의 .member-ratio 클래스를 가진 span 요소에 멤버 비율을 표시합니다.
+							if (spanElement) {
+								spanElement.innerText = memberRatio;
+							}
 
+							// 각 변수의 값을 콘솔에 출력합니다.
+							console.log('현재 멤버 수:', nowMemberCount);
+							console.log('총 멤버 수:', totalMembers);
+							console.log('멤버 비율:', memberRatio);
 
-        function viewModal1() {
-            viewModal = new bootstrap.Modal(document.getElementById('viewModal'), {})
-            console.log('모달을 표시합니다.');
-            viewModal.show();
-        };
+							// Cancel 버튼은 보이고 Submit 버튼은 숨깁니다.
+							$('#cancelButton').removeClass('item-hidden');
+							$('#submitButton').addClass('item-hidden');
+						})
+						.catch(function (error) {
+							console.error('에러 발생:', error);
+						});
+					console.log(classNo);
+					console.log(schoolNo);
+					// 폼을 제출하지 않도록 합니다.
+					event.preventDefault();
+				});
+			</script>
 
-        document.querySelector("#viewModal").addEventListener('shown.bs.modal', function() {
-            var modalmapContainer2 = document.querySelector('.map_wrap');
-            var width = modalmapContainer2.clientWidth;
-            var height = modalmapContainer2.clientHeight;
-            console.log(modalmapContainer2);
-            // Kakao Maps API의 resize 함수를 사용하여 지도의 크기를 조정합니다.
-            
-            map2.relayout();
-            
-            // 키워드로 장소를 검색합니다
-            console.log("maprelayout");
+			<script>
+				$('#cancelButton').click(function () {
+					axios({
+						method: 'POST',
+						url: '/schoolclass/memberDelete',
+						data: {
+							classNo: classNo,
+							schoolNo: schoolNo,
+						},
+						responseType: 'json',
+					})
+						.then(function (response) {
+							lnowMemberCount = nowMemberCount;
+							let totalMembers = member;
 
-        });
+							console.log(nowMemberCount);
+							console.log(totalMembers);
 
-        function closeViewModal() {
-             viewModal.hide();
-             console.log('모달을 닫습니다.');
-        };
+							// 버튼 내의 .member-ratio 클래스를 가진 span 요소를 찾습니다.
+							let spanElement = document.querySelector('.btn-lg .member-ratio');
 
-        document.querySelector("#viewModal").addEventListener('hidden.bs.modal', function() {
-            
-            $('#cancelButton').addClass("item-hidden");
-            $('#submitButton').addClass("item-hidden");
-        });
-        
-        function toggleInputReadonly(isReadonly) {
-            var inputElements = document.querySelectorAll('#viewModal input, #viewModal input[type="file"], #viewModal input[type="text"], #viewModal input[type="datetime-local"], #viewModal textarea');
-            inputElements.forEach(function(inputElement) {
-             
-                // 읽기 전용이 아닐 때 스타일 변경
-                if (isReadonly == false) {
-                    inputElement.readOnly = true;
-                } else {
-                    inputElement.style.backgroundColor = ''; // 배경색 초기화
-                    inputElement.style.border = ''; // 테두리 초기화
-                }
-            });
-       }
-    </script>
+							// 현재 멤버 수와 총 멤버 수를 사용하여 멤버 비율을 계산합니다.
+							let count = Number(nowMemberCount) - 1;
+							// count가 1일 때는 멤버 비율을 그대로 유지합니다.
+							let memberRatio = count === 0 ? nowMemberCount + '/' + totalMembers : count + '/' + totalMembers;
 
+							// 버튼 내의 .member-ratio 클래스를 가진 span 요소에 멤버 비율을 표시합니다.
+							if (spanElement) {
+								spanElement.innerText = memberRatio;
+							}
 
-</div>
-</body>
+							// 각 변수의 값을 콘솔에 출력합니다.
+							console.log('현재 멤버 수:', nowMemberCount);
+							console.log('총 멤버 수:', totalMembers);
+							console.log('멤버 비율:', memberRatio);
 
+							$('#cancelButton').addClass('item-hidden');
+							$('#submitButton').removeClass('item-hidden');
+						})
+						.catch(function (error) {
+							console.error('에러 발생:', error);
+						});
+					console.log(classNo);
+					console.log(schoolNo);
+					// 폼을 제출하지 않도록 합니다.
+					event.preventDefault();
+				});
+			</script>
+
+			<script>
+				let viewModal;
+
+				function viewModal1() {
+					viewModal = new bootstrap.Modal(document.getElementById('viewModal'), {});
+					console.log('모달을 표시합니다.');
+					viewModal.show();
+				}
+
+				document.querySelector('#viewModal').addEventListener('shown.bs.modal', function () {
+					var modalmapContainer2 = document.querySelector('.map_wrap');
+					var width = modalmapContainer2.clientWidth;
+					var height = modalmapContainer2.clientHeight;
+					console.log(modalmapContainer2);
+					// Kakao Maps API의 resize 함수를 사용하여 지도의 크기를 조정합니다.
+
+					map2.relayout();
+
+					// 키워드로 장소를 검색합니다
+					console.log('maprelayout');
+				});
+
+				function closeViewModal() {
+					viewModal.hide();
+					console.log('모달을 닫습니다.');
+				}
+
+				document.querySelector('#viewModal').addEventListener('hidden.bs.modal', function () {
+					$('#cancelButton').addClass('item-hidden');
+					$('#submitButton').addClass('item-hidden');
+				});
+
+				function toggleInputReadonly(isReadonly) {
+					var inputElements = document.querySelectorAll(
+						'#viewModal input, #viewModal input[type="file"], #viewModal input[type="text"], #viewModal input[type="datetime-local"], #viewModal textarea'
+					);
+					inputElements.forEach(function (inputElement) {
+						// 읽기 전용이 아닐 때 스타일 변경
+						if (isReadonly == false) {
+							inputElement.readOnly = true;
+						} else {
+							inputElement.style.backgroundColor = ''; // 배경색 초기화
+							inputElement.style.border = ''; // 테두리 초기화
+						}
+					});
+				}
+			</script>
+		</div>
+	</body>
 </html>
