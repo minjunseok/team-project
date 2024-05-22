@@ -22,6 +22,7 @@ public class Dm implements Serializable {
     private int roomNo;
     private String filePath;
     private int isRead;
+    private int userNoDm;
 
     @Builder
     public Dm() {

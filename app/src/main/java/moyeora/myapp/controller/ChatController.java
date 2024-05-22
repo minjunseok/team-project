@@ -150,13 +150,27 @@ public class ChatController {
         return list;
     }
 
-    @GetMapping("dmListOnlyLast")
+/*    @GetMapping("dmListOnlyLast")
     @ResponseBody
     public List<Dm> DmListOnlyLast(int no) {
         List<Dm> list = chatService.getDmListOnlyLast(no);
         String ncdPath = this.bucketname + "/" + this.endpoint;
         for (Dm dm : list) {
             User receiver = userService.getUserInfo(dm.getReceiver().getNo());
+            dm.setReceiver(receiver);
+            dm.setFilePath(ncdPath + "/" + dmUploadDir);
+        }
+        return list;
+    }*/
+
+    @GetMapping("dmListOnlyLast")
+    @ResponseBody
+    public List<Dm> DmListOnlyLast(int no) {
+        List<Dm> list = chatService.getDmListOnlyLast(no);
+        String ncdPath = this.bucketname + "/" + this.endpoint;
+        for (Dm dm : list) {
+            int num = (dm.getReceiver().getNo() != no) ? dm.getReceiver().getNo() : dm.getUserNoDm();
+            User receiver = userService.getUserInfo(num);
             dm.setReceiver(receiver);
             dm.setFilePath(ncdPath + "/" + dmUploadDir);
         }
