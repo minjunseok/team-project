@@ -185,7 +185,8 @@ $(document).on('click', '.user-img', function(){
   profile(profileUserNo);
 })
 
-$('#add-follow').on('click', function(){
+$(document).on('#add-follow','click', function(){
+  alert("asdasdas");
   axios.post('/mypage/addFollow',{
     followerUserNo : profileUserNo
   })

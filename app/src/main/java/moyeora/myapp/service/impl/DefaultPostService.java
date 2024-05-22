@@ -201,4 +201,9 @@ public class DefaultPostService implements PostService {
     public List<Post> findBySchool(int schoolNo) {
         return postDao.findBySchool(schoolNo);
     }
+
+    @Override
+    public int getUserNo(int postNo) {
+        return postDao.findByPostNo(postNo);
+    }
 }

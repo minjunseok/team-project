@@ -11,6 +11,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -51,11 +52,11 @@ public class ControllerExecutionAspect {
         System.out.println("Requested URL: " + url);
         Map<String, Object> map = new HashMap<>();
         ObjectMapper obj = new ObjectMapper();
-        //String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //System.out.println(email);
+        Object email = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String str = SecurityContextHolder.getContext().getAuthentication().getName();
         map.put("execute", "controller");
         map.put("url", url);
-        map.put("email", "email");
+        map.put("email", str);
         map.put("class", className);
         map.put("method", methodName);
         //map.put("result", result);
@@ -65,8 +66,7 @@ public class ControllerExecutionAspect {
         if (request.getParameter("postNo") != null) {
             map.put("postno", request.getParameter("postNo"));
         }
-        System.out.println("============>" + obj.writeValueAsString(map));
-        //kafkaTemplate.send("kafka-elk-test-log", map);
+        kafkaTemplate.send("kafka-elk-test-log", map);
     }
 
     public Object objectConvert(Object arg) throws Exception {
