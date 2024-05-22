@@ -60,8 +60,8 @@
 
   function sendMessage() {
       let dm = {
-          sender : {no : sender.no, nickname : sender.nickname},
-          receiver : {no : receiver.no, nickname:receiver.nickname},
+          sender : {no : sender.no, nickname : sender.nickname, photo : sender.photo},
+          receiver : {no : receiver.no, nickname:receiver.nickname, photo:receiver.photo},
           message : $("#message").val(),
           photo : "",
           roomNo : room.no
@@ -83,11 +83,10 @@
         processData: false,
         success: function (result) {
             console.log("success: " + result.message);
-
             stompClient.publish({
             destination: "/pub/dm",
             body: JSON.stringify({
-              'sender': {no : result.sender.no, nickname : result.sender.nickname, photo : result.sender.photo},
+              'sender': {no : sender.no, nickname : sender.nickname, photo : sender.photo},
               'receiver': {no : result.receiver.no, nickname : result.receiver.nickname, photo : result.receiver.photo},
               'message': result.message,
               'photo': result.photo,
@@ -103,6 +102,7 @@
   }
 
   function showMessage(dm) {
+  console.log(dm)
       let d = dm.sendDate.substring(0, 10);
       let h = dm.sendDate.substring(11, 13);
       let m = dm.sendDate.substring(14, 16);
@@ -126,7 +126,7 @@
           "</div>");
         }
       } else {
-        let uProfileImg = "<img class='uPhotoItem profile-wrap' src=" + userFileCdnDomain + dm.receiver.photo + fileSize_40 + " onerror=profileImgError(this)>";
+        let uProfileImg = "<img class='uPhotoItem profile-wrap' src=" + userFileCdnDomain + dm.sender.photo + fileSize_40 + " onerror=profileImgError(this)>";
 
         if(dm.message != null && dm.message.length > 0) {
           $("#conversation").append(
@@ -141,7 +141,7 @@
                 "</a>" +
             "</div>" +
             "<div class='contents-wrap'>" +
-                "<div class='username receiver'>" + dm.receiver.nickname + "</div>" +
+                "<div class='username receiver'>" + dm.sender.nickname + "</div>" +
                 "<div class='message-wrap'>" +
                     "<div class = 'message-text'>" + dm.message + "</div>" +
                     "<div class='origin'>" + "<span class='originText'>" + h + ":" + m + "</span>" + "</div>" +
@@ -164,7 +164,7 @@
                 "</a>" +
             "</div>" +
             "<div class='contents-wrap'>" +
-                "<div class='username receiver'>" + dm.receiver.nickname + "</div>" +
+                "<div class='username receiver'>" + dm.sender.nickname + "</div>" +
                 "<div class='message-wrap'>" +
                     "<div class = 'message-text'>" +
                         "<img src=" + dmFileCdnDomain + dm.photo + fileSize_40 + " data-link='" + dmFilePath + dm.photo  + "' onclick='clickFileDm(this)'>" +
@@ -211,7 +211,7 @@
               );
             }
           } else {
-            let uProfileImg = "<img class='uPhotoItem profile-wrap' src=" + userFileCdnDomain + chatList[chat].receiver.photo + fileSize_40 + " onerror=profileImgError(this)>";
+            let uProfileImg = "<img class='uPhotoItem profile-wrap' src=" + userFileCdnDomain + chatList[chat].sender.photo + fileSize_40 + " onerror=profileImgError(this)>";
             if(chatList[chat].message.length > 0) {
               $("#conversation").append(
 

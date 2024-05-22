@@ -1,4 +1,5 @@
 let userInfo = loginUser;
+
 console.log(userInfo);
 
 function connect() {
@@ -145,7 +146,6 @@ function loadChatGm() {
     url: "/gmListOnlyLast?no=" + userInfo.no,
     data: {},
     success: function (result) {
-    console.log(result)
       let schoolFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/school/";
       let fileSize_40 = "?type=f&w=40&h=40";
       for(key in result) {
@@ -185,15 +185,12 @@ function loadChatDm() {
       let userFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/";
       let fileSize_40 = "?type=f&w=40&h=40";
       for(key in result) {
-        if( result[key].receiver.no == userInfo.no ) continue;
-
         let thumbnailImg = "<img class='thumbnailItem' src=" + userFileCdnDomain + result[key].receiver.photo + fileSize_40 + " onerror=thumbnailImgError(this)>";
         let uChatItem = result[key].isRead == "1" ? "<li class='notificationItem'>" : "<li class='notificationItem '>";
         let msg = ( result[key].message != null && result[key].message != "" && result[key].message.length > 0 ) ? result[key].message : "사진을 보냈습니다.";
 
         $("#dmList").append(
         uChatItem +
-           /* "<a class='chatLink' onclick=chatLink('" + result[key].school.no + "'," + userInfo.no + ");>" +*/
             "<a class='chatLink' onclick=chatDmLink('" + result[key].receiver.no + "');>" +
                 "<div class='notificationThumbnail'><div class='thumbnailInner'><span class='thumbnailItem'>" + thumbnailImg + "</span></div></div>" +
                 "<dl class='notificationInfoBox'>" +
@@ -268,12 +265,26 @@ function onclickChatTab(obj) {
     }
 }
 
+function setProfilePhoto() {
+    let userFileCdnDomain = "https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/";
+    let fileSize_40 = "?type=f&w=40&h=40";
+    let img = "<img class='iconImg' src=" + userFileCdnDomain + userInfo.photo + fileSize_40 + " onerror=headerProfileImgError(this)>";
+
+    document.getElementById('uMenuToggle').innerHTML = '';
+    document.getElementById('uMenuToggle').innerHTML = img;
+}
+
+function headerProfileImgError(obj) {
+    $(obj).attr("src", "/img/moyeoraLogo2.png");
+}
+
 $(function () {
     if ( userInfo != null ) {
         connect();
         loadAlert();
         loadChatGm();
         loadChatDm();
+        setProfilePhoto();
     }
     $( "#readAll" ).click(() => updateAlerts());
 });

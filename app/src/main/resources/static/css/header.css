@@ -83,6 +83,17 @@
     color: #cbbca7;
 }
 
+.headerIcon-wrap .iconImg {
+    border-radius: 50%;
+    width: 30px;
+    margin-left: 10px;
+    pointer-events: none;
+}
+
+.headerIcon-wrap .iconImg:hover {
+    border: solid #cbbca7;
+}
+
 .translate-new-notification {
     transform: translate(-80%,-20%)!important;
 }
