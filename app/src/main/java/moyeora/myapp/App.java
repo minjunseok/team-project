@@ -22,11 +22,11 @@ import java.util.List;
 @EnableScheduling
 @Controller
 @PropertySource({
-    "file:${user.home}/config/ncp-storage.properties",
-    "file:${user.home}/config/ncp-secret.properties",
-    "file:${user.home}/config/bootpay.properties",
-    "file:${user.home}/config/email.properties",
-    "file:${user.home}/config/oauth.properties"
+        "file:${user.home}/config/ncp-storage.properties",
+        "file:${user.home}/config/ncp-secret.properties",
+        "file:${user.home}/config/bootpay.properties",
+        "file:${user.home}/config/email.properties",
+        "file:${user.home}/config/oauth.properties"
 })
 public class App implements WebMvcConfigurer {
 
