@@ -168,27 +168,29 @@
     let memberRatio = count + '/' + totalMembers;
 
     // 버튼 내의 .member-ratio 클래스를 가진 span 요소에 멤버 비율을 표시합니다.
-    if (spanElement) {
-        spanElement.innerText = memberRatio;
-    }
-
-    // 각 변수의 값을 콘솔에 출력합니다.
-    console.log("현재 멤버 수:", nowMemberCount);
-    console.log("총 멤버 수:", totalMembers);
-    console.log("멤버 비율:", memberRatio);
-
-    // Cancel 버튼은 보이고 Submit 버튼은 숨깁니다.
-    $('#cancelButton').removeClass("item-hidden");
-    $('#submitButton').addClass("item-hidden");
-})
-            .catch(function (error) {
-                console.error('에러 발생:', error);
+   
+        if (spanElement) {
+            spanElement.innerText = memberRatio;
+        }
+    
+        // 각 변수의 값을 콘솔에 출력합니다.
+        console.log("현재 멤버 수:", nowMemberCount);
+        console.log("총 멤버 수:", totalMembers);
+        console.log("멤버 비율:", memberRatio);
+    
+        // Cancel 버튼은 보이고 Submit 버튼은 숨깁니다.
+        $('#cancelButton').removeClass("item-hidden");
+        $('#submitButton').addClass("item-hidden");
+       
+    })
+                .catch(function (error) {
+                    console.error('에러 발생:', error);
+                });
+              console.log(classNo);
+              console.log(schoolNo);
+                // 폼을 제출하지 않도록 합니다.
+                event.preventDefault();
             });
-          console.log(classNo);
-          console.log(schoolNo);
-            // 폼을 제출하지 않도록 합니다.
-            event.preventDefault();
-        });
 
     </script>
 

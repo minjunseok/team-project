@@ -448,7 +448,8 @@ public class PostController {
 
 
         List<AttachedFile> attachedFiles = (List<AttachedFile>) session.getAttribute("attachedFiles");
-
+        System.out.println("ASDASDaSdasdasdaasdasdasdasdsasdasdasd");
+        System.out.println(post);
 
         log.debug("@@@@@@@@@@@@ 세션에서 가져온 schoolNo = " + session.getAttribute("schoolNo"));
 
@@ -500,19 +501,6 @@ public class PostController {
             HttpSession session) throws Exception {
 
 
-//    User loginUser = (User) session.getAttribute("loginUser");
-//    if (loginUser == null) {
-//      throw new Exception("로그인하시기 바랍니다!");
-//    }
-//
-//    Post post = postService.get(no);
-//    if (post == null) {
-//      throw new Exception("번호가 유효하지 않습니다.");
-//
-//    } else if (post.getNo() != loginUser.getNo()) {
-//      throw new Exception("권한이 없습니다.");
-//    }
-//
         List<AttachedFile> files = postService.getAttachedFiles(no);
 
 
@@ -546,24 +534,15 @@ public class PostController {
     @GetMapping("file/delete")
     public String fileDelete(int no, Post post, HttpSession session) throws Exception {
 
-//    User loginUser = (User) session.getAttribute("loginUser");
-//    if (loginUser == null) {
-//      throw new Exception("로그인하시기 바랍니다!");
-//    }
 
         AttachedFile fileList = postService.getAttachedFile(no);
         if (fileList == null) {
             throw new Exception("첨부파일 번호가 유효하지 않습니다.");
         }
 
-//    User writer = postService.get(fileList.getPostNo()).getWriter();
-//    if (writer.getNo() != loginUser.getNo()) {
-//      throw new Exception("권한이 없습니다.");
-//    }
 
         postService.deleteAttachedFile(no);
 
-        //fileUploadHelper.delete(this.bucketName, this.uploadDir, file.getFilePath());
 
         return "redirect:list?schoolNo=" + post.getSchoolNo();
     }
