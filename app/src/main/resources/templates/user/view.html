@@ -120,7 +120,7 @@
 <h2>회원 정보 수정</h2>
 <br>
 
-<form action="update" data-th-action="@{update}" data-th-object="${user}"
+<form action="update" data-th-action="@{update}" data-th-object="${user}" id="updateForm"
       enctype='multipart/form-data' method='post' class="was-validated justify-content-center" novalidate>
 
         <div class="form-group row justify-content-center">
@@ -367,7 +367,40 @@ $('.checkbox-container').click(function() {
   }
 </script>
 
+<script>
+    $(document).ready(function() {
+        $('#updateForm').submit(function(event) {
+            event.preventDefault();
+        
 
+            // 관심사 선택 확인
+            let checkedCount = $('.checkbox-container input[type="checkbox"]:checked').length;
+            if (checkedCount < 3) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '회원 정보 변경 실패!!!',
+                    text: '관심사는 최소 3개 이상 골라야 합니다!!'
+                });
+                return false; // 양식 제출 중단
+            }
+            Swal.fire({
+              title: '회원 정보 수정 완료',
+              
+              imageUrl: '/img/moyeora-logo.png',
+              imageWidth: 400,
+              imageHeight: 200,
+              imageAlt: 'Custom image',
+              showConfirmButton: true, // 확인 버튼 표시
+              allowOutsideClick: false, // SweetAlert 창 외부 클릭으로 창 닫기 금지
+            }).then((result) => {
+                // SweetAlert 창이 닫힌 후에 폼을 제출합니다.
+                if (result.isConfirmed) {
+                this.submit(); // 폼 제출
+                }
+            });
+        });
+    });
+</script>
 
 
 
