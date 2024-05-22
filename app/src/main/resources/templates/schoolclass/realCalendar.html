@@ -1,1283 +1,1529 @@
 <!DOCTYPE html>
-<html lang='en' xmlns:th="http://www.w3.org/1999/xhtml">
-<html lang="en" xmlns:th="//www.thymeleaf.org">
-<head>
-    <meta charset='utf-8'/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment-timezone@0.5.40/builds/moment-timezone-with-data.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/moment-timezone@6.1.11/index.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
-    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
-    <script crossorigin="anonymous" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-
-
- <link href="/css/calendar.css" rel="stylesheet"/>
-
-
-   
-
-
-    <style>
-        .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
-        .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
-        .map_wrap {position:relative;width:100%;height:500px;}
-        #menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
-        .bg_white {background:#fff;}
-        #menu_wrap hr { height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
-        #menu_wrap .option{text-align: center;}
-        #menu_wrap .option p {margin:10px 0;}
-        #menu_wrap .option button {margin-left:5px;}
-        #placesList li {list-style: none;}
-        #placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
-        #placesList .item span {display: block;margin-top:4px;}
-        #placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-        #placesList .item .info{padding:10px 0 10px 55px;}
-        #placesList .info .gray {color:#8a8a8a;}
-        #placesList .info .jibun {padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
-        #placesList .info .tel {color:#009900;}
-        #placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
-        #placesList .item .marker_1 {background-position: 0 -10px;}
-        #placesList .item .marker_2 {background-position: 0 -56px;}
-        #placesList .item .marker_3 {background-position: 0 -102px}
-        #placesList .item .marker_4 {background-position: 0 -148px;}
-        #placesList .item .marker_5 {background-position: 0 -194px;}
-        #placesList .item .marker_6 {background-position: 0 -240px;}
-        #placesList .item .marker_7 {background-position: 0 -286px;}
-        #placesList .item .marker_8 {background-position: 0 -332px;}
-        #placesList .item .marker_9 {background-position: 0 -378px;}
-        #placesList .item .marker_10 {background-position: 0 -423px;}
-        #placesList .item .marker_11 {background-position: 0 -470px;}
-        #placesList .item .marker_12 {background-position: 0 -516px;}
-        #placesList .item .marker_13 {background-position: 0 -562px;}
-        #placesList .item .marker_14 {background-position: 0 -608px;}
-        #placesList .item .marker_15 {background-position: 0 -654px;}
-        #pagination {margin:10px auto;text-align: center;}
-        #pagination a {display:inline-block;margin-right:10px;}
-        #pagination .on {font-weight: bold; cursor: default;color:#777;}
-          .item-hidden {display: none;}
-
-        #placesList2 li {list-style: none;}
-        #placesList2 .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
-        #placesList2 .item span {display: block;margin-top:4px;}
-        #placesList2 .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-        #placesList2 .item .info{padding:10px 0 10px 55px;}
-        #placesList2 .info .gray {color:#8a8a8a;}
-        #placesList2 .info .jibun {padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
-        #placesList2 .info .tel {color:#009900;}
-        #placesList2 .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
-        #placesList2 .item .marker_1 {background-position: 0 -10px;}
-        #placesList2 .item .marker_2 {background-position: 0 -56px;}
-        #placesList2 .item .marker_3 {background-position: 0 -102px}
-        #placesList2 .item .marker_4 {background-position: 0 -148px;}
-        #placesList2 .item .marker_5 {background-position: 0 -194px;}
-        #placesList2 .item .marker_6 {background-position: 0 -240px;}
-        #placesList2 .item .marker_7 {background-position: 0 -286px;}
-        #placesList2 .item .marker_8 {background-position: 0 -332px;}
-        #placesList2 .item .marker_9 {background-position: 0 -378px;}
-        #placesList2 .item .marker_10 {background-position: 0 -423px;}
-        #placesList2 .item .marker_11 {background-position: 0 -470px;}
-        #placesList2 .item .marker_12 {background-position: 0 -516px;}
-        #placesList2 .item .marker_13 {background-position: 0 -562px;}
-        #placesList2 .item .marker_14 {background-position: 0 -608px;}
-        #placesList2 .item .marker_15 {background-position: 0 -654px;}
-        #pagination2 {margin:10px auto;text-align: center;}
-        #pagination2 a {display:inline-block;margin-right:10px;}
-        #pagination2 .on {font-weight: bold; cursor: default;color:#777;}
-    </style>
-
-
-<th:block th:replace="common/headCommon :: headerFragment"></th:block>
-</head>
-<body>
-
-
-<div data-th-replace="header :: header"></div>
-
-<div id='calendar'></div>
-
-<script>
-    let calendar;
-    let schoolNo;
-    let classNo;
-    let eventObj;
-    let deleteId;
-    let loginUser = [[${loginUser}]];
-    let isReadonly;
-    let classUserNo;
-    let member;
-    let nowMemberCount;
-
-    window.onload = function() {
-    
-        console.log("test....ok!");
-      const queryString = window.location.search;
-      const params = new URLSearchParams(queryString);
-      const sNo = params.get('schoolNo');
-      document.getElementById('schoolNoInput').value = sNo;
-        
-        $.ajax({
-            url: 'calendar?schoolNo='+ sNo,
-            type: 'GET',
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-        }).done(function(result) {
-            for (let classEvent of result) {
-                calendar.addEvent({
-                    title: classEvent.name,
-                    start: classEvent.startAt,
-                    end: classEvent.endedAt,
-                    allDay: true,
-                    extendedProps: {
-                        classNo: classEvent.no,
-                        
-                    }
-                });
-            }
-            console.log(result);
-        });
-    };
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        calendar = new FullCalendar.Calendar(calendarEl, {
-            eventColor: '#9e896a',
-            textColor: 'white',
-            timeZone: 'Asia/Seoul',
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-                color: '#9e896a',
-                start: 'prev next today add',
-                center: 'title',
-                end: 'dayGridMonth,dayGridWeek,dayGridDay'
-            },
-            customButtons: {
-                
-                add: {
-                   
-                    text: '일정등록',
-                    click: function() {
-                        myModal1();
-                    }
-                }
-            },
-            titleFormat: function(date) {
-                return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
-            },
-            selectable: false,
-            droppable: false,
-            editable: false,
-            nowIndicator: true,
-
-            locale: 'ko',
-            dateClick: function(info) {
-                myModal1();
-               
-                const now = moment();
-
-                // 클릭된 날짜에 현재 시간 추가
-                const formattedDate = moment(info.date)
-                  .hour(now.hour())
-                  .minute(now.minute())
-                  .format('YYYY-MM-DDTHH:mm');
-                
-                // 결과를 'start' 요소의 값으로 설정
-                document.getElementById('start').value = formattedDate;
-
-                
-                // info 객체를 콘솔에 로그
-                console.log(info);
-            },
-            eventClick: function(info) {
-                viewModal1();
-
-
-                eventObj = info.event;
-                console.log(eventObj._def.defId);
-                classNo = eventObj.extendedProps.classNo;
-                
-                console.log("@@@@@@@"+eventObj);
-
-                axios({
-                    method: 'GET',
-                    url: '/schoolclass/findByNo',
-                    params: {
-                        classNo: classNo
-                    },
-                    responseType: 'json'
-                }).then(function(response) {
-                    console.log(response.data);
-                    var responseData = response.data.schoolClass;
-
-                    document.getElementById('name').value = responseData.name;
-                    document.getElementById('content').value = responseData.content;
-                    document.getElementById('levelName').textContent = responseData.level.levelName;
-                    document.getElementById('nickname').textContent = responseData.user.nickname;
-                    document.getElementById('keyword2').value = responseData.location;
-                    document.getElementById('locationDetail2').value = responseData.locationDetail;
-                    document.getElementById('memberRatio').textContent = responseData.nowMemberCount + '/' + responseData.member;
-
-                        document.getElementById('endedAt3').value = new Date(responseData.endedAt).toISOString().slice(0,
-                        16);
-                    
-                    
-                    // startAt 처리
-                    const startAtDate = moment(responseData.startAt);
-                    document.getElementById('startAt3').value = startAtDate.format('YYYY-MM-DDTHH:mm');
-                    
-                     const endedAtDate = moment(responseData.endedAt);
-                    document.getElementById('endedAt3').value = endedAtDate.format('YYYY-MM-DDTHH:mm');
-                    
-                    console.log(responseData.startAt);
-                    console.log(startAt3);
-                    console.log(responseData.endedAt);
-                    console.log(endedAt3);
-                    
-                    member = responseData.member;
-                    nowMemberCount = responseData.nowMemberCount;
-                    console.log(member);
-                    console.log(nowMemberCount);
-                    schoolNo = responseData.schoolNo;
-                    classUserNo =  response.data.schoolClass.userNo;
-                   
-                    if (response.data.isMember == true) {
-                        $('#cancelButton').removeClass("item-hidden");
-                    } else {
-                        $('#submitButton').removeClass("item-hidden");
-                    }
-                    
-                    if (response.data.schoolClass.userNo == loginUser) {
-                        $('#cancelButton').addClass("item-hidden");
-                        $('#submitButton').addClass("item-hidden");
-                        $('#deleteEvent').removeClass("item-hidden");
-                        $('#classUpdateBtn').removeClass("item-hidden");
-                        toggleInputReadonly(true);
-                        
-                    } else {
-                        $('#deleteEvent').addClass("item-hidden");
-                         $('#classUpdateBtn').addClass("item-hidden");
-                        toggleInputReadonly(false);
-                    }
-                    
-                     console.log(response.data.schoolClass.userNo);
-                     console.log(loginUser);
-
-                    var photoElement = document.getElementById('photo');
-                    if (responseData.photo) {
-                        photoElement.src = 'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/schoolclass/' + responseData.photo + '?type=f&w=300&h=300';
-                        console.log(responseData.photo);
-                        console.log(photoElement.src);
-                       
-                    } else {
-                        photoElement.src = '';
-                          console.log(responseData.photo);
-                    }
-                    
-                    
-                    console.log("vieModal1111111111");
-                    searchPlaces2();
-                    map2.relayout();
-                    console.log("searchPlaces");
-                    
-                    
-                    
-                }).catch(function(error) {
-                    console.error('에러 발생:', error);
-                });
-
-            }
-         });
-
-        calendar.render();
-
-
-                $('#deleteEvent').on('click', function() {
-                    removeEvent(eventObj);
-                });
-
-        function removeEvent() {
-                    console.log(eventObj);
-                    console.log(classUserNo);
-                    var userNo = classUserNo;
-                    
-                    var eventId = eventObj.id; // 이벤트 객체의 id 속성 값 가져오기
-                    console.log(eventObj.id);
-                    console.log(eventId);
-                    console.log("=============2=========");
-                    
-                    var calendarEvent = calendar.getEventById(eventId);
-                    console.log("삭제이벤트삭제2");
-                    console.log(calendarEvent);
-                    console.log("=============3=========");
-
-                    if (calendarEvent) {
-                    console.log(classUserNo);
-                        axios({
-                            method: 'POST',
-                            url: '/schoolclass/classDelete',
-                            data: {
-                                no: classNo,
-                                schoolNo : schoolNo,
-                                userNo : userNo
-                            }
-                        }).then(function(response) {
-                            calendarEvent.remove();
-                            console.log(calendarEvent);
-                            console.log("삭제하기 실행");
-                            const Toast = Swal.mixin({
-                             toast: true,
-                             position: "top-end",
-                             showConfirmButton: false,
-                             timer: 2000,
-                             timerProgressBar: true,
-                             didOpen: (toast) => {
-                                 toast.onmouseenter = Swal.stopTimer;
-                                 toast.onmouseleave = Swal.resumeTimer;
-                             }
-                         });
-                         Toast.fire({
-                             icon: "success",
-                             title: "삭제 완료!"
-                         });
-                        setTimeout(function() {
-                               closeViewModal();
-                             location.reload();
-                         }, 2000);
-                        }).catch(function(error) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: '삭제 실패',
-                                text: '다시 시도해주세요.'
-                            });
-                        });
-                        console.log(classNo);
-                        console.log(schoolNo);
-                        console.log(userNo);
-                    }
-        }
-        
-        
-        $('#classUpdateBtn').on('click', function() {
-            console.log("업데이트 이벤트1");
-            updateEvent(eventObj);
-            console.log(eventObj);
-            console.log("=============1=========");
-        });
-    
-    function updateEvent() {
-        var eventId = eventObj.id; // 이벤트 객체의 id 속성 값 가져오기
-        console.log(eventObj.id);
-        console.log(eventId);
-        console.log("==========2============");
-        var calendarEvent = calendar.getEventById(eventId);
-        console.log("업데이트 이벤트2");
-        console.log(calendarEvent);
-        console.log("==========3============");
-        
-        
-        if (calendarEvent) {
-        var userNo = loginUser;
-        var formData = new FormData();
-       
-            
-      
-            
-            formData.append('schoolNo', schoolNo);
-             console.log(schoolNo);
-             
-            formData.append('no',  classNo);
-             console.log(classNo);
-              
-              formData.append('userNo',  userNo);
-             console.log(userNo);
-             
-            formData.append('name', $('#name').val());
-            console.log($('#name').val());
-            
-            formData.append('content', $('#content').val());
-             console.log( $('#content').val());
-             
-            formData.append('location', $('#keyword2').val());
-             console.log($('#keyword2').val());
-             
-            var fileInput = document.getElementById('updateFile');
-            var file = fileInput.files[0]; // 파일 가져오기
-            var photoElement = document.getElementById('photo');
-            console.log(file);
-            console.log(photoElement);
-            
-            if(file) {
-                formData.append('file', file);
-            } else {
-                formData.append('file', null);
-            }
-            
-             
-            
-            formData.append('locationDetail', $('#locationDetail2').val());
-             console.log($('#locationDetail2').val());
-             
-            
-            formData.append('startAt3', $('#startAt3').val());
-             console.log(startAt3);
-             
-            formData.append('endedAt3', $('#endedAt3').val());
-             console.log(endedAt3);
-           
-           
-            console.log(formData);
-            
-
-            console.log(calendarEvent);
-            
-            axios({
-                method: 'POST',
-                url: '/schoolclass/classUpdate',
-                data: formData,
-                dataType: 'json'
-                
-            }).then(function(response) {
-                    console.error('업데이트 실행');
-                    
-                    const Toast = Swal.mixin({
-                             toast: true,
-                             position: "top-end",
-                             showConfirmButton: false,
-                             timer: 2000,
-                             timerProgressBar: true,
-                             didOpen: (toast) => {
-                                 toast.onmouseenter = Swal.stopTimer;
-                                 toast.onmouseleave = Swal.resumeTimer;
-                             }
-                         });
-                         Toast.fire({
-                             icon: "success",
-                             title: "수정완료"
-                         });
-                        setTimeout(function() {
-                            closeViewModal();
-                             location.reload();
-                         }, 2000);
-                        
-            }).catch(function(error) {
-                Swal.fire({
-                        icon: 'error',
-                        title: '업데이트 실패',
-                        text: '다시 시도해주세요.'
-                    });
-                        console.error('에러 발생:', error);
-            });
-        }
-    }
-        
-        
-        
-        
-        
-
-    });
-
-</script>
-
-<div class="modal" id="myModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">일정등록</h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-
-
-                <form id="classInfo" class="row g-3 needs-validation was-validated">
-                 <div class="form-group row justify-content-center">
-                    <input name="schoolNo" type="hidden" id="schoolNoInput">
-    
-                    <div class="col-md-8">
-                        <input name='name' type='text' placeholder="제목" class="form-control" required>
-                    </div>
-
-                    <div class="col-md-8">
-                        <textarea name='content' placeholder="설명" class="form-control" required></textarea>
-                    </div>
-                     
-                     <div class="col-md-8">
-                        <input name='file' type='file' placeholder="사진" class="form-control">
-                     </div>
-                     
-                    <div class="col-md-8">
-                        모임일 <br>
-                        날짜 시간 설정: <input id="start" name="startAt2" type="datetime-local" class="form-control" required>
-                    </div>
-
-                    <div class="col-md-8">
-                        종료 시간 <br>
-                        날짜 시간 설정: <input name="endedAt2" onchange="checkEndDate()" type="datetime-local" class="form-control" required>
-
-                    </div>
-
-                    <div class="col-md-8">
-                        <button id="mapBtn" type="button">약속 장소 정하기</button>
-                        <br>
-                        <input id="location" name="location" type='text' placeholder="주소" class="form-control"
-                                   required>
-                        <input id="locationDetail" name="locationDetail"  type="text" placeholder="설명" class="form-control" required>
-                    </div>
-
-                    <div class="col-md-8">
-                        <input name='member' type='text' placeholder="인원" class="form-control" required>
-                    </div>
-
-
-
-                    <div class="radio-container">
-                        <input id="regular" name="repeatSet" type="radio" value="0">
-                        <label for="regular">정기</label>
-                        <input id="irregular" name="repeatSet" type="radio" value="1">
-                        <label for="irregular">번개</label>
-                    </div>
-                    <br>
-
-                    <div class="modal-footer">
-                        <button class="btn cancel-button" data-bs-dismiss="modal" type="button">닫기</button>
-                        <button class="btn submit-button" onclick="addEvent(); closeModal();" type="button">등록</button>
-                    </div>
-                 </div>
-                </form>
-
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-
-<div class="modal" id="mapModal" tabindex="-1">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">지도테스트</h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-
-                <div class="map_wrap">
-                    <div id="map" style="width:100%;height:100%;"></div>
-
-                    <div class="bg_white" id="menu_wrap">
-                        <div class="option">
-                            <div>
-                                <form onsubmit="searchPlaces(); return false;">
-                                    키워드 : <input id="keyword" size="15" type="text" value="비트캠프 강남점">
-                                    <button type="submit">검색하기</button>
-                                </form>
-                            </div>
-                        </div>
-                        <hr>
-
-                        <ul id="placesList"></ul>
-                        <div id="pagination"></div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-
-
-<div data-th-replace="schoolclass/modal/view :: viewModal">클래스 삭제 모달</div>
-
-
-
-<script>
-    function checkEndDate() {
-        var startDateInput = document.querySelector("input[name='startAt2']");
-        var endDateInput = document.querySelector("input[name='endedAt2']");
-
-        console.log(startDateInput);
-        console.log(endDateInput);
-        console.log("==========================");
-
-        var startDateValue = new Date(startDateInput.value);
-        var endDateValue = new Date(endDateInput.value);
-        console.log(startDateInput.value);
-        console.log(endDateInput.value);
-
-
-        var startTimestamp = startDateValue.getTime();
-        var endTimestamp = endDateValue.getTime();
-
-        // 종료일이 시작일보다 이전인 경우
-        if (endTimestamp <= startTimestamp) {
-            Swal.fire({
-                    icon: 'warning',
-                    title: '종료 시간은 모임일 날짜와 시간을 넘을 수 없습니다.',
-                    text: '다시 시도해주세요.'
-                });
-            endDateInput.value = '';
-        }
-
-        if (endTimestamp - startTimestamp >= 24 * 60 * 60 * 1000) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: '날짜는 하루만 설정할 수 있습니다!',
-                    text: '다시 시도해주세요.'
-                });
-            endDateInput.value = '';
-        }
-
-    }
-
-</script>
-
-<script>
-
-
-    let myModal;
-            function myModal1() {
-                 myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
-                console.log('모달을 표시합니다.');
-                myModal.show();
-            };
-
-             function closeModal() {
-                myModal.hide();
-            };
-
-        function addEvent() {
-
-            var name = new String (document.querySelector("input[name='name']").value);
-            var startDate = new Date(document.querySelector("input[name='startAt2']").value);
-            var endDate = new Date(document.querySelector("input[name='endedAt2']").value);
-            console.log(startDate);
-            console.log(endDate);
-
-            if (isNaN(endDate.valueOf())) {
-                return;
-            }
-
-            var form = $('#classInfo')[0];
-            console.log(classInfo);
-            console.log(classInfo.file);
-            console.log(form);
-            var formData = new FormData(form);
-            console.log(formData);
-            $.ajax({
-                type : "POST",
-                url : 'add',
-                data : formData,
-                dataType: 'json',
-                processData:false,
-                contentType:false
-            }).done(function(result) {
-                if (result.status != "success") {
-                   Swal.fire({
-                        icon: 'error',
-                        title: '등록 실패',
-                        text: '다시 시도해주세요.'
-                    });
-                    return;
-                }
-               
-                
-               form.reset();
-               
-               const Toast = Swal.mixin({
-                             toast: true,
-                             position: "top-end",
-                             showConfirmButton: false,
-                             timer: 2000,
-                             timerProgressBar: true,
-                             didOpen: (toast) => {
-                                 toast.onmouseenter = Swal.stopTimer;
-                                 toast.onmouseleave = Swal.resumeTimer;
-                             }
-                         });
-                         Toast.fire({
-                             icon: "success",
-                             title: "등록완료"
-                         });
-                         
-                         setTimeout(function() {
-                         calendar.addEvent({
-                            title: name,
-                            start: startDate,
-                            end : endDate,
-                            allDay: true
-                        });
-                console.log("서버에 이벤트를 성공적으로 추가했습니다.");
-                             location.reload();
-                         }, 2000);
-               
-               console.log("모달이 리셋되었습니다!!");
-            });
-            
-        }
-
-
-
-</script>
-
-<!--<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services"-->
-<!--        type="text/javascript"></script>-->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services,clusterer,drawing"></script>
-<script>
-    // 마커를 담을 배열입니다
-    var markers = [];
-    var markers2 = [];
-
-    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-     mapOption = {
-            center: new kakao.maps.LatLng(37.50736, 127.034435), // 지도의 중심좌표
-            level: 3 // 지도의 확대 레벨
-        };
-
-
-    // 지도를 생성합니다
-    var map = new kakao.maps.Map(mapContainer, mapOption);
-    console.log("지도생성");
-
-
-
-    var mapContainer2 = document.getElementById('map2'), // 지도를 표시할 div
-     mapOption2 = {
-            center: new kakao.maps.LatLng(37.50736, 127.034435), // 지도의 중심좌표
-            level: 3 // 지도의 확대 레벨
-        };
-
-     var map2 = new kakao.maps.Map(mapContainer2, mapOption2);
-     console.log("지도2생성");
-
-    // 장소 검색 객체를 생성합니다
-    var ps = new kakao.maps.services.Places();
-    var ps2 = new kakao.maps.services.Places();
-
-
-    // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-    var infowindow = new kakao.maps.InfoWindow({zIndex:1});
-
-
-
-    // 키워드 검색을 요청하는 함수입니다
-    function searchPlaces() {
-
-        var keyword = document.getElementById('keyword').value;
-
-
-        if (!keyword.replace(/^\s+|\s+$/g, '')) {
-            Swal.fire({
-                    icon: 'warning',
-                    title: '키워드를 입력해주세요!',
-                    text: '다시 시도해주세요.'
-                });
-            return false;
-        }
-
-        // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-        ps.keywordSearch(keyword, placesSearchCB);
-        console.log("111111");
-        console.log(placesSearchCB);
-    }
-
-    // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
-    function placesSearchCB(data, status, pagination) {
-        if (status === kakao.maps.services.Status.OK) {
-
-            // 정상적으로 검색이 완료됐으면
-            // 검색 목록과 마커를 표출합니다
-            displayPlaces(data);
-
-            // 페이지 번호를 표출합니다
-            displayPagination(pagination);
-
-        } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-
-            Swal.fire({
-                    icon: 'warning',
-                    title: '검색결과가 존재하지 않습니다',
-                    text: '다시 시도해주세요.'
-                });
-            return;
-
-        } else if (status === kakao.maps.services.Status.ERROR) {
-
-            Swal.fire({
-                    icon: 'warning',
-                    title: '검색중 오류 발생',
-                    text: '다시 시도해주세요.'
-                });
-            return;
-
-        }
-    }
-
-    function searchPlaces2() {
-        console.log("실행!");
-        var keyword2 = document.getElementById('keyword2').value;
-
-
-        if (!keyword2.replace(/^\s+|\s+$/g, '')) {
-            Swal.fire({
-                    icon: 'warning',
-                    title: '키워드를 입력해주세요!',
-                    text: '다시 시도해주세요.'
-                });
-            return false;
-        }
-
-        // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-        ps2.keywordSearch(keyword2, placesSearchCB2);
-
-    }
-
-    // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
-    function placesSearchCB2(data, status, pagination2) {
-        if (status === kakao.maps.services.Status.OK) {
-
-            // 정상적으로 검색이 완료됐으면
-            // 검색 목록과 마커를 표출합니다
-            displayPlaces2(data);
-            console.log("검색목록 , 마커 표출");
-
-            // 페이지 번호를 표출합니다
-            displayPagination2(pagination2);
-            console.log("페이지 번호 표출");
-
-        } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-             Swal.fire({
-                    icon: 'warning',
-                    title: '검색결과가 존재하지 않습니다!',
-                    text: '다시 시도해주세요.'
-                });
-            
-            return;
-
-        } else if (status === kakao.maps.services.Status.ERROR) {
-            
-             Swal.fire({
-                    icon: 'warning',
-                    title: '검색 결과 중 오류가 발생했습니다.',
-                    text: '다시 시도해주세요.'
-                });
-     
-            return;
-
-        }
-    }
-
-
-
-
-
-    // 검색 결과 목록과 마커를 표출하는 함수입니다
-    function displayPlaces2(places) {
-
-        var listEl = document.getElementById('placesList2'),
-        menuEl = document.getElementById('menu_wrap'),
-        fragment = document.createDocumentFragment(),
-        bounds = new kakao.maps.LatLngBounds(),
-        listStr = '';
-        console.log(placesList2);
-        console.log('displayPlaces2');
-        console.log(fragment);
-        console.log(listEl);
-        // 검색 결과 목록에 추가된 항목들을 제거합니다
-        removeAllChildNods(listEl);
-
-        // 지도에 표시되고 있는 마커를 제거합니다
-        removeMarker();
-
-        for ( var i=0; i<places.length; i++ ) {
-
-            // 마커를 생성하고 지도에 표시합니다
-            var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-                marker = addMarker2(placePosition, i),
-                itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-                console.log('itemel');
-                console.log(itemEl);
-
-
-            // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-            // LatLngBounds 객체에 좌표를 추가합니다
-            bounds.extend(placePosition);
-
-
-            // 마커와 검색결과 항목에 mouseover 했을때
-            // 해당 장소에 인포윈도우에 장소명을 표시합니다
-            // mouseout 했을 때는 인포윈도우를 닫습니다
-            (function(marker, title, place) {
-                kakao.maps.event.addListener(marker, 'mouseover', function() {
-                    displayInfowindow2(marker, title);
-                });
-
-                kakao.maps.event.addListener(marker, 'mouseout', function() {
-                    infowindow.close();
-                });
-
-                kakao.maps.event.addListener(marker, 'click', function() {
-                    document.getElementById("keyword2").value = place.place_name;
-                    document.getElementById("locationDetail2").value = place.address_name ;
-                    console.log("실행");
-                    var mapModal2 = document.querySelector("#mapModal2");
-                    var mapModalInstance = bootstrap.Modal.getInstance(mapModal2);
-<!--                    mapModalInstance.hide();-->
-
-
-                    console.log( "@@@@@@@@" + JSON.stringify(place));
-                    console.log(JSON.stringify(place.road_address_name));
-                    console.log(JSON.stringify(place.address_name));
-                });
-
-                itemEl.onclick =  function () {
-                    document.getElementById("keyword2").value = place.place_name;
-                    document.getElementById("locationDetail2").value = place.address_name;
-                    console.log("실행");
-                    var mapModal2 = document.querySelector("#mapModal2");
-                    var mapModalInstance = bootstrap.Modal.getInstance(mapModal2);
-
-                };
-
-
-                itemEl.onmouseover =  function () {
-                    displayInfowindow2(marker, title);
-                    
-                };
-
-                itemEl.onmouseout =  function () {
-                    infowindow.close();
-                };
-            })(marker, places[i].place_name, places[i]);
-                console.log("==================");
-                console.log(places[i].place_name);
-                console.log(places[i].road_address_name);
-                console.log(places[i]);
-                console.log("==================");
-
-            fragment.appendChild(itemEl);
-            console.log(fragment);
-        }
-
-        // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
-        listEl.appendChild(fragment);
-        menuEl.scrollTop = 0;
-
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-        map2.setBounds(bounds);
-    }
-
-
-
-    // 검색 결과 목록과 마커를 표출하는 함수입니다
-    function displayPlaces(places) {
-
-        var listEl = document.getElementById('placesList'),
-        menuEl = document.getElementById('menu_wrap'),
-        fragment = document.createDocumentFragment(),
-        bounds = new kakao.maps.LatLngBounds(),
-        listStr = '';
-        console.log('displayPlaces1');
-        console.log(fragment);
-        console.log(listEl);
-
-        // 검색 결과 목록에 추가된 항목들을 제거합니다
-        removeAllChildNods(listEl);
-
-        // 지도에 표시되고 있는 마커를 제거합니다
-        removeMarker();
-
-        for ( var i=0; i<places.length; i++ ) {
-
-            // 마커를 생성하고 지도에 표시합니다
-            var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-                marker = addMarker(placePosition, i),
-                itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-
-            // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-            // LatLngBounds 객체에 좌표를 추가합니다
-            bounds.extend(placePosition);
-
-
-            // 마커와 검색결과 항목에 mouseover 했을때
-            // 해당 장소에 인포윈도우에 장소명을 표시합니다
-            // mouseout 했을 때는 인포윈도우를 닫습니다
-            (function(marker, title, place) {
-                kakao.maps.event.addListener(marker, 'mouseover', function() {
-                    displayInfowindow(marker, title);
-                });
-
-                kakao.maps.event.addListener(marker, 'mouseout', function() {
-                    infowindow.close();
-                });
-
-                kakao.maps.event.addListener(marker, 'click', function() {
-                    document.getElementById("location").value = place.place_name;
-                    document.getElementById("locationDetail").value = place.address_name ;
-                    
-                    
-                    var mapModal = document.querySelector("#mapModal");
-                    var mapModalInstance = bootstrap.Modal.getInstance(mapModal);
-                    mapModalInstance.hide();
-
-
-                    console.log( "@@@@@@@@" + JSON.stringify(place));
-                    console.log(JSON.stringify(place.road_address_name));
-                    console.log(JSON.stringify(place.address_name));
-                });
-
-                itemEl.onclick =  function () {
-                    document.getElementById("location").value = place.place_name;
-                    document.getElementById("locationDetail").value = place.address_name;
-                    
-                    var mapModal = document.querySelector("#mapModal");
-                    var mapModalInstance = bootstrap.Modal.getInstance(mapModal);
-                    mapModalInstance.hide();
-                };
-
-
-                itemEl.onmouseover =  function () {
-                    displayInfowindow(marker, title);
-                };
-
-                itemEl.onmouseout =  function () {
-                    infowindow.close();
-                };
-            })(marker, places[i].place_name, places[i]);
-                console.log(places[i].place_name);
-                console.log(places[i].road_address_name);
-               console.log(places[i]);
-
-
-            fragment.appendChild(itemEl);
-        }
-
-        // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
-        listEl.appendChild(fragment);
-        menuEl.scrollTop = 0;
-
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-        map.setBounds(bounds);
-    }
-
-
-
-
-    // 검색결과 항목을 Element로 반환하는 함수입니다
-    function getListItem(index, places) {
-    console.log('11111111111111111111111111111111111111 ');
-        var el = document.createElement('li'),
-        itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
-                    '<div class="info">' +
-                    '   <h5>' + places.place_name + '</h5>';
-
-        if (places.road_address_name) {
-            itemStr += '    <span>' + places.road_address_name + '</span>' +
-                        '   <span class="jibun gray">' +  places.address_name  + '</span>';
-        } else {
-            itemStr += '    <span>' +  places.address_name  + '</span>';
-        }
-
-          itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-                    '</div>';
-
-        el.innerHTML = itemStr;
-        el.className = 'item';
-        console.log('el');
-        console.log(el);
-        return el;
-    }
-
-    
-
-
-    // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-    function addMarker(position, idx, title) {
-        var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
-            imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
-            imgOptions =  {
-                spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-                spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-                offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-            },
-            markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
-                marker = new kakao.maps.Marker({
-                position: position, // 마커의 위치
-                image: markerImage
-            });
-
-        marker.setMap(map); // 지도 위에 마커를 표출합니다
-        markers.push(marker);  // 배열에 생성된 마커를 추가합니다
-
-        return marker;
-    }
-
-    // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-    function addMarker2(position, idx, title) {
-        var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
-            imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
-            imgOptions =  {
-                spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-                spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-                offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-            },
-            markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
-                marker = new kakao.maps.Marker({
-                position: position, // 마커의 위치
-                image: markerImage
-            });
-            console.log('addMarker2 실행');
-
-        marker.setMap(map2); // 지도 위에 마커를 표출합니다
-        markers.push(marker);  // 배열에 생성된 마커를 추가합니다
-
-        return marker;
-    }
-
-    // 지도 위에 표시되고 있는 마커를 모두 제거합니다
-    function removeMarker() {
-        for ( var i = 0; i < markers.length; i++ ) {
-            markers[i].setMap(null);
-        }
-        markers = [];
-    }
-
-    // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
-    function displayPagination(pagination) {
-        var paginationEl = document.getElementById('pagination'),
-            fragment = document.createDocumentFragment(),
-            i;
-
-        // 기존에 추가된 페이지번호를 삭제합니다
-        while (paginationEl.hasChildNodes()) {
-            paginationEl.removeChild (paginationEl.lastChild);
-        }
-
-        for (i=1; i<=pagination.last; i++) {
-            var el = document.createElement('a');
-            el.href = "#";
-            el.innerHTML = i;
-
-            if (i===pagination.current) {
-                el.className = 'on';
-            } else {
-                el.onclick = (function(i) {
-                    return function() {
-                        pagination.gotoPage(i);
-                    }
-                })(i);
-            }
-
-            fragment.appendChild(el);
-        }
-        paginationEl.appendChild(fragment);
-    }
-
-
-    // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
-    function displayPagination2(pagination2) {
-        console.log("displayPagination");
-        var paginationEl = document.getElementById('pagination2'),
-            fragment = document.createDocumentFragment(),
-            i;
-
-        // 기존에 추가된 페이지번호를 삭제합니다
-        while (paginationEl.hasChildNodes()) {
-            paginationEl.removeChild (paginationEl.lastChild);
-        }
-
-        for (i=1; i<=pagination.last; i++) {
-            var el = document.createElement('a');
-            el.href = "#";
-            el.innerHTML = i;
-
-            if (i===pagination.current) {
-                el.className = 'on';
-            } else {
-                el.onclick = (function(i) {
-                    return function() {
-                        pagination.gotoPage(i);
-                    }
-                })(i);
-            }
-
-            fragment.appendChild(el);
-            console.log("99999999999"+fragment);
-            console.log("99999999999"+el);
-        }
-        paginationEl.appendChild(fragment);
-    }
-
-    // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
-    // 인포윈도우에 장소명을 표시합니다
-    function displayInfowindow(marker, title) {
-        var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-        infowindow.setContent(content);
-        infowindow.open(map, marker);
-    }
-    
-    // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
-    // 인포윈도우에 장소명을 표시합니다
-    function displayInfowindow2(marker, title) {
-        var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-        infowindow.setContent(content);
-        infowindow.open(map2, marker);
-    }
-
-     // 검색결과 목록의 자식 Element를 제거하는 함수입니다
-    function removeAllChildNods(el) {
-        while (el.hasChildNodes()) {
-            el.removeChild (el.lastChild);
-        }
-    }
-
-</script>
-
-<script>
-
-    // 지도 모달 닫힘 이벤트 처리
-    document.querySelector("#mapModal").addEventListener('hide.bs.modal', function() {
-        console.log("mapModal 모달이 숨겨집니다.1");
-    });
-
-
-
-    document.querySelector("#mapBtn").onclick = function() {
-    const mapModal = new bootstrap.Modal(document.getElementById('mapModal'), {})
-        console.log(document.getElementById('mapModal'));
-         mapModal.show();
-    };
-    
-    document.querySelector("#mapModal").addEventListener('shown.bs.modal', function() {
-        var modalMapContainer = document.querySelector('.map_wrap');
-        var width = modalMapContainer.clientWidth;
-        var height = modalMapContainer.clientHeight;
-      
-        // Kakao Maps API의 resize 함수를 사용하여 지도의 크기를 조정합니다.
- 
-        map.relayout();
-        // 키워드로 장소를 검색합니다
-        searchPlaces();
-    });
-
-</script>
-
-
-<script th:inline="javascript">
-    loginUser = [[${loginUser}]];
-</script>
-<script src="/js/header.js"></script>
-
-
-
-</body>
+<html
+	lang="en"
+	xmlns:th="http://www.w3.org/1999/xhtml"
+>
+	<html
+		lang="en"
+		xmlns:th="//www.thymeleaf.org"
+	>
+		<head>
+			<meta charset="utf-8" />
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/moment-timezone@0.5.40/builds/moment-timezone-with-data.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/moment-timezone@6.1.11/index.global.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
+			<link
+				crossorigin="anonymous"
+				href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+				integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+				rel="stylesheet"
+			/>
+			<script
+				crossorigin="anonymous"
+				integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+				src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+			></script>
+			<script
+				src="http://code.jquery.com/jquery-latest.js"
+				type="text/javascript"
+			></script>
+			<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+			<link
+				rel="stylesheet"
+				href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"
+			/>
+			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+			<link
+				rel="stylesheet"
+				href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"
+			/>
+			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
+			<link
+				href="/css/calendar.css"
+				rel="stylesheet"
+			/>
+
+			<style>
+				.map_wrap,
+				.map_wrap * {
+					margin: 0;
+					padding: 0;
+					font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+					font-size: 12px;
+				}
+				.map_wrap a,
+				.map_wrap a:hover,
+				.map_wrap a:active {
+					color: #000;
+					text-decoration: none;
+				}
+				.map_wrap {
+					position: relative;
+					width: 100%;
+					height: 500px;
+				}
+				#menu_wrap {
+					position: absolute;
+					top: 0;
+					left: 0;
+					bottom: 0;
+					width: 250px;
+					margin: 10px 0 30px 10px;
+					padding: 5px;
+					overflow-y: auto;
+					background: rgba(255, 255, 255, 0.7);
+					z-index: 1;
+					font-size: 12px;
+					border-radius: 10px;
+				}
+				.bg_white {
+					background: #fff;
+				}
+				#menu_wrap hr {
+					height: 1px;
+					border: 0;
+					border-top: 2px solid #5f5f5f;
+					margin: 3px 0;
+				}
+				#menu_wrap .option {
+					text-align: center;
+				}
+				#menu_wrap .option p {
+					margin: 10px 0;
+				}
+				#menu_wrap .option button {
+					margin-left: 5px;
+				}
+				#placesList li {
+					list-style: none;
+				}
+				#placesList .item {
+					position: relative;
+					border-bottom: 1px solid #888;
+					overflow: hidden;
+					cursor: pointer;
+					min-height: 65px;
+				}
+				#placesList .item span {
+					display: block;
+					margin-top: 4px;
+				}
+				#placesList .item h5,
+				#placesList .item .info {
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
+				}
+				#placesList .item .info {
+					padding: 10px 0 10px 55px;
+				}
+				#placesList .info .gray {
+					color: #8a8a8a;
+				}
+				#placesList .info .jibun {
+					padding-left: 26px;
+					background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;
+				}
+				#placesList .info .tel {
+					color: #009900;
+				}
+				#placesList .item .markerbg {
+					float: left;
+					position: absolute;
+					width: 36px;
+					height: 37px;
+					margin: 10px 0 0 10px;
+					background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;
+				}
+				#placesList .item .marker_1 {
+					background-position: 0 -10px;
+				}
+				#placesList .item .marker_2 {
+					background-position: 0 -56px;
+				}
+				#placesList .item .marker_3 {
+					background-position: 0 -102px;
+				}
+				#placesList .item .marker_4 {
+					background-position: 0 -148px;
+				}
+				#placesList .item .marker_5 {
+					background-position: 0 -194px;
+				}
+				#placesList .item .marker_6 {
+					background-position: 0 -240px;
+				}
+				#placesList .item .marker_7 {
+					background-position: 0 -286px;
+				}
+				#placesList .item .marker_8 {
+					background-position: 0 -332px;
+				}
+				#placesList .item .marker_9 {
+					background-position: 0 -378px;
+				}
+				#placesList .item .marker_10 {
+					background-position: 0 -423px;
+				}
+				#placesList .item .marker_11 {
+					background-position: 0 -470px;
+				}
+				#placesList .item .marker_12 {
+					background-position: 0 -516px;
+				}
+				#placesList .item .marker_13 {
+					background-position: 0 -562px;
+				}
+				#placesList .item .marker_14 {
+					background-position: 0 -608px;
+				}
+				#placesList .item .marker_15 {
+					background-position: 0 -654px;
+				}
+				#pagination {
+					margin: 10px auto;
+					text-align: center;
+				}
+				#pagination a {
+					display: inline-block;
+					margin-right: 10px;
+				}
+				#pagination .on {
+					font-weight: bold;
+					cursor: default;
+					color: #777;
+				}
+				.item-hidden {
+					display: none;
+				}
+
+				#placesList2 li {
+					list-style: none;
+				}
+				#placesList2 .item {
+					position: relative;
+					border-bottom: 1px solid #888;
+					overflow: hidden;
+					cursor: pointer;
+					min-height: 65px;
+				}
+				#placesList2 .item span {
+					display: block;
+					margin-top: 4px;
+				}
+				#placesList2 .item h5,
+				#placesList .item .info {
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
+				}
+				#placesList2 .item .info {
+					padding: 10px 0 10px 55px;
+				}
+				#placesList2 .info .gray {
+					color: #8a8a8a;
+				}
+				#placesList2 .info .jibun {
+					padding-left: 26px;
+					background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;
+				}
+				#placesList2 .info .tel {
+					color: #009900;
+				}
+				#placesList2 .item .markerbg {
+					float: left;
+					position: absolute;
+					width: 36px;
+					height: 37px;
+					margin: 10px 0 0 10px;
+					background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;
+				}
+				#placesList2 .item .marker_1 {
+					background-position: 0 -10px;
+				}
+				#placesList2 .item .marker_2 {
+					background-position: 0 -56px;
+				}
+				#placesList2 .item .marker_3 {
+					background-position: 0 -102px;
+				}
+				#placesList2 .item .marker_4 {
+					background-position: 0 -148px;
+				}
+				#placesList2 .item .marker_5 {
+					background-position: 0 -194px;
+				}
+				#placesList2 .item .marker_6 {
+					background-position: 0 -240px;
+				}
+				#placesList2 .item .marker_7 {
+					background-position: 0 -286px;
+				}
+				#placesList2 .item .marker_8 {
+					background-position: 0 -332px;
+				}
+				#placesList2 .item .marker_9 {
+					background-position: 0 -378px;
+				}
+				#placesList2 .item .marker_10 {
+					background-position: 0 -423px;
+				}
+				#placesList2 .item .marker_11 {
+					background-position: 0 -470px;
+				}
+				#placesList2 .item .marker_12 {
+					background-position: 0 -516px;
+				}
+				#placesList2 .item .marker_13 {
+					background-position: 0 -562px;
+				}
+				#placesList2 .item .marker_14 {
+					background-position: 0 -608px;
+				}
+				#placesList2 .item .marker_15 {
+					background-position: 0 -654px;
+				}
+				#pagination2 {
+					margin: 10px auto;
+					text-align: center;
+				}
+				#pagination2 a {
+					display: inline-block;
+					margin-right: 10px;
+				}
+				#pagination2 .on {
+					font-weight: bold;
+					cursor: default;
+					color: #777;
+				}
+			</style>
+
+			<th:block th:replace="common/headCommon :: headerFragment"></th:block>
+		</head>
+		<body>
+			<div data-th-replace="header :: header"></div>
+
+			<div id="calendar"></div>
+
+			<script>
+				let calendar;
+				let schoolNo;
+				let classNo;
+				let eventObj;
+				let deleteId;
+				let loginUser = [[${loginUser}]];
+				let isReadonly;
+				let classUserNo;
+				let member;
+				let nowMemberCount;
+
+				window.onload = function() {
+
+				    console.log("test....ok!");
+				  const queryString = window.location.search;
+				  const params = new URLSearchParams(queryString);
+				  const sNo = params.get('schoolNo');
+				  document.getElementById('schoolNoInput').value = sNo;
+
+				    $.ajax({
+				        url: 'calendar?schoolNo='+ sNo,
+				        type: 'GET',
+				        dataType: 'json',
+				        contentType: false,
+				        processData: false,
+				    }).done(function(result) {
+				        for (let classEvent of result) {
+				            calendar.addEvent({
+				                title: classEvent.name,
+				                start: classEvent.startAt,
+				                end: classEvent.endedAt,
+				                allDay: true,
+				                extendedProps: {
+				                    classNo: classEvent.no,
+
+				                }
+				            });
+				        }
+				        console.log(result);
+				    });
+				};
+
+				document.addEventListener('DOMContentLoaded', function() {
+				    var calendarEl = document.getElementById('calendar');
+				    calendar = new FullCalendar.Calendar(calendarEl, {
+				        eventColor: '#9e896a',
+				        textColor: 'white',
+				        timeZone: 'Asia/Seoul',
+				        initialView: 'dayGridMonth',
+				        headerToolbar: {
+				            color: '#9e896a',
+				            start: 'prev next today add',
+				            center: 'title',
+				            end: 'dayGridMonth,dayGridWeek,dayGridDay'
+				        },
+				        customButtons: {
+
+				            add: {
+
+				                text: '클래스등록',
+				                click: function() {
+				                    myModal1();
+				                }
+				            }
+				        },
+				        titleFormat: function(date) {
+				            return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
+				        },
+				        selectable: false,
+				        droppable: false,
+				        editable: false,
+				        nowIndicator: true,
+
+				        locale: 'ko',
+				        dateClick: function(info) {
+				            myModal1();
+
+				            const now = moment();
+
+				            // 클릭된 날짜에 현재 시간 추가
+				            const formattedDate = moment(info.date)
+				              .hour(now.hour())
+				              .minute(now.minute())
+				              .format('YYYY-MM-DDTHH:mm');
+
+				            // 결과를 'start' 요소의 값으로 설정
+				            document.getElementById('start').value = formattedDate;
+
+
+				            // info 객체를 콘솔에 로그
+				            console.log(info);
+				        },
+				        eventClick: function(info) {
+				            viewModal1();
+
+
+				            eventObj = info.event;
+				            console.log(eventObj._def.defId);
+				            classNo = eventObj.extendedProps.classNo;
+
+				            console.log("@@@@@@@"+eventObj);
+
+				            axios({
+				                method: 'GET',
+				                url: '/schoolclass/findByNo',
+				                params: {
+				                    classNo: classNo
+				                },
+				                responseType: 'json'
+				            }).then(function(response) {
+				                console.log(response.data);
+				                var responseData = response.data.schoolClass;
+
+				                document.getElementById('name').value = responseData.name;
+				                document.getElementById('content').value = responseData.content;
+				                document.getElementById('levelName').textContent = responseData.level.levelName;
+				                document.getElementById('nickname').textContent = responseData.user.nickname;
+				                document.getElementById('keyword2').value = responseData.location;
+				                document.getElementById('locationDetail2').value = responseData.locationDetail;
+				                document.getElementById('memberRatio').textContent = responseData.nowMemberCount + '/' + responseData.member;
+
+				                    document.getElementById('endedAt3').value = new Date(responseData.endedAt).toISOString().slice(0,
+				                    16);
+
+
+				                // startAt 처리
+				                const startAtDate = moment(responseData.startAt);
+				                document.getElementById('startAt3').value = startAtDate.format('YYYY-MM-DDTHH:mm');
+
+				                 const endedAtDate = moment(responseData.endedAt);
+				                document.getElementById('endedAt3').value = endedAtDate.format('YYYY-MM-DDTHH:mm');
+
+				                console.log(responseData.startAt);
+				                console.log(startAt3);
+				                console.log(responseData.endedAt);
+				                console.log(endedAt3);
+
+				                member = responseData.member;
+				                nowMemberCount = responseData.nowMemberCount;
+				                console.log(member);
+				                console.log(nowMemberCount);
+				                schoolNo = responseData.schoolNo;
+				                classUserNo =  response.data.schoolClass.userNo;
+
+				                if (response.data.isMember == true) {
+				                    $('#cancelButton').removeClass("item-hidden");
+				                } else {
+				                    $('#submitButton').removeClass("item-hidden");
+				                }
+
+				                if (response.data.schoolClass.userNo == loginUser) {
+				                    $('#cancelButton').addClass("item-hidden");
+				                    $('#submitButton').addClass("item-hidden");
+				                    $('#deleteEvent').removeClass("item-hidden");
+				                    $('#classUpdateBtn').removeClass("item-hidden");
+				                    toggleInputReadonly(true);
+
+				                } else {
+				                    $('#deleteEvent').addClass("item-hidden");
+				                     $('#classUpdateBtn').addClass("item-hidden");
+				                    toggleInputReadonly(false);
+				                }
+
+				                 console.log(response.data.schoolClass.userNo);
+				                 console.log(loginUser);
+
+				                var photoElement = document.getElementById('photo');
+				                if (responseData.photo) {
+				                    photoElement.src = 'https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/schoolclass/' + responseData.photo + '?type=f&w=300&h=300';
+				                    console.log(responseData.photo);
+				                    console.log(photoElement.src);
+
+				                } else {
+				                    photoElement.src = '';
+				                      console.log(responseData.photo);
+				                }
+
+
+				                console.log("vieModal1111111111");
+				                searchPlaces2();
+				                map2.relayout();
+				                console.log("searchPlaces");
+
+
+
+				            }).catch(function(error) {
+				                console.error('에러 발생:', error);
+				            });
+
+				        }
+				     });
+
+				    calendar.render();
+
+
+				            $('#deleteEvent').on('click', function() {
+				                removeEvent(eventObj);
+				            });
+
+				    function removeEvent() {
+				                console.log(eventObj);
+				                console.log(classUserNo);
+				                var userNo = classUserNo;
+
+				                var eventId = eventObj.id; // 이벤트 객체의 id 속성 값 가져오기
+				                console.log(eventObj.id);
+				                console.log(eventId);
+				                console.log("=============2=========");
+
+				                var calendarEvent = calendar.getEventById(eventId);
+				                console.log("삭제이벤트삭제2");
+				                console.log(calendarEvent);
+				                console.log("=============3=========");
+
+				                if (calendarEvent) {
+				                console.log(classUserNo);
+				                    axios({
+				                        method: 'POST',
+				                        url: '/schoolclass/classDelete',
+				                        data: {
+				                            no: classNo,
+				                            schoolNo : schoolNo,
+				                            userNo : userNo
+				                        }
+				                    }).then(function(response) {
+				                        calendarEvent.remove();
+				                        console.log(calendarEvent);
+				                        console.log("삭제하기 실행");
+				                        const Toast = Swal.mixin({
+				                         toast: true,
+				                         position: "top-end",
+				                         showConfirmButton: false,
+				                         timer: 2000,
+				                         timerProgressBar: true,
+				                         didOpen: (toast) => {
+				                             toast.onmouseenter = Swal.stopTimer;
+				                             toast.onmouseleave = Swal.resumeTimer;
+				                         }
+				                     });
+				                     Toast.fire({
+				                         icon: "success",
+				                         title: "삭제 완료!"
+				                     });
+				                    setTimeout(function() {
+				                           closeViewModal();
+				                         location.reload();
+				                     }, 2000);
+				                    }).catch(function(error) {
+				                        Swal.fire({
+				                            icon: 'error',
+				                            title: '삭제 실패',
+				                            text: '다시 시도해주세요.'
+				                        });
+				                    });
+				                    console.log(classNo);
+				                    console.log(schoolNo);
+				                    console.log(userNo);
+				                }
+				    }
+
+
+				    $('#classUpdateBtn').on('click', function() {
+				        console.log("업데이트 이벤트1");
+				        updateEvent(eventObj);
+				        console.log(eventObj);
+				        console.log("=============1=========");
+				    });
+
+				function updateEvent() {
+				    var eventId = eventObj.id; // 이벤트 객체의 id 속성 값 가져오기
+				    console.log(eventObj.id);
+				    console.log(eventId);
+				    console.log("==========2============");
+				    var calendarEvent = calendar.getEventById(eventId);
+				    console.log("업데이트 이벤트2");
+				    console.log(calendarEvent);
+				    console.log("==========3============");
+
+
+				    if (calendarEvent) {
+				    var userNo = loginUser;
+				    var formData = new FormData();
+
+
+
+
+				        formData.append('schoolNo', schoolNo);
+				         console.log(schoolNo);
+
+				        formData.append('no',  classNo);
+				         console.log(classNo);
+
+				          formData.append('userNo',  userNo);
+				         console.log(userNo);
+
+				        formData.append('name', $('#name').val());
+				        console.log($('#name').val());
+
+				        formData.append('content', $('#content').val());
+				         console.log( $('#content').val());
+
+				        formData.append('location', $('#keyword2').val());
+				         console.log($('#keyword2').val());
+
+				        var fileInput = document.getElementById('updateFile');
+				        var file = fileInput.files[0]; // 파일 가져오기
+				        var photoElement = document.getElementById('photo');
+				        console.log(file);
+				        console.log(photoElement);
+
+				        if(file) {
+				            formData.append('file', file);
+				        } else {
+				            formData.append('file', null);
+				        }
+
+
+
+				        formData.append('locationDetail', $('#locationDetail2').val());
+				         console.log($('#locationDetail2').val());
+
+
+				        formData.append('startAt3', $('#startAt3').val());
+				         console.log(startAt3);
+
+				        formData.append('endedAt3', $('#endedAt3').val());
+				         console.log(endedAt3);
+
+
+				        console.log(formData);
+
+
+				        console.log(calendarEvent);
+
+				        axios({
+				            method: 'POST',
+				            url: '/schoolclass/classUpdate',
+				            data: formData,
+				            dataType: 'json'
+
+				        }).then(function(response) {
+				                console.error('업데이트 실행');
+
+				                const Toast = Swal.mixin({
+				                         toast: true,
+				                         position: "top-end",
+				                         showConfirmButton: false,
+				                         timer: 2000,
+				                         timerProgressBar: true,
+				                         didOpen: (toast) => {
+				                             toast.onmouseenter = Swal.stopTimer;
+				                             toast.onmouseleave = Swal.resumeTimer;
+				                         }
+				                     });
+				                     Toast.fire({
+				                         icon: "success",
+				                         title: "수정완료"
+				                     });
+				                    setTimeout(function() {
+				                        closeViewModal();
+				                         location.reload();
+				                     }, 2000);
+
+				        }).catch(function(error) {
+				            Swal.fire({
+				                    icon: 'error',
+				                    title: '업데이트 실패',
+				                    text: '다시 시도해주세요.'
+				                });
+				                    console.error('에러 발생:', error);
+				        });
+				    }
+				}
+
+
+
+
+
+
+				});
+			</script>
+
+			<div
+				class="modal"
+				id="myModal"
+				tabindex="-1"
+			>
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">클래스등록</h5>
+							<button
+								aria-label="Close"
+								class="btn-close"
+								data-bs-dismiss="modal"
+								type="button"
+							></button>
+						</div>
+						<div class="modal-body">
+							<form
+								id="classInfo"
+								class="row g-3 needs-validation was-validated"
+							>
+								<div class="form-group row justify-content-center">
+									<input
+										name="schoolNo"
+										type="hidden"
+										id="schoolNoInput"
+									/>
+
+									<div class="col-md-8">
+										<input
+											name="name"
+											type="text"
+											placeholder="제목"
+											class="form-control"
+											required
+										/>
+									</div>
+
+									<div class="col-md-8">
+										<textarea
+											name="content"
+											placeholder="설명"
+											class="form-control"
+											required
+										></textarea>
+									</div>
+
+									<div class="col-md-8">
+										<input
+											name="file"
+											type="file"
+											placeholder="사진"
+											class="form-control"
+										/>
+									</div>
+
+									<div class="col-md-8">
+										모임일 <br />
+										날짜 시간 설정:
+										<input
+											id="start"
+											name="startAt2"
+											type="datetime-local"
+											class="form-control"
+											required
+										/>
+									</div>
+
+									<div class="col-md-8">
+										종료 시간 <br />
+										날짜 시간 설정:
+										<input
+											name="endedAt2"
+											onchange="checkEndDate()"
+											type="datetime-local"
+											class="form-control"
+											required
+										/>
+									</div>
+
+									<div class="col-md-8">
+										<button
+											id="mapBtn"
+											type="button"
+										>
+											약속 장소 정하기
+										</button>
+										<br />
+										<input
+											id="location"
+											name="location"
+											type="text"
+											placeholder="주소"
+											class="form-control"
+											required
+										/>
+										<input
+											id="locationDetail"
+											name="locationDetail"
+											type="text"
+											placeholder="설명"
+											class="form-control"
+											required
+										/>
+									</div>
+
+									<div class="col-md-8">
+										<input
+											name="member"
+											type="text"
+											placeholder="인원"
+											class="form-control"
+											required
+										/>
+									</div>
+
+									<div class="radio-container">
+										<input
+											id="regular"
+											name="repeatSet"
+											type="radio"
+											value="0"
+										/>
+										<label for="regular">정기</label>
+										<input
+											id="irregular"
+											name="repeatSet"
+											type="radio"
+											value="1"
+										/>
+										<label for="irregular">번개</label>
+									</div>
+									<br />
+
+									<div class="modal-footer">
+										<button
+											class="btn cancel-button"
+											data-bs-dismiss="modal"
+											type="button"
+										>
+											닫기
+										</button>
+										<button
+											class="btn submit-button"
+											onclick="addEvent(); closeModal();"
+											type="button"
+										>
+											등록
+										</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div
+				class="modal"
+				id="mapModal"
+				tabindex="-1"
+			>
+				<div class="modal-dialog modal-xl">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">지도테스트</h5>
+							<button
+								aria-label="Close"
+								class="btn-close"
+								data-bs-dismiss="modal"
+								type="button"
+							></button>
+						</div>
+						<div class="modal-body">
+							<div class="map_wrap">
+								<div
+									id="map"
+									style="width: 100%; height: 100%"
+								></div>
+
+								<div
+									class="bg_white"
+									id="menu_wrap"
+								>
+									<div class="option">
+										<div>
+											<form onsubmit="searchPlaces(); return false;">
+												키워드 :
+												<input
+													id="keyword"
+													size="15"
+													type="text"
+													value="비트캠프 강남점"
+												/>
+												<button type="submit">검색하기</button>
+											</form>
+										</div>
+									</div>
+									<hr />
+
+									<ul id="placesList"></ul>
+									<div id="pagination"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div data-th-replace="schoolclass/modal/view :: viewModal">클래스 삭제 모달</div>
+
+			<script>
+				function checkEndDate() {
+					var startDateInput = document.querySelector("input[name='startAt2']");
+					var endDateInput = document.querySelector("input[name='endedAt2']");
+
+					console.log(startDateInput);
+					console.log(endDateInput);
+					console.log('==========================');
+
+					var startDateValue = new Date(startDateInput.value);
+					var endDateValue = new Date(endDateInput.value);
+					console.log(startDateInput.value);
+					console.log(endDateInput.value);
+
+					var startTimestamp = startDateValue.getTime();
+					var endTimestamp = endDateValue.getTime();
+
+					// 종료일이 시작일보다 이전인 경우
+					if (endTimestamp <= startTimestamp) {
+						Swal.fire({
+							icon: 'warning',
+							title: '종료 시간은 모임일 날짜와 시간을 넘을 수 없습니다.',
+							text: '다시 시도해주세요.',
+						});
+						endDateInput.value = '';
+					}
+
+					if (endTimestamp - startTimestamp >= 24 * 60 * 60 * 1000) {
+						Swal.fire({
+							icon: 'warning',
+							title: '날짜는 하루만 설정할 수 있습니다!',
+							text: '다시 시도해주세요.',
+						});
+						endDateInput.value = '';
+					}
+				}
+			</script>
+
+			<script>
+				let myModal;
+				function myModal1() {
+					myModal = new bootstrap.Modal(document.getElementById('myModal'), {});
+					console.log('모달을 표시합니다.');
+					myModal.show();
+				}
+
+				function closeModal() {
+					myModal.hide();
+				}
+
+				function addEvent() {
+					var name = new String(document.querySelector("input[name='name']").value);
+					var startDate = new Date(document.querySelector("input[name='startAt2']").value);
+					var endDate = new Date(document.querySelector("input[name='endedAt2']").value);
+					console.log(startDate);
+					console.log(endDate);
+
+					if (isNaN(endDate.valueOf())) {
+						return;
+					}
+
+					var form = $('#classInfo')[0];
+					console.log(classInfo);
+					console.log(classInfo.file);
+					console.log(form);
+					var formData = new FormData(form);
+					console.log(formData);
+					$.ajax({
+						type: 'POST',
+						url: 'add',
+						data: formData,
+						dataType: 'json',
+						processData: false,
+						contentType: false,
+					}).done(function (result) {
+						if (result.status != 'success') {
+							Swal.fire({
+								icon: 'error',
+								title: '등록 실패',
+								text: '다시 시도해주세요.',
+							});
+							return;
+						}
+
+						form.reset();
+
+						const Toast = Swal.mixin({
+							toast: true,
+							position: 'top-end',
+							showConfirmButton: false,
+							timer: 2000,
+							timerProgressBar: true,
+							didOpen: (toast) => {
+								toast.onmouseenter = Swal.stopTimer;
+								toast.onmouseleave = Swal.resumeTimer;
+							},
+						});
+						Toast.fire({
+							icon: 'success',
+							title: '등록완료',
+						});
+
+						setTimeout(function () {
+							calendar.addEvent({
+								title: name,
+								start: startDate,
+								end: endDate,
+								allDay: true,
+							});
+							console.log('서버에 이벤트를 성공적으로 추가했습니다.');
+							location.reload();
+						}, 2000);
+
+						console.log('모달이 리셋되었습니다!!');
+					});
+				}
+			</script>
+
+			<!--<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services"-->
+			<!--        type="text/javascript"></script>-->
+			<script
+				type="text/javascript"
+				src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ae4a410f33ef883e67c3c603a063ed&libraries=services,clusterer,drawing"
+			></script>
+			<script>
+				// 마커를 담을 배열입니다
+				var markers = [];
+				var markers2 = [];
+
+				var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+					mapOption = {
+						center: new kakao.maps.LatLng(37.50736, 127.034435), // 지도의 중심좌표
+						level: 3, // 지도의 확대 레벨
+					};
+
+				// 지도를 생성합니다
+				var map = new kakao.maps.Map(mapContainer, mapOption);
+				console.log('지도생성');
+
+				var mapContainer2 = document.getElementById('map2'), // 지도를 표시할 div
+					mapOption2 = {
+						center: new kakao.maps.LatLng(37.50736, 127.034435), // 지도의 중심좌표
+						level: 3, // 지도의 확대 레벨
+					};
+
+				var map2 = new kakao.maps.Map(mapContainer2, mapOption2);
+				console.log('지도2생성');
+
+				// 장소 검색 객체를 생성합니다
+				var ps = new kakao.maps.services.Places();
+				var ps2 = new kakao.maps.services.Places();
+
+				// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+				var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+				// 키워드 검색을 요청하는 함수입니다
+				function searchPlaces() {
+					var keyword = document.getElementById('keyword').value;
+
+					if (!keyword.replace(/^\s+|\s+$/g, '')) {
+						Swal.fire({
+							icon: 'warning',
+							title: '키워드를 입력해주세요!',
+							text: '다시 시도해주세요.',
+						});
+						return false;
+					}
+
+					// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+					ps.keywordSearch(keyword, placesSearchCB);
+					console.log('111111');
+					console.log(placesSearchCB);
+				}
+
+				// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+				function placesSearchCB(data, status, pagination) {
+					if (status === kakao.maps.services.Status.OK) {
+						// 정상적으로 검색이 완료됐으면
+						// 검색 목록과 마커를 표출합니다
+						displayPlaces(data);
+
+						// 페이지 번호를 표출합니다
+						displayPagination(pagination);
+					} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+						Swal.fire({
+							icon: 'warning',
+							title: '검색결과가 존재하지 않습니다',
+							text: '다시 시도해주세요.',
+						});
+						return;
+					} else if (status === kakao.maps.services.Status.ERROR) {
+						Swal.fire({
+							icon: 'warning',
+							title: '검색중 오류 발생',
+							text: '다시 시도해주세요.',
+						});
+						return;
+					}
+				}
+
+				function searchPlaces2() {
+					console.log('실행!');
+					var keyword2 = document.getElementById('keyword2').value;
+
+					if (!keyword2.replace(/^\s+|\s+$/g, '')) {
+						Swal.fire({
+							icon: 'warning',
+							title: '키워드를 입력해주세요!',
+							text: '다시 시도해주세요.',
+						});
+						return false;
+					}
+
+					// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+					ps2.keywordSearch(keyword2, placesSearchCB2);
+				}
+
+				// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+				function placesSearchCB2(data, status, pagination2) {
+					if (status === kakao.maps.services.Status.OK) {
+						// 정상적으로 검색이 완료됐으면
+						// 검색 목록과 마커를 표출합니다
+						displayPlaces2(data);
+						console.log('검색목록 , 마커 표출');
+
+						// 페이지 번호를 표출합니다
+						displayPagination2(pagination2);
+						console.log('페이지 번호 표출');
+					} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+						Swal.fire({
+							icon: 'warning',
+							title: '검색결과가 존재하지 않습니다!',
+							text: '다시 시도해주세요.',
+						});
+
+						return;
+					} else if (status === kakao.maps.services.Status.ERROR) {
+						Swal.fire({
+							icon: 'warning',
+							title: '검색 결과 중 오류가 발생했습니다.',
+							text: '다시 시도해주세요.',
+						});
+
+						return;
+					}
+				}
+
+				// 검색 결과 목록과 마커를 표출하는 함수입니다
+				function displayPlaces2(places) {
+					var listEl = document.getElementById('placesList2'),
+						menuEl = document.getElementById('menu_wrap'),
+						fragment = document.createDocumentFragment(),
+						bounds = new kakao.maps.LatLngBounds(),
+						listStr = '';
+					console.log(placesList2);
+					console.log('displayPlaces2');
+					console.log(fragment);
+					console.log(listEl);
+					// 검색 결과 목록에 추가된 항목들을 제거합니다
+					removeAllChildNods(listEl);
+
+					// 지도에 표시되고 있는 마커를 제거합니다
+					removeMarker();
+
+					for (var i = 0; i < places.length; i++) {
+						// 마커를 생성하고 지도에 표시합니다
+						var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+							marker = addMarker2(placePosition, i),
+							itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+						console.log('itemel');
+						console.log(itemEl);
+
+						// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+						// LatLngBounds 객체에 좌표를 추가합니다
+						bounds.extend(placePosition);
+
+						// 마커와 검색결과 항목에 mouseover 했을때
+						// 해당 장소에 인포윈도우에 장소명을 표시합니다
+						// mouseout 했을 때는 인포윈도우를 닫습니다
+						(function (marker, title, place) {
+							kakao.maps.event.addListener(marker, 'mouseover', function () {
+								displayInfowindow2(marker, title);
+							});
+
+							kakao.maps.event.addListener(marker, 'mouseout', function () {
+								infowindow.close();
+							});
+
+							kakao.maps.event.addListener(marker, 'click', function () {
+								document.getElementById('keyword2').value = place.place_name;
+								document.getElementById('locationDetail2').value = place.address_name;
+								console.log('실행');
+								var mapModal2 = document.querySelector('#mapModal2');
+								var mapModalInstance = bootstrap.Modal.getInstance(mapModal2);
+								<!--                    mapModalInstance.hide();-->
+
+								console.log('@@@@@@@@' + JSON.stringify(place));
+								console.log(JSON.stringify(place.road_address_name));
+								console.log(JSON.stringify(place.address_name));
+							});
+
+							itemEl.onclick = function () {
+								document.getElementById('keyword2').value = place.place_name;
+								document.getElementById('locationDetail2').value = place.address_name;
+								console.log('실행');
+								var mapModal2 = document.querySelector('#mapModal2');
+								var mapModalInstance = bootstrap.Modal.getInstance(mapModal2);
+							};
+
+							itemEl.onmouseover = function () {
+								displayInfowindow2(marker, title);
+							};
+
+							itemEl.onmouseout = function () {
+								infowindow.close();
+							};
+						})(marker, places[i].place_name, places[i]);
+						console.log('==================');
+						console.log(places[i].place_name);
+						console.log(places[i].road_address_name);
+						console.log(places[i]);
+						console.log('==================');
+
+						fragment.appendChild(itemEl);
+						console.log(fragment);
+					}
+
+					// 검색결과 항목들을 검색결과 목록 Element에 추가합니다
+					listEl.appendChild(fragment);
+					menuEl.scrollTop = 0;
+
+					// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+					map2.setBounds(bounds);
+				}
+
+				// 검색 결과 목록과 마커를 표출하는 함수입니다
+				function displayPlaces(places) {
+					var listEl = document.getElementById('placesList'),
+						menuEl = document.getElementById('menu_wrap'),
+						fragment = document.createDocumentFragment(),
+						bounds = new kakao.maps.LatLngBounds(),
+						listStr = '';
+					console.log('displayPlaces1');
+					console.log(fragment);
+					console.log(listEl);
+
+					// 검색 결과 목록에 추가된 항목들을 제거합니다
+					removeAllChildNods(listEl);
+
+					// 지도에 표시되고 있는 마커를 제거합니다
+					removeMarker();
+
+					for (var i = 0; i < places.length; i++) {
+						// 마커를 생성하고 지도에 표시합니다
+						var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+							marker = addMarker(placePosition, i),
+							itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+
+						// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+						// LatLngBounds 객체에 좌표를 추가합니다
+						bounds.extend(placePosition);
+
+						// 마커와 검색결과 항목에 mouseover 했을때
+						// 해당 장소에 인포윈도우에 장소명을 표시합니다
+						// mouseout 했을 때는 인포윈도우를 닫습니다
+						(function (marker, title, place) {
+							kakao.maps.event.addListener(marker, 'mouseover', function () {
+								displayInfowindow(marker, title);
+							});
+
+							kakao.maps.event.addListener(marker, 'mouseout', function () {
+								infowindow.close();
+							});
+
+							kakao.maps.event.addListener(marker, 'click', function () {
+								document.getElementById('location').value = place.place_name;
+								document.getElementById('locationDetail').value = place.address_name;
+
+								var mapModal = document.querySelector('#mapModal');
+								var mapModalInstance = bootstrap.Modal.getInstance(mapModal);
+								mapModalInstance.hide();
+
+								console.log('@@@@@@@@' + JSON.stringify(place));
+								console.log(JSON.stringify(place.road_address_name));
+								console.log(JSON.stringify(place.address_name));
+							});
+
+							itemEl.onclick = function () {
+								document.getElementById('location').value = place.place_name;
+								document.getElementById('locationDetail').value = place.address_name;
+
+								var mapModal = document.querySelector('#mapModal');
+								var mapModalInstance = bootstrap.Modal.getInstance(mapModal);
+								mapModalInstance.hide();
+							};
+
+							itemEl.onmouseover = function () {
+								displayInfowindow(marker, title);
+							};
+
+							itemEl.onmouseout = function () {
+								infowindow.close();
+							};
+						})(marker, places[i].place_name, places[i]);
+						console.log(places[i].place_name);
+						console.log(places[i].road_address_name);
+						console.log(places[i]);
+
+						fragment.appendChild(itemEl);
+					}
+
+					// 검색결과 항목들을 검색결과 목록 Element에 추가합니다
+					listEl.appendChild(fragment);
+					menuEl.scrollTop = 0;
+
+					// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+					map.setBounds(bounds);
+				}
+
+				// 검색결과 항목을 Element로 반환하는 함수입니다
+				function getListItem(index, places) {
+					console.log('11111111111111111111111111111111111111 ');
+					var el = document.createElement('li'),
+						itemStr =
+							'<span class="markerbg marker_' +
+							(index + 1) +
+							'"></span>' +
+							'<div class="info">' +
+							'   <h5>' +
+							places.place_name +
+							'</h5>';
+
+					if (places.road_address_name) {
+						itemStr +=
+							'    <span>' +
+							places.road_address_name +
+							'</span>' +
+							'   <span class="jibun gray">' +
+							places.address_name +
+							'</span>';
+					} else {
+						itemStr += '    <span>' + places.address_name + '</span>';
+					}
+
+					itemStr += '  <span class="tel">' + places.phone + '</span>' + '</div>';
+
+					el.innerHTML = itemStr;
+					el.className = 'item';
+					console.log('el');
+					console.log(el);
+					return el;
+				}
+
+				// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+				function addMarker(position, idx, title) {
+					var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+						imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
+						imgOptions = {
+							spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+							spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+							offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+						},
+						markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+						marker = new kakao.maps.Marker({
+							position: position, // 마커의 위치
+							image: markerImage,
+						});
+
+					marker.setMap(map); // 지도 위에 마커를 표출합니다
+					markers.push(marker); // 배열에 생성된 마커를 추가합니다
+
+					return marker;
+				}
+
+				// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+				function addMarker2(position, idx, title) {
+					var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+						imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
+						imgOptions = {
+							spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+							spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+							offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+						},
+						markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+						marker = new kakao.maps.Marker({
+							position: position, // 마커의 위치
+							image: markerImage,
+						});
+					console.log('addMarker2 실행');
+
+					marker.setMap(map2); // 지도 위에 마커를 표출합니다
+					markers.push(marker); // 배열에 생성된 마커를 추가합니다
+
+					return marker;
+				}
+
+				// 지도 위에 표시되고 있는 마커를 모두 제거합니다
+				function removeMarker() {
+					for (var i = 0; i < markers.length; i++) {
+						markers[i].setMap(null);
+					}
+					markers = [];
+				}
+
+				// 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+				function displayPagination(pagination) {
+					var paginationEl = document.getElementById('pagination'),
+						fragment = document.createDocumentFragment(),
+						i;
+
+					// 기존에 추가된 페이지번호를 삭제합니다
+					while (paginationEl.hasChildNodes()) {
+						paginationEl.removeChild(paginationEl.lastChild);
+					}
+
+					for (i = 1; i <= pagination.last; i++) {
+						var el = document.createElement('a');
+						el.href = '#';
+						el.innerHTML = i;
+
+						if (i === pagination.current) {
+							el.className = 'on';
+						} else {
+							el.onclick = (function (i) {
+								return function () {
+									pagination.gotoPage(i);
+								};
+							})(i);
+						}
+
+						fragment.appendChild(el);
+					}
+					paginationEl.appendChild(fragment);
+				}
+
+				// 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+				function displayPagination2(pagination2) {
+					console.log('displayPagination');
+					var paginationEl = document.getElementById('pagination2'),
+						fragment = document.createDocumentFragment(),
+						i;
+
+					// 기존에 추가된 페이지번호를 삭제합니다
+					while (paginationEl.hasChildNodes()) {
+						paginationEl.removeChild(paginationEl.lastChild);
+					}
+
+					for (i = 1; i <= pagination.last; i++) {
+						var el = document.createElement('a');
+						el.href = '#';
+						el.innerHTML = i;
+
+						if (i === pagination.current) {
+							el.className = 'on';
+						} else {
+							el.onclick = (function (i) {
+								return function () {
+									pagination.gotoPage(i);
+								};
+							})(i);
+						}
+
+						fragment.appendChild(el);
+						console.log('99999999999' + fragment);
+						console.log('99999999999' + el);
+					}
+					paginationEl.appendChild(fragment);
+				}
+
+				// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+				// 인포윈도우에 장소명을 표시합니다
+				function displayInfowindow(marker, title) {
+					var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+					infowindow.setContent(content);
+					infowindow.open(map, marker);
+				}
+
+				// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+				// 인포윈도우에 장소명을 표시합니다
+				function displayInfowindow2(marker, title) {
+					var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+					infowindow.setContent(content);
+					infowindow.open(map2, marker);
+				}
+
+				// 검색결과 목록의 자식 Element를 제거하는 함수입니다
+				function removeAllChildNods(el) {
+					while (el.hasChildNodes()) {
+						el.removeChild(el.lastChild);
+					}
+				}
+			</script>
+
+			<script>
+				// 지도 모달 닫힘 이벤트 처리
+				document.querySelector('#mapModal').addEventListener('hide.bs.modal', function () {
+					console.log('mapModal 모달이 숨겨집니다.1');
+				});
+
+				document.querySelector('#mapBtn').onclick = function () {
+					const mapModal = new bootstrap.Modal(document.getElementById('mapModal'), {});
+					console.log(document.getElementById('mapModal'));
+					mapModal.show();
+				};
+
+				document.querySelector('#mapModal').addEventListener('shown.bs.modal', function () {
+					var modalMapContainer = document.querySelector('.map_wrap');
+					var width = modalMapContainer.clientWidth;
+					var height = modalMapContainer.clientHeight;
+
+					// Kakao Maps API의 resize 함수를 사용하여 지도의 크기를 조정합니다.
+
+					map.relayout();
+					// 키워드로 장소를 검색합니다
+					searchPlaces();
+				});
+			</script>
+
+			<script th:inline="javascript">
+				loginUser = [[${loginUser}]];
+			</script>
+			<script src="/js/header.js"></script>
+		</body>
+	</html>
 </html>
