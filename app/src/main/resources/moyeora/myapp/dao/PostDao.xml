@@ -478,6 +478,14 @@
         WHERE post_no IN (SELECT post_no FROM posts WHERE school_no = #{value})
     </delete>
 
+    <select id="findByPostNo">
+        select
+          user_no
+        from
+          posts
+        where post_no = #{postNo}
+    </select>
+
 </mapper>
 
 <!--  <collection property="fileList" ofType="AttachedFile">-->

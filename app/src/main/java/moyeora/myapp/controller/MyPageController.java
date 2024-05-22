@@ -9,10 +9,13 @@ import moyeora.myapp.dto.profile.FollowRequestDTO;
 import moyeora.myapp.dto.profile.ProfileResponseDTO;
 import moyeora.myapp.service.MyPageService;
 import moyeora.myapp.service.SchoolService;
+import moyeora.myapp.service.impl.DefaultNotificationService;
+import moyeora.myapp.vo.Alert;
 import moyeora.myapp.vo.SchoolUser;
 import moyeora.myapp.vo.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +30,9 @@ import java.util.List;
 public class MyPageController {
   private final SchoolService schoolService;
   private final MyPageService myPageService;
+
+  @Autowired
+  private final DefaultNotificationService defaultNotificationService;
   final static Log log = LogFactory.getLog(MyPageController.class);
 
   @GetMapping("mypost")
@@ -74,11 +80,20 @@ public class MyPageController {
 
   @GetMapping("followList")
   @ResponseBody
-  public ResponseEntity<List<FollowListResponseDTO>> followList(@LoginUser User loginUser, FollowListRequestDTO followListRequestDTO) {
+  public ResponseEntity<List<FollowListResponseDTO>> followList(@LoginUser User loginUser, FollowListRequestDTO followListRequestDTO) throws Exception {
     if(loginUser!=null && loginUser.getNo() > 0) {
       System.out.println(loginUser.getNo()+"ss");
       followListRequestDTO.setClickUserNo(loginUser.getNo());
     }
+    defaultNotificationService.add(
+            Alert.builder().
+                    userNo(followListRequestDTO.getUserNo()).
+                    name(loginUser.getNickname()).
+                    photo(loginUser.getPhoto()).
+                    content("팔로우 하였습니다").
+                    type(1).
+                    redirectPath("/mypage/myProfile").
+                    build());
     return ResponseEntity.status(200).body(myPageService.followList(followListRequestDTO));
   }
 
@@ -89,6 +104,7 @@ public class MyPageController {
       return ResponseEntity.status(400).build();
     }
     followRequestDTO.setFollowingUserNo(loginUser.getNo());
+
     return ResponseEntity.status(201).body(myPageService.addFollow(followRequestDTO));
   }
 

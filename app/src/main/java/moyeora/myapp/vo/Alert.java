@@ -1,10 +1,12 @@
 package moyeora.myapp.vo;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
+@Builder
 public class Alert {
     private int alertNo;
     private int userNo;
