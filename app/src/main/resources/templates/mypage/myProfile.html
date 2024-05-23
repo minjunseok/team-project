@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="/static/profile/css/socialv.css?v=4.0.0">
     <link rel="stylesheet" href="/static/profile/vendor/@fortawesome/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="/static/profile/vendor/remixicon/fonts/remixicon.css">
-    <link rel="stylesheet" href="/static/profile/vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
-    <link rel="stylesheet" href="/static/profile/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+
+
 </head>
 <body>
 
@@ -58,7 +58,7 @@
                                                         <div class="row">
                                                             <div class="col-lg-12" style="text-align:right">
                                                                 <span id="grade-text"></span><br>
-                                                                <div><button class="btn btn-outline-danger" id="grade-btn">구독 해제</button></div>
+                                                                <div><span id="grade-date"></span><button class="btn btn-outline-danger" id="grade-btn">구독 해제</button></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -85,7 +85,7 @@
                                                   <a class="nav-link my-hot-posts" href="#pills-photos-tab" data-bs-toggle="pill" data-bs-target="#photos" role="button">관심사 인기 글</a>
                                                </li>
                                                  <li class="nav-item col-12 col-sm-3 p-0">
-                                                  <a class="nav-link my-hot-posts" onclick="location.href='/user/view'"
+                                                  <a class="nav-link" onclick="location.href='/user/view'"
                                                      data-bs-toggle="pill"  role="button">회원 정보 변경</a>
                                                </li>
                                             </ul>
@@ -129,7 +129,7 @@
 <!-- app JavaScript -->
 <script src="/static/profile/js/charts/weather-chart.js"></script>
 <script src="/static/profile/js/app.js"></script>
-<script src="/static/profile/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+
 <script src="/static/profile/js/lottie.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/static/admin/js/moment.js"></script>

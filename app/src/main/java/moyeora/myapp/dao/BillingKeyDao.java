@@ -1,11 +1,12 @@
 package moyeora.myapp.dao;
 
 
-import java.sql.Date;
-import java.util.List;
 import moyeora.myapp.dto.payment.RegularPaymentRequestDTO;
 import moyeora.myapp.vo.BillingKey;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.sql.Date;
+import java.util.List;
 
 @Mapper
 public interface BillingKeyDao {
@@ -25,5 +26,7 @@ public interface BillingKeyDao {
   void deleteByUserNo(int no);
 
   int findByUserNo(int no);
+
+  String subscriptionTF(int userNo);
 
 }

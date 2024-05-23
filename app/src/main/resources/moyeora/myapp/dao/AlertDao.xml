@@ -42,8 +42,7 @@
         where
           user_no = #{value} and is_read = 0
         order by
-          alert_no desc
-        limit 30;
+          alert_no desc;
     </select>
 
     <update id="updateIsRead" parameterType="int">

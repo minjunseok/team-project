@@ -96,8 +96,9 @@ function loadAlert() {
     success: function (response) {
       let alerts = response;
       let checkNewNotification = false;
-
+      console.log(alerts+"######");
       for(key in alerts) {
+        console.log(alerts[key].createdAt + "@@@@@@@@");
         let dateTime = alerts[key].createdAt.substring(0, 10) + " " + alerts[key].createdAt.substring(12, 16);
         if (  alerts[key].isRead == "0" ) {
             checkNewNotification = true;

@@ -314,6 +314,32 @@
     </collection>
   </resultMap>
 
+  <resultMap id="ProfileMap2" type="moyeora.myapp.dto.profile.ProfileResponse2DTO">
+    <collection property="posts" ofType="moyeora.myapp.dto.profile.ProfilePostResponse2DTO">
+      <id column="post_no" property="postNo"/>
+      <result column="photo" property="photo"/>
+      <result column="name" property="name"/>
+      <result column="nickname" property="nickname"/>
+      <result column="email" property="email"/>
+      <result column="user_no" property="userNo"/>
+      <result column="content" property="content"/>
+      <result column="created_at" property="createdAt"/>
+      <result column="like_count" property="likeCount"/>
+      <result column="comment_count" property="commentCount"/>
+      <collection property="comments" ofType="moyeora.myapp.dto.profile.ProfileCommentResponse2DTO">
+        <id column="comment_no" property="commentNo"/>
+        <result column="comment_content" property="commentContent"/>
+        <result column="comment_created_at" property="commentCreatedAt"/>
+        <association property="commentUser" javaType="moyeora.myapp.dto.profile.ProfileCommentUserResponse2DTO">
+          <id column="comment_user_no" property="commentUserNo"/>
+          <result column="comment_user_email" property="commentUserEmail"/>
+          <result column="comment_user_nickname" property="commentUserNickname"/>
+          <result column="comment_user_photo" property="commentUserPhoto"/>
+        </association>
+      </collection>
+    </collection>
+  </resultMap>
+
   <select id="findAllPostsByUserNo" resultMap="ProfileMap">
     select
     u.user_no user_no,
@@ -321,10 +347,6 @@
     u.name name,
     u.nickname nickname,
     u.email email,
-    u.grade grade,
-    (select count(*) from follows where follower_user_no = #{userNo}) follower_count,
-    (select count(*) from follows where following_user_no = #{userNo}) following_count,
-    (select count(*) from posts where user_no = #{userNo}) post_count,
     p.post_no post_no,
     p.content content,
     p.created_at created_at,
@@ -345,7 +367,7 @@
     order by p.created_at desc, c.created_at desc
   </select>
 
-  <select id="findSchoolPostByUserNo" resultMap="ProfileMap">
+  <select id="findSchoolPostByUserNo" resultMap="ProfileMap2">
     select
     DISTINCT
     u.user_no user_no,
@@ -356,8 +378,6 @@
     p.post_no post_no,
     p.content content,
     p.created_at created_at,
-    (select count(*) from likes l where l.post_no = p.post_no) like_count,
-    (select count(*) from comments c2 where c2.post_no=p.post_no) comment_count,
     c.comment_no comment_no,
     c.content comment_content,
     c.created_at comment_created_at,
@@ -366,14 +386,14 @@
     u2.nickname comment_user_nickname,
     u2.photo comment_user_photo
     from users u
-    left outer join (select * from posts limit 5 offset 0) p on u.user_no = p.user_no
+    left outer join posts p on u.user_no = p.user_no
     left outer join comments c on p.post_no = c.post_no
     left outer join users u2 on c.user_no = u2.user_no
     where p.school_no in (select school_no from school_users where user_no=#{userNo})
     order by p.created_at desc, c.created_at desc;
   </select>
 
-  <select id="findFollowerPostByUserNo" resultMap="ProfileMap">
+  <select id="findFollowerPostByUserNo" resultMap="ProfileMap2">
     select
     DISTINCT
     u.user_no user_no,
@@ -384,8 +404,6 @@
     p.post_no post_no,
     p.content content,
     p.created_at created_at,
-    (select count(*) from likes l where l.post_no = p.post_no) like_count,
-    (select count(*) from comments c2 where c2.post_no=p.post_no) comment_count,
     c.comment_no comment_no,
     c.content comment_content,
     c.created_at comment_created_at,
@@ -394,14 +412,14 @@
     u2.nickname comment_user_nickname,
     u2.photo comment_user_photo
     from users u
-    left outer join (select * from posts limit 5 offset 0) p on u.user_no = p.user_no
+    left outer join posts p on u.user_no = p.user_no
     left outer join comments c on p.post_no = c.post_no
     left outer join users u2 on c.user_no = u2.user_no
     where u.user_no in (select follower_user_no from follows where following_user_no=#{userNo})
     order by p.created_at desc, c.created_at desc;
   </select>
 
-  <select id="findLikePostByUserNo" resultMap="ProfileMap">
+  <select id="findLikePostByUserNo" resultMap="ProfileMap2">
     select
     DISTINCT
     u.user_no user_no,
@@ -422,11 +440,17 @@
     u2.nickname comment_user_nickname,
     u2.photo comment_user_photo
     from users u
-    left outer join (select * from posts limit 5 offset 0) p on u.user_no = p.user_no
+    left outer join posts p on u.user_no = p.user_no
     left outer join comments c on p.post_no = c.post_no
     left outer join users u2 on c.user_no = u2.user_no
     inner join school_tags st on p.school_no = st.school_no
     where st.tag_no in (select tag_no from user_tags where user_no=#{userNo})
     order by like_count desc;
   </select>
+
+  <update id="updateGrade">
+    update users
+    set grade=#{grade}
+    where user_no = #{no}
+  </update>
 </mapper>
