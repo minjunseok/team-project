@@ -3,7 +3,7 @@ package moyeora.myapp.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.bootpay.Bootpay;
 import kr.co.bootpay.model.request.SubscribePayload;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import moyeora.myapp.dao.*;
 import moyeora.myapp.dto.payment.RegularPaymentRequestDTO;
 import moyeora.myapp.service.PaymentService;
@@ -15,37 +15,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
 @Service
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class RegularPaymentService implements PaymentService {
 
-  private PurchaseDao purchaseDao;
-  private UserDao userDao;
-  private SchoolDao schoolDao;
-  private BillingKeyDao billingKeyDao;
-  private SchoolUserDao schoolUserDao;
-  String restapi_key;
-  String private_key;
+  private final PurchaseDao purchaseDao;
+  private final UserDao userDao;
+  private final SchoolDao schoolDao;
+  private final BillingKeyDao billingKeyDao;
+  private final SchoolUserDao schoolUserDao;
 
-  public RegularPaymentService(
-          @Value("${bootpay.restapi.key}") String restapi_key,
-          @Value("${bootpay.private.key}") String private_key,
-          PurchaseDao purchaseDao,
-          UserDao userDao,
-          SchoolDao schoolDao, BillingKeyDao billingKeyDao, SchoolUserDao schoolUserDao) {
-    System.out.println(restapi_key + "@@@@@@@@");
-    this.restapi_key = restapi_key;
-    this.private_key = private_key;
-    this.purchaseDao = purchaseDao;
-    this.userDao = userDao;
-    this.schoolDao = schoolDao;
-    this.billingKeyDao = billingKeyDao;
-    this.schoolUserDao = schoolUserDao;
-  }
+  @Value("${bootpay.restapi.key}")
+  String restapi_key;
+
+  @Value("${bootpay.private.key}")
+  String private_key;
 
 
   @Transactional
@@ -139,6 +126,7 @@ public class RegularPaymentService implements PaymentService {
   }
 
   public int findBillingKeyByUserNo(int userNo) {
+
     return billingKeyDao.findByUserNo(userNo);
   }
 

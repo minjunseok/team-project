@@ -3,10 +3,7 @@ package moyeora.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
 import moyeora.myapp.annotation.LoginUser;
-import moyeora.myapp.dto.profile.FollowListRequestDTO;
-import moyeora.myapp.dto.profile.FollowListResponseDTO;
-import moyeora.myapp.dto.profile.FollowRequestDTO;
-import moyeora.myapp.dto.profile.ProfileResponseDTO;
+import moyeora.myapp.dto.profile.*;
 import moyeora.myapp.service.MyPageService;
 import moyeora.myapp.service.SchoolService;
 import moyeora.myapp.service.impl.DefaultNotificationService;
@@ -85,24 +82,23 @@ public class MyPageController {
       System.out.println(loginUser.getNo()+"ss");
       followListRequestDTO.setClickUserNo(loginUser.getNo());
     }
-    defaultNotificationService.add(
-            Alert.builder().
-                    userNo(followListRequestDTO.getUserNo()).
-                    name(loginUser.getNickname()).
-                    photo(loginUser.getPhoto()).
-                    content("팔로우 하였습니다").
-                    type(1).
-                    redirectPath("/mypage/myProfile").
-                    build());
     return ResponseEntity.status(200).body(myPageService.followList(followListRequestDTO));
   }
 
   @PostMapping("addFollow")
   @ResponseBody
-  public ResponseEntity<Integer> addFollow(@LoginUser User loginUser, @RequestBody FollowRequestDTO followRequestDTO) {
+  public ResponseEntity<Integer> addFollow(@LoginUser User loginUser, @RequestBody FollowRequestDTO followRequestDTO) throws Exception {
     if(loginUser.getNo()==followRequestDTO.getFollowerUserNo()) {
       return ResponseEntity.status(400).build();
     }
+    Alert alert = new Alert();
+    alert.setUserNo(followRequestDTO.getFollowerUserNo());
+    alert.setName(loginUser.getNickname());
+    alert.setPhoto(loginUser.getPhoto());
+    alert.setContent("팔로우 하였습니다");
+    alert.setType(1);
+    alert.setRedirectPath("/mypage/myProfile");
+    defaultNotificationService.add(alert);
     followRequestDTO.setFollowingUserNo(loginUser.getNo());
 
     return ResponseEntity.status(201).body(myPageService.addFollow(followRequestDTO));
@@ -117,19 +113,19 @@ public class MyPageController {
 
   @GetMapping("likepost")
   @ResponseBody
-  public ResponseEntity<ProfileResponseDTO> getLikePost(@LoginUser User loginUser, int page) {
+  public ResponseEntity<List<ProfileResponse2DTO>> getLikePost(@LoginUser User loginUser, int page) {
     return ResponseEntity.status(200).body(myPageService.getLikePost(loginUser.getNo(), page));
   }
 
   @GetMapping("followerpost")
   @ResponseBody
-  public ResponseEntity<ProfileResponseDTO> getLFollowerPost(@LoginUser User loginUser, int page) {
+  public ResponseEntity<List<ProfileResponse2DTO>> getLFollowerPost(@LoginUser User loginUser, int page) {
     return ResponseEntity.status(200).body(myPageService.getFollowerPost(loginUser.getNo(), page));
   }
 
   @GetMapping("schoolpost")
   @ResponseBody
-  public ResponseEntity<ProfileResponseDTO> getSchoolPost(@LoginUser User loginUser, int page) {
+  public ResponseEntity<List<ProfileResponse2DTO>> getSchoolPost(@LoginUser User loginUser, int page) {
     return ResponseEntity.status(200).body(myPageService.getSchoolPost(loginUser.getNo(), page));
   }
 }

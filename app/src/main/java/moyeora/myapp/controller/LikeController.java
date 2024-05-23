@@ -29,15 +29,15 @@ public class LikeController {
     public ResponseEntity<Integer> like(@LoginUser User loginUser, @RequestBody LikeRequestDTO likeRequestDTO) throws Exception {
         likeRequestDTO.setUserNo(loginUser.getNo());
 
-        defaultNotificationService.add(
-                Alert.builder().
-                        userNo(postService.getUserNo(likeRequestDTO.getPostNo())).
-                        name(loginUser.getNickname()).
-                        photo(loginUser.getPhoto()).
-                        content("좋아요를 했습니다").
-                        type(3).
-                        redirectPath("/mypage/myProfile").
-                        build());
+        Alert alert = new Alert();
+        alert.setUserNo(postService.getUserNo(likeRequestDTO.getPostNo()));
+        alert.setName(loginUser.getNickname());
+        alert.setPhoto(loginUser.getPhoto());
+        alert.setContent("좋아요를 했습니다");
+        alert.setType(3);
+        alert.setRedirectPath("mypage/myProfile");
+
+        defaultNotificationService.add(alert);
         return ResponseEntity.status(201).body(likeService.like(likeRequestDTO));
     }
 }

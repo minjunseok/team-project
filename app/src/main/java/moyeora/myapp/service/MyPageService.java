@@ -1,12 +1,9 @@
 package moyeora.myapp.service;
 
-import java.util.List;
-
-import moyeora.myapp.dto.profile.FollowListRequestDTO;
-import moyeora.myapp.dto.profile.FollowListResponseDTO;
-import moyeora.myapp.dto.profile.FollowRequestDTO;
-import moyeora.myapp.dto.profile.ProfileResponseDTO;
+import moyeora.myapp.dto.profile.*;
 import moyeora.myapp.vo.Post;
+
+import java.util.List;
 
 
 public interface  MyPageService {
@@ -24,10 +21,10 @@ public interface  MyPageService {
 
   int checkFollow(FollowRequestDTO followRequestDTO);
 
-  ProfileResponseDTO getFollowerPost(int userNo, int page);
+  List<ProfileResponse2DTO> getFollowerPost(int userNo, int page);
 
-  ProfileResponseDTO getSchoolPost(int userNo, int page);
+  List<ProfileResponse2DTO> getSchoolPost(int userNo, int page);
 
-  ProfileResponseDTO getLikePost(int userNo, int page);
+  List<ProfileResponse2DTO> getLikePost(int userNo, int page);
 }
 

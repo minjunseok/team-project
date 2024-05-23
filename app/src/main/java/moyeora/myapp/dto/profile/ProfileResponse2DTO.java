@@ -4,28 +4,21 @@ package moyeora.myapp.dto.profile;
 import lombok.Data;
 import moyeora.myapp.vo.Comment;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class ProfileResponseDTO {
+public class ProfileResponse2DTO {
+    private List<ProfilePostResponse2DTO> posts;
+}
+
+@Data
+class ProfilePostResponse2DTO {
     private int userNo;
     private String photo;
     private String nickname;
     private String email;
     private String name;
-    private int subscriptionTF;
-    private int grade;
-    private int postCount;
-    private int followerCount;
-    private int followingCount;
-    private Date subscriptionDate;
-    private List<ProfilePostResponseDTO> posts;
-}
-
-@Data
-class ProfilePostResponseDTO {
     private int postNo;
     private String content;
     private LocalDateTime createdAt;
@@ -35,15 +28,15 @@ class ProfilePostResponseDTO {
 }
 
 @Data
-class ProfileCommentResponseDTO {
+class ProfileCommentResponse2DTO {
     private String commentNo;
     private String commentContent;
     private String commentCreatedAt;
-    private ProfileCommentUserResponseDTO commentUser;
+    private ProfileCommentUserResponse2DTO commentUser;
 }
 
 @Data
-class ProfileCommentUserResponseDTO {
+class ProfileCommentUserResponse2DTO {
     private int commentUserNo;
     private String commentUserEmail;
     private String commentUserNickname;

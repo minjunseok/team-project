@@ -73,7 +73,7 @@
   <delete id="deleteKey">
     update billing_keys
     set
-      billing_keys = NULL
+      billing_key = NULL
     where
       user_no = #{no}
   </delete>
@@ -102,4 +102,13 @@
     where
       user_no = #{no}
   </select>
+
+  <select id="subscriptionTF">
+    select
+      billing_key
+    from
+      billing_keys
+    where user_no = #{userNo}
+  </select>
+
 </mapper>
