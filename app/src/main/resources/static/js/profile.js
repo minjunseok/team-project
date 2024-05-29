@@ -11,6 +11,27 @@ $('.modal-body').on('scroll', function() {
         }
       }
 })
+$(document).on('#add-follow','click', function(){
+  axios.post('/mypage/addFollow',{
+    followerUserNo : profileUserNo
+  })
+  .then((e)=>{
+    if(e.data===1) {
+        $('#add-follow').css({
+                    'color' : 'red'
+        })
+        $('#add-follow').text('팔로우해제')
+        $("#follower-count").text(Number($("#follower-count").text()) + 1)
+    }
+    if(e.data===0) {
+        $('#add-follow').css({
+                    'color' : ''
+        })
+         $('#add-follow').text('팔로우하기')
+         $("#follower-count").text(Number($("#follower-count").text()) - 1)
+    }
+  })
+})
 
 const followList = (u,t) => {
   profileUserNo = u;
@@ -89,9 +110,9 @@ const profile = (u) => {
       }
       $("#profile-user-nickname").empty()
       $("#profile-user-nickname").append('<h3>'+e.data.nickname+'</h3>')
-      $("#post-count").text(e.data.postCount)
-      $("#follower-count").text(e.data.followerCount)
-      $("#following-count").text(e.data.followingCount)
+      $("#post-count").text("2")
+      $("#follower-count").text("1")
+      $("#following-count").text("4")
     }
   if(e.data.posts[0].postNo === 0) {
         page--;
@@ -185,27 +206,7 @@ $(document).on('click', '.user-img', function(){
   profile(profileUserNo);
 })
 
-$('#add-follow').on('click', function(){
-  axios.post('/mypage/addFollow',{
-    followerUserNo : profileUserNo
-  })
-  .then((e)=>{
-    if(e.data===1) {
-        $('#add-follow').css({
-                    'color' : 'red'
-        })
-        $('#add-follow').text('팔로우해제')
-        $("#follower-count").text(Number($("#follower-count").text()) + 1)
-    }
-    if(e.data===0) {
-        $('#add-follow').css({
-                    'color' : ''
-        })
-         $('#add-follow').text('팔로우하기')
-         $("#follower-count").text(Number($("#follower-count").text()) - 1)
-    }
-  })
-})
+
 
 $(document).on('click','.add-follow-btn', function(){
   axios.post('/mypage/addFollow',{

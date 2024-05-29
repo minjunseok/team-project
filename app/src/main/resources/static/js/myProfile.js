@@ -70,7 +70,7 @@ const profile2 = (u) => {
   }
   axios.get("/mypage/profile?userNo="+profileUserNo2+"&page="+(++page2))
   .then((e)=>{
-
+    console.log(e.data)
     if(page2===1) {
       $("#post-body2").empty();
       $("#profile-user-img2").empty();
@@ -84,18 +84,34 @@ const profile2 = (u) => {
       $("#post-count2").text(e.data.postCount)
       $("#follower-count2").text(e.data.followerCount)
       $("#following-count2").text(e.data.followingCount)
-      if(e.data.grade===0) {
+      if(e.data.grade===0 && e.data.subscriptionTF == 0) {
         $('#grade-btn').text('구독하기')
         $('#grade-btn').removeClass('btn-outline-danger')
         $('#grade-btn').addClass('btn-outline-success')
         $('#grade-text').text('회원님은 Normal 등급입니다')
       }
-      if(e.data.grade===1) {
+      if(e.data.grade===1 && e.data.subscriptionTF == 0) {
+        $("#grade-date").text("~"+e.data.subscriptionDate+" 까지")
+        $('#grade-btn').text('재구독하기')
+        $('#grade-btn').removeClass('btn-outline-danger')
+        $('#grade-btn').addClass('btn-outline-success')
         $('#grade-text').text('회원님은 VIP 등급입니다')
       }
-      if(e.data.grade===1) {
-      $('#grade-text').text('회원님은 VVIP 등급입니다')
-      }
+       if(e.data.grade===1 && e.data.subscriptionTF == 1) {
+              $("#grade-date").text("~"+e.data.subscriptionDate+" 까지")
+              $('#grade-text').text('회원님은 VIP 등급입니다')
+            }
+      if(e.data.grade===2 && e.data.subscriptionTF == 0) {
+              $("#grade-date").text("~"+e.data.subscriptionDate+" 까지")
+              $('#grade-btn').text('재구독하기')
+              $('#grade-btn').removeClass('btn-outline-danger')
+              $('#grade-btn').addClass('btn-outline-success')
+              $('#grade-text').text('회원님은 VVIP 등급입니다')
+            }
+     if(e.data.grade===2 && e.data.subscriptionTF == 1) {
+            $("#grade-date").text("~ "+e.data.subscriptionDate+" 까지")
+            $('#grade-text').text('회원님은 VVIP 등급입니다')
+          }
     }
   if(e.data.posts[0].postNo === 0) {
         page--;
@@ -192,22 +208,20 @@ $(document).on('click', '.user-img', function(){
 $(document).on('click', '.my-school-posts', function(){
     axios.get('/mypage/schoolpost?page='+(++page2))
     .then((e)=> {
+    console.log(e.data)
     $("#post-body2").empty();
-     if(e.data.posts[0].postNo === 0) {
-            page--;
-            return;
-          }
         let posthtml=''
-        for(let post of e.data.posts) {
+        for(let i = 0; i<e.data.length; i++) {
+        for(let post of e.data[i].posts) {
         posthtml += '<div class="post-item">'
         posthtml += '<div class="user-post-data py-3">'
         posthtml += '<input type="hidden" class="post-hidden-no" value='+post.postNo+'>'
         posthtml += '<div class="d-flex justify-content-between">'
         posthtml += '<div class=" me-3">'
-        posthtml += '<input type="hidden" class="user-hidden-no" value='+e.data.userNo+'><img style="cursor:pointer" class="rounded-circle avatar-60 user-img" src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/'+e.data.photo+'?type=f&w=80&h=80" alt="">'
+        posthtml += '<input type="hidden" class="user-hidden-no" value='+post.userNo+'><img style="cursor:pointer" class="rounded-circle avatar-60 user-img" src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/'+post.photo+'?type=f&w=80&h=80" alt="">'
         posthtml += '</div><div class="w-100"><div class="d-flex justify-content-between"><div class="">'
-        posthtml += '<h5 class="mb-0 d-inline-block me-1"><a class="">'+e.data.nickname+'</a></h5>'
-        posthtml += '<p class=" mb-0 d-inline-block">'+e.data.name+'</p>'
+        posthtml += '<h5 class="mb-0 d-inline-block me-1"><a class="">'+post.nickname+'</a></h5>'
+        posthtml += '<p class=" mb-0 d-inline-block">'+post.name+'</p>'
          const postTime = moment(post.createdAt).format('YY-MM-DD hh:mm');
         posthtml += '<p class="mb-0">'+postTime+'</p></div>'
         posthtml += '<div class="card-post-toolbar">'
@@ -262,6 +276,7 @@ $(document).on('click', '.my-school-posts', function(){
         posthtml += '<form class="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">'
         posthtml += '<input type="text" class="form-control rounded" placeholder="Enter Your Comment"></form></div></div>'
 
+        }
         }
         $("#post-body2").append(posthtml);
 
@@ -279,22 +294,18 @@ $(document).on('click', '.my-follower-posts', function(){
     axios.get('/mypage/followerpost?page='+(++page2))
     .then((e)=> {
     $("#post-body2").empty();
-     if(e.data.posts[0].postNo === 0) {
-            page--;
-            return;
-          }
-
         let posthtml=''
-        for(let post of e.data.posts) {
+        for(let i = 0; i<e.data.length; i++) {
+        for(let post of e.data[i].posts) {
         posthtml += '<div class="post-item">'
         posthtml += '<div class="user-post-data py-3">'
         posthtml += '<input type="hidden" class="post-hidden-no" value='+post.postNo+'>'
         posthtml += '<div class="d-flex justify-content-between">'
         posthtml += '<div class=" me-3">'
-        posthtml += '<input type="hidden" class="user-hidden-no" value='+e.data.userNo+'><img style="cursor:pointer" class="rounded-circle avatar-60 user-img" src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/'+e.data.photo+'?type=f&w=80&h=80" alt="">'
+        posthtml += '<input type="hidden" class="user-hidden-no" value='+post.userNo+'><img style="cursor:pointer" class="rounded-circle avatar-60 user-img" src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/'+post.photo+'?type=f&w=80&h=80" alt="">'
         posthtml += '</div><div class="w-100"><div class="d-flex justify-content-between"><div class="">'
-        posthtml += '<h5 class="mb-0 d-inline-block me-1"><a class="">'+e.data.nickname+'</a></h5>'
-        posthtml += '<p class=" mb-0 d-inline-block">'+e.data.name+'</p>'
+        posthtml += '<h5 class="mb-0 d-inline-block me-1"><a class="">'+post.nickname+'</a></h5>'
+        posthtml += '<p class=" mb-0 d-inline-block">'+post.name+'</p>'
          const postTime = moment(post.createdAt).format('YY-MM-DD hh:mm');
         posthtml += '<p class="mb-0">'+postTime+'</p></div>'
         posthtml += '<div class="card-post-toolbar">'
@@ -350,6 +361,7 @@ $(document).on('click', '.my-follower-posts', function(){
         posthtml += '<input type="text" class="form-control rounded" placeholder="Enter Your Comment"></form></div></div>'
 
         }
+        }
         $("#post-body2").append(posthtml);
          $(".my-posts").removeClass('active')
             $(".my-school-posts").removeClass('active')
@@ -366,22 +378,19 @@ $(document).on('click', '.my-follower-posts', function(){
 $(document).on('click', '.my-hot-posts', function(){
      axios.get('/mypage/likepost?page='+(++page2))
      .then((e)=> {
- if(e.data.posts[0].postNo === 0) {
-        page--;
-        return;
-      }
     $("#post-body2").empty();
     let posthtml=''
-    for(let post of e.data.posts) {
+    for(let i = 0; i<e.data.length; i++) {
+    for(let post of e.data[i].posts) {
     posthtml += '<div class="post-item">'
     posthtml += '<div class="user-post-data py-3">'
     posthtml += '<input type="hidden" class="post-hidden-no" value='+post.postNo+'>'
     posthtml += '<div class="d-flex justify-content-between">'
     posthtml += '<div class=" me-3">'
-    posthtml += '<input type="hidden" class="user-hidden-no" value='+e.data.userNo+'><img style="cursor:pointer" class="rounded-circle avatar-60 user-img" src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/'+e.data.photo+'?type=f&w=80&h=80" alt="">'
+    posthtml += '<input type="hidden" class="user-hidden-no" value='+post.userNo+'><img style="cursor:pointer" class="rounded-circle avatar-60 user-img" src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/user/'+post.photo+'?type=f&w=80&h=80" alt="">'
     posthtml += '</div><div class="w-100"><div class="d-flex justify-content-between"><div class="">'
-    posthtml += '<h5 class="mb-0 d-inline-block me-1"><a class="">'+e.data.nickname+'</a></h5>'
-    posthtml += '<p class=" mb-0 d-inline-block">'+e.data.name+'</p>'
+    posthtml += '<h5 class="mb-0 d-inline-block me-1"><a class="">'+post.nickname+'</a></h5>'
+    posthtml += '<p class=" mb-0 d-inline-block">'+post.name+'</p>'
      const postTime = moment(post.createdAt).format('YY-MM-DD hh:mm');
     posthtml += '<p class="mb-0">'+postTime+'</p></div>'
     posthtml += '<div class="card-post-toolbar">'
@@ -437,6 +446,7 @@ $(document).on('click', '.my-hot-posts', function(){
     posthtml += '<input type="text" class="form-control rounded" placeholder="Enter Your Comment"></form></div></div>'
 
     }
+    }
     $("#post-body2").append(posthtml);
     $(".my-posts").removeClass('active')
     $(".my-school-posts").removeClass('active')
@@ -452,6 +462,7 @@ $('#grade-btn').on('click', function(){
     if($(this).text()=='구독하기') {
         location.href = '/payment/form'
     } else {
+
         Swal.fire({
           title: "정말로 구독을 해지하시겠습니까?",
           text: "다음 달 결제일 이전까지는 효과가 지속됩니다.",
@@ -464,9 +475,13 @@ $('#grade-btn').on('click', function(){
             axios.post('/payment/stop')
             .then((e)=>{
                 Swal.fire({
-                  title: "구독 해지가 완료되었습니다."
+                  title: "구독 해지가 완료되었습니다.",
+                  confirmButtonColor: "#3085d6",
+                  confirmButtonText: "네"
                 }).then((e)=>{
-                    location.reload();
+                    if(e.isConfirmed) {
+                        location.reload();
+                    }
                 })
 
             })

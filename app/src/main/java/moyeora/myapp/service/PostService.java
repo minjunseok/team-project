@@ -78,4 +78,6 @@ public interface PostService {
 
     public List<Post> findBySchool(int schoolNo);
 
+  int getUserNo(int postNo);
+
 }

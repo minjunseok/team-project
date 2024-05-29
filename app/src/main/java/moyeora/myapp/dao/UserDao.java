@@ -1,15 +1,16 @@
 package moyeora.myapp.dao;
 
 
-
 import moyeora.myapp.dto.admin.statistics.AdminUserBirthResponseDTO;
 import moyeora.myapp.dto.admin.statistics.AdminUserGenderResponseDTO;
 import moyeora.myapp.dto.admin.statistics.AdminUserLocalResponseDTO;
 import moyeora.myapp.dto.admin.user.AdminUserListResponseDTO;
+import moyeora.myapp.dto.profile.ProfileResponse2DTO;
 import moyeora.myapp.dto.profile.ProfileResponseDTO;
 import moyeora.myapp.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -70,10 +71,10 @@ public interface UserDao {
 
     ProfileResponseDTO findAllPostsByUserNo(int userNo, int limit, int offset);
 
-    ProfileResponseDTO findFollowerPostByUserNo(int userNo, int limit, int offset);
+    List<ProfileResponse2DTO> findFollowerPostByUserNo(int userNo, int limit, int offset);
 
-    ProfileResponseDTO findLikePostByUserNo(int userNo, int limit, int offset);
+    List<ProfileResponse2DTO> findLikePostByUserNo(int userNo, int limit, int offset);
 
-    ProfileResponseDTO findSchoolPostByUserNo(int userNo, int limit, int offset);
+    List<ProfileResponse2DTO> findSchoolPostByUserNo(int userNo, int limit, int offset);
 
 }

@@ -165,9 +165,9 @@
         for(let data of e.data) {
               let html = '';
               console.log(data);
-              html += '<li style="cursor:pointer" class="class-click">'
+              html += '<li style="cursor:pointer" class="class-no">'
               html += '<div class="timeline-dots"></div>'
-              html += '<div class="container d-flex align-items-center justify-content-between><input type="hidden" value='+data.schoolNo+' class="hidden-school-no">'
+              html += '<div class="container d-flex align-items-center justify-content-between"><input type="hidden" value='+data.schoolNo+' class="hidden-school-no">'
               html += '<img src="https://qryyl2ox2742.edge.naverncp.com/yNmhwcnzfw/schoolclass/'+data.photo+'?type=f&w=40&h=40" class="rounded-circle" style="width : 40px; height : 40px;">'
               html += '<div class="col-lg-4"><h6 class="mb-1 text-center">'+data.name+'</h6></div>'
               html += '<div class="col-lg-2">'+moment(data.startAt).format('HH시mm분')+'</div>'
@@ -187,9 +187,7 @@
 
                       kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(mmap, marker, minfowindow));
                       kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(minfowindow));
-                      kakao.maps.event.addListener(marker, 'click', function() {
-                           alert('dddd');
-                      });
+
                         }
                       })
             classhtml += html;

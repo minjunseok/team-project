@@ -40,9 +40,9 @@
     where
       user_no=#{userNo}
     and
-      expiration_date > now();
+      expiration_date > now()
     order by expiration_date desc
-    limit 1
+    limit 1;
   </select>
 
 </mapper>

@@ -2,13 +2,8 @@ package moyeora.myapp.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
-import moyeora.myapp.dao.FollowDao;
-import moyeora.myapp.dao.PostDao;
-import moyeora.myapp.dao.UserDao;
-import moyeora.myapp.dto.profile.FollowListRequestDTO;
-import moyeora.myapp.dto.profile.FollowListResponseDTO;
-import moyeora.myapp.dto.profile.FollowRequestDTO;
-import moyeora.myapp.dto.profile.ProfileResponseDTO;
+import moyeora.myapp.dao.*;
+import moyeora.myapp.dto.profile.*;
 import moyeora.myapp.service.MyPageService;
 import moyeora.myapp.vo.Post;
 import org.springframework.stereotype.Service;
@@ -21,6 +16,8 @@ public class DefaultMyPageService implements MyPageService {
   private final PostDao postDao;
   private final UserDao userDao;
   private final FollowDao followDao;
+  private final PurchaseDao purchaseDao;
+  private final BillingKeyDao billingKeyDao;
 
   @Override
   public List<Post> findNewPost(int no) {
@@ -42,23 +39,30 @@ public class DefaultMyPageService implements MyPageService {
   @Override
   public ProfileResponseDTO getProfile(int userNo, int page) {
 
-    return userDao.findAllPostsByUserNo(userNo, page*5, (page-1)*5);
+    ProfileResponseDTO dto = userDao.findAllPostsByUserNo(userNo, page * 5, (page - 1) * 5);
+    if (billingKeyDao.subscriptionTF(userNo) == null || billingKeyDao.subscriptionTF(userNo).isEmpty()) {
+      dto.setSubscriptionTF(0);
+    } else {
+      dto.setSubscriptionTF(1);
+    }
+    dto.setSubscriptionDate(purchaseDao.findExpiredDate(userNo));
+    return dto;
   }
 
   @Override
-  public ProfileResponseDTO getFollowerPost(int userNo, int page) {
+  public List<ProfileResponse2DTO> getFollowerPost(int userNo, int page) {
 
     return userDao.findFollowerPostByUserNo(userNo, page*5, (page-1)*5);
   }
 
   @Override
-  public ProfileResponseDTO getLikePost(int userNo, int page) {
+  public List<ProfileResponse2DTO> getLikePost(int userNo, int page) {
 
     return userDao.findLikePostByUserNo(userNo, page*5, (page-1)*5);
   }
 
   @Override
-  public ProfileResponseDTO getSchoolPost(int userNo, int page) {
+  public List<ProfileResponse2DTO> getSchoolPost(int userNo, int page) {
 
     return userDao.findSchoolPostByUserNo(userNo, page*5, (page-1)*5);
   }
